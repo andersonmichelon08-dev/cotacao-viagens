@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f766e">
-<title>Michelon Viagens Executivas • V7.4.4</title>
+<title>Michelon Viagens Executivas • V7.4.5</title>
 <style>
 :root{--bg:#f8fafc;--card:#fff;--text:#0f172a;--muted:#64748b;--line:#e2e8f0;--primary:#0f766e;--primary2:#115e59;--ok:#166534;--warn:#92400e;--danger:#b91c1c}
 *{box-sizing:border-box}
@@ -216,7 +216,7 @@ details summary{cursor:pointer;font-weight:700}.note{font-size:12px;color:var(--
         A distância e o tempo são calculados gratuitamente com dados do OpenStreetMap e roteamento OSRM.
         O aplicativo também tenta localizar praças de pedágio cadastradas no OpenStreetMap e mostra o nome/localização quando disponível.
         Você pode informar o valor de cada praça; o app grava esses valores no próprio iPhone e passa a somá-los automaticamente nas próximas cotações.
-        Não precisa de chave, cartão ou assinatura do Google. Esta V7.4.4 mantém a V7.4 e usa campos separados de Horas e Minutos para melhor funcionamento no iPhone.
+        Não precisa de chave, cartão ou assinatura do Google. Esta V7.4.5 mantém a V7.4 e usa campos separados de Horas e Minutos para melhor funcionamento no iPhone.
       </p>
     </details>
   </div>
@@ -433,6 +433,19 @@ function horasAppDecimal(){
  return h+(m/60);
 }
 
+
+function ativarCalculoUber(){
+  const ids=['appHoras','appMinutos','appCorridas','appKmIni','appKmFim','appBruto','appGorjeta','appBonus','appComb','appPed','appEst','appOutras'];
+  ids.forEach(id=>{
+    const el=$(id);
+    if(!el || el.dataset.calcUber==='1') return;
+    el.dataset.calcUber='1';
+    el.addEventListener('input',calcAppForm);
+    el.addEventListener('change',calcAppForm);
+  });
+  calcAppForm();
+}
+
 function calcAppForm(){
   const kmIni=n('appKmIni'), kmFim=n('appKmFim');
   const km=Math.max(0,kmFim-kmIni);
@@ -616,9 +629,11 @@ function melhorarCamposNumericos(){
 
 
 window.addEventListener('pageshow',()=>setTimeout(zerarVisualUber,50));
+
+window.addEventListener('pageshow',()=>setTimeout(ativarCalculoUber,50));
 </script>
 <footer style="text-align:center;color:#64748b;font-size:13px;padding:22px 10px 34px">
-<strong>MICHELON Viagens Executivas</strong><br>Versão 7.4.4<br>Atualizado em 11/09/2026
+<strong>MICHELON Viagens Executivas</strong><br>Versão 7.4.5<br>Atualizado em 11/09/2026
 </footer>
 </body>
 </html>
