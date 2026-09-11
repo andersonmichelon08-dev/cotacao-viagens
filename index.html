@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f766e">
-<title>Michelon Viagens Executivas • V7.4.6</title>
+<title>Michelon Viagens Executivas • V7.5.0</title>
 <style>
 :root{--bg:#f8fafc;--card:#fff;--text:#0f172a;--muted:#64748b;--line:#e2e8f0;--primary:#0f766e;--primary2:#115e59;--ok:#166534;--warn:#92400e;--danger:#b91c1c}
 *{box-sizing:border-box}
@@ -163,22 +163,26 @@ details summary{cursor:pointer;font-weight:700}.note{font-size:12px;color:var(--
         <div><label>Aplicativo</label><select id="appNome"><option>Uber</option><option>99</option><option>inDrive</option><option>Outro</option></select></div>
         <div><label>Horas trabalhadas</label>
 <div class="grid" style="margin-bottom:12px">
- <div><label>Horas</label><input id="appHoras" type="number" min="0" step="1" inputmode="numeric"></div>
- <div><label>Minutos</label><input id="appMinutos" type="number" min="0" max="59" step="1" inputmode="numeric"></div>
+ <div><label>Horas</label><input id="appHoras" type="number" min="0" step="1" inputmode="numeric" oninput="calcAppForm()" onchange="calcAppForm()"></div>
+ <div><label>Minutos</label><input id="appMinutos" type="number" min="0" max="59" step="1" inputmode="numeric" oninput="calcAppForm()" onchange="calcAppForm()"></div>
 </div>
-<label>Nº de corridas</label><input id="appCorridas" type="number" min="0" step="1"></div>
-        <div><label>KM inicial</label><input id="appKmIni" type="number" min="0" step="0.1"></div>
-        <div><label>KM final</label><input id="appKmFim" type="number" min="0" step="0.1"></div>
-        <div><label>Ganhos do app (R$)</label><input id="appBruto" type="number" min="0" step="0.01"></div>
-        <div><label>Gorjetas (R$)</label><input id="appGorjeta" type="number" min="0" step="0.01"></div>
-        <div><label>Bônus / incentivos (R$)</label><input id="appBonus" type="number" min="0" step="0.01"></div>
-        <div><label>Combustível (R$)</label><input id="appComb" type="number" min="0" step="0.01"></div>
-        <div><label>Pedágios (R$)</label><input id="appPed" type="number" min="0" step="0.01"></div>
-        <div><label>Estacionamento (R$)</label><input id="appEst" type="number" min="0" step="0.01"></div>
-        <div><label>Outras despesas (R$)</label><input id="appOutras" type="number" min="0" step="0.01"></div>
+<label>Nº de corridas</label><input id="appCorridas" type="number" min="0" step="1" oninput="calcAppForm()" onchange="calcAppForm()"></div>
+        <div><label>KM inicial</label><input id="appKmIni" type="number" min="0" step="0.1" oninput="calcAppForm()" onchange="calcAppForm()"></div>
+        <div><label>KM final</label><input id="appKmFim" type="number" min="0" step="0.1" oninput="calcAppForm()" onchange="calcAppForm()"></div>
+        <div><label>Ganhos do app (R$)</label><input id="appBruto" type="number" min="0" step="0.01" oninput="calcAppForm()" onchange="calcAppForm()"></div>
+        <div><label>Gorjetas (R$)</label><input id="appGorjeta" type="number" min="0" step="0.01" oninput="calcAppForm()" onchange="calcAppForm()"></div>
+        <div><label>Bônus / incentivos (R$)</label><input id="appBonus" type="number" min="0" step="0.01" oninput="calcAppForm()" onchange="calcAppForm()"></div>
+        <div><label>Combustível (R$)</label><input id="appComb" type="number" min="0" step="0.01" oninput="calcAppForm()" onchange="calcAppForm()"></div>
+        <div><label>Pedágios (R$)</label><input id="appPed" type="number" min="0" step="0.01" oninput="calcAppForm()" onchange="calcAppForm()"></div>
+        <div><label>Estacionamento (R$)</label><input id="appEst" type="number" min="0" step="0.01" oninput="calcAppForm()" onchange="calcAppForm()"></div>
+        <div><label>Outras despesas (R$)</label><input id="appOutras" type="number" min="0" step="0.01" oninput="calcAppForm()" onchange="calcAppForm()"></div>
         <div class="full"><label>Observações</label><input id="appObs" placeholder="Ex.: chuva, aeroporto, promoção do app..."></div>
       </div>
-      <div class="appDash">
+      <div class="btns" style="margin:10px 0">
+  <button id="btnRecalcularUber" class="secondary" type="button" onclick="calcAppForm()">🔄 Atualizar cálculos</button>
+</div>
+<div id="calcUberStatus" class="note">Os valores são atualizados automaticamente ao digitar.</div>
+<div class="appDash">
         <div class="appKpi"><small>KM rodados</small><b id="appKmPrev">0,0 km</b></div>
         <div class="appKpi"><small>Ganho líquido</small><b id="appLiqPrev">R$ 0,00</b></div>
         <div class="appKpi"><small>Líquido / hora</small><b id="appHoraPrev">R$ 0,00</b></div>
@@ -216,7 +220,7 @@ details summary{cursor:pointer;font-weight:700}.note{font-size:12px;color:var(--
         A distância e o tempo são calculados gratuitamente com dados do OpenStreetMap e roteamento OSRM.
         O aplicativo também tenta localizar praças de pedágio cadastradas no OpenStreetMap e mostra o nome/localização quando disponível.
         Você pode informar o valor de cada praça; o app grava esses valores no próprio iPhone e passa a somá-los automaticamente nas próximas cotações.
-        Não precisa de chave, cartão ou assinatura do Google. Esta V7.4.6 mantém a V7.4 e usa campos separados de Horas e Minutos para melhor funcionamento no iPhone.
+        Não precisa de chave, cartão ou assinatura do Google. Esta V7.5.0 mantém a V7.4 e usa campos separados de Horas e Minutos para melhor funcionamento no iPhone.
       </p>
     </details>
   </div>
@@ -524,7 +528,7 @@ function renderApps(){
         Receita: <b>${brl(x.receita||0)}</b> • Despesas: ${brl(x.despesas||0)} • Líquido: <b>${brl(x.liq||0)}</b>
         ${x.obs?`<br><small>${x.obs}</small>`:''}
       </div>
-      <div class="btns" style="margin-top:8px"><button class="mini danger" onclick="excluirApp(${x.id})">Excluir</button></div>
+      <div class="btns" style="margin-top:8px"><button class="mini danger" onclick="excluirApp(${x.id})">🗑️ Excluir lançamento</button></div>
     </div>`).join(''):'<div class="note">Nenhum ganho de aplicativo lançado ainda.</div>';
 }
 
@@ -539,6 +543,21 @@ function registrarViagem(){const x=snapshot('confirmada');if(temConflito(x)&&!co
 function cancelarReserva(id){const h=getHist(),x=h.find(v=>v.id===id);if(!x)return;if(!confirm('Cancelar esta reserva?'))return;x.status='cancelada';setHist(h)}
 function renderAgenda(){const box=$('agendaLista');if(!box)return;let h=getHist().slice();const f=$('agendaFiltro')?$('agendaFiltro').value:'proximas',hoje=new Date().toISOString().slice(0,10);if(f==='proximas')h=h.filter(x=>x.status==='confirmada'&&(x.data||'')>=hoje);else if(f!=='todas')h=h.filter(x=>x.status===f);h.sort((a,b)=>((a.data||'')+(a.horaSaida||'')).localeCompare((b.data||'')+(b.horaSaida||'')));box.innerHTML=h.length?h.slice(0,50).map(x=>`<div class="agendaItem"><strong>${dataBR(x.data)} ${x.horaSaida?`• ${x.horaSaida}`:''} ${x.horaRetorno?`– ${x.horaRetorno}`:''}</strong><span class="badge">${x.status==='confirmada'?'Confirmada':x.status==='pago'?'Concluída/Paga':x.status==='cancelada'?'Cancelada':'Orçamento'}</span><div style="margin-top:6px"><b>${x.cliente||'Cliente'}</b> • ${x.tipoServico||'Viagem'}<br>${x.origem||'-'} → ${x.destino||'-'}${x.obs?`<br><small>${x.obs}</small>`:''}</div>${x.status==='confirmada'?`<div class="btns" style="margin-top:8px"><button class="mini primary" onclick="receber(${x.id})">Receber</button><button class="mini danger" onclick="cancelarReserva(${x.id})">Cancelar</button></div>`:''}</div>`).join(''):'<div class="note">Nenhum agendamento para este filtro.</div>'}
 function consultarDisponibilidade(){const d=$('consultaData').value;if(!d)return;const reservas=getHist().filter(x=>x.status==='confirmada'&&x.data===d);$('dispStatus').className='status '+(reservas.length?'warn':'ok');$('dispStatus').textContent=reservas.length?`Há ${reservas.length} reserva(s) confirmada(s) nesta data. Veja os horários abaixo.`:'✅ Data sem reservas confirmadas no momento.';$('agendaFiltro').value='todas';renderAgenda()}
+
+
+function resumoFinanceiroAtividades(){
+  const ids=['rfExecHoje','rfAppHoje','rfTotalHoje']; if(!$(ids[0]))return;
+  const now=new Date(), hoje=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  const fim=new Date(now.getFullYear(),now.getMonth(),now.getDate(),23,59,59);
+  const semana=new Date(hoje); semana.setDate(hoje.getDate()-((hoje.getDay()+6)%7));
+  const mes=new Date(now.getFullYear(),now.getMonth(),1), ano=new Date(now.getFullYear(),0,1);
+  const exec=(ini)=>getHist().filter(x=>x.status!=='orcamento'&&x.status!=='cancelada').filter(x=>{const d=new Date((x.data||'')+'T12:00:00');return d>=ini&&d<=fim}).reduce((s,x)=>s+((+x.valor||0)-(+x.custo||0)),0);
+  const apps=(ini)=>somaAppsPeriodo(ini,fim);
+  [['Hoje',hoje],['Semana',semana],['Mes',mes],['Ano',ano]].forEach(([k,ini])=>{
+    const e=exec(ini),a=apps(ini);
+    $('rfExec'+k).textContent=brl(e);$('rfApp'+k).textContent=brl(a);$('rfTotal'+k).textContent=brl(e+a);
+  });
+}
 
 function renderMovFinanceiro(){
   const body=$('movFinBody'); if(!body)return;
@@ -602,6 +621,7 @@ function renderFinanceiro(){
   if($('kAppsMes'))$('kAppsMes').textContent=brl(appsMes);
   if($('kTotalMes'))$('kTotalMes').textContent=brl(luc+appsMes);
   renderMovFinanceiro();
+  resumoFinanceiroAtividades();
 }
 function exportarBackup(){const data={empresa:getEmpresa(),config:getCfg(),pedagios:loadTollDB(),historico:getHist(),apps:getApps()};const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='backup_michelon_'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(a.href)}
 function restaurarBackup(inp){const f=inp.files&&inp.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(d.empresa)localStorage.setItem(EMPKEY,JSON.stringify(d.empresa));if(d.config)setCfg(d.config);if(d.pedagios)saveTollDB(d.pedagios);if(d.historico)setHist(d.historico);if(d.apps)localStorage.setItem(APPKEY,JSON.stringify(d.apps));alert('Backup restaurado.');location.reload()}catch(e){alert('Arquivo de backup inválido.')}};r.readAsText(f)}
@@ -656,7 +676,7 @@ window.addEventListener('pageshow',()=>setTimeout(zerarVisualUber,50));
 window.addEventListener('pageshow',()=>setTimeout(ativarCalculoUber,50));
 </script>
 <footer style="text-align:center;color:#64748b;font-size:13px;padding:22px 10px 34px">
-<strong>MICHELON Viagens Executivas</strong><br>Versão 7.4.6<br>Atualizado em 11/09/2026
+<strong>MICHELON Viagens Executivas</strong><br>Versão 7.5.0<br>Atualizado em 11/09/2026 • Financeiro organizado
 </footer>
 </body>
 </html>
