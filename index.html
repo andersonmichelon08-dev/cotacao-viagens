@@ -24,6 +24,7 @@ button,.button{display:inline-flex;align-items:center;justify-content:center;wid
 .summary{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.metric{border:1px solid var(--line);background:#f8fafc;border-radius:12px;padding:11px}.metric small{display:block;color:var(--muted);margin-bottom:3px}.metric strong{font-size:18px}.total{font-size:27px;font-weight:800;color:var(--primary)}
 details summary{cursor:pointer;font-weight:700}.note{font-size:12px;color:var(--muted);line-height:1.45}
 .apirow{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end}.apirow button{width:auto;padding-inline:16px}
+.tollbox{display:none;margin-top:12px;border:1px solid var(--line);border-radius:12px;overflow:hidden}.tollhead{padding:10px 12px;background:#f8fafc;font-size:13px;font-weight:700}.tollrow{display:grid;grid-template-columns:1fr 120px;gap:10px;align-items:center;padding:10px 12px;border-top:1px solid var(--line)}.tollname{font-size:14px;font-weight:700}.tollmeta{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.35}.tollrow input{padding:9px;font-size:14px}.tollhint{padding:10px 12px;border-top:1px solid var(--line);font-size:11px;color:var(--muted);background:#fff}
 @media(max-width:580px){.grid,.btns,.summary{grid-template-columns:1fr}.apirow{grid-template-columns:1fr}.apirow button{width:100%}}
 </style>
 </head>
@@ -41,6 +42,7 @@ details summary{cursor:pointer;font-weight:700}.note{font-size:12px;color:var(--
       <div><label>Passageiros</label><input id="passageiros" type="number" min="1" value="1"></div>
       <div><label>Ida e volta?</label><select id="idaVolta"><option value="sim" selected>Sim</option><option value="nao">Não</option></select></div>
       <div class="full"><button class="primary" onclick="buscarRota()">📍 Buscar KM grátis e localizar pedágios</button><div id="rotaStatus" class="status"></div></div>
+      <div class="full"><div id="tollBox" class="tollbox"><div class="tollhead">🛣️ Pedágios encontrados na rota</div><div id="tollList"></div><div class="tollhint">Digite o valor de cada pedágio uma vez. O app salva no celular e reutiliza automaticamente quando encontrar a mesma praça em uma próxima cotação.</div></div></div>
       <div><label>KM total</label><input id="kmTotalInput" type="number" step="0.1" value="0"></div>
       <div><label>Tempo estimado</label><input id="tempo" value="-" readonly></div>
       <div><label>Pedágios (R$)</label><input id="pedagios" type="number" step="0.01" value="0"></div>
@@ -82,8 +84,9 @@ details summary{cursor:pointer;font-weight:700}.note{font-size:12px;color:var(--
       <summary>ℹ️ Como funciona a busca gratuita</summary>
       <p class="note" style="margin-top:12px">
         A distância e o tempo são calculados gratuitamente com dados do OpenStreetMap e roteamento OSRM.
-        O aplicativo também tenta localizar praças de pedágio cadastradas no OpenStreetMap. Como os valores das tarifas nem sempre estão disponíveis,
-        o campo “Pedágios (R$)” continua manual para você informar o total correto. Não precisa de chave, cartão ou assinatura do Google.
+        O aplicativo também tenta localizar praças de pedágio cadastradas no OpenStreetMap e mostra o nome/localização quando disponível.
+        Você pode informar o valor de cada praça; o app grava esses valores no próprio iPhone e passa a somá-los automaticamente nas próximas cotações.
+        Não precisa de chave, cartão ou assinatura do Google.
       </p>
     </details>
   </div>
@@ -159,6 +162,47 @@ async function localizarPedagios(coords){
   }
   return unicos;
 }
+function tollKey(e){
+  const t=e.tags||{};
+  const nome=(t.name||t.operator||t.ref||'').trim().toLowerCase();
+  if(nome) return 'nome:'+nome;
+  return 'coord:'+(+e.lat).toFixed(4)+','+(+e.lon).toFixed(4);
+}
+function parseCharge(raw){
+  if(!raw)return 0;
+  const m=String(raw).replace(',','.').match(/(?:R\$\s*)?(\d+(?:\.\d+)?)/i);
+  return m?parseFloat(m[1]):0;
+}
+function loadTollDB(){try{return JSON.parse(localStorage.getItem('tollDB')||'{}')}catch(e){return {}}}
+function saveTollDB(db){localStorage.setItem('tollDB',JSON.stringify(db))}
+function syncTollTotal(){
+  let total=0; const db=loadTollDB();
+  document.querySelectorAll('.tollval').forEach(inp=>{
+    const v=parseFloat(inp.value)||0; total+=v;
+    if(inp.dataset.key && v>0) db[inp.dataset.key]=v;
+  });
+  saveTollDB(db); $('pedagios').value=total.toFixed(2); calcular();
+}
+function renderPedagios(ped){
+  const box=$('tollBox'), list=$('tollList'); list.innerHTML='';
+  if(!ped.length){box.style.display='none';return 0}
+  const db=loadTollDB(); let soma=0;
+  ped.forEach((e,i)=>{
+    const t=e.tags||{}; const key=tollKey(e);
+    const nome=t.name||t.operator||t.ref||`Pedágio ${i+1}`;
+    const local=[t['addr:city'],t['addr:state']].filter(Boolean).join(', ');
+    const via=t.road||t.highway||t['addr:street']||'';
+    const tagVal=parseCharge(t.charge||t['charge:motorcar']||t['charge:car']);
+    const valor=db[key]||tagVal||0; soma+=valor;
+    const row=document.createElement('div'); row.className='tollrow';
+    row.innerHTML=`<div><div class="tollname">${nome}</div><div class="tollmeta">${[via,local,`${(+e.lat).toFixed(4)}, ${(+e.lon).toFixed(4)}`].filter(Boolean).join(' • ')}</div></div><div><input class="tollval" data-key="${key.replace(/"/g,'&quot;')}" type="number" min="0" step="0.01" inputmode="decimal" value="${valor?valor.toFixed(2):''}" placeholder="R$ 0,00"></div>`;
+    list.appendChild(row);
+  });
+  box.style.display='block';
+  document.querySelectorAll('.tollval').forEach(inp=>inp.addEventListener('input',syncTollTotal));
+  $('pedagios').value=soma.toFixed(2); calcular();
+  return soma;
+}
 async function buscarRota(){
   const origem=$('origem').value.trim(), destino=$('destino').value.trim();
   $('maps').href=mapsLink();
@@ -179,12 +223,16 @@ async function buscarRota(){
     try{
       const ped=await localizarPedagios(coords);
       if(ped.length){
-        showStatus(`Rota encontrada: ${km.toFixed(1)} km • ${formatDuration(sec)} • ${ped.length} ponto(s) de pedágio localizado(s). Informe o valor total no campo Pedágios (R$).`,'warn');
+        const soma=renderPedagios(ped);
+        const txt=soma>0?` Valores conhecidos somados: ${brl(soma)}.`:' Preencha o valor de cada praça abaixo; o app salva para as próximas viagens.';
+        showStatus(`Rota encontrada: ${km.toFixed(1)} km • ${formatDuration(sec)} • ${ped.length} ponto(s) de pedágio localizado(s).${txt}`,'warn');
       }else{
+        renderPedagios([]);
+        $('pedagios').value='0'; calcular();
         showStatus(`Rota encontrada: ${km.toFixed(1)} km • ${formatDuration(sec)}. Nenhum ponto de pedágio foi localizado nos dados gratuitos. Confira a rota antes de fechar o orçamento.`,'ok');
       }
     }catch(e){
-      showStatus(`Rota encontrada: ${km.toFixed(1)} km • ${formatDuration(sec)}. Não foi possível verificar pedágios agora; informe o valor manualmente.`,'warn');
+      renderPedagios([]); showStatus(`Rota encontrada: ${km.toFixed(1)} km • ${formatDuration(sec)}. Não foi possível verificar pedágios agora; informe o valor manualmente.`,'warn');
     }
   }catch(e){
     showStatus('Não foi possível buscar automaticamente: '+e.message+' Você ainda pode preencher KM e pedágios manualmente.','err');
