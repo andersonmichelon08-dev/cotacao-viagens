@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f766e">
-<title>Michelon Viagens Executivas • V7.4.2</title>
+<title>Michelon Viagens Executivas • V7.4.3</title>
 <style>
 :root{--bg:#f8fafc;--card:#fff;--text:#0f172a;--muted:#64748b;--line:#e2e8f0;--primary:#0f766e;--primary2:#115e59;--ok:#166534;--warn:#92400e;--danger:#b91c1c}
 *{box-sizing:border-box}
@@ -161,7 +161,10 @@ details summary{cursor:pointer;font-weight:700}.note{font-size:12px;color:var(--
       <div class="grid" style="margin-top:12px">
         <div><label>Data</label><input id="appData" type="date"></div>
         <div><label>Aplicativo</label><select id="appNome"><option>Uber</option><option>99</option><option>inDrive</option><option>Outro</option></select></div>
-        <div><label>Horas trabalhadas</label><input id="appHoras" type="text" inputmode="numeric" maxlength="5" autocomplete="off" placeholder="HH:MM"></div>
+        <div><label>Horas trabalhadas</label><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div><small>Horas</small><input id="appHoras" type="number" min="0" max="23" step="1" inputmode="numeric"></div>
+      <div><small>Minutos</small><input id="appMinutos" type="number" min="0" max="59" step="1" inputmode="numeric"></div>
+    </div></div>
         <div><label>Nº de corridas</label><input id="appCorridas" type="number" min="0" step="1"></div>
         <div><label>KM inicial</label><input id="appKmIni" type="number" min="0" step="0.1"></div>
         <div><label>KM final</label><input id="appKmFim" type="number" min="0" step="0.1"></div>
@@ -212,7 +215,7 @@ details summary{cursor:pointer;font-weight:700}.note{font-size:12px;color:var(--
         A distância e o tempo são calculados gratuitamente com dados do OpenStreetMap e roteamento OSRM.
         O aplicativo também tenta localizar praças de pedágio cadastradas no OpenStreetMap e mostra o nome/localização quando disponível.
         Você pode informar o valor de cada praça; o app grava esses valores no próprio iPhone e passa a somá-los automaticamente nas próximas cotações.
-        Não precisa de chave, cartão ou assinatura do Google. Esta V7.4.2 mantém a V7.4 e corrige Horas trabalhadas no padrão HH:MM e os campos numéricos vazios.
+        Não precisa de chave, cartão ou assinatura do Google. Esta V7.4.3 mantém a V7.4 e usa campos separados de Horas e Minutos para melhor funcionamento no iPhone.
       </p>
     </details>
   </div>
@@ -421,23 +424,12 @@ function getApps(){try{return JSON.parse(localStorage.getItem(APPKEY))||[]}catch
 function setApps(a){localStorage.setItem(APPKEY,JSON.stringify(a));renderApps();renderFinanceiro()}
 
 
-function formatarHoraApp(){
-  const el=$('appHoras');
-  let d=String(el.value||'').replace(/\D/g,'').slice(0,4);
-  if(!d){el.value='';calcAppForm();return;}
-  if(d.length<=2){el.value=d;calcAppForm();return;}
-  d=d.padStart(4,'0');
-  let h=Math.min(23,Number(d.slice(0,2))||0);
-  let m=Math.min(59,Number(d.slice(2,4))||0);
-  el.value=String(h).padStart(2,'0')+':'+String(m).padStart(2,'0');
-  calcAppForm();
-}
+
 
 function horasAppDecimal(){
-  const v=$('appHoras').value;
-  if(!v)return 0;
-  const p=v.split(':');
-  return (Number(p[0])||0)+((Number(p[1])||0)/60);
+  const h=Math.max(0,Number($('appHoras').value)||0);
+  const m=Math.min(59,Math.max(0,Number($('appMinutos').value)||0));
+  return h+(m/60);
 }
 
 function calcAppForm(){
@@ -482,7 +474,7 @@ function salvarGanhoApp(){
   alert('Dia de trabalho salvo com sucesso.');
 }
 function limparGanhoApp(){
-  ['appHoras','appCorridas','appKmIni','appKmFim','appBruto','appGorjeta','appBonus','appComb','appPed','appEst','appOutras'].forEach(id=>$(id).value='');
+  ['appHoras','appMinutos','appCorridas','appKmIni','appKmFim','appBruto','appGorjeta','appBonus','appComb','appPed','appEst','appOutras'].forEach(id=>$(id).value='');
   $('appObs').value='';
   $('appData').value=new Date().toISOString().slice(0,10);
   calcAppForm();
@@ -553,7 +545,7 @@ function renderMovFinanceiro(){
     mov.push({
       data:x.data||'',
       origem:x.app||'App',
-      desc:(x.corridas||0)+' corridas • '+Number(x.horas||0).toLocaleString('pt-BR')+' h • '+Number(x.km||0).toFixed(1).replace('.',',')+' km',
+      desc:(x.corridas||0)+' corridas • '+Math.floor(Number(x.horas||0))+'h'+String(Math.round((Number(x.horas||0)%1)*60)).padStart(2,'0') • '+Number(x.km||0).toFixed(1).replace('.',',')+' km',
       receita:+x.receita||0,
       despesa:+x.despesas||0,
       resultado:+x.liq||0
@@ -591,7 +583,7 @@ function limpar(){if(!confirm('Limpar os dados desta cotação?'))return;localSt
   renderAgenda();
   renderApps();
   if($('appData'))$('appData').value=new Date().toISOString().slice(0,10);
-  ['appHoras','appCorridas','appKmIni','appKmFim','appBruto','appGorjeta','appBonus','appComb','appPed','appEst','appOutras'].forEach(id=>$(id).addEventListener('input',calcAppForm));
+  ['appHoras','appMinutos','appCorridas','appKmIni','appKmFim','appBruto','appGorjeta','appBonus','appComb','appPed','appEst','appOutras'].forEach(id=>$(id).addEventListener('input',calcAppForm));
   calcAppForm();
   ['data','horaSaida','horaRetorno'].forEach(id=>$(id).addEventListener('change',checarConflitoTela));
   const s=localStorage.getItem('ultimaCotacaoAuto');
@@ -609,8 +601,9 @@ function limpar(){if(!confirm('Limpar os dados desta cotação?'))return;localSt
 
 
 function zerarVisualUber(){
-  ['appCorridas','appKmIni','appKmFim','appBruto','appGorjeta','appBonus','appComb','appPed','appEst','appOutras'].forEach(id=>{
-    const el=$(id); if(el && (el.value==='0'||el.value==='0.0'||el.value==='0.00')) el.value='';
+  ['appHoras','appMinutos','appCorridas','appKmIni','appKmFim','appBruto','appGorjeta','appBonus','appComb','appPed','appEst','appOutras'].forEach(id=>{
+    const el=$(id);
+    if(el && (String(el.value).trim()==='0'||String(el.value).trim()==='0.0'||String(el.value).trim()==='0.00')) el.value='';
   });
 }
 
