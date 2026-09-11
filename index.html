@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f766e">
-<title>Michelon Viagens Executivas • V7.1</title>
+<title>Michelon Viagens Executivas • V7.3</title>
 <style>
 :root{--bg:#f8fafc;--card:#fff;--text:#0f172a;--muted:#64748b;--line:#e2e8f0;--primary:#0f766e;--primary2:#115e59;--ok:#166534;--warn:#92400e;--danger:#b91c1c}
 *{box-sizing:border-box}
@@ -212,7 +212,7 @@ details summary{cursor:pointer;font-weight:700}.note{font-size:12px;color:var(--
         A distância e o tempo são calculados gratuitamente com dados do OpenStreetMap e roteamento OSRM.
         O aplicativo também tenta localizar praças de pedágio cadastradas no OpenStreetMap e mostra o nome/localização quando disponível.
         Você pode informar o valor de cada praça; o app grava esses valores no próprio iPhone e passa a somá-los automaticamente nas próximas cotações.
-        Não precisa de chave, cartão ou assinatura do Google. Esta V7.1 inclui a correção dos cálculos e do salvamento dos ganhos por aplicativos, além de agenda, reservas, financeiro, histórico, PIX e backup local.
+        Não precisa de chave, cartão ou assinatura do Google. Esta V7.3 inclui financeiro unificado e preenchimento facilitado: campos numéricos zerados limpam automaticamente ao tocar.
       </p>
     </details>
   </div>
@@ -512,6 +512,36 @@ function registrarViagem(){const x=snapshot('confirmada');if(temConflito(x)&&!co
 function cancelarReserva(id){const h=getHist(),x=h.find(v=>v.id===id);if(!x)return;if(!confirm('Cancelar esta reserva?'))return;x.status='cancelada';setHist(h)}
 function renderAgenda(){const box=$('agendaLista');if(!box)return;let h=getHist().slice();const f=$('agendaFiltro')?$('agendaFiltro').value:'proximas',hoje=new Date().toISOString().slice(0,10);if(f==='proximas')h=h.filter(x=>x.status==='confirmada'&&(x.data||'')>=hoje);else if(f!=='todas')h=h.filter(x=>x.status===f);h.sort((a,b)=>((a.data||'')+(a.horaSaida||'')).localeCompare((b.data||'')+(b.horaSaida||'')));box.innerHTML=h.length?h.slice(0,50).map(x=>`<div class="agendaItem"><strong>${dataBR(x.data)} ${x.horaSaida?`• ${x.horaSaida}`:''} ${x.horaRetorno?`– ${x.horaRetorno}`:''}</strong><span class="badge">${x.status==='confirmada'?'Confirmada':x.status==='pago'?'Concluída/Paga':x.status==='cancelada'?'Cancelada':'Orçamento'}</span><div style="margin-top:6px"><b>${x.cliente||'Cliente'}</b> • ${x.tipoServico||'Viagem'}<br>${x.origem||'-'} → ${x.destino||'-'}${x.obs?`<br><small>${x.obs}</small>`:''}</div>${x.status==='confirmada'?`<div class="btns" style="margin-top:8px"><button class="mini primary" onclick="receber(${x.id})">Receber</button><button class="mini danger" onclick="cancelarReserva(${x.id})">Cancelar</button></div>`:''}</div>`).join(''):'<div class="note">Nenhum agendamento para este filtro.</div>'}
 function consultarDisponibilidade(){const d=$('consultaData').value;if(!d)return;const reservas=getHist().filter(x=>x.status==='confirmada'&&x.data===d);$('dispStatus').className='status '+(reservas.length?'warn':'ok');$('dispStatus').textContent=reservas.length?`Há ${reservas.length} reserva(s) confirmada(s) nesta data. Veja os horários abaixo.`:'✅ Data sem reservas confirmadas no momento.';$('agendaFiltro').value='todas';renderAgenda()}
+
+function renderMovFinanceiro(){
+  const body=$('movFinBody'); if(!body)return;
+  const mov=[];
+  getHist().forEach(x=>{
+    if(x.status==='confirmada'||x.status==='pago'){
+      mov.push({
+        data:x.data||'',
+        origem:'Executivo',
+        desc:(x.cliente||'Cliente')+' • '+(x.origem||'-')+' → '+(x.destino||'-'),
+        receita:+x.valor||0,
+        despesa:+x.custo||0,
+        resultado:(+x.valor||0)-(+x.custo||0)
+      });
+    }
+  });
+  getApps().forEach(x=>{
+    mov.push({
+      data:x.data||'',
+      origem:x.app||'App',
+      desc:(x.corridas||0)+' corridas • '+Number(x.horas||0).toLocaleString('pt-BR')+' h • '+Number(x.km||0).toFixed(1).replace('.',',')+' km',
+      receita:+x.receita||0,
+      despesa:+x.despesas||0,
+      resultado:+x.liq||0
+    });
+  });
+  mov.sort((a,b)=>(b.data||'').localeCompare(a.data||''));
+  body.innerHTML=mov.length?mov.slice(0,100).map(x=>`<tr><td>${dataBR(x.data)}</td><td><b>${x.origem}</b></td><td>${x.desc}</td><td>${brl(x.receita)}</td><td>${brl(x.despesa)}</td><td><b>${brl(x.resultado)}</b></td></tr>`).join(''):'<tr><td colspan="6">Nenhuma movimentação ainda.</td></tr>';
+}
+
 function receber(id){const h=getHist(),x=h.find(v=>v.id===id);if(!x)return;x.status='pago';x.recebido=x.valor;x.pagoEm=new Date().toISOString();setHist(h)}
 function excluirHist(id){if(!confirm('Excluir este lançamento?'))return;setHist(getHist().filter(x=>x.id!==id))}
 function sameDay(a,b){return a.toDateString()===b.toDateString()}
@@ -548,7 +578,31 @@ function limpar(){if(!confirm('Limpar os dados desta cotação?'))return;localSt
   $('maps').href=mapsLink();calcular();
   ['kmTotalInput','pedagios','consumo','precoComb','motorista','hosp','outras','margem','sinalPct','formaPg','passageiros'].forEach(id=>$(id).addEventListener('input',calcular));
   ['origem','destino'].forEach(id=>$(id).addEventListener('input',()=>{$('maps').href=mapsLink()}));
+
+  const nowA=new Date(),fimA=new Date(nowA.getFullYear(),nowA.getMonth(),nowA.getDate(),23,59,59),iniA=new Date(nowA.getFullYear(),nowA.getMonth(),1);
+  const appsMes=somaAppsPeriodo(iniA,fimA);
+  if($('kAppsMes'))$('kAppsMes').textContent=brl(appsMes);
+  if($('kTotalMes'))$('kTotalMes').textContent=brl(lucro+appsMes);
+  renderMovFinanceiro();
 })();
+
+function melhorarCamposNumericos(){
+  document.querySelectorAll('input[type="number"]').forEach(el=>{
+    el.addEventListener('focus',function(){
+      if(this.value==='0'||this.value==='0.0'||this.value==='0.00'){
+        this.value='';
+        this.dispatchEvent(new Event('input',{bubbles:true}));
+      }
+    });
+    el.addEventListener('blur',function(){
+      if(this.value===''){
+        this.value='0';
+        this.dispatchEvent(new Event('input',{bubbles:true}));
+      }
+    });
+  });
+}
+
 </script>
 </body>
 </html>
