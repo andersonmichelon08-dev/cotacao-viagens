@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f766e">
-<title>Michelon Viagens Executivas • V7.4</title>
+<title>Michelon Viagens Executivas • V7.4.1</title>
 <style>
 :root{--bg:#f8fafc;--card:#fff;--text:#0f172a;--muted:#64748b;--line:#e2e8f0;--primary:#0f766e;--primary2:#115e59;--ok:#166534;--warn:#92400e;--danger:#b91c1c}
 *{box-sizing:border-box}
@@ -61,23 +61,23 @@ details summary{cursor:pointer;font-weight:700}.note{font-size:12px;color:var(--
       <div><label>Horário de saída</label><input id="horaSaida" type="time"></div>
       <div><label>Previsão de retorno</label><input id="horaRetorno" type="time"></div>
       <div><label>Tipo do serviço</label><select id="tipoServico"><option>Viagem</option><option>Transfer aeroporto</option><option>Executivo</option><option>Evento</option><option>Ida e volta</option><option>À disposição</option></select></div>
-      <div><label>Horas à disposição</label><input id="horasDisposicao" type="number" min="0" step="0.5" placeholder="0"></div>
+      <div><label>Horas à disposição</label><input id="horasDisposicao" type="number" min="0" step="0.5"></div>
       <div class="full"><label>Observações / agendamento</label><input id="obsViagem" placeholder="Ex.: buscar no Terminal 2, 3 malas, cadeirinha..."></div>
       <div class="full"><div id="conflitoAgenda" class="alerta"></div></div>
       <div><label>Passageiros</label><input id="passageiros" type="number" min="1" value="1"></div>
       <div><label>Ida e volta?</label><select id="idaVolta"><option value="sim" selected>Sim</option><option value="nao">Não</option></select></div>
       <div class="full"><button class="primary" onclick="buscarRota()">📍 Buscar KM grátis e localizar pedágios</button><div id="rotaStatus" class="status"></div></div>
       <div class="full"><div id="tollBox" class="tollbox"><div class="tollhead">🛣️ Pedágios encontrados na rota</div><div id="tollList"></div><div class="tollhint">Digite o valor de cada pedágio uma vez. O app salva no celular e reutiliza automaticamente quando encontrar a mesma praça em uma próxima cotação.</div></div></div>
-      <div><label>KM total</label><input id="kmTotalInput" type="number" step="0.1" value="0"></div>
+      <div><label>KM total</label><input id="kmTotalInput" type="number" step="0.1"></div>
       <div><label>Tempo estimado</label><input id="tempo" value="-" readonly></div>
-      <div><label>Pedágios (R$)</label><input id="pedagios" type="number" step="0.01" value="0"></div>
+      <div><label>Pedágios (R$)</label><input id="pedagios" type="number" step="0.01"></div>
       <div><label>Veículo</label><select id="veiculo" onchange="aplicarVeiculo()"></select></div>
       <div><label>Combustível</label><select id="tipoComb" onchange="aplicarCombustivel()"><option>Gasolina</option><option>Etanol</option><option>Diesel</option></select></div>
       <div><label>Consumo do veículo (km/l)</label><input id="consumo" type="number" step="0.1" value="10"></div>
-      <div><label>Combustível (R$/litro)</label><input id="precoComb" type="number" step="0.01" value="0"></div>
-      <div><label>Diária / motorista (R$)</label><input id="motorista" type="number" step="0.01" value="0"></div>
-      <div><label>Hospedagem / alimentação (R$)</label><input id="hosp" type="number" step="0.01" value="0"></div>
-      <div><label>Outras despesas (R$)</label><input id="outras" type="number" step="0.01" value="0"></div>
+      <div><label>Combustível (R$/litro)</label><input id="precoComb" type="number" step="0.01"></div>
+      <div><label>Diária / motorista (R$)</label><input id="motorista" type="number" step="0.01"></div>
+      <div><label>Hospedagem / alimentação (R$)</label><input id="hosp" type="number" step="0.01"></div>
+      <div><label>Outras despesas (R$)</label><input id="outras" type="number" step="0.01"></div>
       <div><label>Margem / lucro (%)</label><input id="margem" type="number" step="0.1" value="25"></div><div><label>Sinal para reserva (%)</label><input id="sinalPct" type="number" step="1" value="30"></div><div><label>Forma de pagamento</label><select id="formaPg"><option>PIX</option><option>Dinheiro</option><option>Cartão</option><option>Transferência</option></select></div>
     </div>
   </div>
@@ -107,9 +107,9 @@ details summary{cursor:pointer;font-weight:700}.note{font-size:12px;color:var(--
         <div><label>Modelo</label><input id="cfgModelo" value="2026"></div>
         <div><label>Combustível padrão</label><select id="cfgComb"><option>Gasolina</option><option>Etanol</option><option>Diesel</option></select></div>
         <div><label>Consumo padrão (km/l)</label><input id="cfgConsumo" type="number" step="0.1" value="10"></div>
-        <div><label>Gasolina (R$/litro)</label><input id="precoGasolina" type="number" step="0.01" value="0"></div>
-        <div><label>Etanol (R$/litro)</label><input id="precoEtanol" type="number" step="0.01" value="0"></div>
-        <div><label>Diesel (R$/litro)</label><input id="precoDiesel" type="number" step="0.01" value="0"></div>
+        <div><label>Gasolina (R$/litro)</label><input id="precoGasolina" type="number" step="0.01"></div>
+        <div><label>Etanol (R$/litro)</label><input id="precoEtanol" type="number" step="0.01"></div>
+        <div><label>Diesel (R$/litro)</label><input id="precoDiesel" type="number" step="0.01"></div>
         <div class="full btns"><button class="primary" onclick="salvarConfiguracoes()">Salvar configurações</button><button class="secondary" onclick="adicionarVeiculo()">+ Adicionar veículo</button></div>
         <div class="full note">Os preços e veículos ficam salvos neste celular. Você pode alterar combustível, consumo e preço por litro quando quiser.</div>
       </div>
@@ -161,17 +161,17 @@ details summary{cursor:pointer;font-weight:700}.note{font-size:12px;color:var(--
       <div class="grid" style="margin-top:12px">
         <div><label>Data</label><input id="appData" type="date"></div>
         <div><label>Aplicativo</label><select id="appNome"><option>Uber</option><option>99</option><option>inDrive</option><option>Outro</option></select></div>
-        <div><label>Horas trabalhadas</label><input id="appHoras" type="number" min="0" step="0.25" placeholder="0"></div>
-        <div><label>Nº de corridas</label><input id="appCorridas" type="number" min="0" step="1" placeholder="0"></div>
-        <div><label>KM inicial</label><input id="appKmIni" type="number" min="0" step="0.1" placeholder="0"></div>
-        <div><label>KM final</label><input id="appKmFim" type="number" min="0" step="0.1" placeholder="0"></div>
-        <div><label>Ganhos do app (R$)</label><input id="appBruto" type="number" min="0" step="0.01" placeholder="0"></div>
-        <div><label>Gorjetas (R$)</label><input id="appGorjeta" type="number" min="0" step="0.01" placeholder="0"></div>
-        <div><label>Bônus / incentivos (R$)</label><input id="appBonus" type="number" min="0" step="0.01" placeholder="0"></div>
-        <div><label>Combustível (R$)</label><input id="appComb" type="number" min="0" step="0.01" placeholder="0"></div>
-        <div><label>Pedágios (R$)</label><input id="appPed" type="number" min="0" step="0.01" placeholder="0"></div>
-        <div><label>Estacionamento (R$)</label><input id="appEst" type="number" min="0" step="0.01" placeholder="0"></div>
-        <div><label>Outras despesas (R$)</label><input id="appOutras" type="number" min="0" step="0.01" placeholder="0"></div>
+        <div><label>Horas trabalhadas</label><input id="appHoras" type="time" step="60"></div>
+        <div><label>Nº de corridas</label><input id="appCorridas" type="number" min="0" step="1"></div>
+        <div><label>KM inicial</label><input id="appKmIni" type="number" min="0" step="0.1"></div>
+        <div><label>KM final</label><input id="appKmFim" type="number" min="0" step="0.1"></div>
+        <div><label>Ganhos do app (R$)</label><input id="appBruto" type="number" min="0" step="0.01"></div>
+        <div><label>Gorjetas (R$)</label><input id="appGorjeta" type="number" min="0" step="0.01"></div>
+        <div><label>Bônus / incentivos (R$)</label><input id="appBonus" type="number" min="0" step="0.01"></div>
+        <div><label>Combustível (R$)</label><input id="appComb" type="number" min="0" step="0.01"></div>
+        <div><label>Pedágios (R$)</label><input id="appPed" type="number" min="0" step="0.01"></div>
+        <div><label>Estacionamento (R$)</label><input id="appEst" type="number" min="0" step="0.01"></div>
+        <div><label>Outras despesas (R$)</label><input id="appOutras" type="number" min="0" step="0.01"></div>
         <div class="full"><label>Observações</label><input id="appObs" placeholder="Ex.: chuva, aeroporto, promoção do app..."></div>
       </div>
       <div class="appDash">
@@ -212,7 +212,7 @@ details summary{cursor:pointer;font-weight:700}.note{font-size:12px;color:var(--
         A distância e o tempo são calculados gratuitamente com dados do OpenStreetMap e roteamento OSRM.
         O aplicativo também tenta localizar praças de pedágio cadastradas no OpenStreetMap e mostra o nome/localização quando disponível.
         Você pode informar o valor de cada praça; o app grava esses valores no próprio iPhone e passa a somá-los automaticamente nas próximas cotações.
-        Não precisa de chave, cartão ou assinatura do Google. Esta V7.4 deixa os campos numéricos de lançamento vazios para digitação direta, sem precisar apagar o zero.
+        Não precisa de chave, cartão ou assinatura do Google. Esta V7.4.1 mantém a V7.4 e corrige apenas os campos sem zero e Horas trabalhadas no padrão HH:MM.
       </p>
     </details>
   </div>
@@ -419,13 +419,21 @@ function carregarEmpresa(){const e=getEmpresa();$('empresaNome').value=e.nome||'
 const APPKEY='michelonGanhosAppsV1';
 function getApps(){try{return JSON.parse(localStorage.getItem(APPKEY))||[]}catch(e){return []}}
 function setApps(a){localStorage.setItem(APPKEY,JSON.stringify(a));renderApps();renderFinanceiro()}
+
+function horasAppDecimal(){
+  const v=$('appHoras').value;
+  if(!v)return 0;
+  const p=v.split(':');
+  return (Number(p[0])||0)+((Number(p[1])||0)/60);
+}
+
 function calcAppForm(){
   const kmIni=n('appKmIni'), kmFim=n('appKmFim');
   const km=Math.max(0,kmFim-kmIni);
   const receita=n('appBruto')+n('appGorjeta')+n('appBonus');
   const despesas=n('appComb')+n('appPed')+n('appEst')+n('appOutras');
   const liquido=receita-despesas;
-  const horas=n('appHoras');
+  const horas=horasAppDecimal();
   $('appKmPrev').textContent=km.toFixed(1).replace('.',',')+' km';
   $('appLiqPrev').textContent=brl(liquido);
   $('appHoraPrev').textContent=brl(horas>0?liquido/horas:0);
@@ -440,7 +448,7 @@ function salvarGanhoApp(){
     id:Date.now(),
     data:$('appData').value,
     app:$('appNome').value,
-    horas:n('appHoras'),
+    horas:horasAppDecimal(),
     corridas:n('appCorridas'),
     kmIni:n('appKmIni'),
     kmFim:n('appKmFim'),
@@ -588,10 +596,7 @@ function limpar(){if(!confirm('Limpar os dados desta cotação?'))return;localSt
 
 function melhorarCamposNumericos(){
   document.querySelectorAll('input[type="number"]').forEach(el=>{
-    if(el.value==='0'||el.value==='0.0'||el.value==='0.00') el.value='';
-    el.addEventListener('focus',function(){
-      if(this.value==='0'||this.value==='0.0'||this.value==='0.00') this.value='';
-    });
+    if(el.value==='0'||el.value==='0.0'||el.value==='0.00')el.value='';
   });
 }
 
