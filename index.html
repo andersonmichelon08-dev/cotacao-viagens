@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f766e">
-<title>Michelon Viagens Executivas • V7.5.2</title>
+<title>Michelon Viagens Executivas • V7.5.3</title>
 <style>
 :root{--bg:#f8fafc;--card:#fff;--text:#0f172a;--muted:#64748b;--line:#e2e8f0;--primary:#0f766e;--primary2:#115e59;--ok:#166534;--warn:#92400e;--danger:#b91c1c}
 *{box-sizing:border-box}
@@ -203,35 +203,46 @@ details summary{cursor:pointer;font-weight:700}.note{font-size:12px;color:var(--
   <div class="card">
     <details open>
       <summary>💰 Financeiro e histórico</summary>
+
 <div id="resumoFinanceiroAtividades" style="margin:14px 0 18px">
   <div style="font-weight:800;font-size:18px;margin-bottom:6px">📊 Resultado por atividade</div>
-  <div style="font-size:12px;color:#64748b;margin-bottom:12px">Financeiro • V7.5.2</div>
+  <div style="font-size:12px;color:#64748b;margin-bottom:14px">Financeiro • V7.5.3</div>
 
-  <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
-    <table style="width:100%;border-collapse:collapse;min-width:470px">
-      <thead>
-        <tr>
-          <th style="text-align:left;padding:9px 6px;border-bottom:1px solid #dbe2ea">Período</th>
-          <th style="text-align:right;padding:9px 6px;border-bottom:1px solid #dbe2ea">🚘 Executivo</th>
-          <th style="text-align:right;padding:9px 6px;border-bottom:1px solid #dbe2ea">🚕 Uber/App</th>
-          <th style="text-align:right;padding:9px 6px;border-bottom:1px solid #dbe2ea">💰 Total</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td style="padding:9px 6px">Hoje</td><td id="rfExecHoje" style="text-align:right">R$ 0,00</td><td id="rfAppHoje" style="text-align:right">R$ 0,00</td><td id="rfTotalHoje" style="text-align:right;font-weight:800">R$ 0,00</td></tr>
-        <tr><td style="padding:9px 6px">Semana</td><td id="rfExecSemana" style="text-align:right">R$ 0,00</td><td id="rfAppSemana" style="text-align:right">R$ 0,00</td><td id="rfTotalSemana" style="text-align:right;font-weight:800">R$ 0,00</td></tr>
-        <tr><td style="padding:9px 6px">Mês</td><td id="rfExecMes" style="text-align:right">R$ 0,00</td><td id="rfAppMes" style="text-align:right">R$ 0,00</td><td id="rfTotalMes" style="text-align:right;font-weight:800">R$ 0,00</td></tr>
-        <tr><td style="padding:9px 6px">Ano</td><td id="rfExecAno" style="text-align:right">R$ 0,00</td><td id="rfAppAno" style="text-align:right">R$ 0,00</td><td id="rfTotalAno" style="text-align:right;font-weight:800">R$ 0,00</td></tr>
-      </tbody>
-    </table>
+  <div style="display:grid;gap:12px">
+    <div style="border:1px solid #dbe2ea;border-radius:16px;padding:14px;background:#fff">
+      <div style="font-weight:800;font-size:17px;margin-bottom:10px">Hoje</div>
+      <div style="display:flex;justify-content:space-between;gap:10px;margin:7px 0"><span>🚘 Executivo</span><b id="rfExecHoje">R$ 0,00</b></div>
+      <div style="display:flex;justify-content:space-between;gap:10px;margin:7px 0"><span>🚕 Uber/App</span><b id="rfAppHoje">R$ 0,00</b></div>
+      <div style="display:flex;justify-content:space-between;gap:10px;margin:9px 0 0;padding-top:9px;border-top:1px solid #e5e7eb"><span>💰 Total</span><b id="rfTotalHoje">R$ 0,00</b></div>
+    </div>
+
+    <div style="border:1px solid #dbe2ea;border-radius:16px;padding:14px;background:#fff">
+      <div style="font-weight:800;font-size:17px;margin-bottom:10px">Semana</div>
+      <div style="display:flex;justify-content:space-between;gap:10px;margin:7px 0"><span>🚘 Executivo</span><b id="rfExecSemana">R$ 0,00</b></div>
+      <div style="display:flex;justify-content:space-between;gap:10px;margin:7px 0"><span>🚕 Uber/App</span><b id="rfAppSemana">R$ 0,00</b></div>
+      <div style="display:flex;justify-content:space-between;gap:10px;margin:9px 0 0;padding-top:9px;border-top:1px solid #e5e7eb"><span>💰 Total</span><b id="rfTotalSemana">R$ 0,00</b></div>
+    </div>
+
+    <div style="border:1px solid #dbe2ea;border-radius:16px;padding:14px;background:#fff">
+      <div style="font-weight:800;font-size:17px;margin-bottom:10px">Mês</div>
+      <div style="display:flex;justify-content:space-between;gap:10px;margin:7px 0"><span>🚘 Executivo</span><b id="rfExecMes">R$ 0,00</b></div>
+      <div style="display:flex;justify-content:space-between;gap:10px;margin:7px 0"><span>🚕 Uber/App</span><b id="rfAppMes">R$ 0,00</b></div>
+      <div style="display:flex;justify-content:space-between;gap:10px;margin:9px 0 0;padding-top:9px;border-top:1px solid #e5e7eb"><span>💰 Total</span><b id="rfTotalMes">R$ 0,00</b></div>
+    </div>
+
+    <div style="border:1px solid #dbe2ea;border-radius:16px;padding:14px;background:#fff">
+      <div style="font-weight:800;font-size:17px;margin-bottom:10px">Ano</div>
+      <div style="display:flex;justify-content:space-between;gap:10px;margin:7px 0"><span>🚘 Executivo</span><b id="rfExecAno">R$ 0,00</b></div>
+      <div style="display:flex;justify-content:space-between;gap:10px;margin:7px 0"><span>🚕 Uber/App</span><b id="rfAppAno">R$ 0,00</b></div>
+      <div style="display:flex;justify-content:space-between;gap:10px;margin:9px 0 0;padding-top:9px;border-top:1px solid #e5e7eb"><span>💰 Total</span><b id="rfTotalAno">R$ 0,00</b></div>
+    </div>
   </div>
-  <div style="font-size:12px;color:#64748b;margin-top:10px;line-height:1.45">
-    Executivo e Uber/App ficam separados. A coluna Total soma as duas atividades.
+
+  <div style="font-size:12px;color:#64748b;margin-top:12px;line-height:1.45">
+    Executivo e Uber/App ficam separados. O Total soma as duas atividades.
   </div>
 </div>
-
-      <div style="margin-top:12px" class="btns">
-        <button class="secondary" onclick="exportarBackup()">⬇️ Exportar backup</button>
+<button class="secondary" onclick="exportarBackup()">⬇️ Exportar backup</button>
         <button class="secondary" onclick="document.getElementById('backupFile').click()">⬆️ Restaurar backup</button>
         <input id="backupFile" type="file" accept="application/json" style="display:none" onchange="restaurarBackup(this)">
       </div>
@@ -247,7 +258,7 @@ details summary{cursor:pointer;font-weight:700}.note{font-size:12px;color:var(--
         A distância e o tempo são calculados gratuitamente com dados do OpenStreetMap e roteamento OSRM.
         O aplicativo também tenta localizar praças de pedágio cadastradas no OpenStreetMap e mostra o nome/localização quando disponível.
         Você pode informar o valor de cada praça; o app grava esses valores no próprio iPhone e passa a somá-los automaticamente nas próximas cotações.
-        Não precisa de chave, cartão ou assinatura do Google. Esta V7.5.2 mantém a V7.4 e usa campos separados de Horas e Minutos para melhor funcionamento no iPhone.
+        Não precisa de chave, cartão ou assinatura do Google. Esta V7.5.3 mantém a V7.4 e usa campos separados de Horas e Minutos para melhor funcionamento no iPhone.
       </p>
     </details>
   </div>
@@ -729,7 +740,7 @@ function resumoFinanceiroAtividades(){
 
 </script>
 <footer style="text-align:center;color:#64748b;font-size:13px;padding:22px 10px 34px">
-<strong>MICHELON Viagens Executivas</strong><br>Versão 7.5.2<br>Atualizado em 11/09/2026 • Financeiro organizado
+<strong>MICHELON Viagens Executivas</strong><br>Versão 7.5.3<br>Atualizado em 11/09/2026 • Financeiro organizado
 </footer>
 
 <script>
