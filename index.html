@@ -24,7 +24,7 @@ button,.button{display:inline-flex;align-items:center;justify-content:center;wid
 .summary{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.metric{border:1px solid var(--line);background:#f8fafc;border-radius:12px;padding:11px}.metric small{display:block;color:var(--muted);margin-bottom:3px}.metric strong{font-size:18px}.total{font-size:27px;font-weight:800;color:var(--primary)}
 details summary{cursor:pointer;font-weight:700}.note{font-size:12px;color:var(--muted);line-height:1.45}
 .apirow{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end}.apirow button{width:auto;padding-inline:16px}
-.tollbox{display:none;margin-top:12px;border:1px solid var(--line);border-radius:12px;overflow:hidden}.tollhead{padding:10px 12px;background:#f8fafc;font-size:13px;font-weight:700}.tollrow{display:grid;grid-template-columns:1fr 120px;gap:10px;align-items:center;padding:10px 12px;border-top:1px solid var(--line)}.tollname{font-size:14px;font-weight:700}.tollmeta{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.35}.tollrow input{padding:9px;font-size:14px}.tollhint{padding:10px 12px;border-top:1px solid var(--line);font-size:11px;color:var(--muted);background:#fff}
+.tollbox{display:none;margin-top:12px;border:1px solid var(--line);border-radius:12px;overflow:hidden}.tollhead{padding:10px 12px;background:#f8fafc;font-size:13px;font-weight:700}.tollrow{display:grid;grid-template-columns:1fr 120px;gap:10px;align-items:center;padding:10px 12px;border-top:1px solid var(--line)}.tollname{font-size:14px;font-weight:700}.tollmeta{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.35}.tollrow input{padding:9px;font-size:14px}.tollhint{padding:10px 12px;border-top:1px solid var(--line);font-size:11px;color:var(--muted);background:#fff}.citywrap{position:relative}.citylist{display:none;position:absolute;z-index:20;left:0;right:0;top:100%;margin-top:4px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 10px 25px rgba(15,23,42,.14);max-height:240px;overflow:auto}.cityitem{padding:11px 12px;border-bottom:1px solid var(--line);font-size:14px;cursor:pointer}.cityitem:last-child{border-bottom:0}.cityitem:active{background:#f1f5f9}.cityhelp{font-size:11px;color:var(--muted);margin-top:4px}
 @media(max-width:580px){.grid,.btns,.summary{grid-template-columns:1fr}.apirow{grid-template-columns:1fr}.apirow button{width:100%}}
 </style>
 </head>
@@ -36,8 +36,8 @@ details summary{cursor:pointer;font-weight:700}.note{font-size:12px;color:var(--
   <div class="card">
     <div class="grid">
       <div class="full"><label>Cliente</label><input id="cliente" placeholder="Nome do cliente"></div>
-      <div><label>Origem</label><input id="origem" placeholder="Ex.: São Paulo, SP"></div>
-      <div><label>Destino</label><input id="destino" placeholder="Ex.: Aparecida, SP"></div>
+      <div class="citywrap"><label>Origem</label><input id="origem" autocomplete="off" placeholder="Digite a cidade..." oninput="buscarCidade(this,'origemSug')" onfocus="buscarCidade(this,'origemSug')"><div id="origemSug" class="citylist"></div><div class="cityhelp">Escolha Cidade, UF na lista.</div></div>
+      <div class="citywrap"><label>Destino</label><input id="destino" autocomplete="off" placeholder="Digite a cidade..." oninput="buscarCidade(this,'destinoSug')" onfocus="buscarCidade(this,'destinoSug')"><div id="destinoSug" class="citylist"></div><div class="cityhelp">Escolha Cidade, UF na lista.</div></div>
       <div><label>Data da viagem</label><input id="data" type="date"></div>
       <div><label>Passageiros</label><input id="passageiros" type="number" min="1" value="1"></div>
       <div><label>Ida e volta?</label><select id="idaVolta"><option value="sim" selected>Sim</option><option value="nao">Não</option></select></div>
@@ -107,6 +107,28 @@ function mapsLink(){
   if(!o||!d)return '#';
   return 'https://www.google.com/maps/dir/?api=1&origin='+encodeURIComponent(o)+'&destination='+encodeURIComponent(d)+'&travelmode=driving';
 }
+let cidadesBR=[];
+async function carregarCidades(){
+  try{
+    const cache=localStorage.getItem('cidadesBRv1');
+    if(cache){cidadesBR=JSON.parse(cache);return}
+    const r=await fetch('https://servicodados.ibge.gov.br/api/v1/localidades/municipios?orderBy=nome');
+    if(!r.ok) throw new Error();
+    const j=await r.json();
+    cidadesBR=j.map(x=>({nome:x.nome,uf:x.microrregiao?.mesorregiao?.UF?.sigla||x['regiao-imediata']?.['regiao-intermediaria']?.UF?.sigla||''})).filter(x=>x.uf);
+    localStorage.setItem('cidadesBRv1',JSON.stringify(cidadesBR));
+  }catch(e){cidadesBR=[]}
+}
+function norm(s){return (s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim()}
+function buscarCidade(inp,listId){
+  const box=$(listId), q=norm(inp.value);
+  if(q.length<2||!cidadesBR.length){box.style.display='none';return}
+  const termos=q.split(/\s+/); let ach=cidadesBR.filter(c=>{const v=norm(c.nome+' '+c.uf);return termos.every(t=>v.includes(t))}).slice(0,12);
+  box.innerHTML='';
+  ach.forEach(c=>{const d=document.createElement('div');d.className='cityitem';d.textContent=`${c.nome}, ${c.uf}`;d.onclick=()=>{inp.value=`${c.nome}, ${c.uf}`;box.style.display='none';$('maps').href=mapsLink()};box.appendChild(d)});
+  box.style.display=ach.length?'block':'none';
+}
+document.addEventListener('click',e=>{if(!e.target.closest('.citywrap'))document.querySelectorAll('.citylist').forEach(x=>x.style.display='none')});
 async function geocode(endereco){
   const url='https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&countrycodes=br&q='+encodeURIComponent(endereco);
   const r=await fetch(url,{headers:{'Accept':'application/json'}});
@@ -141,25 +163,24 @@ function pertoDaRota(pt,coords,limiteKm=1.2){
   }
   return false;
 }
+async function fetchTimeout(url,ms=8000){
+  const c=new AbortController(); const t=setTimeout(()=>c.abort(),ms);
+  try{return await fetch(url,{signal:c.signal})}finally{clearTimeout(t)}
+}
 async function localizarPedagios(coords){
   if(!coords.length)return [];
   let minLon=Infinity,minLat=Infinity,maxLon=-Infinity,maxLat=-Infinity;
   for(const [lon,lat] of coords){minLon=Math.min(minLon,lon);maxLon=Math.max(maxLon,lon);minLat=Math.min(minLat,lat);maxLat=Math.max(maxLat,lat)}
   const pad=.03; minLon-=pad;maxLon+=pad;minLat-=pad;maxLat+=pad;
-  const q=`[out:json][timeout:18];(node["barrier"="toll_booth"](${minLat},${minLon},${maxLat},${maxLon});node["highway"="toll_gantry"](${minLat},${minLon},${maxLat},${maxLon}););out body;`;
-  const r=await fetch('https://overpass-api.de/api/interpreter?data='+encodeURIComponent(q));
-  if(!r.ok) throw new Error('Pedágios indisponíveis no momento.');
-  const j=await r.json();
+  const q=`[out:json][timeout:7];(node["barrier"="toll_booth"](${minLat},${minLon},${maxLat},${maxLon});node["highway"="toll_gantry"](${minLat},${minLon},${maxLat},${maxLon}););out body;`;
+  const eps=['https://overpass-api.de/api/interpreter?data=','https://overpass.kumi.systems/api/interpreter?data='];
+  let j=null,last=null;
+  for(const ep of eps){try{const r=await fetchTimeout(ep+encodeURIComponent(q),8500);if(r.ok){j=await r.json();break}}catch(e){last=e}}
+  if(!j) throw new Error('Pedágios indisponíveis no momento.');
   const encontrados=[];
-  for(const e of (j.elements||[])){
-    const pt=[e.lon,e.lat];
-    if(pertoDaRota(pt,coords)) encontrados.push(e);
-  }
+  for(const e of (j.elements||[])){if(pertoDaRota([e.lon,e.lat],coords)) encontrados.push(e)}
   const unicos=[]; const vistos=new Set();
-  for(const e of encontrados){
-    const k=(Math.round(e.lat*10000)/10000)+','+(Math.round(e.lon*10000)/10000);
-    if(!vistos.has(k)){vistos.add(k);unicos.push(e)}
-  }
+  for(const e of encontrados){const k=(Math.round(e.lat*10000)/10000)+','+(Math.round(e.lon*10000)/10000);if(!vistos.has(k)){vistos.add(k);unicos.push(e)}}
   return unicos;
 }
 function tollKey(e){
@@ -283,6 +304,7 @@ function saveQuote(){
 async function copiar(){if(!$('mensagem').value)calcular();try{await navigator.clipboard.writeText($('mensagem').value);alert('Orçamento copiado.')}catch(e){alert('Selecione o texto e copie manualmente.')}}
 function limpar(){if(!confirm('Limpar os dados desta cotação?'))return;localStorage.removeItem('ultimaCotacaoAuto');location.reload()}
 (function(){
+  carregarCidades();
   const s=localStorage.getItem('ultimaCotacaoAuto');
   if(s){try{const o=JSON.parse(s);Object.keys(o).forEach(id=>{if($(id))$(id).value=o[id]})}catch(e){}}
   $('maps').href=mapsLink();calcular();
