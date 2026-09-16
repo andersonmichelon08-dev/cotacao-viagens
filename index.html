@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f766e">
-<title>Michelon Viagens Executivas • V7.7.2</title>
+<title>Michelon Viagens Executivas • V7.8.4</title>
 <style>
 :root{--bg:#f8fafc;--card:#fff;--text:#0f172a;--muted:#64748b;--line:#e2e8f0;--primary:#0f766e;--primary2:#115e59;--ok:#166534;--warn:#92400e;--danger:#b91c1c}
 *{box-sizing:border-box}
@@ -149,13 +149,33 @@ details summary{cursor:pointer;font-weight:700}.note{font-size:12px;color:var(--
   <div class="card">
     <details open>
       <summary>📅 Agenda e reservas</summary>
+      <details style="margin:12px 0">
+        <summary>➕ Nova reserva direta</summary>
+        <div style="margin-top:12px">
+          <div class="grid">
+            <div><label>Cliente</label><input id="resCliente" placeholder="Nome do cliente"></div>
+            <div><label>WhatsApp</label><input id="resFone" placeholder="(19) 99999-9999"></div>
+            <div class="citywrap"><label>Origem</label><input id="resOrigem" autocomplete="off" placeholder="Digite a cidade..." oninput="buscarCidade(this,'resOrigemSug')" onfocus="buscarCidade(this,'resOrigemSug')"><div id="resOrigemSug" class="citylist"></div><div class="cityhelp">Escolha Cidade, UF na lista.</div></div>
+            <div class="citywrap"><label>Destino</label><input id="resDestino" autocomplete="off" placeholder="Digite a cidade..." oninput="buscarCidade(this,'resDestinoSug')" onfocus="buscarCidade(this,'resDestinoSug')"><div id="resDestinoSug" class="citylist"></div><div class="cityhelp">Escolha Cidade, UF na lista.</div></div>
+            <div><label>Data</label><input id="resData" type="date"></div>
+            <div><label>Saída</label><input id="resSaida" type="time"></div>
+            <div><label>Data de retorno</label><input id="resDataRetorno" type="date"></div><div><label>Retorno previsto</label><input id="resRetorno" type="time"></div>
+            <div><label>Passageiros</label><input id="resPassageiros" type="number" min="1" value="1"></div>
+            <div><label>Valor combinado (R$)</label><input id="resValor" type="number" min="0" step="0.01" inputmode="decimal"></div>
+            <div><label>Valor já recebido (R$)</label><input id="resSinal" type="number" min="0" step="0.01" inputmode="decimal"></div>
+          </div>
+          <label>Observações</label><input id="resObs" placeholder="Ex.: aeroporto, malas, cadeirinha...">
+          <button class="primary full" onclick="salvarReservaDireta()">📅 Salvar reserva</button>
+          <p class="note">Para agendar sem precisar fazer uma cotação completa.</p>
+        </div>
+      </details>
       <div class="agendaGrid" style="margin-top:12px">
         <div><label>Filtrar agenda</label><select id="agendaFiltro" onchange="renderAgenda()"><option value="proximas">Próximas viagens</option><option value="todas">Todas</option><option value="confirmada">Confirmadas</option><option value="orcamento">Orçamentos</option><option value="pago">Concluídas / pagas</option><option value="cancelada">Canceladas</option></select></div>
         <div><label>Data disponível?</label><input id="consultaData" type="date" onchange="consultarDisponibilidade()"></div>
       </div>
       <div id="dispStatus" class="status"></div>
       <div id="agendaLista" style="margin-top:10px"></div>
-      <p class="note">Ao confirmar uma viagem, ela entra automaticamente na agenda. Você pode registrar sinal, acompanhar saldo, chamar o cliente no WhatsApp, concluir ou cancelar. O app avisa se houver conflito de horário.</p>
+      <p class="note">Você pode criar uma reserva diretamente pela agenda ou confirmar uma cotação. Acompanhe recebimentos, saldo e status. O app avisa se houver conflito de horário.</p>
     </details>
   </div>
 
@@ -211,7 +231,7 @@ details summary{cursor:pointer;font-weight:700}.note{font-size:12px;color:var(--
 
 <div id="resumoFinanceiroAtividades" style="margin:14px 0 18px">
   <div style="font-weight:800;font-size:18px;margin-bottom:6px">📊 Resultado por atividade</div>
-  <div style="font-size:12px;color:#64748b;margin-bottom:14px">Financeiro • V7.7.2</div>
+  <div style="font-size:12px;color:#64748b;margin-bottom:14px">Financeiro • V7.8.4</div>
 
   <div style="display:grid;gap:12px">
     <div style="border:1px solid #dbe2ea;border-radius:16px;padding:14px;background:#fff">
@@ -263,7 +283,7 @@ details summary{cursor:pointer;font-weight:700}.note{font-size:12px;color:var(--
         A distância e o tempo são calculados gratuitamente com dados do OpenStreetMap e roteamento OSRM.
         O aplicativo também tenta localizar praças de pedágio cadastradas no OpenStreetMap e mostra o nome/localização quando disponível.
         Você pode informar o valor de cada praça; o app grava esses valores no próprio iPhone e passa a somá-los automaticamente nas próximas cotações.
-        Não precisa de chave, cartão ou assinatura do Google. Esta V7.7.2 mantém a V7.4 e usa campos separados de Horas e Minutos para melhor funcionamento no iPhone.
+        Não precisa de chave, cartão ou assinatura do Google. Esta V7.8.4 mantém a V7.4 e usa campos separados de Horas e Minutos para melhor funcionamento no iPhone.
       </p>
     </details>
   </div>
@@ -323,9 +343,11 @@ async function carregarCidades(){
   }catch(e){cidadesBR=[]}
 }
 function norm(s){return (s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim()}
-function buscarCidade(inp,listId){
+async function buscarCidade(inp,listId){
   const box=$(listId), q=norm(inp.value);
-  if(q.length<2||!cidadesBR.length){box.style.display='none';return}
+  if(q.length<2){box.style.display='none';return}
+  if(!cidadesBR.length){await carregarCidades()}
+  if(!cidadesBR.length){box.style.display='none';return}
   const termos=q.split(/\s+/); let ach=cidadesBR.filter(c=>{const v=norm(c.nome+' '+c.uf);return termos.every(t=>v.includes(t))}).slice(0,12);
   box.innerHTML='';
   ach.forEach(c=>{const d=document.createElement('div');d.className='cityitem';d.textContent=`${c.nome}, ${c.uf}`;d.onclick=()=>{inp.value=`${c.nome}, ${c.uf}`;box.style.display='none';$('maps').href=mapsLink()};box.appendChild(d)});
@@ -587,6 +609,12 @@ function minutos(h){if(!h)return null;const p=h.split(':');return (+p[0])*60+(+p
 function temConflito(item,ignorarId=null){if(!item.data||!item.horaSaida)return false;const ini=minutos(item.horaSaida),fim=minutos(item.horaRetorno)||ini+120;return getHist().some(x=>x.id!==ignorarId&&x.status==='confirmada'&&x.data===item.data&&x.horaSaida&&Math.max(ini,minutos(x.horaSaida))<Math.min(fim,minutos(x.horaRetorno)||minutos(x.horaSaida)+120))}
 function checarConflitoTela(){const item={data:$('data').value,horaSaida:$('horaSaida').value,horaRetorno:$('horaRetorno').value};const box=$('conflitoAgenda');if(temConflito(item)){box.style.display='block';box.textContent='⚠️ Atenção: já existe uma reserva confirmada nesse intervalo de horário.'}else{box.style.display='none';box.textContent=''}}
 function registrarViagem(){calcular(false);if(window._calc.preco<=0){alert('O valor da viagem está zerado. Complete combustível, pedágios e custos antes de confirmar.');return}const x=snapshot('confirmada');if(temConflito(x)&&!confirm('Já existe uma reserva confirmada nesse horário. Deseja confirmar mesmo assim?'))return;const h=getHist();h.unshift(x);setHist(h);alert('Reserva confirmada, adicionada à agenda e lançada no faturamento.')}
+function excluirReserva(id){
+ const h=getHist(),x=h.find(v=>v.id===id);if(!x)return;
+ if(!confirm('Excluir esta reserva definitivamente? Esta ação não pode ser desfeita.'))return;
+ setHist(h.filter(v=>v.id!==id));
+ renderAgenda();
+}
 function cancelarReserva(id){
  const h=getHist(),x=h.find(v=>v.id===id);if(!x)return;
  if(!confirm('Cancelar esta reserva?'))return;
@@ -619,6 +647,36 @@ function whatsReserva(id){
  const msg=`Olá ${x.cliente||''}! Aqui é da Michelon Viagens Executivas. Sua viagem de ${x.origem||'-'} para ${x.destino||'-'} está registrada para ${dataBR(x.data)}${x.horaSaida?' às '+x.horaSaida:''}.`;
  window.open('https://wa.me/'+num+'?text='+encodeURIComponent(msg),'_blank');
 }
+function salvarReservaDireta(){
+ const cliente=($('resCliente')?.value||'').trim(),data=$('resData')?.value||'',saida=$('resSaida')?.value||'';
+ if(!cliente){alert('Informe o nome do cliente.');return}
+ if(!data){alert('Informe a data da reserva.');return}
+ if(!saida){alert('Informe o horário de saída.');return}
+ const retorno=$('resRetorno')?.value||'',dataRetorno=$('resDataRetorno')?.value||data,h=getHist();
+ const iniNovo=new Date(data+'T'+saida), fimNovo=retorno?new Date(dataRetorno+'T'+retorno):iniNovo;
+ if(retorno&&fimNovo<iniNovo){alert('A data/horário de retorno não pode ser anterior à saída.');return}
+ const conflito=h.find(x=>{
+   if(x.status==='cancelada'||!x.data||!x.horaSaida)return false;
+   const iniExist=new Date(x.data+'T'+x.horaSaida);
+   const dr=x.dataRetorno||x.data;
+   const fimExist=x.horaRetorno?new Date(dr+'T'+x.horaRetorno):iniExist;
+   return iniNovo<=fimExist&&fimNovo>=iniExist;
+ });
+ if(conflito&&!confirm('⚠️ Já existe uma reserva nesse horário. Deseja salvar mesmo assim?'))return;
+ const valor=Math.max(0,parseFloat($('resValor')?.value)||0);
+ const recebido=Math.min(valor,Math.max(0,parseFloat($('resSinal')?.value)||0));
+ const r={id:Date.now(),numero:'RES-'+new Date().getFullYear()+'-'+String(Date.now()).slice(-5),
+ criadoEm:new Date().toISOString(),cliente,fone:($('resFone')?.value||'').trim(),
+ origem:($('resOrigem')?.value||'').trim(),destino:($('resDestino')?.value||'').trim(),
+ data,dataRetorno,horaSaida:saida,horaRetorno:retorno,tipoServico:'Reserva',
+ passageiros:Math.max(1,parseInt($('resPassageiros')?.value)||1),valor,custo:0,recebido,
+ sinalRecebido:recebido,obs:($('resObs')?.value||'').trim(),
+ status:valor>0&&recebido>=valor?'pago':'confirmada',reservaDireta:true};
+ h.push(r);setHist(h);
+ ['resCliente','resFone','resOrigem','resDestino','resData','resSaida','resDataRetorno','resRetorno','resValor','resSinal','resObs'].forEach(id=>{if($(id))$(id).value=''});
+ if($('resPassageiros'))$('resPassageiros').value=1;
+ alert('✅ Reserva salva na agenda.');renderAgenda();
+}
 function renderAgenda(){
  const box=$('agendaLista');if(!box)return;
  let h=getHist().slice();
@@ -630,7 +688,7 @@ function renderAgenda(){
    const recebido=+x.recebido||0, valor=+x.valor||0, saldo=Math.max(0,valor-recebido);
    const status=x.status==='cancelada'?'Cancelada':x.concluida?'Concluída':x.status==='pago'?'Paga':x.status==='confirmada'?'Confirmada':'Orçamento';
    return `<div class="agendaItem">
-    <strong>${dataBR(x.data)} ${x.horaSaida?`• ${x.horaSaida}`:''} ${x.horaRetorno?`– ${x.horaRetorno}`:''}</strong>
+    <strong>${dataBR(x.data)} ${x.horaSaida?`• ${x.horaSaida}`:''}${x.horaRetorno?` → ${x.dataRetorno&&x.dataRetorno!==x.data?dataBR(x.dataRetorno)+' • ':''}${x.horaRetorno}`:''}</strong>
     <span class="badge">${status}</span>
     <div style="margin-top:7px"><b>${x.cliente||'Cliente'}</b> • ${x.tipoServico||'Viagem'}<br>
     ${x.origem||'-'} → ${x.destino||'-'}<br>
@@ -643,6 +701,7 @@ function renderAgenda(){
       ${!x.concluida?`<button class="mini secondary" onclick="concluirReserva(${x.id})">✅ Concluir</button>`:''}
       ${!x.concluida?`<button class="mini danger" onclick="cancelarReserva(${x.id})">Cancelar</button>`:''}
     </div>`:''}
+    <div style="margin-top:7px"><button class="mini danger" onclick="excluirReserva(${x.id})">🗑️ Excluir reserva</button></div>
    </div>`
  }).join(''):'<div class="note">Nenhum agendamento para este filtro.</div>'
 }
@@ -849,7 +908,7 @@ function resumoFinanceiroAtividades(){
 
 </script>
 <footer style="text-align:center;color:#64748b;font-size:13px;padding:22px 10px 34px">
-<strong>MICHELON Viagens Executivas</strong><br>Versão 7.7.2<br>Atualizado em 11/09/2026 • Financeiro organizado
+<strong>MICHELON Viagens Executivas</strong><br>Versão 7.8.4<br>Atualizado em 11/09/2026 • Financeiro organizado
 </footer>
 
 <script>
