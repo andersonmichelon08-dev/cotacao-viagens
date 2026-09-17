@@ -87,7 +87,13 @@ async function compartilharCartao(){
 <select id="modoCotacao" onchange="alternarModoCotacao()">
 <option value="viagem">🛣️ Viagem entre cidades</option>
 <option value="urbano">📍 Corrida dentro da cidade</option>
-</select></div>
+</select>
+<div id="importarCotacaoBox" style="margin-top:12px;padding:12px;border:1px solid #dbe3ea;border-radius:12px;background:#f8fafc">
+  <button type="button" onclick="importarCotacaoRecebida()" style="width:100%;border:0;border-radius:10px;padding:12px;font-weight:800;background:#111827;color:white">📥 Abrir cotação recebida</button>
+  <div style="font-size:12px;color:#64748b;margin-top:7px">Cole abaixo a mensagem/link da solicitação do cliente. O MICHELON tenta preencher os dados automaticamente.</div>
+  <textarea id="textoCotacaoRecebida" rows="3" placeholder="Cole aqui a cotação recebida pelo WhatsApp..." style="width:100%;margin-top:8px"></textarea>
+</div>
+</div>
 <div id="urbanoCampos" class="full" style="display:none">
   <div class="grid">
     <div class="full"><label>Cidade da corrida</label><input id="cidadeUrbana" value="Limeira, SP" placeholder="Ex.: Limeira, SP"><div class="hint">Usada automaticamente quando você digitar apenas a rua, bairro ou local.</div></div>
@@ -1771,7 +1777,7 @@ function resumoFinanceiroAtividades(){
 
 </script>
 <footer style="text-align:center;color:#64748b;font-size:13px;padding:22px 10px 34px">
-<strong>MICHELON Viagens Executivas</strong> • Versão 7.16.1 BETA • Atualizado em 17/09/2026 • Financeiro organizado
+<strong>MICHELON Viagens Executivas</strong> • Versão 7.17.0 BETA • Atualizado em 17/09/2026 • Financeiro organizado
 </footer>
 
 <script>
@@ -1826,6 +1832,77 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 function abrirMeuCartao(){const m=document.getElementById('modalMeuCartao');if(m){m.style.display='block';document.body.style.overflow='hidden';}}
 function fecharMeuCartao(){const m=document.getElementById('modalMeuCartao');if(m){m.style.display='none';document.body.style.overflow='';}}
+</script>
+
+<script>
+function valorCampoCotacao(txt,nomes){
+ for(const nome of nomes){
+   const re=new RegExp('(?:^|\\n)\\s*(?:'+nome+')\\s*[:=-]\\s*([^\\n]+)','i');
+   const m=txt.match(re); if(m)return m[1].trim();
+ }
+ return '';
+}
+function setSeExiste(id,v){
+ const e=document.getElementById(id);
+ if(e&&v){e.value=v;e.dispatchEvent(new Event('input',{bubbles:true}));}
+}
+function importarCotacaoRecebida(){
+ const box=document.getElementById('textoCotacaoRecebida');
+ let txt=(box?.value||'').trim();
+ if(!txt){alert('Cole primeiro a mensagem da cotação recebida pelo WhatsApp.');return;}
+
+ // Também aceita links com ?origem=...&destino=... etc.
+ try{
+   const url=txt.match(/https?:\/\/\S+/)?.[0];
+   if(url){
+     const p=new URL(url).searchParams;
+     const get=k=>p.get(k)||'';
+     if(get('modo')==='urbano'&&document.getElementById('modoCotacao')){
+       document.getElementById('modoCotacao').value='urbano';
+       alternarModoCotacao();
+       setSeExiste('cidadeUrbana',get('cidade'));
+       setSeExiste('enderecoOrigem',get('origem'));
+       setSeExiste('enderecoDestino',get('destino'));
+       setSeExiste('enderecoParada',get('parada'));
+     }else{
+       setSeExiste('origem',get('origem'));
+       setSeExiste('destino',get('destino'));
+     }
+     setSeExiste('data',get('data')); setSeExiste('hora',get('hora'));
+     setSeExiste('passageiros',get('passageiros'));
+     alert('Cotação carregada. Confira os dados e calcule a rota.');
+     return;
+   }
+ }catch(e){}
+
+ const modo=/corrida dentro|urbano/i.test(txt)?'urbano':'viagem';
+ if(document.getElementById('modoCotacao')){
+   document.getElementById('modoCotacao').value=modo;
+   alternarModoCotacao();
+ }
+ const origem=valorCampoCotacao(txt,['origem','sa[ií]da','endereço de sa[ií]da','endereco de saida']);
+ const destino=valorCampoCotacao(txt,['destino','endereço de destino','endereco de destino']);
+ const parada=valorCampoCotacao(txt,['parada','parada opcional']);
+ const cidade=valorCampoCotacao(txt,['cidade','cidade da corrida']);
+ const data=valorCampoCotacao(txt,['data','data da viagem']);
+ const hora=valorCampoCotacao(txt,['hor[aá]rio','hora']);
+ const pass=valorCampoCotacao(txt,['passageiros','n[uú]mero de passageiros']);
+
+ if(modo==='urbano'){
+   setSeExiste('cidadeUrbana',cidade);
+   setSeExiste('enderecoOrigem',origem);
+   setSeExiste('enderecoDestino',destino);
+   setSeExiste('enderecoParada',parada);
+ }else{
+   setSeExiste('origem',origem);setSeExiste('destino',destino);
+ }
+ // Convert dd/mm/yyyy to yyyy-mm-dd when possible
+ let d=data;
+ const dm=data.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+ if(dm)d=dm[3]+'-'+dm[2]+'-'+dm[1];
+ setSeExiste('data',d);setSeExiste('hora',hora);setSeExiste('passageiros',pass);
+ alert('Cotação importada. Confira os dados antes de calcular.');
+}
 </script>
 </body>
 </html>
