@@ -631,6 +631,16 @@ function avisoNumero(txt,res){
  if(res&&res.numeroConfirmado===false)return ' ⚠️ Rua localizada, mas o número '+n+' não foi confirmado pelo mapa; confira o ponto antes de fechar a cotação.';
  return (res.nome||'').includes(n)?'':' ⚠️ Número '+n+' não confirmado pelo mapa; confira o ponto antes de fechar a cotação.';
 }
+
+function enderecoComCidadeUrbana(endereco){
+ const e=String(endereco||'').trim();
+ const cidade=String(document.getElementById('cidadeUrbana')?.value||'').trim();
+ if(!e || !cidade)return e;
+ const en=e.toLowerCase(), cn=cidade.toLowerCase();
+ if(en.includes(cn))return e;
+ return e+', '+cidade;
+}
+
 async function localizarEnderecosUrbanos(){
  const st=$('statusEnderecos'), eo=($('enderecoOrigem')?.value||'').trim(), ed=($('enderecoDestino')?.value||'').trim(), ep=($('enderecoParada')?.value||'').trim();
  if(!eo||!ed){st.textContent='⚠️ Informe saída e destino.';return false}
@@ -1780,7 +1790,7 @@ function resumoFinanceiroAtividades(){
 
 </script>
 <footer style="text-align:center;color:#64748b;font-size:13px;padding:22px 10px 34px">
-<strong>MICHELON Viagens Executivas</strong> • Versão 7.18.2 BETA • Atualizado em 17/09/2026 • Financeiro organizado
+<strong>MICHELON Viagens Executivas</strong> • Versão 7.18.3 BETA • Atualizado em 17/09/2026 • Financeiro organizado
 </footer>
 
 <script>
