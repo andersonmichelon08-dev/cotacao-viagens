@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f766e">
-<title>Michelon Viagens Executivas • V7.8.4</title>
+<title>Michelon Viagens Executivas • V7.9.3</title>
 <style>
 :root{--bg:#f8fafc;--card:#fff;--text:#0f172a;--muted:#64748b;--line:#e2e8f0;--primary:#0f766e;--primary2:#115e59;--ok:#166534;--warn:#92400e;--danger:#b91c1c}
 *{box-sizing:border-box}
@@ -55,8 +55,23 @@ details summary{cursor:pointer;font-weight:700}.note{font-size:12px;color:var(--
   <div class="card">
     <div class="grid">
       <div><label>Cliente</label><input id="cliente" placeholder="Nome do cliente"></div><div><label>WhatsApp do cliente</label><input id="clienteFone" inputmode="tel" placeholder="(19) 99999-9999"></div>
-      <div class="citywrap"><label>Origem</label><input id="origem" autocomplete="off" placeholder="Digite a cidade..." oninput="buscarCidade(this,'origemSug')" onfocus="buscarCidade(this,'origemSug')"><div id="origemSug" class="citylist"></div><div class="cityhelp">Escolha Cidade, UF na lista.</div></div>
-      <div class="citywrap"><label>Destino</label><input id="destino" autocomplete="off" placeholder="Digite a cidade..." oninput="buscarCidade(this,'destinoSug')" onfocus="buscarCidade(this,'destinoSug')"><div id="destinoSug" class="citylist"></div><div class="cityhelp">Escolha Cidade, UF na lista.</div></div>
+      <div class="full"><label>Modo da cotação</label>
+<select id="modoCotacao" onchange="alternarModoCotacao()">
+<option value="viagem">🛣️ Viagem entre cidades</option>
+<option value="urbano">📍 Corrida dentro da cidade</option>
+</select></div>
+<div id="urbanoCampos" class="full" style="display:none">
+  <div class="grid">
+    <div><label>Endereço de saída</label><input id="enderecoOrigem" autocomplete="off" placeholder="Digite rua, número e cidade..."></div>
+    <div><label>Endereço de destino</label><input id="enderecoDestino" autocomplete="off" placeholder="Digite endereço ou nome do local..."></div>
+    <div class="full"><label>Parada opcional</label><input id="enderecoParada" autocomplete="off" placeholder="Ex.: Empresa, hotel ou outro endereço"></div>
+  </div>
+  <button type="button" class="secondary" style="width:100%;margin-top:10px" onclick="localizarEnderecosUrbanos()">🔎 Localizar endereços</button>
+<div id="statusEnderecos" class="hint" style="margin-top:8px">Digite os locais e toque em “Localizar endereços”.</div>
+<div class="hint">No modo urbano, informe endereços ou locais dentro da cidade. A distância é calculada pela rota real.</div>
+</div>
+<div id="viagemOrigem" class="citywrap"><label>Origem</label><input id="origem" autocomplete="off" placeholder="Digite a cidade..." oninput="buscarCidade(this,'origemSug')" onfocus="buscarCidade(this,'origemSug')"><div id="origemSug" class="citylist"></div><div class="cityhelp">Escolha Cidade, UF na lista.</div></div>
+      <div id="viagemDestino" class="citywrap"><label>Destino</label><input id="destino" autocomplete="off" placeholder="Digite a cidade..." oninput="buscarCidade(this,'destinoSug')" onfocus="buscarCidade(this,'destinoSug')"><div id="destinoSug" class="citylist"></div><div class="cityhelp">Escolha Cidade, UF na lista.</div></div>
       <div><label>Data da viagem</label><input id="data" type="date"></div>
       <div><label>Horário de saída</label><input id="horaSaida" type="time"></div>
       <div><label>Previsão de retorno</label><input id="horaRetorno" type="time"></div>
@@ -231,7 +246,7 @@ details summary{cursor:pointer;font-weight:700}.note{font-size:12px;color:var(--
 
 <div id="resumoFinanceiroAtividades" style="margin:14px 0 18px">
   <div style="font-weight:800;font-size:18px;margin-bottom:6px">📊 Resultado por atividade</div>
-  <div style="font-size:12px;color:#64748b;margin-bottom:14px">Financeiro • V7.8.4</div>
+  <div style="font-size:12px;color:#64748b;margin-bottom:14px">Financeiro • V7.9.3</div>
 
   <div style="display:grid;gap:12px">
     <div style="border:1px solid #dbe2ea;border-radius:16px;padding:14px;background:#fff">
@@ -283,7 +298,7 @@ details summary{cursor:pointer;font-weight:700}.note{font-size:12px;color:var(--
         A distância e o tempo são calculados gratuitamente com dados do OpenStreetMap e roteamento OSRM.
         O aplicativo também tenta localizar praças de pedágio cadastradas no OpenStreetMap e mostra o nome/localização quando disponível.
         Você pode informar o valor de cada praça; o app grava esses valores no próprio iPhone e passa a somá-los automaticamente nas próximas cotações.
-        Não precisa de chave, cartão ou assinatura do Google. Esta V7.8.4 mantém a V7.4 e usa campos separados de Horas e Minutos para melhor funcionamento no iPhone.
+        Não precisa de chave, cartão ou assinatura do Google. Esta V7.9.3 mantém a V7.4 e usa campos separados de Horas e Minutos para melhor funcionamento no iPhone.
       </p>
     </details>
   </div>
@@ -354,13 +369,84 @@ async function buscarCidade(inp,listId){
   box.style.display=ach.length?'block':'none';
 }
 document.addEventListener('click',e=>{if(!e.target.closest('.citywrap'))document.querySelectorAll('.citylist').forEach(x=>x.style.display='none')});
+let timerEndereco=null;
+async function sugestoesEndereco(q){
+ q=(q||'').trim(); if(q.length<4)return [];
+ // Bias searches to Brazil and strongly help incomplete Limeira addresses.
+ const consultas=[q, q+', Limeira, SP, Brasil'];
+ for(const consulta of consultas){
+   try{
+    const u='https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=6&countrycodes=br&q='+encodeURIComponent(consulta);
+    const r=await fetch(u,{headers:{'Accept-Language':'pt-BR,pt;q=0.9'}});
+    if(r.ok){const j=await r.json(); if(j&&j.length)return j}
+   }catch(e){}
+ }
+ return [];
+}
+function ativarAutocompleteEndereco(id,listaId){
+ const inp=$(id), dl=$(listaId); if(!inp||!dl)return;
+ inp.addEventListener('input',()=>{
+  clearTimeout(timerEndereco);
+  const q=inp.value;
+  timerEndereco=setTimeout(async()=>{
+   const itens=await sugestoesEndereco(q);
+   dl.innerHTML='';
+   itens.forEach(x=>{const o=document.createElement('option');o.value=x.display_name;dl.appendChild(o)});
+  },450);
+ });
+}
+let urbanoResolvido={origem:null,destino:null,parada:null};
+async function localizarUmEndereco(texto){
+ const tentativas=[texto, texto+', Limeira, SP, Brasil'];
+ for(const q of tentativas){
+  try{
+   const u='https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=1&countrycodes=br&q='+encodeURIComponent(q);
+   const r=await fetch(u,{headers:{'Accept-Language':'pt-BR,pt;q=0.9'}});
+   if(!r.ok)continue;
+   const j=await r.json();
+   if(j&&j[0])return {lat:+j[0].lat,lon:+j[0].lon,nome:j[0].display_name};
+  }catch(e){}
+ }
+ throw new Error('Local não encontrado: '+texto);
+}
+function numeroDigitado(txt){
+ const m=(txt||'').match(/\b(\d{1,6})\b/); return m?m[1]:'';
+}
+function avisoNumero(txt,res){
+ const n=numeroDigitado(txt);
+ if(!n)return '';
+ return (res.nome||'').includes(n)?'':' ⚠️ Número '+n+' não confirmado pelo mapa; confira o ponto antes de fechar a cotação.';
+}
+async function localizarEnderecosUrbanos(){
+ const st=$('statusEnderecos'), eo=($('enderecoOrigem')?.value||'').trim(), ed=($('enderecoDestino')?.value||'').trim(), ep=($('enderecoParada')?.value||'').trim();
+ if(!eo||!ed){st.textContent='⚠️ Informe saída e destino.';return false}
+ st.textContent='🔎 Localizando saída e destino...';
+ try{
+  const a=await localizarUmEndereco(eo), b=await localizarUmEndereco(ed), p=ep?await localizarUmEndereco(ep):null;
+  urbanoResolvido={origem:a,destino:b,parada:p};
+  st.innerHTML='✅ <b>Saída:</b> '+a.nome+avisoNumero(eo,a)+'<br>✅ <b>Destino:</b> '+b.nome+avisoNumero(ed,b)+(p?'<br>✅ <b>Parada:</b> '+p.nome+avisoNumero(ep,p):'');
+  return true;
+ }catch(e){urbanoResolvido={origem:null,destino:null,parada:null};st.textContent='⚠️ '+e.message;return false}
+}
+function alternarModoCotacao(){
+ const urbano=$('modoCotacao')&&$('modoCotacao').value==='urbano';
+ if($('urbanoCampos'))$('urbanoCampos').style.display=urbano?'block':'none';
+ if($('viagemOrigem'))$('viagemOrigem').style.display=urbano?'none':'block';
+ if($('viagemDestino'))$('viagemDestino').style.display=urbano?'none':'block';
+ if($('tollBox')&&urbano)$('tollBox').style.display='none';
+}
 async function geocode(endereco){
-  const url='https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&countrycodes=br&q='+encodeURIComponent(endereco);
-  const r=await fetch(url,{headers:{'Accept':'application/json'}});
-  if(!r.ok) throw new Error('Falha ao localizar o endereço.');
-  const j=await r.json();
-  if(!j.length) throw new Error('Endereço não encontrado: '+endereco);
-  return {lat:+j[0].lat, lon:+j[0].lon, nome:j[0].display_name};
+ const tentativas=[endereco, endereco+', Limeira, SP, Brasil'];
+ for(const q of tentativas){
+  const url='https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&countrycodes=br&q='+encodeURIComponent(q);
+  try{
+   const r=await fetch(url,{headers:{'Accept-Language':'pt-BR,pt;q=0.9'}});
+   if(!r.ok)continue;
+   const j=await r.json();
+   if(j&&j[0])return {lat:+j[0].lat,lon:+j[0].lon};
+  }catch(e){}
+ }
+ throw new Error('Endereço/local não encontrado. Escolha uma sugestão da lista ou informe rua, número, cidade e SP.');
 }
 async function rotaOSRM(a,b){
   const url=`https://router.project-osrm.org/route/v1/driving/${a.lon},${a.lat};${b.lon},${b.lat}?overview=full&geometries=geojson&steps=false`;
@@ -453,7 +539,7 @@ function renderPedagios(ped){
   $('pedagios').value=soma.toFixed(2); calcular();
   return soma;
 }
-async function buscarRota(){
+async function buscarRotaViagem(){
   const origem=$('origem').value.trim(), destino=$('destino').value.trim();
   $('maps').href=mapsLink();
   if(!origem||!destino){showStatus('Preencha a origem e o destino.','warn');return}
@@ -489,6 +575,31 @@ async function buscarRota(){
   }
 }
 const EMPKEY='michelonEmpresaV5', HISTKEY='michelonHistoricoV5';
+async function buscarRotaUrbana(){
+ const status=$('rotaStatus');
+ const eo=($('enderecoOrigem')?.value||'').trim(), ed=($('enderecoDestino')?.value||'').trim(), ep=($('enderecoParada')?.value||'').trim();
+ if(!eo||!ed){status.textContent='Informe o endereço de saída e o endereço de destino.';return}
+ if(!urbanoResolvido.origem||!urbanoResolvido.destino){
+   const ok=await localizarEnderecosUrbanos(); if(!ok){status.textContent='⚠️ Primeiro confirme os endereços.';return}
+ }
+ status.textContent='📍 Calculando rota urbana...';
+ try{
+   const a=urbanoResolvido.origem,b=urbanoResolvido.destino,p=urbanoResolvido.parada;
+   let km=0,sec=0;
+   if(p){const r1=await rotaOSRM(a,p),r2=await rotaOSRM(p,b);km=r1.km+r2.km;sec=r1.sec+r2.sec}
+   else{const r=await rotaOSRM(a,b);km=r.km;sec=r.sec}
+   if($('idaVolta')?.value==='sim'){km*=2;sec*=2}
+   $('kmTotalInput').value=km.toFixed(1);
+   if($('pedagios'))$('pedagios').value='0';
+   status.textContent=`📍 Rota urbana encontrada: ${km.toFixed(1)} km • ${Math.floor(sec/3600)}h ${Math.round((sec%3600)/60)}min.`;
+   calcular(false);
+ }catch(e){status.textContent='⚠️ '+(e.message||'Não foi possível calcular a rota urbana.')}
+}
+async function buscarRota(){
+ if($('modoCotacao')?.value==='urbano')return buscarRotaUrbana();
+ return buscarRotaViagem();
+}
+
 function getEmpresa(){try{return JSON.parse(localStorage.getItem(EMPKEY))||{nome:'Michelon Viagens Executivas',fone:'',pix:'',fav:'',banco:''}}catch(e){return {nome:'Michelon Viagens Executivas'}}}
 function salvarEmpresa(){const e={nome:$('empresaNome').value.trim()||'Michelon Viagens Executivas',fone:$('empresaFone').value.trim(),pix:$('pixChave').value.trim(),fav:$('pixFav').value.trim(),banco:$('pixBanco').value.trim()};localStorage.setItem(EMPKEY,JSON.stringify(e));alert('Dados da empresa salvos neste celular.');calcular()}
 function carregarEmpresa(){const e=getEmpresa();$('empresaNome').value=e.nome||'';$('empresaFone').value=e.fone||'';$('pixChave').value=e.pix||'';$('pixFav').value=e.fav||'';$('pixBanco').value=e.banco||''}
@@ -835,6 +946,7 @@ async function copiar(){if(!$('mensagem').value)calcular();try{await navigator.c
 function limpar(){if(!confirm('Limpar os dados desta cotação?'))return;localStorage.removeItem('ultimaCotacaoAuto');location.reload()}
 (function(){
   carregarCidades();
+  alternarModoCotacao();
   carregarConfig();
   carregarEmpresa();
   renderFinanceiro();
@@ -908,7 +1020,7 @@ function resumoFinanceiroAtividades(){
 
 </script>
 <footer style="text-align:center;color:#64748b;font-size:13px;padding:22px 10px 34px">
-<strong>MICHELON Viagens Executivas</strong><br>Versão 7.8.4<br>Atualizado em 11/09/2026 • Financeiro organizado
+<strong>MICHELON Viagens Executivas</strong><br>Versão 7.9.3<br>Atualizado em 11/09/2026 • Financeiro organizado
 </footer>
 
 <script>
