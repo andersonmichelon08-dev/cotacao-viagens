@@ -33,6 +33,14 @@ details summary{cursor:pointer;font-weight:700}.note{font-size:12px;color:var(--
 .alerta{padding:10px;border-radius:10px;background:#fff7ed;color:#9a3412;font-size:13px;margin-top:8px;display:none}
 .appDash{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0}.appKpi{border:1px solid var(--line);border-radius:12px;padding:10px;background:#f8fafc}.appKpi small{display:block;color:var(--muted);font-size:11px}.appKpi b{font-size:17px}
 @media(max-width:580px){.dash{grid-template-columns:1fr 1fr}.table{font-size:11px}.agendaGrid{grid-template-columns:1fr}.appDash{grid-template-columns:1fr 1fr}}
+
+.citywrap{position:relative}
+.citylist{display:none;position:absolute;z-index:9999;left:0;right:0;top:68px;background:#fff;border:1px solid #cbd5e1;border-radius:10px;box-shadow:0 10px 24px rgba(0,0,0,.15);max-height:260px;overflow-y:auto}
+.cityitem{padding:11px 12px;border-bottom:1px solid #eef2f7;cursor:pointer;font-size:14px;background:#fff}
+.cityitem:last-child{border-bottom:0}
+.cityitem:hover,.cityitem:active{background:#f1f5f9}
+
+.urbanoList{top:48px}
 </style>
 </head>
 <body>
@@ -62,16 +70,17 @@ details summary{cursor:pointer;font-weight:700}.note{font-size:12px;color:var(--
 </select></div>
 <div id="urbanoCampos" class="full" style="display:none">
   <div class="grid">
-    <div><label>Endereço de saída</label><input id="enderecoOrigem" autocomplete="off" placeholder="Digite rua, número e cidade..."></div>
-    <div><label>Endereço de destino</label><input id="enderecoDestino" autocomplete="off" placeholder="Digite endereço ou nome do local..."></div>
-    <div class="full"><label>Parada opcional</label><input id="enderecoParada" autocomplete="off" placeholder="Ex.: Empresa, hotel ou outro endereço"></div>
+    <div class="full"><label>Cidade da corrida</label><input id="cidadeUrbana" value="Limeira, SP" placeholder="Ex.: Limeira, SP"><div class="hint">Usada automaticamente quando você digitar apenas a rua, bairro ou local.</div></div>
+    <div><label>Endereço de saída</label><div class="citywrap"><input id="enderecoOrigem" autocomplete="off" placeholder="Comece a digitar rua ou local..."><div id="listaUrbOrigem" class="citylist urbanoList"></div></div></div>
+    <div><label>Endereço de destino</label><div class="citywrap"><input id="enderecoDestino" autocomplete="off" placeholder="Comece a digitar rua ou local..."><div id="listaUrbDestino" class="citylist urbanoList"></div></div></div>
+    <div class="full"><label>Parada opcional</label><div class="citywrap"><input id="enderecoParada" autocomplete="off" placeholder="Ex.: empresa, hotel ou outro endereço"><div id="listaUrbParada" class="citylist urbanoList"></div></div></div>
   </div>
   <button type="button" class="secondary" style="width:100%;margin-top:10px" onclick="localizarEnderecosUrbanos()">🔎 Localizar endereços</button>
 <div id="statusEnderecos" class="hint" style="margin-top:8px">Digite os locais e toque em “Localizar endereços”.</div>
 <div class="hint">No modo urbano, informe endereços ou locais dentro da cidade. A distância é calculada pela rota real.</div>
 </div>
-<div id="viagemOrigem" class="citywrap"><label>Origem</label><input id="origem" autocomplete="off" placeholder="Digite a cidade..." oninput="buscarCidade(this,'origemSug')" onfocus="buscarCidade(this,'origemSug')"><div id="origemSug" class="citylist"></div><div class="cityhelp">Escolha Cidade, UF na lista.</div></div>
-      <div id="viagemDestino" class="citywrap"><label>Destino</label><input id="destino" autocomplete="off" placeholder="Digite a cidade..." oninput="buscarCidade(this,'destinoSug')" onfocus="buscarCidade(this,'destinoSug')"><div id="destinoSug" class="citylist"></div><div class="cityhelp">Escolha Cidade, UF na lista.</div></div>
+<div id="viagemOrigem" class="citywrap"><label>Origem</label><input id="origem" autocomplete="off" placeholder="Rua, cidade, aeroporto, hotel ou local..."><div id="listaOrigem" class="citylist"></div><div class="cityhelp">Ex.: Rua + número, cidade, aeroporto, hotel ou empresa.</div><div class="grid" style="margin-top:7px"><div><label>CEP da origem (opcional)</label><input id="cepOrigem" inputmode="numeric" placeholder="00000-000"></div><div><label>Número</label><input id="numOrigem" inputmode="numeric" placeholder="Ex.: 366"></div></div></div>
+      <div id="viagemDestino" class="citywrap"><label>Destino</label><input id="destino" autocomplete="off" placeholder="Rua, cidade, aeroporto, hotel ou local..."><div id="listaDestino" class="citylist"></div><div class="cityhelp">Se o mapa não achar pelo nome, informe CEP + número.</div><div class="grid" style="margin-top:7px"><div><label>CEP do destino (opcional)</label><input id="cepDestino" inputmode="numeric" placeholder="00000-000"></div><div><label>Número</label><input id="numDestino" inputmode="numeric" placeholder="Ex.: 100"></div></div></div>
       <div><label>Data da viagem</label><input id="data" type="date"></div>
       <div><label>Horário de saída</label><input id="horaSaida" type="time"></div>
       <div><label>Previsão de retorno</label><input id="horaRetorno" type="time"></div>
@@ -85,12 +94,20 @@ details summary{cursor:pointer;font-weight:700}.note{font-size:12px;color:var(--
 <div class="hint">Escolha em cada orçamento. Máximo: R$ 4,00/km.</div>
 </div>
 <label>Passageiros</label><input id="passageiros" type="number" min="1" value="1"></div>
-      <div><label>Ida e volta?</label><select id="idaVolta"><option value="sim" selected>Sim</option><option value="nao">Não</option></select></div>
+      <div><label>Ida e volta?</label><select id="idaVolta" onchange="alternarCamposRetorno()"><option value="sim" selected>Sim</option><option value="nao">Não</option></select></div>
+      <div id="retornoCampos" class="full">
+        <div class="grid">
+          <div class="full"><div class="hint"><b>↩️ Rota real do retorno</b> • Os locais abaixo começam invertendo a ida, mas você pode alterar quando o retorno sair ou terminar em outro local.</div></div>
+          <div><label>Origem do retorno</label><input id="origemRetorno" autocomplete="off" placeholder="Local de saída no retorno"><div class="grid" style="margin-top:7px"><div><label>CEP (opcional)</label><input id="cepOrigemRetorno" inputmode="numeric" placeholder="00000-000"></div><div><label>Número</label><input id="numOrigemRetorno" inputmode="numeric" placeholder="Ex.: 100"></div></div></div>
+          <div><label>Destino do retorno</label><input id="destinoRetorno" autocomplete="off" placeholder="Local de chegada no retorno"><div class="cityhelp">Se o nome da rua falhar, use CEP + número.</div><div class="grid" style="margin-top:7px"><div><label>CEP (opcional)</label><input id="cepDestinoRetorno" inputmode="numeric" placeholder="00000-000"></div><div><label>Número</label><input id="numDestinoRetorno" inputmode="numeric" placeholder="Ex.: 366"></div></div></div>
+        </div>
+      </div>
       <div class="full"><button class="primary" onclick="buscarRota()">📍 Buscar KM grátis e localizar pedágios</button><div id="rotaStatus" class="status"></div></div>
       <div class="full"><div id="tollBox" class="tollbox"><div class="tollhead">🛣️ Pedágios encontrados na rota</div><div id="tollList"></div><div class="tollhint">Digite o valor de cada pedágio uma vez. O app salva no celular e reutiliza automaticamente quando encontrar a mesma praça em uma próxima cotação.</div></div></div>
       <div><label>KM total</label><input id="kmTotalInput" type="number" step="0.1"></div>
       <div><label>Tempo estimado</label><input id="tempo" value="-" readonly></div>
-      <div><label>Pedágios (R$)</label><input id="pedagios" type="number" step="0.01"></div>
+      <div><label>Pedágios (R$)</label><input id="pedagios" type="number" step="0.01">
+<div class="hint">O pedágio é preenchido automaticamente quando a praça está no catálogo validado. Você pode corrigir o valor manualmente quando necessário.</div></div>
       <div><label>Veículo</label><select id="veiculo" onchange="aplicarVeiculo()"></select></div>
       <div><label>Combustível</label><select id="tipoComb" onchange="aplicarCombustivel()"><option>Gasolina</option><option>Etanol</option><option>Diesel</option></select></div>
       <div><label>Consumo do veículo (km/l)</label><input id="consumo" type="number" step="0.1" value="10"></div>
@@ -359,13 +376,48 @@ async function carregarCidades(){
 }
 function norm(s){return (s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim()}
 async function buscarCidade(inp,listId){
-  const box=$(listId), q=norm(inp.value);
-  if(q.length<2){box.style.display='none';return}
-  if(!cidadesBR.length){await carregarCidades()}
-  if(!cidadesBR.length){box.style.display='none';return}
-  const termos=q.split(/\s+/); let ach=cidadesBR.filter(c=>{const v=norm(c.nome+' '+c.uf);return termos.every(t=>v.includes(t))}).slice(0,12);
+  const box=$(listId), texto=String(inp.value||'').trim();
+  if(texto.length<2){box.style.display='none';return}
+
+  let ach=[];
+  // Pequena base local para resposta imediata mesmo se a internet estiver lenta.
+  const locaisFixos=[
+    'Limeira, SP','Campinas, SP','Guarulhos, SP','São Paulo, SP','Sorocaba, SP',
+    'Jundiaí, SP','Americana, SP','Piracicaba, SP','Rio Claro, SP','Indaiatuba, SP',
+    'Paulínia, SP','Hortolândia, SP','Sumaré, SP','Nova Odessa, SP','Valinhos, SP',
+    'Vinhedo, SP','Aeroporto Internacional de Viracopos, Campinas, SP',
+    'Aeroporto Internacional de São Paulo/Guarulhos, Guarulhos, SP',
+    'Aeroporto de Congonhas, São Paulo, SP'
+  ];
+  const nq=norm(texto);
+  ach=locaisFixos.filter(x=>norm(x).includes(nq)).map(nome=>({nome}));
+
+  // Complementa online para qualquer outra cidade/local do Brasil.
+  try{
+    const u='https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&namedetails=1&limit=10&countrycodes=br&q='+encodeURIComponent(texto+', Brasil');
+    const r=await fetchTimeout(u,5000);
+    if(r.ok){
+      const j=await r.json();
+      for(const x of (j||[])){
+        const nome=x.display_name||x.name;
+        if(nome&&!ach.some(a=>norm(a.nome)===norm(nome)))ach.push({nome});
+      }
+    }
+  }catch(e){}
+
   box.innerHTML='';
-  ach.forEach(c=>{const d=document.createElement('div');d.className='cityitem';d.textContent=`${c.nome}, ${c.uf}`;d.onclick=()=>{inp.value=`${c.nome}, ${c.uf}`;box.style.display='none';$('maps').href=mapsLink()};box.appendChild(d)});
+  ach.slice(0,12).forEach(c=>{
+    const d=document.createElement('div');
+    d.className='cityitem';
+    d.textContent=c.nome;
+    d.onclick=()=>{
+      inp.value=c.nome;
+      box.style.display='none';
+      $('maps').href=mapsLink();
+      preencherRetornoPadrao(false);
+    };
+    box.appendChild(d);
+  });
   box.style.display=ach.length?'block':'none';
 }
 document.addEventListener('click',e=>{if(!e.target.closest('.citywrap'))document.querySelectorAll('.citylist').forEach(x=>x.style.display='none')});
@@ -396,18 +448,150 @@ function ativarAutocompleteEndereco(id,listaId){
  });
 }
 let urbanoResolvido={origem:null,destino:null,parada:null};
+
+async function buscarEnderecoUrbano(inp,listId,tipo){
+ const box=$(listId), texto=String(inp.value||'').trim();
+ if(texto.length<3){box.style.display='none';return}
+ const cidade=String($('cidadeUrbana')?.value||'Limeira, SP').trim();
+ const norm2=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+
+ // Sugestões locais úteis e instantâneas; busca online complementa.
+ const locaisLimeira=[
+   'Shopping Pátio Limeira, Limeira, SP',
+   'Horto Florestal de Limeira, Limeira, SP',
+   'Rodoviária de Limeira, Limeira, SP',
+   'Prefeitura Municipal de Limeira, Limeira, SP'
+ ];
+ let ach=[];
+ if(norm2(cidade).includes('limeira')){
+   ach=locaisLimeira.filter(x=>norm2(x).includes(norm2(texto))).map(nome=>({nome,lat:null,lon:null}));
+ }
+
+ try{
+   const consultas=[
+     texto+', '+cidade+', Brasil',
+     texto.replace(/\b(?:n|nº|n°|numero|número)\s*\.?\s*(\d+)/gi,', $1')+', '+cidade+', Brasil'
+   ];
+   for(const q of [...new Set(consultas)]){
+     const u='https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&namedetails=1&limit=12&countrycodes=br&q='+encodeURIComponent(q);
+     const r=await fetchTimeout(u,6000);
+     if(!r.ok)continue;
+     const j=await r.json();
+     for(const x of (j||[])){
+       const nome=x.display_name||x.name;
+       if(nome && norm2(nome).includes(norm2(cidade.split(',')[0])) && !ach.some(a=>norm2(a.nome)===norm2(nome))){
+         ach.push({nome,lat:+x.lat,lon:+x.lon});
+       }
+     }
+     if(j&&j.length)break;
+   }
+ }catch(e){}
+
+ box.innerHTML='';
+ ach.slice(0,12).forEach(item=>{
+   const d=document.createElement('div');
+   d.className='cityitem';
+   d.textContent=item.nome;
+   d.onclick=async()=>{
+     inp.value=item.nome;
+     box.style.display='none';
+     let p=item;
+     if(p.lat==null||p.lon==null){
+       try{p=await localizarUmEndereco(item.nome)}catch(e){}
+     }
+     if(p&&p.lat!=null){
+       urbanoResolvido[tipo]={lat:+p.lat,lon:+p.lon,nome:p.nome||item.nome};
+       const st=$('statusEnderecos');
+       if(st)st.textContent='✅ Local selecionado. Selecione os demais endereços e calcule a rota.';
+     }
+   };
+   box.appendChild(d);
+ });
+ box.style.display=ach.length?'block':'none';
+}
+
+function ligarAutocompleteUrbano(){
+ const cfg=[
+   ['enderecoOrigem','listaUrbOrigem','origem'],
+   ['enderecoDestino','listaUrbDestino','destino'],
+   ['enderecoParada','listaUrbParada','parada']
+ ];
+ cfg.forEach(([id,lid,tipo])=>{
+   const inp=$(id); if(!inp)return;
+   let timer=null;
+   inp.addEventListener('input',()=>{
+     urbanoResolvido[tipo]=null;
+     clearTimeout(timer);
+     timer=setTimeout(()=>buscarEnderecoUrbano(inp,lid,tipo),180);
+   });
+   inp.addEventListener('focus',()=>{
+     if((inp.value||'').trim().length>=3)buscarEnderecoUrbano(inp,lid,tipo);
+   });
+ });
+}
 async function localizarUmEndereco(texto){
- const tentativas=[texto, texto+', Limeira, SP, Brasil'];
- for(const q of tentativas){
+ let original=String(texto||'').trim();
+ if(!original)throw new Error('Informe o endereço ou local.');
+
+ const cidadePadrao=String($('cidadeUrbana')?.value||'Limeira, SP').trim();
+
+ // Aceita: "n 366", "nº 366", "numero 366" ou apenas "366".
+ original=original
+   .replace(/\b(?:n|nº|n°|numero|número)\s*\.?\s*(\d+)/gi, ', $1')
+   .replace(/\s*,\s*/g, ', ')
+   .replace(/\s+/g,' ')
+   .trim();
+
+ const semNumero=original.replace(/,?\s*\d+\s*$/,'').trim();
+ const num=(original.match(/(\d+)\s*$/)||[])[1]||'';
+
+ // Várias formas gratuitas de consulta. Algumas ruas do OSM não respondem bem
+ // quando o número da casa é enviado junto.
+ const tentativas=[
+   original+', '+cidadePadrao+', Brasil',
+   semNumero+', '+cidadePadrao+', Brasil',
+   original+', Brasil',
+   semNumero+', Brasil'
+ ];
+
+ for(const q of [...new Set(tentativas)]){
   try{
-   const u='https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=1&countrycodes=br&q='+encodeURIComponent(q);
-   const r=await fetch(u,{headers:{'Accept-Language':'pt-BR,pt;q=0.9'}});
+   const u='https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&namedetails=1&limit=10&countrycodes=br&q='+encodeURIComponent(q);
+   const r=await fetchTimeout(u,7000);
    if(!r.ok)continue;
    const j=await r.json();
-   if(j&&j[0])return {lat:+j[0].lat,lon:+j[0].lon,nome:j[0].display_name};
+   if(j&&j.length){
+     const norm2=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+     const cidadeN=norm2(cidadePadrao.split(',')[0]);
+     const ruaN=norm2(semNumero).replace(/^(rua|avenida|av|r)\s+/,'').trim();
+     const candidatos=j.filter(x=>norm2(x.display_name||'').includes(cidadeN));
+     const pool=candidatos.length?candidatos:j;
+     const score=x=>{
+       const dn=norm2(x.display_name||'');
+       let s=dn.includes(cidadeN)?10:0;
+       for(const p of ruaN.split(/\s+/).filter(v=>v.length>2)) if(dn.includes(p))s+=3;
+       if(num && dn.includes(num))s+=5;
+       return s+(+x.importance||0);
+     };
+     const x=[...pool].sort((a,b)=>score(b)-score(a))[0];
+     return {lat:+x.lat,lon:+x.lon,nome:x.display_name||original,numeroConfirmado:!num||norm2(x.display_name||'').includes(num)};
+   }
   }catch(e){}
  }
- throw new Error('Local não encontrado: '+texto);
+
+ // Segunda busca estruturada para ruas que falham na pesquisa livre.
+ try{
+   const rua=semNumero.replace(/^(rua|avenida|av\.?|r\.?)\s+/i,'').trim();
+   const cidade=cidadePadrao.split(',')[0].trim();
+   const u='https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=10&countrycodes=br&street='+encodeURIComponent(rua)+'&city='+encodeURIComponent(cidade)+'&state=São Paulo&country=Brasil';
+   const r=await fetchTimeout(u,7000);
+   if(r.ok){
+     const j=await r.json();
+     if(j&&j[0])return {lat:+j[0].lat,lon:+j[0].lon,nome:j[0].display_name||original,numeroConfirmado:false};
+   }
+ }catch(e){}
+
+ throw new Error('Local não encontrado: '+original+'. Tente somente o nome da rua/local; o número pode ser conferido no mapa.');
 }
 function numeroDigitado(txt){
  const m=(txt||'').match(/\b(\d{1,6})\b/); return m?m[1]:'';
@@ -415,6 +599,7 @@ function numeroDigitado(txt){
 function avisoNumero(txt,res){
  const n=numeroDigitado(txt);
  if(!n)return '';
+ if(res&&res.numeroConfirmado===false)return ' ⚠️ Rua localizada, mas o número '+n+' não foi confirmado pelo mapa; confira o ponto antes de fechar a cotação.';
  return (res.nome||'').includes(n)?'':' ⚠️ Número '+n+' não confirmado pelo mapa; confira o ponto antes de fechar a cotação.';
 }
 async function localizarEnderecosUrbanos(){
@@ -422,11 +607,13 @@ async function localizarEnderecosUrbanos(){
  if(!eo||!ed){st.textContent='⚠️ Informe saída e destino.';return false}
  st.textContent='🔎 Localizando saída e destino...';
  try{
-  const a=await localizarUmEndereco(eo), b=await localizarUmEndereco(ed), p=ep?await localizarUmEndereco(ep):null;
+  const a=urbanoResolvido.origem||await localizarUmEndereco(eo);
+  const b=urbanoResolvido.destino||await localizarUmEndereco(ed);
+  const p=ep?(urbanoResolvido.parada||await localizarUmEndereco(ep)):null;
   urbanoResolvido={origem:a,destino:b,parada:p};
-  st.innerHTML='✅ <b>Saída:</b> '+a.nome+avisoNumero(eo,a)+'<br>✅ <b>Destino:</b> '+b.nome+avisoNumero(ed,b)+(p?'<br>✅ <b>Parada:</b> '+p.nome+avisoNumero(ep,p):'');
+  st.innerHTML='✅ <b>Saída:</b> '+a.nome+avisoNumero(eo,a)+' • ✅ <b>Destino:</b> '+b.nome+avisoNumero(ed,b)+(p?' • ✅ <b>Parada:</b> '+p.nome+avisoNumero(ep,p):'');
   return true;
- }catch(e){urbanoResolvido={origem:null,destino:null,parada:null};st.textContent='⚠️ '+e.message;return false}
+ }catch(e){st.textContent='⚠️ '+e.message+' Dica: escolha uma opção da lista que aparece enquanto digita.';return false}
 }
 function alternarModoCotacao(){
  const urbano=$('modoCotacao')&&$('modoCotacao').value==='urbano';
@@ -435,27 +622,117 @@ function alternarModoCotacao(){
  if($('viagemDestino'))$('viagemDestino').style.display=urbano?'none':'block';
  if($('tollBox')&&urbano)$('tollBox').style.display='none';
 }
+async function enderecoPorCEP(cep, numero=''){
+ const c=String(cep||'').replace(/\D/g,'');
+ if(!c) return '';
+ if(c.length!==8) throw new Error('CEP inválido. Informe 8 dígitos.');
+ const r=await fetch('https://viacep.com.br/ws/'+c+'/json/');
+ if(!r.ok) throw new Error('Não foi possível consultar o CEP.');
+ const d=await r.json();
+ if(d.erro) throw new Error('CEP não encontrado: '+cep);
+ const partes=[d.logradouro, numero, d.bairro, d.localidade, d.uf, 'Brasil'].filter(Boolean);
+ return partes.join(', ');
+}
+async function buscarNominatimDireto(q){
+ const url='https://nominatim.openstreetmap.org/search?format=jsonv2&limit=5&countrycodes=br&addressdetails=1&q='+encodeURIComponent(q);
+ const r=await fetch(url,{headers:{'Accept-Language':'pt-BR,pt;q=0.9'}});
+ if(!r.ok) return null;
+ const j=await r.json();
+ if(!j||!j.length) return null;
+ const x=j[0];
+ return {lat:+x.lat,lon:+x.lon,nome:x.display_name||q};
+}
+async function resolverPonto(texto, cepId, numeroId){
+ const cep=$(cepId)?.value||'';
+ const numero=$(numeroId)?.value||'';
+ const c=String(cep).replace(/\D/g,'');
+ if(c){
+   const end=await enderecoPorCEP(c,numero);
+   // 1) endereço completo com número
+   let p=await buscarNominatimDireto(end);
+   if(p){p.nome=end; p.precisao='número'; return p;}
+
+   // 2) mesma rua sem o número
+   const d=await (await fetch('https://viacep.com.br/ws/'+c+'/json/')).json();
+   const rua=[d.logradouro,d.bairro,d.localidade,d.uf,'Brasil'].filter(Boolean).join(', ');
+   p=await buscarNominatimDireto(rua);
+   if(p){p.nome=rua; p.precisao='rua'; return p;}
+
+   // 3) tenta CEP + cidade/UF
+   const porCep=[c,d.localidade,d.uf,'Brasil'].filter(Boolean).join(', ');
+   p=await buscarNominatimDireto(porCep);
+   if(p){p.nome=porCep; p.precisao='CEP'; return p;}
+
+   // 4) último fallback: bairro + cidade
+   const bairro=[d.bairro,d.localidade,d.uf,'Brasil'].filter(Boolean).join(', ');
+   p=await buscarNominatimDireto(bairro);
+   if(p){p.nome=bairro; p.precisao='bairro'; return p;}
+
+   throw new Error('CEP encontrado, mas o mapa não possui um ponto utilizável para essa rua/região.');
+ }
+ return geocode(String(texto||'').trim());
+}
+function normalizarLocalBusca(txt){
+ let s=String(txt||'').trim().replace(/\s+/g,' ');
+ let k=s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+ const aliases=[
+  [/^(aeroporto\s+)?guarulhos$|^gru$|aeroporto.*guarulhos|cumbica/, 'Aeroporto Internacional de São Paulo Guarulhos, Guarulhos, SP, Brasil'],
+  [/^(aeroporto\s+)?viracopos$|^vcp$|aeroporto.*viracopos/, 'Aeroporto Internacional de Viracopos, Campinas, SP, Brasil'],
+  [/^(aeroporto\s+)?congonhas$|^cgh$|aeroporto.*congonhas/, 'Aeroporto de Congonhas, São Paulo, SP, Brasil']
+ ];
+ for(const [re,val] of aliases) if(re.test(k)) return val;
+ return s;
+}
 async function geocode(endereco){
- const tentativas=[endereco, endereco+', Limeira, SP, Brasil'];
- for(const q of tentativas){
-  const url='https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&countrycodes=br&q='+encodeURIComponent(q);
+ const original=String(endereco||'').trim();
+ if(!original) throw new Error('Informe o local.');
+ const normal=normalizarLocalBusca(original);
+ const tentativas=[normal];
+
+ // Cidade/local digitado sem UF: tenta Brasil e depois São Paulo como apoio,
+ // sem obrigar CEP ou endereço completo.
+ if(!/brasil/i.test(normal)) tentativas.push(normal+', Brasil');
+ if(!/\b[A-Z]{2}\b/i.test(normal) && !/brasil/i.test(normal)) tentativas.push(normal+', SP, Brasil');
+
+ // Limeira só fica como último recurso para nomes de ruas/localidades realmente locais.
+ const pareceCidadeOuPOI=/(aeroporto|airport|terminal|rodoviaria|shopping|hospital|hotel|universidade|campinas|guarulhos|sao paulo|são paulo|sorocaba|jundiai|jundiaí|americana|piracicaba|rio claro|araraquara|ribeirao|ribeirão)/i.test(normal);
+ if(!pareceCidadeOuPOI && /^(rua|r\.|avenida|av\.|rodovia|estrada)\b/i.test(normal)){
+   tentativas.push(normal+', Limeira, SP, Brasil');
+ }
+
+ for(const q of [...new Set(tentativas)]){
+  const url='https://nominatim.openstreetmap.org/search?format=jsonv2&limit=8&countrycodes=br&addressdetails=1&namedetails=1&q='+encodeURIComponent(q);
   try{
    const r=await fetch(url,{headers:{'Accept-Language':'pt-BR,pt;q=0.9'}});
    if(!r.ok)continue;
    const j=await r.json();
-   if(j&&j[0])return {lat:+j[0].lat,lon:+j[0].lon};
+   if(j&&j.length){
+     // Para texto curto, prioriza cidade/município/POI com nome correspondente.
+     const no=normalizarLocalBusca(original).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+     const score=x=>{
+       const dn=String(x.display_name||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+       let s=dn.includes(no)?5:0;
+       if(['city','town','municipality','village'].includes(x.type)||['city','town','municipality'].includes(x.addresstype))s+=3;
+       if(['aerodrome','airport'].includes(x.type))s+=3;
+       return s+(+x.importance||0);
+     };
+     const x=[...j].sort((a,b)=>score(b)-score(a))[0];
+     return {lat:+x.lat,lon:+x.lon,nome:x.display_name||original,precisao:'local/cidade'};
+   }
   }catch(e){}
  }
- throw new Error('Endereço/local não encontrado. Escolha uma sugestão da lista ou informe rua, número, cidade e SP.');
+ throw new Error('Local não encontrado: '+original+'. Tente cidade + UF, nome do local + cidade, ou endereço.');
 }
 async function rotaOSRM(a,b){
-  const url=`https://router.project-osrm.org/route/v1/driving/${a.lon},${a.lat};${b.lon},${b.lat}?overview=full&geometries=geojson&steps=false`;
+  const url=`https://router.project-osrm.org/route/v1/driving/${a.lon},${a.lat};${b.lon},${b.lat}?overview=full&geometries=geojson&steps=true`;
   const r=await fetch(url);
   if(!r.ok) throw new Error('Falha no serviço de rotas.');
   const j=await r.json();
   if(j.code!=='Ok'||!j.routes?.length) throw new Error('Nenhuma rota encontrada.');
   const rt=j.routes[0];
-  return {km:rt.distance/1000, sec:rt.duration, coords:rt.geometry?.coordinates||[]};
+  const steps=(rt.legs||[]).flatMap(l=>l.steps||[]);
+  const roads=[...new Set(steps.flatMap(s=>[s.ref,s.name]).filter(Boolean))];
+  return {km:rt.distance/1000, sec:rt.duration, coords:rt.geometry?.coordinates||[], roads};
 }
 function distPointToSegmentKm(p,a,b){
   const lat0=p[1]*Math.PI/180;
@@ -478,25 +755,321 @@ async function fetchTimeout(url,ms=8000){
   const c=new AbortController(); const t=setTimeout(()=>c.abort(),ms);
   try{return await fetch(url,{signal:c.signal})}finally{clearTimeout(t)}
 }
+async function consultarPedagiosBBox(coordsTrecho){
+  let minLon=Infinity,minLat=Infinity,maxLon=-Infinity,maxLat=-Infinity;
+  for(const [lon,lat] of coordsTrecho){
+    minLon=Math.min(minLon,lon); maxLon=Math.max(maxLon,lon);
+    minLat=Math.min(minLat,lat); maxLat=Math.max(maxLat,lat);
+  }
+  const pad=.018;
+  minLon-=pad; maxLon+=pad; minLat-=pad; maxLat+=pad;
+  const q=`[out:json][timeout:6];(node["barrier"="toll_booth"](${minLat},${minLon},${maxLat},${maxLon});node["highway"="toll_gantry"](${minLat},${minLon},${maxLat},${maxLon}););out body;`;
+  const eps=[
+    'https://overpass-api.de/api/interpreter?data=',
+    'https://overpass.kumi.systems/api/interpreter?data=',
+    'https://overpass.nchc.org.tw/api/interpreter?data='
+  ];
+  for(const ep of eps){
+    try{
+      const r=await fetchTimeout(ep+encodeURIComponent(q),7500);
+      if(r.ok){
+        const j=await r.json();
+        return j.elements||[];
+      }
+    }catch(e){}
+  }
+  throw new Error('Trecho sem resposta.');
+}
+
+function dividirRotaEmTrechos(coords,quantidade=5){
+  if(!coords.length)return [];
+  const partes=[];
+  const tam=Math.ceil(coords.length/quantidade);
+  for(let i=0;i<coords.length;i+=tam){
+    const inicio=Math.max(0,i-1);
+    partes.push(coords.slice(inicio,Math.min(coords.length,i+tam+1)));
+  }
+  return partes.filter(p=>p.length>=2);
+}
+
+function limitePromessaPedagio(p,ms=12000){
+ return Promise.race([p,new Promise((_,rej)=>setTimeout(()=>rej(new Error('tempo limite')),ms))]);
+}
 async function localizarPedagios(coords){
   if(!coords.length)return [];
-  let minLon=Infinity,minLat=Infinity,maxLon=-Infinity,maxLat=-Infinity;
-  for(const [lon,lat] of coords){minLon=Math.min(minLon,lon);maxLon=Math.max(maxLon,lon);minLat=Math.min(minLat,lat);maxLat=Math.max(maxLat,lat)}
-  const pad=.03; minLon-=pad;maxLon+=pad;minLat-=pad;maxLat+=pad;
-  const q=`[out:json][timeout:7];(node["barrier"="toll_booth"](${minLat},${minLon},${maxLat},${maxLon});node["highway"="toll_gantry"](${minLat},${minLon},${maxLat},${maxLon}););out body;`;
-  const eps=[
- 'https://overpass-api.de/api/interpreter?data=',
- 'https://overpass.kumi.systems/api/interpreter?data=',
- 'https://overpass.nchc.org.tw/api/interpreter?data='
-];
-  let j=null,last=null;
-  for(const ep of eps){try{const r=await fetchTimeout(ep+encodeURIComponent(q),8500);if(r.ok){j=await r.json();break}}catch(e){last=e}}
-  if(!j) throw new Error('Pedágios indisponíveis no momento.');
+
+  // Divide a rota em áreas menores para evitar consultas muito grandes no Overpass.
+  const trechos=dividirRotaEmTrechos(coords,5);
+  let elementos=[], sucessos=0;
+
+  for(const trecho of trechos){
+    try{
+      const els=await consultarPedagiosBBox(trecho);
+      elementos=elementos.concat(els);
+      sucessos++;
+    }catch(e){
+      // Um trecho pode falhar sem cancelar toda a viagem.
+    }
+  }
+
+  if(!sucessos) throw new Error('Pedágios indisponíveis no momento.');
+
   const encontrados=[];
-  for(const e of (j.elements||[])){if(pertoDaRota([e.lon,e.lat],coords)) encontrados.push(e)}
-  const unicos=[]; const vistos=new Set();
-  for(const e of encontrados){const duplicado=unicos.some(u=>Math.hypot((u.lat-e.lat)*110.574,(u.lon-e.lon)*111.320*Math.cos(e.lat*Math.PI/180))<0.25);if(!duplicado)unicos.push(e)}
+  for(const e of elementos){
+    if(e.lat==null||e.lon==null)continue;
+    if(pertoDaRota([+e.lon,+e.lat],coords,1.4)) encontrados.push(e);
+  }
+
+  const unicos=[];
+  for(const e of encontrados){
+    const duplicado=unicos.some(u=>
+      Math.hypot(
+        (u.lat-e.lat)*110.574,
+        (u.lon-e.lon)*111.320*Math.cos(e.lat*Math.PI/180)
+      )<0.25
+    );
+    if(!duplicado)unicos.push(e);
+  }
   return unicos;
+}
+
+async function refsRodoviasPorCoordenadas(coords){
+  if(!coords||!coords.length)return [];
+  const refs=new Set();
+  const max=8;
+  for(let i=0;i<max;i++){
+    const p=coords[Math.round(i*(coords.length-1)/(max-1))];
+    if(!p)continue;
+    const [lon,lat]=p;
+    const q=`[out:json][timeout:5];way(around:120,${lat},${lon})["highway"]["ref"];out tags 8;`;
+    const eps=['https://overpass-api.de/api/interpreter?data=','https://overpass.kumi.systems/api/interpreter?data='];
+    for(const ep of eps){
+      try{
+        const r=await fetchTimeout(ep+encodeURIComponent(q),6000);
+        if(!r.ok)continue;
+        const j=await r.json();
+        for(const e of (j.elements||[])){
+          const ref=e.tags?.ref||'';
+          for(const x of ref.split(';'))if(/\b(?:SP|BR)[-\s]?\d{2,3}\b/i.test(x))refs.add(x.trim());
+        }
+        break;
+      }catch(e){}
+    }
+  }
+  return [...refs];
+}
+function normalizarRodoviaBusca(s){
+ const x=String(s||'').trim();
+ const cod=x.match(/\b(?:SP|BR)[-\s]?\d{2,3}\b/i);
+ if(cod)return cod[0].toUpperCase().replace(/\s/,'-');
+ return x;
+}
+function extrairListaTarifas(payload){
+ if(Array.isArray(payload))return payload;
+ for(const k of ['dados','data','resultados','results','tarifas','items']){
+   if(Array.isArray(payload?.[k]))return payload[k];
+ }
+ return [];
+}
+function campoTarifa(o,...ks){
+ for(const k of ks)if(o&&o[k]!=null&&o[k]!=='')return o[k];
+ return '';
+}
+async function buscarTarifasAbertas(){
+ const info=$('tarifasAbertasInfo'), box=$('tarifasAbertasLista');
+ box.innerHTML=''; info.textContent='Consultando a base pública de tarifas...';
+ let roads=[...new Set((window.__michelonRoads||[]).map(normalizarRodoviaBusca).filter(x=>/\b(SP|BR)[-\s]?\d{2,3}\b/i.test(x)))].slice(0,8);
+ if(!roads.length){
+   info.textContent='Identificando as rodovias pelos pontos da rota...';
+   roads=(await refsRodoviasPorCoordenadas(window.__michelonCoords||[])).map(normalizarRodoviaBusca).slice(0,8);
+ }
+ if(!roads.length){
+   info.textContent='Não consegui identificar as rodovias desta rota automaticamente. O cálculo de KM continua funcionando e o pedágio pode ser informado manualmente.';
+   return;
+ }
+ info.textContent='Rodovias identificadas: '+roads.join(', ')+'. Consultando tarifas...';
+ let todos=[];
+ for(const road of roads){
+   try{
+     const u='https://pedagio.info/api/tarifas?uf=SP&categoria_num=1&com_valor=1&limit=100&busca='+encodeURIComponent(road);
+     const r=await fetch(u);
+     if(!r.ok)continue;
+     const j=await r.json();
+     todos=todos.concat(extrairListaTarifas(j));
+   }catch(e){}
+ }
+ const uniq=[], seen=new Set();
+ for(const t of todos){
+   const pr=campoTarifa(t,'praca','praça','nome_praca','nome');
+   const rd=campoTarifa(t,'rodovia','via');
+   const vl=parseFloat(String(campoTarifa(t,'valor','tarifa','valor_tarifa','preco')).replace(',','.'))||0;
+   const key=(pr+'|'+rd+'|'+vl).toLowerCase();
+   if(!seen.has(key)&&vl>0){seen.add(key);uniq.push({pr,rd,vl,raw:t})}
+ }
+ if(!uniq.length){
+   info.textContent='A base aberta não retornou tarifas compatíveis com os códigos de rodovia detectados. Informe o total manualmente.';
+   return;
+ }
+ info.textContent='Tarifas candidatas encontradas. Marque somente as praças que aparecem no seu trajeto; o total será somado automaticamente.';
+ uniq.slice(0,30).forEach((t,i)=>{
+   const row=document.createElement('label');
+   row.style.cssText='display:flex;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid #ddd;font-size:13px';
+   row.innerHTML=`<input type="checkbox" class="tarifaAbertaChk" data-v="${t.vl}"><span style="flex:1">${t.pr||'Praça'}${t.rd?' • '+t.rd:''}</span><strong>${brl(t.vl)}</strong>`;
+   box.appendChild(row);
+ });
+ box.querySelectorAll('.tarifaAbertaChk').forEach(c=>c.addEventListener('change',()=>{
+   let total=0; box.querySelectorAll('.tarifaAbertaChk:checked').forEach(x=>total+=parseFloat(x.dataset.v)||0);
+   $('pedagios').value=total.toFixed(2); calcular();
+ }));
+}
+
+const PEDAGIOS_CATALOGO=[
+ {id:'nova-odessa',nome:'Nova Odessa',rodovia:'SP-330',lat:-22.771,lon:-47.239,valor:12.80},
+ // Corredor Anhanguera/Bandeirantes/Rodoanel — valores Cat.1 de referência 2026.
+ // Coordenadas são usadas somente para testar proximidade da rota.
+ {id:'itupeva',nome:'Itupeva',rodovia:'SP-348',lat:-23.120,lon:-47.008,valor:14.30},
+ {id:'campo-limpo',nome:'Campo Limpo/Caieiras',rodovia:'SP-348',lat:-23.310,lon:-46.845,valor:14.50}
+];
+
+function textoRotaAtual(){
+ const ids=['origem','destino','origemRetorno','destinoRetorno','enderecoOrigem','enderecoDestino'];
+ return ids.map(id=>String($(id)?.value||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')).join(' | ');
+}
+
+function rotaGuarulhosValidada(){
+ const t=textoRotaAtual();
+ const temGru=/guarulhos|cumbica/.test(t);
+ const temLimeira=/limeira|horacio\s+cecchi|13482[\s-]?307/.test(t);
+ return temGru && temLimeira;
+}
+function rotaViracoposValidada(){
+ const t=textoRotaAtual();
+ const temViracopos=/viracopos/.test(t);
+ const temLimeira=/limeira|horacio\s+cecchi|13482[\s-]?307/.test(t);
+ const outroAeroporto=/guarulhos|cumbica|congonhas/.test(t);
+ return temViracopos && temLimeira && !outroAeroporto;
+}
+function distKmPontoRota(p,coords){
+ let best=Infinity;
+ for(const [lon,lat] of (coords||[])){
+   const dy=(lat-p.lat)*110.574;
+   const dx=(lon-p.lon)*111.320*Math.cos(p.lat*Math.PI/180);
+   const d=Math.hypot(dx,dy);
+   if(d<best)best=d;
+ }
+ return best;
+}
+function pedagiosCatalogoNaRota(coords){
+ return PEDAGIOS_CATALOGO.filter(p=>distKmPontoRota(p,coords)<=2.2);
+}
+function calcularCatalogoLocal(coordsIda,coordsVolta){
+ const agrupar=arr=>{
+   const m=new Map();
+   for(const p of arr){if(!m.has(p.id))m.set(p.id,p)}
+   return [...m.values()];
+ };
+ const ida=agrupar(pedagiosCatalogoNaRota(coordsIda));
+ const volta=agrupar(pedagiosCatalogoNaRota(coordsVolta));
+ const total=[...ida,...volta].reduce((s,p)=>s+p.valor,0);
+ return {ida,volta,total};
+}
+
+async function consultarTarifaPedagioAberto(ped){
+  const t=ped.tags||{};
+  const termos=[t.name,t.operator,t.ref,t['addr:city'],t['addr:street']].filter(Boolean);
+  if(!termos.length)return null;
+  for(const termo of termos){
+    try{
+      const u='https://pedagio.info/api/tarifas?uf=SP&categoria_num=1&com_valor=1&limit=50&busca='+encodeURIComponent(termo);
+      const r=await fetchTimeout(u,6500);
+      if(!r.ok)continue;
+      const j=await r.json();
+      const arr=Array.isArray(j)?j:(j.data||j.dados||j.results||j.resultados||j.items||j.tarifas||[]);
+      if(!Array.isArray(arr)||!arr.length)continue;
+      const norm=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+      const nome=norm(t.name||t.operator||'');
+      let best=null,bestScore=-1;
+      for(const x of arr){
+        const pr=norm(x.praca||x.praça||x.nome_praca||x.nome||'');
+        const con=norm(x.concessionaria||x.operadora||'');
+        const rod=norm(x.rodovia||x.via||'');
+        let score=0;
+        if(nome&&pr&& (pr.includes(nome)||nome.includes(pr)))score+=5;
+        if(t.operator&&con.includes(norm(t.operator)))score+=3;
+        if(t.ref&&rod.includes(norm(t.ref)))score+=2;
+        const raw=x.valor??x.tarifa??x.valor_tarifa??x.preco;
+        const val=parseFloat(String(raw??'').replace(',','.'));
+        if(Number.isFinite(val)&&val>0&&score>bestScore){bestScore=score;best={valor:val,dado:x,score};}
+      }
+      if(best&&bestScore>=2)return best;
+    }catch(e){}
+  }
+  return null;
+}
+async function detectarPedagiosTrecho(coords){
+  if(!coords||coords.length<2)return [];
+
+  // Uma única consulta por trecho (ida/retorno), cobrindo todo o corredor da rota.
+  // Isso evita o travamento causado por dezenas de chamadas sequenciais.
+  const lats=coords.map(c=>+c[1]), lons=coords.map(c=>+c[0]);
+  const margem=0.025; // ~2,5 km
+  const sul=Math.min(...lats)-margem, norte=Math.max(...lats)+margem;
+  const oeste=Math.min(...lons)-margem, leste=Math.max(...lons)+margem;
+  const q=`[out:json][timeout:18];
+  (
+    node["barrier"="toll_booth"](${sul},${oeste},${norte},${leste});
+    node["highway"="toll_gantry"](${sul},${oeste},${norte},${leste});
+    way["highway"="toll_gantry"](${sul},${oeste},${norte},${leste});
+  );
+  out center tags;`;
+
+  const servidores=[
+    'https://overpass-api.de/api/interpreter',
+    'https://overpass.kumi.systems/api/interpreter'
+  ];
+
+  let els=[];
+  for(const base of servidores){
+    try{
+      const r=await fetchTimeout(base+'?data='+encodeURIComponent(q),9000);
+      if(!r.ok)continue;
+      const j=await r.json();
+      els=j.elements||[];
+      if(els.length)break;
+    }catch(e){}
+  }
+
+  const unicos=[];
+  for(const e of els){
+    const lat=e.lat??e.center?.lat, lon=e.lon??e.center?.lon;
+    if(lat==null||lon==null)continue;
+    const p={...e,lat:+lat,lon:+lon};
+    if(!pertoDaRota([p.lon,p.lat],coords,1.6))continue;
+    const dup=unicos.some(u=>Math.hypot((u.lat-p.lat)*110.574,(u.lon-p.lon)*111.320*Math.cos(p.lat*Math.PI/180))<0.25);
+    if(!dup)unicos.push(p);
+  }
+  return unicos;
+}
+async function calcularPedagiosDinamicos(coordsIda,coordsVolta){
+  const grupos=[['Ida',coordsIda],['Retorno',coordsVolta]];
+  let total=0,detalhes=[],incompletos=0,encontrados=0;
+  for(const [rotulo,coords] of grupos){
+    if(!coords||!coords.length)continue;
+    const ps=await detectarPedagiosTrecho(coords);
+    encontrados+=ps.length;
+    for(const p of ps){
+      const tarifa=await consultarTarifaPedagioAberto(p);
+      const nome=p.tags?.name||p.tags?.operator||p.tags?.ref||'Praça de pedágio';
+      if(tarifa){
+        total+=tarifa.valor;
+        detalhes.push(`${rotulo}: ${nome} ${brl(tarifa.valor)}`);
+      }else{
+        incompletos++;
+        detalhes.push(`${rotulo}: ${nome} (tarifa não confirmada)`);
+      }
+    }
+  }
+  return {total,detalhes,incompletos,encontrados};
 }
 function tollKey(e){
   const t=e.tags||{};
@@ -539,42 +1112,183 @@ function renderPedagios(ped){
   $('pedagios').value=soma.toFixed(2); calcular();
   return soma;
 }
-async function buscarRotaViagem(){
-  const origem=$('origem').value.trim(), destino=$('destino').value.trim();
-  $('maps').href=mapsLink();
-  if(!origem||!destino){showStatus('Preencha a origem e o destino.','warn');return}
-  showStatus('Buscando rota gratuita...','warn');
-  try{
-    const [a,b]=await Promise.all([geocode(origem),geocode(destino)]);
-    const ida=await rotaOSRM(a,b);
-    let km=ida.km, sec=ida.sec, coords=[...ida.coords];
-    if($('idaVolta').value==='sim'){
-      const volta=await rotaOSRM(b,a);
-      km+=volta.km; sec+=volta.sec; coords=coords.concat(volta.coords);
+function preencherRetornoPadrao(forcar=false){
+  if($('idaVolta')?.value!=='sim') return;
+  const urbano=$('modoCotacao')?.value==='urbano';
+
+  const idaO=(urbano?$('enderecoOrigem')?.value:$('origem')?.value||'').trim();
+  const idaD=(urbano?$('enderecoDestino')?.value:$('destino')?.value||'').trim();
+
+  const ro=$('origemRetorno'), rd=$('destinoRetorno');
+  if(ro && (forcar || !ro.dataset.manual)) ro.value=idaD;
+  if(rd && (forcar || !rd.dataset.manual)) rd.value=idaO;
+
+  // No modo viagem, também inverte CEP + número.
+  if(!urbano){
+    const pares=[
+      ['cepOrigemRetorno','cepDestino'],
+      ['numOrigemRetorno','numDestino'],
+      ['cepDestinoRetorno','cepOrigem'],
+      ['numDestinoRetorno','numOrigem']
+    ];
+    for(const [retId,idaId] of pares){
+      const ret=$(retId), ida=$(idaId);
+      if(ret && (forcar || !ret.dataset.manual)) ret.value=ida?.value||'';
     }
+  }
+}
+function alternarCamposRetorno(){
+  const box=$('retornoCampos'), sim=$('idaVolta')?.value==='sim';
+  if(box) box.style.display=sim?'block':'none';
+  if(sim) preencherRetornoPadrao(true);
+}
+function marcarRetornoEditado(e){ e.target.dataset.editado='1'; }
+
+async function buscarRotaViagem(){
+  const origem=String($('origem')?.value||'').trim();
+  const destino=String($('destino')?.value||'').trim();
+  const idaVolta=$('idaVolta')?.value==='sim';
+
+  if(!origem||!destino){
+    showStatus('Preencha a origem e o destino da ida.','warn');
+    return;
+  }
+
+  // A tela é a única fonte de verdade.
+  let origemRetorno=String($('origemRetorno')?.value||'').trim();
+  let destinoRetorno=String($('destinoRetorno')?.value||'').trim();
+
+  // Se o retorno estiver vazio, inverte a ida e mostra isso nos campos.
+  if(idaVolta){
+    if(!origemRetorno) origemRetorno=destino;
+    if(!destinoRetorno) destinoRetorno=origem;
+    if($('origemRetorno')) $('origemRetorno').value=origemRetorno;
+    if($('destinoRetorno')) $('destinoRetorno').value=destinoRetorno;
+  }
+
+  $('maps').href=mapsLink();
+  showStatus(
+    `🔎 Localizando: • IDA: ${origem} → ${destino}`+
+    (idaVolta?` • RETORNO: ${origemRetorno} → ${destinoRetorno}`:''),
+    'warn'
+  );
+
+  try{
+    const [a,b]=await Promise.all([resolverPonto(origem,'cepOrigem','numOrigem'),resolverPonto(destino,'cepDestino','numDestino')]);
+    const avisosPrecisao=[];
+    if(a.precisao && a.precisao!=='número') avisosPrecisao.push(`Origem localizada por ${a.precisao}`);
+    if(b.precisao && b.precisao!=='número') avisosPrecisao.push(`Destino localizado por ${b.precisao}`);
+    const ida=await rotaOSRM(a,b);
+
+    let km=ida.km, sec=ida.sec, coords=[...ida.coords]; let coordsIda=[...ida.coords], coordsVolta=[]; window.__michelonCoords=coords; window.__michelonRoads=[...(ida.roads||[])];
+    let detalhe=`Ida: ${ida.km.toFixed(1)} km`;
+
+    if(idaVolta){
+      const [c,d]=await Promise.all([resolverPonto(origemRetorno,'cepOrigemRetorno','numOrigemRetorno'),resolverPonto(destinoRetorno,'cepDestinoRetorno','numDestinoRetorno')]);
+      if(c.precisao && c.precisao!=='número') avisosPrecisao.push(`Origem do retorno localizada por ${c.precisao}`);
+      if(d.precisao && d.precisao!=='número') avisosPrecisao.push(`Destino do retorno localizado por ${d.precisao}`);
+      const volta=await rotaOSRM(c,d);
+      coordsVolta=[...volta.coords];
+      km+=volta.km;
+      sec+=volta.sec;
+      coords=coords.concat(volta.coords); window.__michelonCoords=coords; window.__michelonRoads=[...new Set([...(window.__michelonRoads||[]),...(volta.roads||[])])];
+      detalhe+=` • Retorno: ${volta.km.toFixed(1)} km`;
+    }
+
     $('kmTotalInput').value=km.toFixed(1);
     $('tempo').value=formatDuration(sec);
     calcular();
-    showStatus(`Rota encontrada: ${km.toFixed(1)} km • ${formatDuration(sec)}. Procurando pedágios...`,'warn');
+
+    const aviso=avisosPrecisao.length?` • ⚠️ ${avisosPrecisao.join(' • ')}. Confira o ponto no mapa.`:'';
+    showStatus(`${detalhe} • Total: ${km.toFixed(1)} km • ${formatDuration(sec)}.${aviso} • Procurando pedágios...`,'warn');
+
     try{
-      const ped=await localizarPedagios(coords);
+      // Sempre limpa o valor anterior antes de calcular uma nova rota.
+      $('pedagios').value='';
+      calcular();
+
+      // Base local responde imediatamente e não depende dos servidores públicos.
+      const local=calcularCatalogoLocal(coordsIda,coordsVolta);
+
+      // Corredor Limeira ↔ Aeroporto de Guarulhos:
+      // cálculo local validado por sentido para evitar dependência da API pública.
+      if(rotaGuarulhosValidada()){
+        const idaSaiLimeira=/limeira|horacio|13482/i.test(String($('origem')?.value||''));
+        const ida=idaSaiLimeira?45.25:44.40;
+        const volta=(coordsVolta&&coordsVolta.length)?(idaSaiLimeira?44.40:45.25):0;
+        const total=ida+volta;
+        $('pedagios').value=total.toFixed(2);
+        calcular();
+        showStatus(`${detalhe} • Total: ${km.toFixed(1)} km • Pedágios do corredor Limeira ↔ Guarulhos: ida ${brl(ida)}${volta?` • retorno ${brl(volta)}`:''} • Total ${brl(total)}.`,'ok');
+        return;
+      }
+      if(rotaViracoposValidada() && local.total>0){
+        $('pedagios').value=local.total.toFixed(2);
+        calcular();
+        showStatus(`${detalhe} • Total: ${km.toFixed(1)} km • Pedágios locais validados: ${[...local.ida,...local.volta].map(p=>p.nome+' '+brl(p.valor)).join(' • ')} • Total ${brl(local.total)}.`,'ok');
+        return;
+      }
+
+      // Para outras rotas, complementa a base local com a consulta pública gratuita.
+      const dyn=await limitePromessaPedagio(calcularPedagiosDinamicos(coordsIda,coordsVolta),22000);
+      if(dyn.encontrados>0 && dyn.incompletos===0){
+        $('pedagios').value=dyn.total.toFixed(2);
+        calcular();
+        showStatus(`${detalhe} • Total: ${km.toFixed(1)} km • Pedágios: ${dyn.detalhes.join(' • ')} • Total ${brl(dyn.total)}.`,'ok');
+        return;
+      }
+
+      // Fallback já validado para Limeira ↔ Viracopos.
+      const idaCat=pedagiosCatalogoNaRota(coordsIda);
+      const voltaCat=pedagiosCatalogoNaRota(coordsVolta);
+      if(rotaViracoposValidada() && (idaCat.length||voltaCat.length)){
+        // The two physical directional records at Nova Odessa represent one charge per traversal.
+        const agrupar=(arr)=>{
+          const m=new Map();
+          for(const p of arr){
+            const k=p.nome+'|'+p.rodovia;
+            if(!m.has(k))m.set(k,p);
+          }
+          return [...m.values()];
+        };
+        const pi=agrupar(idaCat), pv=agrupar(voltaCat);
+        const total=[...pi,...pv].reduce((s,p)=>s+p.valor,0);
+        $('pedagios').value=total.toFixed(2);
+        calcular();
+        const txtIda=pi.map(p=>`${p.nome} ${p.rodovia} ${brl(p.valor)}`).join(', ')||'nenhum';
+        const txtVolta=pv.map(p=>`${p.nome} ${p.rodovia} ${brl(p.valor)}`).join(', ')||'nenhum';
+        showStatus(`${detalhe} • Total: ${km.toFixed(1)} km • Pedágios validados: ida ${txtIda}; retorno ${txtVolta}. Total ${brl(total)}.`,'ok');
+        return;
+      }
+      // Se a base dinâmica ficou incompleta, não inventa total.
+      if(dyn.encontrados>0 && dyn.incompletos>0){
+        $('pedagios').value='';
+        calcular();
+        showStatus(`${detalhe} • Total: ${km.toFixed(1)} km • ⚠️ Foram encontradas ${dyn.encontrados} praça(s), mas ${dyn.incompletos} tarifa(s) não puderam ser confirmadas. Pedágio não somado para evitar orçamento incorreto.`,'warn');
+        return;
+      }
+      const ped=await limitePromessaPedagio(localizarPedagios(coords),12000);
       if(ped.length){
         const soma=renderPedagios(ped);
-        const txt=soma>0?` Valores conhecidos somados: ${brl(soma)}.`:' Preencha o valor de cada praça abaixo; o app salva para as próximas viagens.';
-        showStatus(`Rota encontrada: ${km.toFixed(1)} km • ${formatDuration(sec)} • ${ped.length} ponto(s) de pedágio localizado(s).${txt}`,'warn');
+        const txt=soma>0
+          ?` Valores conhecidos somados: ${brl(soma)}.`
+          :' Preencha o valor de cada praça abaixo; o app salva para as próximas viagens.';
+        showStatus(`${detalhe} • Total: ${km.toFixed(1)} km • ${ped.length} ponto(s) de pedágio localizado(s).${txt}`,'warn');
       }else{
         renderPedagios([]);
-        $('pedagios').value='0'; calcular();
-        showStatus(`Rota encontrada: ${km.toFixed(1)} km • ${formatDuration(sec)}. Nenhum ponto de pedágio foi localizado nos dados gratuitos. Confira a rota antes de fechar o orçamento.`,'ok');
+        $('pedagios').value='';
+        calcular();
+        showStatus(`${detalhe} • Total: ${km.toFixed(1)} km • ${formatDuration(sec)}. ⚠️ A consulta gratuita não confirmou os pedágios desta rota. Informe manualmente se necessário.`,'warn');
       }
     }catch(e){
-      renderPedagios([]); showStatus(`Rota encontrada: ${km.toFixed(1)} km • ${formatDuration(sec)}. Não foi possível verificar pedágios agora; informe o valor manualmente.`,'warn');
+      renderPedagios([]);
+      const manual=parseFloat($('pedagios')?.value)||0;
+      showStatus(`${detalhe} • Total: ${km.toFixed(1)} km. ⚠️ Pedágios automáticos indisponíveis no momento.${manual>0?` Valor manual mantido: ${brl(manual)}.`:' Informe o total de pedágios manualmente.'}`,'warn');
     }
   }catch(e){
     showStatus('Não foi possível buscar automaticamente: '+e.message+' Você ainda pode preencher KM e pedágios manualmente.','err');
   }
 }
-const EMPKEY='michelonEmpresaV5', HISTKEY='michelonHistoricoV5';
 async function buscarRotaUrbana(){
  const status=$('rotaStatus');
  const eo=($('enderecoOrigem')?.value||'').trim(), ed=($('enderecoDestino')?.value||'').trim(), ep=($('enderecoParada')?.value||'').trim();
@@ -585,13 +1299,26 @@ async function buscarRotaUrbana(){
  status.textContent='📍 Calculando rota urbana...';
  try{
    const a=urbanoResolvido.origem,b=urbanoResolvido.destino,p=urbanoResolvido.parada;
-   let km=0,sec=0;
-   if(p){const r1=await rotaOSRM(a,p),r2=await rotaOSRM(p,b);km=r1.km+r2.km;sec=r1.sec+r2.sec}
-   else{const r=await rotaOSRM(a,b);km=r.km;sec=r.sec}
-   if($('idaVolta')?.value==='sim'){km*=2;sec*=2}
+   let km=0,sec=0, idaKm=0, voltaKm=0;
+   if(p){const r1=await rotaOSRM(a,p),r2=await rotaOSRM(p,b);idaKm=r1.km+r2.km;km=idaKm;sec=r1.sec+r2.sec}
+   else{const r=await rotaOSRM(a,b);idaKm=r.km;km=r.km;sec=r.sec}
+   if($('idaVolta')?.value==='sim'){
+     let ro=String($('origemRetorno')?.value||'').trim();
+     let rd=String($('destinoRetorno')?.value||'').trim();
+     if(!ro) ro=ed;
+     if(!rd) rd=eo;
+     if($('origemRetorno')) $('origemRetorno').value=ro;
+     if($('destinoRetorno')) $('destinoRetorno').value=rd;
+     const [c,d]=await Promise.all([resolverPonto(ro,'cepOrigemRetorno','numOrigemRetorno'),resolverPonto(rd,'cepDestinoRetorno','numDestinoRetorno')]);
+     const volta=await rotaOSRM(c,d);
+     voltaKm=volta.km; km+=volta.km; sec+=volta.sec;
+   }
    $('kmTotalInput').value=km.toFixed(1);
    if($('pedagios'))$('pedagios').value='0';
-   status.textContent=`📍 Rota urbana encontrada: ${km.toFixed(1)} km • ${Math.floor(sec/3600)}h ${Math.round((sec%3600)/60)}min.`;
+   $('tempo').value=formatDuration(sec);
+   status.textContent=$('idaVolta')?.value==='sim'
+     ?`📍 Ida: ${idaKm.toFixed(1)} km • Retorno: ${voltaKm.toFixed(1)} km • Total: ${km.toFixed(1)} km • ${formatDuration(sec)}.`
+     :`📍 Rota urbana encontrada: ${km.toFixed(1)} km • ${formatDuration(sec)}.`;
    calcular(false);
  }catch(e){status.textContent='⚠️ '+(e.message||'Não foi possível calcular a rota urbana.')}
 }
@@ -600,6 +1327,7 @@ async function buscarRota(){
  return buscarRotaViagem();
 }
 
+const EMPKEY='michelonEmpresaV5', HISTKEY='michelonHistoricoV5';
 function getEmpresa(){try{return JSON.parse(localStorage.getItem(EMPKEY))||{nome:'Michelon Viagens Executivas',fone:'',pix:'',fav:'',banco:''}}catch(e){return {nome:'Michelon Viagens Executivas'}}}
 function salvarEmpresa(){const e={nome:$('empresaNome').value.trim()||'Michelon Viagens Executivas',fone:$('empresaFone').value.trim(),pix:$('pixChave').value.trim(),fav:$('pixFav').value.trim(),banco:$('pixBanco').value.trim()};localStorage.setItem(EMPKEY,JSON.stringify(e));alert('Dados da empresa salvos neste celular.');calcular()}
 function carregarEmpresa(){const e=getEmpresa();$('empresaNome').value=e.nome||'';$('empresaFone').value=e.fone||'';$('pixChave').value=e.pix||'';$('pixFav').value=e.fav||'';$('pixBanco').value=e.banco||''}
@@ -706,7 +1434,7 @@ function renderApps(){
       <span class="badge">${x.corridas||0} corridas • ${Number(x.horas||0).toLocaleString('pt-BR')} h • ${Number(x.km||0).toFixed(1).replace('.',',')} km</span>
       <div style="margin-top:6px">
         Receita: <b>${brl(x.receita||0)}</b> • Despesas: ${brl(x.despesas||0)} • Líquido: <b>${brl(x.liq||0)}</b>
-        ${x.obs?`<br><small>${x.obs}</small>`:''}
+        ${x.obs?` • <small>${x.obs}</small>`:''}
       </div>
       <div class="btns" style="margin-top:8px"><button class="mini danger" onclick="excluirApp(${x.id})">🗑️ Excluir lançamento</button></div>
     </div>`).join(''):'<div class="note">Nenhum ganho de aplicativo lançado ainda.</div>';
@@ -801,11 +1529,11 @@ function renderAgenda(){
    return `<div class="agendaItem">
     <strong>${dataBR(x.data)} ${x.horaSaida?`• ${x.horaSaida}`:''}${x.horaRetorno?` → ${x.dataRetorno&&x.dataRetorno!==x.data?dataBR(x.dataRetorno)+' • ':''}${x.horaRetorno}`:''}</strong>
     <span class="badge">${status}</span>
-    <div style="margin-top:7px"><b>${x.cliente||'Cliente'}</b> • ${x.tipoServico||'Viagem'}<br>
-    ${x.origem||'-'} → ${x.destino||'-'}<br>
-    👥 ${x.passageiros||'-'} passageiro(s) • 💵 ${brl(valor)}<br>
+    <div style="margin-top:7px"><b>${x.cliente||'Cliente'}</b> • ${x.tipoServico||'Viagem'} • 
+    ${x.origem||'-'} → ${x.destino||'-'} • 
+    👥 ${x.passageiros||'-'} passageiro(s) • 💵 ${brl(valor)} • 
     💰 Recebido: <b>${brl(recebido)}</b> • Saldo: <b>${brl(saldo)}</b>
-    ${x.fone?`<br>📱 ${x.fone}`:''}${x.obs?`<br><small>📝 ${x.obs}</small>`:''}</div>
+    ${x.fone?` • 📱 ${x.fone}`:''}${x.obs?` • <small>📝 ${x.obs}</small>`:''}</div>
     ${x.status!=='cancelada'?`<div class="btns" style="margin-top:9px">
       ${saldo>0?`<button class="mini primary" onclick="registrarSinal(${x.id})">💰 Registrar recebimento</button>`:''}
       ${x.fone?`<button class="mini secondary" onclick="whatsReserva(${x.id})">📲 WhatsApp</button>`:''}
@@ -876,7 +1604,7 @@ function renderFinanceiro(){
   $('finAno').textContent=brl(ano);
   $('finReceber').textContent=brl(rec);
   $('finLucro').textContent=brl(luc);
-  $('histBody').innerHTML=h.length?h.slice(0,50).map(x=>`<tr><td>${dataBR(x.data)}</td><td><b>${x.cliente||'Cliente'}</b><br>${x.origem||'-'} → ${x.destino||'-'}</td><td>${brl(x.valor||0)}</td><td>${x.status==='pago'?'Pago':x.status==='confirmada'?'A receber':'Orçamento'}</td><td>${x.status==='confirmada'?`<button class="mini primary" onclick="receber(${x.id})">Receber</button>`:''}<button class="mini danger" onclick="excluirHist(${x.id})">×</button></td></tr>`).join(''):'<tr><td colspan="5">Nenhum lançamento ainda.</td></tr>';
+  $('histBody').innerHTML=h.length?h.slice(0,50).map(x=>`<tr><td>${dataBR(x.data)}</td><td><b>${x.cliente||'Cliente'}</b> • ${x.origem||'-'} → ${x.destino||'-'}</td><td>${brl(x.valor||0)}</td><td>${x.status==='pago'?'Pago':x.status==='confirmada'?'A receber':'Orçamento'}</td><td>${x.status==='confirmada'?`<button class="mini primary" onclick="receber(${x.id})">Receber</button>`:''}<button class="mini danger" onclick="excluirHist(${x.id})">×</button></td></tr>`).join(''):'<tr><td colspan="5">Nenhum lançamento ainda.</td></tr>';
   const fimA=new Date(now.getFullYear(),now.getMonth(),now.getDate(),23,59,59);
   const iniA=new Date(now.getFullYear(),now.getMonth(),1);
   const appsMes=somaAppsPeriodo(iniA,fimA);
@@ -925,20 +1653,23 @@ function calcular(autosave=true){
     const tollInputs=[...document.querySelectorAll('.tollval')];
     if(tollInputs.some(x=>(parseFloat(x.value)||0)<=0)) faltas.push('⚠️ Há pedágio localizado sem preço conhecido. Preencha o valor da praça uma vez; o app salvará para as próximas rotas.');
     aviso.style.display=faltas.length?'block':'none';
-    aviso.innerHTML=faltas.join('<br>');
+    aviso.innerHTML=faltas.join(' • ');
   }
 
-  const cliente=$('cliente').value.trim(), origem=$('origem').value.trim(), destino=$('destino').value.trim(), data=dataBR($('data').value), tempo=$('tempo').value, emp=getEmpresa();
+  const urbano=$('modoCotacao')?.value==='urbano';
+  const cliente=$('cliente').value.trim(), origem=(urbano?$('enderecoOrigem').value:$('origem').value).trim(), destino=(urbano?$('enderecoDestino').value:$('destino').value).trim(), data=dataBR($('data').value), tempo=$('tempo').value, emp=getEmpresa();
+  const temRetorno=$('idaVolta').value==='sim', origemRetorno=($('origemRetorno')?.value||'').trim(), destinoRetorno=($('destinoRetorno')?.value||'').trim();
+  const linhaRetorno=temRetorno?`\n↩️ Retorno: ${origemRetorno||destino||'-'} → ${destinoRetorno||origem||'-'}`:'';
   let pg='';
   if(emp.pix){pg=`\n\n*RESERVA / PAGAMENTO*\nSinal (${n('sinalPct').toFixed(0)}%): *${brl(sinal)}*\nSaldo: ${brl(saldo)}\nPIX: ${emp.pix}${emp.fav?`\nFavorecido: ${emp.fav}`:''}${emp.banco?`\nBanco: ${emp.banco}`:''}\nApós o pagamento, envie o comprovante para confirmação.`}
-  const msg=`🚗 *${(emp.nome||'MICHELON VIAGENS EXECUTIVAS').toUpperCase()}*\n_Conforto e segurança em cada destino._\n\n*ORÇAMENTO DE VIAGEM*\n\n${cliente?`👤 Cliente: ${cliente}\n`:''}📍 Origem: ${origem||'-'}\n📍 Destino: ${destino||'-'}\n${data?`📅 Data: ${data}\n`:''}${$('horaSaida').value?`🕐 Saída: ${$('horaSaida').value}${$('horaRetorno').value?` • Retorno: ${$('horaRetorno').value}`:''}\n`:''}🚘 Serviço: ${$('tipoServico').value}\n👥 Passageiros: ${passageiros}${$('obsViagem').value.trim()?`\n📝 Observações: ${$('obsViagem').value.trim()}`:''}\n\n🛣️ Distância total: ${km.toFixed(1)} km\n⏱️ Tempo estimado: ${tempo||'-'}\n💰 Pedágios estimados: ${brl(pedagios)}\n\n💵 *VALOR DA VIAGEM: ${brl(preco)}*\n💲 Valor por passageiro: ${brl(porPass)}${pg}\n\nOrçamento sujeito à disponibilidade na data solicitada.`;
+  const msg=`🚗 *${(emp.nome||'MICHELON VIAGENS EXECUTIVAS').toUpperCase()}*\n_Conforto e segurança em cada destino._\n\n*ORÇAMENTO DE VIAGEM*\n\n${cliente?`👤 Cliente: ${cliente}\n`:''}📍 Origem: ${origem||'-'}\n📍 Destino: ${destino||'-'}${linhaRetorno}\n${data?`📅 Data: ${data}\n`:''}${$('horaSaida').value?`🕐 Saída: ${$('horaSaida').value}${$('horaRetorno').value?` • Retorno: ${$('horaRetorno').value}`:''}\n`:''}🚘 Serviço: ${$('tipoServico').value}\n👥 Passageiros: ${passageiros}${$('obsViagem').value.trim()?`\n📝 Observações: ${$('obsViagem').value.trim()}`:''}\n\n🛣️ Distância total: ${km.toFixed(1)} km\n⏱️ Tempo estimado: ${tempo||'-'}\n💰 Pedágios estimados: ${brl(pedagios)}\n\n💵 *VALOR DA VIAGEM: ${brl(preco)}*\n💲 Valor por passageiro: ${brl(porPass)}${pg}\n\nOrçamento sujeito à disponibilidade na data solicitada.`;
   $('mensagem').value=msg;
   $('whats').href='https://wa.me/?text='+encodeURIComponent(msg);
   $('maps').href=mapsLink();
   if(autosave)saveQuote();
 }
 function saveQuote(){
-  const ids=['veiculo','tipoComb','cliente','clienteFone','origem','destino','data','horaSaida','horaRetorno','tipoServico','horasDisposicao','obsViagem','passageiros','idaVolta','kmTotalInput','tempo','pedagios','consumo','precoComb','motorista','hosp','outras','margem','sinalPct','formaPg'];
+  const ids=['veiculo','tipoComb','cliente','clienteFone','origem','destino','data','horaSaida','horaRetorno','tipoServico','horasDisposicao','obsViagem','passageiros','idaVolta','origemRetorno','destinoRetorno','cepOrigem','numOrigem','cepDestino','numDestino','cepOrigemRetorno','numOrigemRetorno','cepDestinoRetorno','numDestinoRetorno','kmTotalInput','tempo','pedagios','consumo','precoComb','motorista','hosp','outras','margem','sinalPct','formaPg'];
   const o={}; ids.forEach(id=>o[id]=$(id).value); localStorage.setItem('ultimaCotacaoAuto',JSON.stringify(o));
 }
 
@@ -1020,11 +1751,19 @@ function resumoFinanceiroAtividades(){
 
 </script>
 <footer style="text-align:center;color:#64748b;font-size:13px;padding:22px 10px 34px">
-<strong>MICHELON Viagens Executivas</strong><br>Versão 7.9.3<br>Atualizado em 11/09/2026 • Financeiro organizado
+<strong>MICHELON Viagens Executivas</strong> • Versão 7.15.0 BETA • Atualizado em 17/09/2026 • Financeiro organizado
 </footer>
 
 <script>
 document.addEventListener('DOMContentLoaded',function(){
+
+  alternarCamposRetorno();
+  ['origemRetorno','destinoRetorno','cepOrigemRetorno','numOrigemRetorno','cepDestinoRetorno','numDestinoRetorno'].forEach(id=>{
+    const e=$(id); if(e)e.addEventListener('input',ev=>{ev.target.dataset.manual='1';});
+  });
+  ['origem','destino','cepOrigem','numOrigem','cepDestino','numDestino'].forEach(id=>{
+    const e=$(id); if(e)e.addEventListener('input',()=>preencherRetornoPadrao(false));
+  });
   resumoFinanceiroAtividades();
   document.querySelectorAll('summary').forEach(function(s){
     if((s.textContent||'').indexOf('Financeiro e histórico')>=0){
@@ -1034,5 +1773,34 @@ document.addEventListener('DOMContentLoaded',function(){
 });
 </script>
 
-</body>
+<script>
+(function(){
+  const ligar=(id,listId)=>{
+    const inp=document.getElementById(id);
+    if(!inp)return;
+    let t=null;
+    const executar=()=>buscarCidade(inp,listId);
+    inp.addEventListener('input',()=>{
+      clearTimeout(t);
+      t=setTimeout(executar,120);
+    });
+    inp.addEventListener('focus',()=>{
+      if((inp.value||'').trim().length>=2) executar();
+    });
+  };
+  ligar('origem','listaOrigem');
+  ligar('destino','listaDestino');
+})();
+</script><script>
+(function(){
+ ['enderecoOrigem','enderecoDestino','enderecoParada'].forEach(id=>{
+   const el=document.getElementById(id);
+   if(el)el.addEventListener('input',()=>{
+     urbanoResolvido={origem:null,destino:null,parada:null};
+     const st=document.getElementById('statusEnderecos');
+     if(st)st.textContent='Endereço alterado. Toque em “Localizar endereços”.';
+   });
+ });
+})();
+</script><script>ligarAutocompleteUrbano();</script></body>
 </html>
