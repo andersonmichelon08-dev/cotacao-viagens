@@ -1777,7 +1777,7 @@ function resumoFinanceiroAtividades(){
 
 </script>
 <footer style="text-align:center;color:#64748b;font-size:13px;padding:22px 10px 34px">
-<strong>MICHELON Viagens Executivas</strong> • Versão 7.17.0 BETA • Atualizado em 17/09/2026 • Financeiro organizado
+<strong>MICHELON Viagens Executivas</strong> • Versão 7.18.0 BETA • Atualizado em 17/09/2026 • Financeiro organizado
 </footer>
 
 <script>
@@ -1835,73 +1835,165 @@ function fecharMeuCartao(){const m=document.getElementById('modalMeuCartao');if(
 </script>
 
 <script>
-function valorCampoCotacao(txt,nomes){
- for(const nome of nomes){
-   const re=new RegExp('(?:^|\\n)\\s*(?:'+nome+')\\s*[:=-]\\s*([^\\n]+)','i');
-   const m=txt.match(re); if(m)return m[1].trim();
+function limparLinhaCotacao(s){
+ return String(s||'')
+   .replace(/^[^\p{L}\p{N}]+/gu,'')
+   .replace(/\s+/g,' ')
+   .trim();
+}
+function normalizarChaveCotacao(s){
+ return limparLinhaCotacao(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+}
+function camposDaMensagem(txt){
+ const linhas=String(txt||'').replace(/\r/g,'').split('\n').map(x=>x.trim()).filter(Boolean);
+ const out={};
+ const chaves=[
+  ['origemRetorno',['origem do retorno','saida do retorno']],
+  ['destinoRetorno',['destino do retorno']],
+  ['dataRetorno',['data do retorno']],
+  ['horaRetorno',['horario do retorno','hora do retorno']],
+  ['origem',['endereco de saida','origem','saida']],
+  ['destino',['endereco de destino','destino']],
+  ['data',['data da viagem','data da ida','data']],
+  ['hora',['horario de saida','horario da ida','horario','hora']],
+  ['passageiros',['numero de passageiros','passageiros']],
+  ['parada',['parada opcional','parada']],
+  ['cidade',['cidade da corrida','cidade']],
+  ['tipo',['tipo de trajeto','trajeto','tipo']],
+  ['servico',['tipo de servico','servico','modo da cotacao']]
+ ];
+ for(let i=0;i<linhas.length;i++){
+   const raw=limparLinhaCotacao(linhas[i]);
+   const p=raw.indexOf(':');
+   const chaveLinha=normalizarChaveCotacao(p>=0?raw.slice(0,p):raw);
+   for(const [id,nomes] of chaves){
+     if(out[id])continue;
+     const achou=nomes.some(n=>chaveLinha===n || chaveLinha.endsWith(n));
+     if(!achou)continue;
+     let valor=p>=0?raw.slice(p+1).trim():'';
+     if(!valor && linhas[i+1]){
+       const prox=limparLinhaCotacao(linhas[i+1]);
+       const proxKey=normalizarChaveCotacao((prox.split(':')[0]||''));
+       const pareceOutraChave=chaves.some(([,ns])=>ns.some(n=>proxKey===n||proxKey.endsWith(n)));
+       if(!pareceOutraChave)valor=prox;
+     }
+     if(valor)out[id]=valor;
+   }
  }
- return '';
+ return out;
 }
 function setSeExiste(id,v){
  const e=document.getElementById(id);
- if(e&&v){e.value=v;e.dispatchEvent(new Event('input',{bubbles:true}));}
+ if(e&&v){e.value=v;e.dispatchEvent(new Event('input',{bubbles:true}));return true}
+ return false;
 }
+function dataISO(v){
+ const s=String(v||'').trim(),m=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+ return m?m[3]+'-'+m[2].padStart(2,'0')+'-'+m[1].padStart(2,'0'):s;
+}
+
+function importarBlocoMichelon(txt){
+ const ini='---MICHELON-DADOS---', fim='---FIM-MICHELON-DADOS---';
+ if(!txt.includes(ini))return null;
+ const bloco=(txt.split(ini)[1]||'').split(fim)[0]||'';
+ const o={};
+ bloco.split(/\r?\n/).forEach(l=>{
+   const p=l.indexOf('=');
+   if(p>0)o[l.slice(0,p).trim().toUpperCase()]=l.slice(p+1).trim();
+ });
+ return o;
+}
+
 function importarCotacaoRecebida(){
  const box=document.getElementById('textoCotacaoRecebida');
- let txt=(box?.value||'').trim();
+ const txt=(box?.value||'').trim();
  if(!txt){alert('Cole primeiro a mensagem da cotação recebida pelo WhatsApp.');return;}
-
- // Também aceita links com ?origem=...&destino=... etc.
- try{
-   const url=txt.match(/https?:\/\/\S+/)?.[0];
-   if(url){
-     const p=new URL(url).searchParams;
-     const get=k=>p.get(k)||'';
-     if(get('modo')==='urbano'&&document.getElementById('modoCotacao')){
-       document.getElementById('modoCotacao').value='urbano';
-       alternarModoCotacao();
-       setSeExiste('cidadeUrbana',get('cidade'));
-       setSeExiste('enderecoOrigem',get('origem'));
-       setSeExiste('enderecoDestino',get('destino'));
-       setSeExiste('enderecoParada',get('parada'));
-     }else{
-       setSeExiste('origem',get('origem'));
-       setSeExiste('destino',get('destino'));
-     }
-     setSeExiste('data',get('data')); setSeExiste('hora',get('hora'));
-     setSeExiste('passageiros',get('passageiros'));
-     alert('Cotação carregada. Confira os dados e calcule a rota.');
-     return;
+ const md=importarBlocoMichelon(txt);
+ if(md){
+   const modo=(md.SERVICO||'').toLowerCase()==='urbano'?'urbano':'viagem';
+   const mc=document.getElementById('modoCotacao');
+   if(mc){mc.value=modo;alternarModoCotacao();}
+   if(modo==='urbano'){
+     setSeExiste('cidadeUrbana',md.CIDADE);
+     setSeExiste('enderecoOrigem',md.ORIGEM);
+     setSeExiste('enderecoDestino',md.DESTINO);
+     setSeExiste('enderecoParada',md.PARADA);
+   }else{
+     setSeExiste('origem',md.ORIGEM);
+     setSeExiste('destino',md.DESTINO);
    }
- }catch(e){}
+   setSeExiste('data',md.DATA);
+   setSeExiste('hora',md.HORA);
+   setSeExiste('passageiros',md.PASSAGEIROS);
+   setSeExiste('origemRetorno',md.ORIGEM_RETORNO);
+   setSeExiste('destinoRetorno',md.DESTINO_RETORNO);
+   setSeExiste('dataRetorno',md.DATA_RETORNO);
+   setSeExiste('horaRetorno',md.HORA_RETORNO);
+   const iv=document.getElementById('idaVolta');
+   if(iv && (md.TRAJETO||'').toLowerCase().includes('volta')){
+     iv.value='sim';iv.dispatchEvent(new Event('change',{bubbles:true}));
+     if(typeof alternarCamposRetorno==='function')alternarCamposRetorno();
+     setSeExiste('origemRetorno',md.ORIGEM_RETORNO);
+     setSeExiste('destinoRetorno',md.DESTINO_RETORNO);
+   }
+   alert('Cotação MICHELON carregada automaticamente. Confira os dados e calcule a rota.');
+   return;
+ }
 
- const modo=/corrida dentro|urbano/i.test(txt)?'urbano':'viagem';
+
+ const c=camposDaMensagem(txt);
+ const ehUrbano=/corrida dentro|urbano/i.test(c.servico||txt) &&
+                !/viagem entre cidades/i.test(c.servico||'');
+ const modo=ehUrbano?'urbano':'viagem';
+
  if(document.getElementById('modoCotacao')){
    document.getElementById('modoCotacao').value=modo;
    alternarModoCotacao();
  }
- const origem=valorCampoCotacao(txt,['origem','sa[ií]da','endereço de sa[ií]da','endereco de saida']);
- const destino=valorCampoCotacao(txt,['destino','endereço de destino','endereco de destino']);
- const parada=valorCampoCotacao(txt,['parada','parada opcional']);
- const cidade=valorCampoCotacao(txt,['cidade','cidade da corrida']);
- const data=valorCampoCotacao(txt,['data','data da viagem']);
- const hora=valorCampoCotacao(txt,['hor[aá]rio','hora']);
- const pass=valorCampoCotacao(txt,['passageiros','n[uú]mero de passageiros']);
 
  if(modo==='urbano'){
-   setSeExiste('cidadeUrbana',cidade);
-   setSeExiste('enderecoOrigem',origem);
-   setSeExiste('enderecoDestino',destino);
-   setSeExiste('enderecoParada',parada);
+   setSeExiste('cidadeUrbana',c.cidade);
+   setSeExiste('enderecoOrigem',c.origem);
+   setSeExiste('enderecoDestino',c.destino);
+   setSeExiste('enderecoParada',c.parada);
  }else{
-   setSeExiste('origem',origem);setSeExiste('destino',destino);
+   setSeExiste('origem',c.origem);
+   setSeExiste('destino',c.destino);
  }
- // Convert dd/mm/yyyy to yyyy-mm-dd when possible
- let d=data;
- const dm=data.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
- if(dm)d=dm[3]+'-'+dm[2]+'-'+dm[1];
- setSeExiste('data',d);setSeExiste('hora',hora);setSeExiste('passageiros',pass);
- alert('Cotação importada. Confira os dados antes de calcular.');
+
+ setSeExiste('data',dataISO(c.data));
+ setSeExiste('hora',c.hora);
+ setSeExiste('passageiros',c.passageiros);
+
+ // Detect ida e volta from explicit fields or text.
+ const temRetorno=!!(c.origemRetorno||c.destinoRetorno||c.dataRetorno||c.horaRetorno||/ida e volta|retorno/i.test(c.tipo||''));
+ const tipoEl=document.getElementById('tipoServico')||document.getElementById('tipo')||document.getElementById('trajeto');
+ if(tipoEl&&temRetorno){
+   const opt=[...tipoEl.options].find(o=>/ida e volta|viagem/i.test(o.textContent||'')&&/volta|retorno/i.test(o.textContent||''));
+   if(opt){tipoEl.value=opt.value;tipoEl.dispatchEvent(new Event('change',{bubbles:true}));}
+ }
+
+ // Existing MICHELON return field IDs.
+ setSeExiste('origemRetorno',c.origemRetorno);
+ setSeExiste('destinoRetorno',c.destinoRetorno);
+ setSeExiste('dataRetorno',dataISO(c.dataRetorno));
+ setSeExiste('horaRetorno',c.horaRetorno);
+
+ // Some versions use these aliases.
+ setSeExiste('retornoData',dataISO(c.dataRetorno));
+ setSeExiste('retornoHora',c.horaRetorno);
+
+ const faltam=[];
+ if(!c.origem)faltam.push('origem');
+ if(!c.destino)faltam.push('destino');
+ if(!c.data)faltam.push('data');
+ if(!c.hora)faltam.push('horário');
+
+ if(faltam.length){
+   alert('Cotação lida, mas não encontrei: '+faltam.join(', ')+'. Confira a mensagem e complete esses campos.');
+ }else{
+   alert(temRetorno?'Cotação de ida e volta importada. Confira os dados e calcule a rota.':'Cotação importada. Confira os dados e calcule a rota.');
+ }
 }
 </script>
 </body>
