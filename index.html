@@ -44,6 +44,14 @@ details summary{cursor:pointer;font-weight:700}.note{font-size:12px;color:var(--
 </style>
 </head>
 <body>
+<div id="importarCotacaoBox" style="max-width:980px;margin:12px auto;padding:14px;border:2px solid #111827;border-radius:16px;background:#fff;box-sizing:border-box">
+  <div style="font-size:18px;font-weight:900;margin-bottom:6px">📥 Cotação recebida do cliente</div>
+  <div style="font-size:13px;color:#475569;margin-bottom:9px">Copie a mensagem inteira que chegou no WhatsApp e cole aqui.</div>
+  <textarea id="textoCotacaoRecebida" rows="5" placeholder="Cole aqui a cotação recebida pelo WhatsApp..." style="width:100%;box-sizing:border-box;padding:12px;border:1px solid #cbd5e1;border-radius:10px;font-size:16px"></textarea>
+  <button type="button" onclick="importarCotacaoRecebida()" style="width:100%;margin-top:9px;border:0;border-radius:11px;padding:14px;font-weight:900;font-size:16px;background:#111827;color:#fff">📥 IMPORTAR PARA O MICHELON</button>
+  <div style="font-size:12px;color:#64748b;margin-top:7px">Depois confira os campos preenchidos e calcule a rota normalmente.</div>
+</div>
+
 <button id="btnMeuCartao" type="button" onclick="abrirMeuCartao()" style="position:fixed;right:14px;bottom:18px;z-index:9998;border:0;border-radius:999px;padding:13px 17px;font-weight:800;background:#111827;color:#fff;box-shadow:0 8px 24px rgba(0,0,0,.25)">📇 Meu Cartão</button>
 <div id="modalMeuCartao" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.94);padding:8px;overflow:auto" onclick="if(event.target===this)fecharMeuCartao()">
  <div style="max-width:520px;margin:8px auto">
@@ -88,12 +96,7 @@ async function compartilharCartao(){
 <option value="viagem">🛣️ Viagem entre cidades</option>
 <option value="urbano">📍 Corrida dentro da cidade</option>
 </select>
-<div id="importarCotacaoBox" style="margin-top:12px;padding:12px;border:1px solid #dbe3ea;border-radius:12px;background:#f8fafc">
-  <button type="button" onclick="importarCotacaoRecebida()" style="width:100%;border:0;border-radius:10px;padding:12px;font-weight:800;background:#111827;color:white">📥 Abrir cotação recebida</button>
-  <div style="font-size:12px;color:#64748b;margin-top:7px">Cole abaixo a mensagem/link da solicitação do cliente. O MICHELON tenta preencher os dados automaticamente.</div>
-  <textarea id="textoCotacaoRecebida" rows="3" placeholder="Cole aqui a cotação recebida pelo WhatsApp..." style="width:100%;margin-top:8px"></textarea>
-</div>
-</div>
+
 <div id="urbanoCampos" class="full" style="display:none">
   <div class="grid">
     <div class="full"><label>Cidade da corrida</label><input id="cidadeUrbana" value="Limeira, SP" placeholder="Ex.: Limeira, SP"><div class="hint">Usada automaticamente quando você digitar apenas a rua, bairro ou local.</div></div>
@@ -1777,7 +1780,7 @@ function resumoFinanceiroAtividades(){
 
 </script>
 <footer style="text-align:center;color:#64748b;font-size:13px;padding:22px 10px 34px">
-<strong>MICHELON Viagens Executivas</strong> • Versão 7.18.0 BETA • Atualizado em 17/09/2026 • Financeiro organizado
+<strong>MICHELON Viagens Executivas</strong> • Versão 7.18.2 BETA • Atualizado em 17/09/2026 • Financeiro organizado
 </footer>
 
 <script>
@@ -1892,6 +1895,25 @@ function dataISO(v){
  return m?m[3]+'-'+m[2].padStart(2,'0')+'-'+m[1].padStart(2,'0'):s;
 }
 
+
+function normalizarEnderecoMichelon(v){
+ let s=String(v||'').trim();
+ if(!s)return s;
+ const cep=(s.match(/\|\s*CEP\s*:\s*([^|]+)/i)||[])[1];
+ const num=(s.match(/\|\s*N[º°o]?\s*:\s*([^|]+)/i)||[])[1];
+ s=s.replace(/\|\s*CEP\s*:\s*[^|]+/ig,'')
+    .replace(/\|\s*N[º°o]?\s*:\s*[^|]+/ig,'')
+    .replace(/\s*\|\s*/g,', ')
+    .replace(/\s+/g,' ')
+    .replace(/\s*,\s*,+/g,',')
+    .trim();
+ if(num && !new RegExp('(?:^|\\D)'+String(num).trim().replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'(?:\\D|$)').test(s)){
+   s += ', '+String(num).trim();
+ }
+ if(cep)s += ', CEP '+String(cep).trim();
+ return s.replace(/^,\s*|,\s*$/g,'').trim();
+}
+
 function importarBlocoMichelon(txt){
  const ini='---MICHELON-DADOS---', fim='---FIM-MICHELON-DADOS---';
  if(!txt.includes(ini))return null;
@@ -1915,26 +1937,26 @@ function importarCotacaoRecebida(){
    if(mc){mc.value=modo;alternarModoCotacao();}
    if(modo==='urbano'){
      setSeExiste('cidadeUrbana',md.CIDADE);
-     setSeExiste('enderecoOrigem',md.ORIGEM);
-     setSeExiste('enderecoDestino',md.DESTINO);
+     setSeExiste('enderecoOrigem',normalizarEnderecoMichelon(md.ORIGEM));
+     setSeExiste('enderecoDestino',normalizarEnderecoMichelon(md.DESTINO));
      setSeExiste('enderecoParada',md.PARADA);
    }else{
-     setSeExiste('origem',md.ORIGEM);
-     setSeExiste('destino',md.DESTINO);
+     setSeExiste('origem',normalizarEnderecoMichelon(md.ORIGEM));
+     setSeExiste('destino',normalizarEnderecoMichelon(md.DESTINO));
    }
    setSeExiste('data',md.DATA);
    setSeExiste('hora',md.HORA);
    setSeExiste('passageiros',md.PASSAGEIROS);
-   setSeExiste('origemRetorno',md.ORIGEM_RETORNO);
-   setSeExiste('destinoRetorno',md.DESTINO_RETORNO);
+   setSeExiste('origemRetorno',normalizarEnderecoMichelon(md.ORIGEM_RETORNO));
+   setSeExiste('destinoRetorno',normalizarEnderecoMichelon(md.DESTINO_RETORNO));
    setSeExiste('dataRetorno',md.DATA_RETORNO);
    setSeExiste('horaRetorno',md.HORA_RETORNO);
    const iv=document.getElementById('idaVolta');
    if(iv && (md.TRAJETO||'').toLowerCase().includes('volta')){
      iv.value='sim';iv.dispatchEvent(new Event('change',{bubbles:true}));
      if(typeof alternarCamposRetorno==='function')alternarCamposRetorno();
-     setSeExiste('origemRetorno',md.ORIGEM_RETORNO);
-     setSeExiste('destinoRetorno',md.DESTINO_RETORNO);
+     setSeExiste('origemRetorno',normalizarEnderecoMichelon(md.ORIGEM_RETORNO));
+     setSeExiste('destinoRetorno',normalizarEnderecoMichelon(md.DESTINO_RETORNO));
    }
    alert('Cotação MICHELON carregada automaticamente. Confira os dados e calcule a rota.');
    return;
@@ -1953,8 +1975,8 @@ function importarCotacaoRecebida(){
 
  if(modo==='urbano'){
    setSeExiste('cidadeUrbana',c.cidade);
-   setSeExiste('enderecoOrigem',c.origem);
-   setSeExiste('enderecoDestino',c.destino);
+   setSeExiste('enderecoOrigem',normalizarEnderecoMichelon(c.origem));
+   setSeExiste('enderecoDestino',normalizarEnderecoMichelon(c.destino));
    setSeExiste('enderecoParada',c.parada);
  }else{
    setSeExiste('origem',c.origem);
@@ -1974,8 +1996,8 @@ function importarCotacaoRecebida(){
  }
 
  // Existing MICHELON return field IDs.
- setSeExiste('origemRetorno',c.origemRetorno);
- setSeExiste('destinoRetorno',c.destinoRetorno);
+ setSeExiste('origemRetorno',normalizarEnderecoMichelon(c.origemRetorno));
+ setSeExiste('destinoRetorno',normalizarEnderecoMichelon(c.destinoRetorno));
  setSeExiste('dataRetorno',dataISO(c.dataRetorno));
  setSeExiste('horaRetorno',c.horaRetorno);
 
