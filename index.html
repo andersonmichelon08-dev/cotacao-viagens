@@ -44,6 +44,26 @@ details summary{cursor:pointer;font-weight:700}.note{font-size:12px;color:var(--
 </style>
 </head>
 <body>
+<button id="btnMeuCartao" type="button" onclick="abrirMeuCartao()" style="position:fixed;right:14px;bottom:18px;z-index:9998;border:0;border-radius:999px;padding:13px 17px;font-weight:800;background:#111827;color:#fff;box-shadow:0 8px 24px rgba(0,0,0,.25)">📇 Meu Cartão</button>
+<div id="modalMeuCartao" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.94);padding:8px;overflow:auto" onclick="if(event.target===this)fecharMeuCartao()">
+ <div style="max-width:520px;margin:8px auto">
+  <div style="display:flex;justify-content:flex-end;margin-bottom:6px"><button type="button" onclick="fecharMeuCartao()" style="border:0;border-radius:10px;padding:9px 12px;font-weight:800">✕ Fechar</button></div>
+  <iframe title="Cartão digital MICHELON" srcdoc="&lt;!doctype html&gt;&lt;html lang=&quot;pt-BR&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1&quot;&gt;&lt;meta name=&quot;theme-color&quot; content=&quot;#090909&quot;&gt;&lt;title&gt;Michelon Viagens Executivas - V4&lt;/title&gt;&lt;style&gt;
+*{box-sizing:border-box}body{margin:0;background:#080808;color:#f7f1df;font-family:Arial,sans-serif}.wrap{max-width:520px;margin:auto;min-height:100vh;padding:34px 20px;background:radial-gradient(circle at top,#272014,#0b0b0b 38%,#050505)}.card{border:1px solid #b98a35;border-radius:28px;padding:28px 22px;box-shadow:0 0 35px #000}.logo{text-align:center}.mark{font-family:Georgia,serif;font-weight:bold;font-size:74px;line-height:.9;color:#d8aa50;text-shadow:0 2px 12px #8c621e}.road{width:135px;height:5px;background:#d8aa50;margin:-19px auto 13px;transform:rotate(-12deg);border-radius:8px}h1{font-family:Georgia,serif;letter-spacing:4px;color:#e0b75f;font-size:34px;margin:8px 0 2px}.sub{letter-spacing:5px;font-size:12px;color:#e7c77e}.tag{margin:24px 0 18px;font-size:15px;letter-spacing:1.5px;color:#d9c28d}.name{font-size:24px;font-weight:700;margin-top:24px}.place{color:#c9b992;margin:5px 0 20px}.btn{display:block;text-decoration:none;text-align:center;padding:16px;margin:11px 0;border-radius:15px;font-weight:800;font-size:17px}.gold{background:linear-gradient(135deg,#b17c26,#efd07a,#a87321);color:#090909}.dark{border:1px solid #9e7b3c;color:#f4e6bd;background:#151515}.small{font-size:13px;text-align:center;color:#aa9d7e;margin-top:22px;line-height:1.6}.pillars{display:flex;justify-content:space-around;border-top:1px solid #6f5528;padding-top:18px;margin-top:22px;font-size:11px;letter-spacing:1px;color:#e2c475}.share{cursor:pointer;width:100%;font-family:inherit}.qr{margin:24px auto 8px;background:#fff;padding:10px;border-radius:14px;width:170px;height:170px}.qr img{width:150px;height:150px;display:block}.qrlabel{text-align:center;color:#d9c28d;font-size:12px;margin-bottom:16px}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;main class=&quot;wrap&quot;&gt;&lt;section class=&quot;card&quot;&gt;&lt;div class=&quot;logo&quot;&gt;&lt;div class=&quot;mark&quot;&gt;M&lt;/div&gt;&lt;div class=&quot;road&quot;&gt;&lt;/div&gt;&lt;h1&gt;MICHELON&lt;/h1&gt;&lt;div class=&quot;sub&quot;&gt;VIAGENS EXECUTIVAS&lt;/div&gt;&lt;div class=&quot;tag&quot;&gt;Mais que viagens, conexões que importam.&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;name&quot;&gt;Anderson Michelon&lt;/div&gt;&lt;div class=&quot;place&quot;&gt;Limeira – SP&lt;/div&gt;&lt;a class=&quot;btn gold&quot; href=&quot;https://wa.me/5519992462362?text=Olá%20Anderson%2C%20gostaria%20de%20solicitar%20um%20orçamento.&quot;&gt;💬 Solicitar orçamento no WhatsApp&lt;/a&gt;&lt;a class=&quot;btn dark&quot; href=&quot;tel:+5519992462362&quot; onclick=&quot;window.location.href=\&#x27;tel:+5519992462362\&#x27;;return false;&quot;&gt;📞 Ligar agora&lt;/a&gt;&lt;a class=&quot;btn dark&quot; href=&quot;mailto:andersonmichelon08@gmail.com?subject=Contato%20-%20Michelon%20Viagens%20Executivas&quot; onclick=&quot;window.location.href=\&#x27;mailto:andersonmichelon08@gmail.com?subject=Contato%20-%20Michelon%20Viagens%20Executivas\&#x27;;return false;&quot;&gt;✉️ Enviar e-mail&lt;/a&gt;&lt;a class=&quot;btn dark&quot; href=&quot;data:text/vcard;charset=utf-8,BEGIN%3AVCARD%0AVERSION%3A3.0%0AFN%3AAnderson%20Michelon%0AORG%3AMichelon%20Viagens%20Executivas%0ATEL%3BTYPE%3DCELL%3A%2B5519992462362%0AEMAIL%3Aandersonmichelon08%40gmail.com%0AADR%3A%3B%3B%3BLimeira%3BSP%3B%3BBrasil%0AEND%3AVCARD&quot; download=&quot;Anderson_Michelon.vcf&quot;&gt;👤 Salvar contato&lt;/a&gt;
+&lt;button class=&quot;btn dark share&quot; onclick=&quot;compartilharCartao()&quot;&gt;📲 Compartilhar cartão&lt;/button&gt;
+&lt;div class=&quot;qr&quot;&gt;&lt;img alt=&quot;QR Code WhatsApp&quot; src=&quot;https://api.qrserver.com/v1/create-qr-code/?size=150x150&amp;data=https%3A%2F%2Fandersonmichelon08-dev.github.io%2Fcartao-michelon%2F&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;qrlabel&quot;&gt;Aponte a câmera para abrir meu cartão digital&lt;/div&gt;
+&lt;div class=&quot;pillars&quot;&gt;&lt;span&gt;CONFORTO&lt;/span&gt;&lt;span&gt;SEGURANÇA&lt;/span&gt;&lt;span&gt;PONTUALIDADE&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;small&quot;&gt;(19) 99246-2362&lt;br&gt;andersonmichelon08@gmail.com&lt;br&gt;Seu destino, nossa prioridade.&lt;/div&gt;&lt;/section&gt;&lt;/main&gt;&lt;script&gt;
+async function compartilharCartao(){
+ const dados={title:&#x27;Michelon Viagens Executivas&#x27;,text:&#x27;Anderson Michelon • Viagens Executivas\nWhatsApp: (19) 99246-2362&#x27;,url:location.protocol.startsWith(&#x27;http&#x27;)?location.href:&#x27;https://wa.me/5519992462362&#x27;};
+ if(navigator.share){try{await navigator.share(dados)}catch(e){}}else{
+  try{await navigator.clipboard.writeText(dados.text+&#x27;\n&#x27;+dados.url);alert(&#x27;Dados do cartão copiados.&#x27;)}catch(e){alert(&#x27;Compartilhe pelo WhatsApp: (19) 99246-2362&#x27;)}
+ }
+}
+&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" style="width:100%;height:790px;border:0;border-radius:18px;background:#080808"></iframe>
+ </div>
+</div>
+
 <div class="wrap">
   <h1>🚗 MICHELON</h1>
   <div class="sub"><b>Viagens Executivas</b> • Conforto e segurança em cada destino.</div>
@@ -1751,7 +1771,7 @@ function resumoFinanceiroAtividades(){
 
 </script>
 <footer style="text-align:center;color:#64748b;font-size:13px;padding:22px 10px 34px">
-<strong>MICHELON Viagens Executivas</strong> • Versão 7.15.0 BETA • Atualizado em 17/09/2026 • Financeiro organizado
+<strong>MICHELON Viagens Executivas</strong> • Versão 7.16.1 BETA • Atualizado em 17/09/2026 • Financeiro organizado
 </footer>
 
 <script>
@@ -1802,5 +1822,10 @@ document.addEventListener('DOMContentLoaded',function(){
    });
  });
 })();
-</script><script>ligarAutocompleteUrbano();</script></body>
+</script><script>ligarAutocompleteUrbano();</script>
+<script>
+function abrirMeuCartao(){const m=document.getElementById('modalMeuCartao');if(m){m.style.display='block';document.body.style.overflow='hidden';}}
+function fecharMeuCartao(){const m=document.getElementById('modalMeuCartao');if(m){m.style.display='none';document.body.style.overflow='';}}
+</script>
+</body>
 </html>
