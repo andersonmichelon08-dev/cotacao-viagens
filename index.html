@@ -1818,7 +1818,11 @@ function calcular(autosave=true){
   const custo=comb+pedagios+extras;
   const margem=n('margem');
   const valorKm=Math.min(4,Math.max(0,n('valorKm')));
-  const preco=valorKm>0 ? (km*valorKm)+pedagios+extras : custo*(1+margem/100);
+  // Primeiro calcula o valor-base da viagem.
+  // Se houver valor por km configurado, ele continua sendo usado como base.
+  // Depois aplica a Margem / lucro (%) sobre esse valor-base.
+  const basePreco=valorKm>0 ? (km*valorKm)+pedagios+extras : custo;
+  const preco=basePreco*(1+Math.max(0,margem)/100);
   const passageiros=Math.max(1,n('passageiros'));
   const porPass=preco/passageiros;
   const sinal=preco*Math.max(0,n('sinalPct'))/100;
@@ -1939,7 +1943,7 @@ function resumoFinanceiroAtividades(){
 
 </script>
 <footer style="text-align:center;color:#64748b;font-size:13px;padding:22px 10px 34px">
-<strong>MICHELON Viagens Executivas</strong> • Versão 7.19.1 BETA • Atualizado em 17/09/2026 • Financeiro organizado
+<strong>MICHELON Viagens Executivas</strong> • Versão 7.19.2 BETA • Atualizado em 17/09/2026 • Financeiro organizado
 </footer>
 
 <script>
