@@ -199,7 +199,7 @@ async function compartilharCartao(){
     <textarea id="mensagem"></textarea>
     <div class="btns" style="margin-top:9px">
       <button class="primary" onclick="calcular()">Calcular e gerar orçamento</button>
-      <button class="secondary" onclick="copiar()">Copiar orçamento</button><button class="secondary" onclick="salvarOrcamento()">💾 Salvar orçamento</button><button class="primary" onclick="registrarViagem()">✅ Confirmar viagem</button>
+      <button class="secondary" onclick="copiar()">Copiar orçamento</button><button class="secondary" onclick="salvarOrcamento()">💾 Salvar orçamento</button><button class="secondary" onclick="salvarOrcamentoPendente()">📋 Salvar como pendente</button><button class="primary" onclick="registrarViagem()">✅ Confirmar viagem</button>
       <a id="whats" class="button ghost" href="#" target="_blank" rel="noopener">Enviar no WhatsApp</a>
       <a id="maps" class="button ghost" href="#" target="_blank" rel="noopener">Abrir rota no Google Maps</a>
       <button class="danger full" onclick="limpar()">Limpar cotação</button>
@@ -208,14 +208,16 @@ async function compartilharCartao(){
 
 
   <div class="card">
-    <section class="card" id="orcamentosPendentesCard">
-  <h2>📋 Orçamentos pendentes</h2>
-  <p class="muted">Salve aqui os orçamentos enviados enquanto aguarda a resposta do cliente.</p>
-  <button type="button" class="primary" onclick="salvarOrcamentoPendente()">💾 Salvar orçamento pendente</button>
-  <div id="listaOrcamentosPendentes" style="margin-top:12px"></div>
-</section>
+    
 <details open>
       <summary>📅 Agenda e reservas</summary>
+      <details open style="margin:12px 0">
+        <summary>📋 Orçamentos pendentes</summary>
+        <div style="margin-top:12px">
+          <p class="muted">Orçamentos enviados aguardando resposta do cliente.</p>
+          <div id="listaOrcamentosPendentes"></div>
+        </div>
+      </details>
       <details style="margin:12px 0">
         <summary>➕ Nova reserva direta</summary>
         <div style="margin-top:12px">
@@ -1954,7 +1956,7 @@ function resumoFinanceiroAtividades(){
 
 </script>
 <footer style="text-align:center;color:#64748b;font-size:13px;padding:22px 10px 34px">
-<strong>MICHELON Viagens Executivas</strong> • Versão 7.20.2 BETA • Atualizado em 17/09/2026 • Financeiro organizado
+<strong>MICHELON Viagens Executivas</strong> • Versão 7.20.3 BETA • Atualizado em 17/09/2026 • Financeiro organizado
 </footer>
 
 <script>
