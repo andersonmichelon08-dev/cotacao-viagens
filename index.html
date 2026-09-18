@@ -1956,7 +1956,7 @@ function resumoFinanceiroAtividades(){
 
 </script>
 <footer style="text-align:center;color:#64748b;font-size:13px;padding:22px 10px 34px">
-<strong>MICHELON Viagens Executivas</strong> • Versão 7.20.5 BETA • Atualizado em 17/09/2026 • Financeiro organizado
+<strong>MICHELON Viagens Executivas</strong> • Versão 7.20.6 BETA • Atualizado em 17/09/2026 • Financeiro organizado
 </footer>
 
 <script>
@@ -2288,16 +2288,10 @@ function salvarOrcamentoPendente(){
  // Só limpa depois que o orçamento já foi gravado com sucesso em Pendentes.
  alert('Orçamento salvo em Pendentes. A tela será limpa para o próximo cliente.');
  try{
-   if(typeof window.limparCotacao==='function'){
-     window.limparCotacao();
-   }else{
-     // Fallback seguro: limpa somente campos da cotação, sem tocar em Pendentes/Agenda.
-     const ids=['cliente','telefone','enderecoOrigem','enderecoDestino','enderecoParada',
-       'origem','destino','origemRetorno','destinoRetorno','data','dataViagem','dataRetorno',
-       'horaSaida','horaRetorno','obsViagem','kmTotalInput','tempo','pedagios','mensagemOrcamento'];
-     ids.forEach(id=>{const el=document.getElementById(id);if(el){el.value='';}});
-   }
- }catch(e){}
+   limpar()
+ }catch(e){
+   console.error('Falha ao limpar cotação automaticamente',e);
+ }
 }
 function carregarPendente(id){
  const o=lerPendentes().find(x=>x.id===id);if(!o)return;
