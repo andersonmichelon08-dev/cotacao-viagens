@@ -558,6 +558,65 @@ function ligarAutocompleteUrbano(){
    });
  });
 }
+
+async function localizarRuaPorCepGratis(semNumero, numero, cidadePadrao){
+ const cidade=(cidadePadrao.split(',')[0]||'').trim();
+ const uf=((cidadePadrao.split(',')[1]||'SP').trim()||'SP').toUpperCase();
+ let rua=String(semNumero||'').trim();
+ if(!rua||!cidade)return null;
+
+ // ViaCEP pesquisa por endereço e devolve CEP/bairro/logradouro.
+ try{
+   const u='https://viacep.com.br/ws/'+encodeURIComponent(uf)+'/'+encodeURIComponent(cidade)+'/'+encodeURIComponent(rua)+'/json/';
+   const r=await fetchTimeout(u,7000);
+   if(r.ok){
+     const lista=await r.json();
+     if(Array.isArray(lista)&&lista.length){
+       const norm=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9 ]/g,' ');
+       const alvo=norm(rua).replace(/^(rua|avenida|av|r)\s+/,'').trim();
+       const score=x=>{
+         const log=norm(x.logradouro).replace(/^(rua|avenida|av|r)\s+/,'').trim();
+         let s=0;
+         for(const p of alvo.split(/\s+/).filter(v=>v.length>2)) if(log.includes(p))s+=4;
+         if(log===alvo)s+=20;
+         return s;
+       };
+       const d=[...lista].sort((a,b)=>score(b)-score(a))[0];
+       const cep=String(d.cep||'').replace(/\D/g,'');
+       if(cep){
+         // BrasilAPI v2 pode devolver coordenadas do CEP sem chave/API paga.
+         try{
+           const br=await fetchTimeout('https://brasilapi.com.br/api/cep/v2/'+cep,7000);
+           if(br.ok){
+             const bj=await br.json();
+             const c=bj?.location?.coordinates||{};
+             const lat=parseFloat(c.latitude), lon=parseFloat(c.longitude);
+             if(Number.isFinite(lat)&&Number.isFinite(lon)&&lat!==0&&lon!==0){
+               const nome=[d.logradouro,numero,d.bairro,d.localidade,d.uf,d.cep,'Brasil'].filter(Boolean).join(', ');
+               return {lat,lon,nome,numeroConfirmado:false,precisao:'CEP'};
+             }
+           }
+         }catch(e){}
+
+         // Última tentativa: endereço enriquecido com bairro e CEP no Nominatim.
+         const completo=[d.logradouro,d.bairro,d.localidade,d.uf,d.cep,'Brasil'].filter(Boolean).join(', ');
+         try{
+           const nu='https://nominatim.openstreetmap.org/search?format=jsonv2&limit=5&countrycodes=br&addressdetails=1&q='+encodeURIComponent(completo);
+           const nr=await fetchTimeout(nu,7000);
+           if(nr.ok){
+             const nj=await nr.json();
+             if(nj&&nj[0]){
+               return {lat:+nj[0].lat,lon:+nj[0].lon,nome:nj[0].display_name||completo,numeroConfirmado:false,precisao:'rua/CEP'};
+             }
+           }
+         }catch(e){}
+       }
+     }
+   }
+ }catch(e){}
+ return null;
+}
+
 async function localizarUmEndereco(texto){
  let original=String(texto||'').trim();
  if(!original)throw new Error('Informe o endereço ou local.');
@@ -620,7 +679,10 @@ async function localizarUmEndereco(texto){
    }
  }catch(e){}
 
- throw new Error('Local não encontrado: '+original+'. Tente somente o nome da rua/local; o número pode ser conferido no mapa.');
+ const porCep=await localizarRuaPorCepGratis(semNumero,num,cidadePadrao);
+ if(porCep)return porCep;
+
+ throw new Error('Local não encontrado: '+original+'. Não foi possível localizar nem pela rua nem pelo CEP automático.');
 }
 function numeroDigitado(txt){
  const m=(txt||'').match(/\b(\d{1,6})\b/); return m?m[1]:'';
@@ -1790,7 +1852,7 @@ function resumoFinanceiroAtividades(){
 
 </script>
 <footer style="text-align:center;color:#64748b;font-size:13px;padding:22px 10px 34px">
-<strong>MICHELON Viagens Executivas</strong> • Versão 7.18.3 BETA • Atualizado em 17/09/2026 • Financeiro organizado
+<strong>MICHELON Viagens Executivas</strong> • Versão 7.18.4 BETA • Atualizado em 17/09/2026 • Financeiro organizado
 </footer>
 
 <script>
