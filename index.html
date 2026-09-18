@@ -1948,7 +1948,7 @@ function resumoFinanceiroAtividades(){
 
 </script>
 <footer style="text-align:center;color:#64748b;font-size:13px;padding:22px 10px 34px">
-<strong>MICHELON Viagens Executivas</strong> • Versão 7.19.7 BETA • Atualizado em 17/09/2026 • Financeiro organizado
+<strong>MICHELON Viagens Executivas</strong> • Versão 7.20.1 BETA • Atualizado em 17/09/2026 • Financeiro organizado
 </footer>
 
 <script>
@@ -2258,5 +2258,71 @@ function atualizarMensagemClienteMichelon(){
   if(box) box.value=gerarMensagemClienteMichelon();
 }
 
+
+<script>
+const CHAVE_PENDENTES='michelon_orcamentos_pendentes_v1';
+function lerPendentes(){try{return JSON.parse(localStorage.getItem(CHAVE_PENDENTES)||'[]')||[]}catch(e){return []}}
+function gravarPendentes(a){localStorage.setItem(CHAVE_PENDENTES,JSON.stringify(a));renderPendentes()}
+function valCampo(id){return String(document.getElementById(id)?.value||'').trim()}
+function txtCampo(id){return String(document.getElementById(id)?.textContent||'').trim()}
+function snapshotOrcamento(){
+ const ids=['cliente','telefone','modoCotacao','cidadeUrbana','enderecoOrigem','enderecoDestino','enderecoParada','origem','destino','idaVolta','origemRetorno','destinoRetorno','data','dataViagem','dataRetorno','horaSaida','horaRetorno','passageiros','tipoServico','obsViagem','kmTotalInput','tempo','pedagios','precoManual','margem','valorKm','sinalPct','formaPagamento'];
+ const campos={}; ids.forEach(id=>{const el=document.getElementById(id);if(el)campos[id]=el.value});
+ return {id:'orc_'+Date.now(),salvoEm:new Date().toISOString(),enviadoEm:new Date().toISOString(),status:'Aguardando cliente',cliente:valCampo('cliente')||'Cliente',origem:valCampo('enderecoOrigem')||valCampo('origem'),destino:valCampo('enderecoDestino')||valCampo('destino'),data:valCampo('data')||valCampo('dataViagem'),hora:valCampo('horaSaida'),preco:txtCampo('precoSugerido')||txtCampo('preco'),mensagem:valCampo('mensagemOrcamento'),campos};
+}
+function salvarOrcamentoPendente(){
+ const o=snapshotOrcamento(); if(!o.origem||!o.destino){alert('Calcule/preencha o orçamento antes de salvar.');return}
+ const a=lerPendentes();a.unshift(o);gravarPendentes(a);alert('Orçamento salvo em Pendentes.');
+}
+function carregarPendente(id){
+ const o=lerPendentes().find(x=>x.id===id);if(!o)return;
+ Object.entries(o.campos||{}).forEach(([id,v])=>{const el=document.getElementById(id);if(el){el.value=v;el.dispatchEvent(new Event('change',{bubbles:true}))}});
+ const msg=document.getElementById('mensagemOrcamento');if(msg&&o.mensagem)msg.value=o.mensagem;
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+function excluirPendente(id){if(!confirm('Excluir este orçamento pendente?'))return;gravarPendentes(lerPendentes().filter(x=>x.id!==id))}
+function confirmarPendente(id){
+ carregarPendente(id);
+ setTimeout(()=>{if(typeof window.confirmarViagem==='function'){window.confirmarViagem();gravarPendentes(lerPendentes().filter(x=>x.id!==id))}else{alert('Orçamento carregado. Agora toque em ✅ Confirmar viagem.')}},120);
+}
+
+function formatarDataHoraPendente(iso){
+ try{return new Date(iso).toLocaleString('pt-BR',{dateStyle:'short',timeStyle:'short'})}catch(e){return ''}
+}
+function statusPendente(id,novo){
+ const a=lerPendentes(),o=a.find(x=>x.id===id);if(!o)return;
+ o.status=novo;gravarPendentes(a);
+}
+
+function renderPendentes(){
+ const box=document.getElementById('listaOrcamentosPendentes');if(!box)return;const a=lerPendentes();
+ if(!a.length){box.innerHTML='<div class="muted">Nenhum orçamento aguardando confirmação.</div>';return}
+ box.innerHTML=a.map(o=>`<div style="border:1px solid #dbe2ea;border-radius:12px;padding:12px;margin:10px 0;background:#fff">
+ <div style="display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap">
+  <b>${o.cliente||'Cliente'}</b>
+  <span style="font-weight:800">${o.status||'Aguardando cliente'}</span>
+ </div>
+ <span>${o.origem||'-'} → ${o.destino||'-'}</span><br>
+ <small>${o.data||''}${o.hora?' • '+o.hora:''}${o.preco?' • '+o.preco:''}</small><br>
+ <small>📤 Enviado em: ${formatarDataHoraPendente(o.enviadoEm||o.salvoEm)}</small>
+ <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:9px">
+  <button type="button" onclick="carregarPendente('${o.id}')">📂 Abrir</button>
+  <button type="button" onclick="confirmarPendente('${o.id}')">✅ Cliente confirmou</button>
+  <button type="button" onclick="statusPendente('${o.id}','Recusado')">❌ Recusado</button>
+  <button type="button" onclick="excluirPendente('${o.id}')">🗑️ Excluir</button>
+ </div>
+</div>`).join('');
+}
+document.addEventListener('DOMContentLoaded',renderPendentes);
+</script>
+
 </body>
 </html>
+<section class="card" id="orcamentosPendentesCard">
+  <h2>📋 Orçamentos pendentes</h2>
+  <p class="muted">Salve aqui os orçamentos enviados enquanto aguarda a resposta do cliente.</p>
+  <button type="button" class="primary" onclick="salvarOrcamentoPendente()">💾 Salvar orçamento pendente</button>
+  <div id="listaOrcamentosPendentes" style="margin-top:12px"></div>
+</section>
+
+
