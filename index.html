@@ -1075,9 +1075,38 @@ function calcularCatalogoLocal(coordsIda,coordsVolta){
  return {ida,volta,total};
 }
 
+
+async function enriquecerPedagioGratis(p){
+  const t=p.tags||(p.tags={});
+  if(t['addr:city'] && (t.ref||t.name||t.operator))return p;
+  try{
+    const u='https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=14&addressdetails=1&lat='+encodeURIComponent(p.lat)+'&lon='+encodeURIComponent(p.lon);
+    const r=await fetchTimeout(u,6500);
+    if(r.ok){
+      const j=await r.json(),a=j.address||{};
+      if(!t['addr:city'])t['addr:city']=a.city||a.town||a.municipality||a.village||'';
+      if(!t['addr:state'])t['addr:state']=a.state||'';
+      if(!t['addr:street'])t['addr:street']=a.road||'';
+      if(!t.ref){
+        const m=String(a.road||'').match(/\b(?:SP|BR)[-\s]?\d{2,3}\b/i);
+        if(m)t.ref=m[0].toUpperCase().replace(/\s/,'-');
+      }
+    }
+  }catch(e){}
+  return p;
+}
+
 async function consultarTarifaPedagioAberto(ped){
   const t=ped.tags||{};
-  const termos=[t.name,t.operator,t.ref,t['addr:city'],t['addr:street']].filter(Boolean);
+  const termos=[
+    t.name,
+    t.operator,
+    t.ref,
+    t['addr:city'],
+    t['addr:street'],
+    [t.ref,t['addr:city']].filter(Boolean).join(' '),
+    [t.operator,t['addr:city']].filter(Boolean).join(' ')
+  ].filter(Boolean);
   if(!termos.length)return null;
   for(const termo of termos){
     try{
@@ -1095,9 +1124,12 @@ async function consultarTarifaPedagioAberto(ped){
         const con=norm(x.concessionaria||x.operadora||'');
         const rod=norm(x.rodovia||x.via||'');
         let score=0;
-        if(nome&&pr&& (pr.includes(nome)||nome.includes(pr)))score+=5;
-        if(t.operator&&con.includes(norm(t.operator)))score+=3;
-        if(t.ref&&rod.includes(norm(t.ref)))score+=2;
+        if(nome&&pr&& (pr.includes(nome)||nome.includes(pr)))score+=6;
+        if(t.operator&&con.includes(norm(t.operator)))score+=4;
+        if(t.ref&&rod.includes(norm(t.ref)))score+=4;
+        const cid=norm(t['addr:city']||'');
+        const rawTxt=norm([x.praca,x.praça,x.nome_praca,x.nome,x.concessionaria,x.rodovia,x.via,x.municipio,x.cidade].filter(Boolean).join(' '));
+        if(cid&&rawTxt.includes(cid))score+=4;
         const raw=x.valor??x.tarifa??x.valor_tarifa??x.preco;
         const val=parseFloat(String(raw??'').replace(',','.'));
         if(Number.isFinite(val)&&val>0&&score>bestScore){bestScore=score;best={valor:val,dado:x,score};}
@@ -1120,7 +1152,9 @@ async function detectarPedagiosTrecho(coords){
   (
     node["barrier"="toll_booth"](${sul},${oeste},${norte},${leste});
     node["highway"="toll_gantry"](${sul},${oeste},${norte},${leste});
+    node["toll"="yes"](${sul},${oeste},${norte},${leste});
     way["highway"="toll_gantry"](${sul},${oeste},${norte},${leste});
+    way["toll"="yes"](${sul},${oeste},${norte},${leste});
   );
   out center tags;`;
 
@@ -1158,7 +1192,8 @@ async function calcularPedagiosDinamicos(coordsIda,coordsVolta){
     if(!coords||!coords.length)continue;
     const ps=await detectarPedagiosTrecho(coords);
     encontrados+=ps.length;
-    for(const p of ps){
+    for(const p0 of ps){
+      const p=await enriquecerPedagioGratis(p0);
       const tarifa=await consultarTarifaPedagioAberto(p);
       const nome=p.tags?.name||p.tags?.operator||p.tags?.ref||'Praça de pedágio';
       if(tarifa){
@@ -1904,7 +1939,7 @@ function resumoFinanceiroAtividades(){
 
 </script>
 <footer style="text-align:center;color:#64748b;font-size:13px;padding:22px 10px 34px">
-<strong>MICHELON Viagens Executivas</strong> • Versão 7.18.6 BETA • Atualizado em 17/09/2026 • Financeiro organizado
+<strong>MICHELON Viagens Executivas</strong> • Versão 7.19.1 BETA • Atualizado em 17/09/2026 • Financeiro organizado
 </footer>
 
 <script>
@@ -2142,5 +2177,18 @@ function importarCotacaoRecebida(){
  }
 }
 </script>
+
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  const campoMargem=document.getElementById('margem');
+  if(campoMargem){
+    const atualizarPreco=function(){ try{ calcular(false); }catch(e){ try{ calcular(); }catch(_){} } };
+    campoMargem.addEventListener('input',atualizarPreco);
+    campoMargem.addEventListener('change',atualizarPreco);
+    campoMargem.addEventListener('blur',atualizarPreco);
+  }
+});
+</script>
+
 </body>
 </html>
