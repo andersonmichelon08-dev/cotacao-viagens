@@ -1948,7 +1948,7 @@ function resumoFinanceiroAtividades(){
 
 </script>
 <footer style="text-align:center;color:#64748b;font-size:13px;padding:22px 10px 34px">
-<strong>MICHELON Viagens Executivas</strong> • Versão 7.19.6 BETA • Atualizado em 17/09/2026 • Financeiro organizado
+<strong>MICHELON Viagens Executivas</strong> • Versão 7.19.7 BETA • Atualizado em 17/09/2026 • Financeiro organizado
 </footer>
 
 <script>
@@ -2113,7 +2113,7 @@ function importarCotacaoRecebida(){
      setSeExiste('destino',normalizarEnderecoMichelon(md.DESTINO));
    }
    setSeExiste('data',md.DATA);
-   setSeExiste('hora',md.HORA);
+   setSeExiste('horaSaida',md.HORA);
    setSeExiste('passageiros',md.PASSAGEIROS);
    setSeExiste('origemRetorno',normalizarEnderecoMichelon(md.ORIGEM_RETORNO));
    setSeExiste('destinoRetorno',normalizarEnderecoMichelon(md.DESTINO_RETORNO));
@@ -2152,7 +2152,7 @@ function importarCotacaoRecebida(){
  }
 
  setSeExiste('data',dataISO(c.data));
- setSeExiste('hora',c.hora);
+ setSeExiste('horaSaida',c.hora);
  setSeExiste('passageiros',c.passageiros);
 
  // Detect ida e volta from explicit fields or text.
