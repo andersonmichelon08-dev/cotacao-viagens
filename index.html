@@ -1395,33 +1395,66 @@ async function buscarRotaUrbana(){
  const eo=($('enderecoOrigem')?.value||'').trim(), ed=($('enderecoDestino')?.value||'').trim(), ep=($('enderecoParada')?.value||'').trim();
  if(!eo||!ed){status.textContent='Informe o endereço de saída e o endereço de destino.';return}
  if(!urbanoResolvido.origem||!urbanoResolvido.destino){
-   const ok=await localizarEnderecosUrbanos(); if(!ok){status.textContent='⚠️ Primeiro confirme os endereços.';return}
+   const ok=await localizarEnderecosUrbanos();
+   if(!ok){status.textContent='⚠️ Primeiro confirme os endereços.';return}
  }
  status.textContent='📍 Calculando rota urbana...';
  try{
    const a=urbanoResolvido.origem,b=urbanoResolvido.destino,p=urbanoResolvido.parada;
-   let km=0,sec=0, idaKm=0, voltaKm=0;
-   if(p){const r1=await rotaOSRM(a,p),r2=await rotaOSRM(p,b);idaKm=r1.km+r2.km;km=idaKm;sec=r1.sec+r2.sec}
-   else{const r=await rotaOSRM(a,b);idaKm=r.km;km=r.km;sec=r.sec}
+   let km=0,sec=0,idaKm=0,voltaKm=0;
+
+   // IDA
+   if(p){
+     const r1=await rotaOSRM(a,p),r2=await rotaOSRM(p,b);
+     idaKm=r1.km+r2.km; km=idaKm; sec=r1.sec+r2.sec;
+   }else{
+     const r=await rotaOSRM(a,b);
+     idaKm=r.km; km=r.km; sec=r.sec;
+   }
+
+   // Já mostra a ida assim que ela for calculada.
+   $('kmTotalInput').value=km.toFixed(1);
+   $('tempo').value=formatDuration(sec);
+   if($('pedagios'))$('pedagios').value='0';
+   calcular(false);
+
+   // RETORNO URBANO: quando é a volta normal, reutiliza exatamente
+   // os pontos já confirmados da ida. Isso evita geocodificar tudo de novo.
    if($('idaVolta')?.value==='sim'){
      let ro=String($('origemRetorno')?.value||'').trim();
      let rd=String($('destinoRetorno')?.value||'').trim();
-     if(!ro) ro=ed;
-     if(!rd) rd=eo;
-     if($('origemRetorno')) $('origemRetorno').value=ro;
-     if($('destinoRetorno')) $('destinoRetorno').value=rd;
-     const [c,d]=await Promise.all([resolverPonto(ro,'cepOrigemRetorno','numOrigemRetorno'),resolverPonto(rd,'cepDestinoRetorno','numDestinoRetorno')]);
+     if(!ro)ro=ed;
+     if(!rd)rd=eo;
+     if($('origemRetorno'))$('origemRetorno').value=ro;
+     if($('destinoRetorno'))$('destinoRetorno').value=rd;
+
+     const norm=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/g,'');
+     let c,d;
+     const retornoInvertido=(norm(ro)===norm(ed) && norm(rd)===norm(eo));
+
+     if(retornoInvertido){
+       c=b; d=a;
+     }else{
+       // Se o cliente escolheu outro retorno, usa o mesmo localizador urbano
+       // que já conseguiu achar Rua Florindo Estina e Horto Florestal.
+       c=await localizarUmEndereco(ro);
+       d=await localizarUmEndereco(rd);
+     }
      const volta=await rotaOSRM(c,d);
      voltaKm=volta.km; km+=volta.km; sec+=volta.sec;
    }
+
    $('kmTotalInput').value=km.toFixed(1);
-   if($('pedagios'))$('pedagios').value='0';
    $('tempo').value=formatDuration(sec);
-   status.textContent=$('idaVolta')?.value==='sim'
-     ?`📍 Ida: ${idaKm.toFixed(1)} km • Retorno: ${voltaKm.toFixed(1)} km • Total: ${km.toFixed(1)} km • ${formatDuration(sec)}.`
-     :`📍 Rota urbana encontrada: ${km.toFixed(1)} km • ${formatDuration(sec)}.`;
+   if($('pedagios'))$('pedagios').value='0';
    calcular(false);
- }catch(e){status.textContent='⚠️ '+(e.message||'Não foi possível calcular a rota urbana.')}
+
+   status.textContent=$('idaVolta')?.value==='sim'
+     ?`✅ Ida: ${idaKm.toFixed(1)} km • Retorno: ${voltaKm.toFixed(1)} km • Total: ${km.toFixed(1)} km • ${formatDuration(sec)} • Corrida urbana sem pedágio automático.`
+     :`✅ Rota urbana encontrada: ${km.toFixed(1)} km • ${formatDuration(sec)} • Corrida urbana sem pedágio automático.`;
+ }catch(e){
+   status.textContent='⚠️ Não foi possível calcular a rota urbana: '+(e.message||'erro de rota.');
+ }
 }
 async function buscarRota(){
  if($('modoCotacao')?.value==='urbano')return buscarRotaUrbana();
@@ -1852,7 +1885,7 @@ function resumoFinanceiroAtividades(){
 
 </script>
 <footer style="text-align:center;color:#64748b;font-size:13px;padding:22px 10px 34px">
-<strong>MICHELON Viagens Executivas</strong> • Versão 7.18.4 BETA • Atualizado em 17/09/2026 • Financeiro organizado
+<strong>MICHELON Viagens Executivas</strong> • Versão 7.18.5 BETA • Atualizado em 17/09/2026 • Financeiro organizado
 </footer>
 
 <script>
