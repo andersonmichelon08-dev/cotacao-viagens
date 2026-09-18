@@ -208,7 +208,13 @@ async function compartilharCartao(){
 
 
   <div class="card">
-    <details open>
+    <section class="card" id="orcamentosPendentesCard">
+  <h2>📋 Orçamentos pendentes</h2>
+  <p class="muted">Salve aqui os orçamentos enviados enquanto aguarda a resposta do cliente.</p>
+  <button type="button" class="primary" onclick="salvarOrcamentoPendente()">💾 Salvar orçamento pendente</button>
+  <div id="listaOrcamentosPendentes" style="margin-top:12px"></div>
+</section>
+<details open>
       <summary>📅 Agenda e reservas</summary>
       <details style="margin:12px 0">
         <summary>➕ Nova reserva direta</summary>
@@ -1948,7 +1954,7 @@ function resumoFinanceiroAtividades(){
 
 </script>
 <footer style="text-align:center;color:#64748b;font-size:13px;padding:22px 10px 34px">
-<strong>MICHELON Viagens Executivas</strong> • Versão 7.20.1 BETA • Atualizado em 17/09/2026 • Financeiro organizado
+<strong>MICHELON Viagens Executivas</strong> • Versão 7.20.2 BETA • Atualizado em 17/09/2026 • Financeiro organizado
 </footer>
 
 <script>
@@ -2318,11 +2324,6 @@ document.addEventListener('DOMContentLoaded',renderPendentes);
 
 </body>
 </html>
-<section class="card" id="orcamentosPendentesCard">
-  <h2>📋 Orçamentos pendentes</h2>
-  <p class="muted">Salve aqui os orçamentos enviados enquanto aguarda a resposta do cliente.</p>
-  <button type="button" class="primary" onclick="salvarOrcamentoPendente()">💾 Salvar orçamento pendente</button>
-  <div id="listaOrcamentosPendentes" style="margin-top:12px"></div>
-</section>
+
 
 
