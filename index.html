@@ -1245,6 +1245,13 @@ function alternarCamposRetorno(){
 }
 function marcarRetornoEditado(e){ e.target.dataset.editado='1'; }
 
+
+function rotaLimeiraCampinasValidada(){
+ const norm=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+ const o=norm($('origem')?.value||''), d=norm($('destino')?.value||'');
+ return (o.includes('limeira')&&d.includes('campinas'))||(o.includes('campinas')&&d.includes('limeira'));
+}
+
 async function buscarRotaViagem(){
   const origem=String($('origem')?.value||'').trim();
   const destino=String($('destino')?.value||'').trim();
@@ -1310,6 +1317,18 @@ async function buscarRotaViagem(){
 
       // Base local responde imediatamente e não depende dos servidores públicos.
       const local=calcularCatalogoLocal(coordsIda,coordsVolta);
+
+      // Corredor Limeira ↔ Campinas (tarifas AutoBAn vigentes desde 01/07/2026).
+      // Para o trecho usual, considera a praça de Nova Odessa/Sumaré: R$ 12,80 por travessia.
+      if(rotaLimeiraCampinasValidada()){
+        const idaPed=12.80;
+        const voltaPed=(coordsVolta&&coordsVolta.length)?12.80:0;
+        const totalPed=idaPed+voltaPed;
+        $('pedagios').value=totalPed.toFixed(2);
+        calcular();
+        showStatus(`${detalhe} • Total: ${km.toFixed(1)} km • Pedágio Limeira ↔ Campinas: ida ${brl(idaPed)}${voltaPed?` • retorno ${brl(voltaPed)}`:''} • Total ${brl(totalPed)}.`,'ok');
+        return;
+      }
 
       // Corredor Limeira ↔ Aeroporto de Guarulhos:
       // cálculo local validado por sentido para evitar dependência da API pública.
@@ -1885,7 +1904,7 @@ function resumoFinanceiroAtividades(){
 
 </script>
 <footer style="text-align:center;color:#64748b;font-size:13px;padding:22px 10px 34px">
-<strong>MICHELON Viagens Executivas</strong> • Versão 7.18.5 BETA • Atualizado em 17/09/2026 • Financeiro organizado
+<strong>MICHELON Viagens Executivas</strong> • Versão 7.18.6 BETA • Atualizado em 17/09/2026 • Financeiro organizado
 </footer>
 
 <script>
