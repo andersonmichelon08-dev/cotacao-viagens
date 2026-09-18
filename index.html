@@ -1851,8 +1851,10 @@ function calcular(autosave=true){
   const urbano=$('modoCotacao')?.value==='urbano';
   const cliente=$('cliente').value.trim(), origem=(urbano?$('enderecoOrigem').value:$('origem').value).trim(), destino=(urbano?$('enderecoDestino').value:$('destino').value).trim(), data=dataBR($('data').value), tempo=$('tempo').value, emp=getEmpresa();
   const temRetorno=$('idaVolta').value==='sim', origemRetorno=($('origemRetorno')?.value||'').trim(), destinoRetorno=($('destinoRetorno')?.value||'').trim();
-  const horaIda=($('horaSaida')?.value||'').trim();
-  const horaVolta=($('horaRetorno')?.value||'').trim();
+  // No modo urbano, a hora da ida pode vir do campo "hora".
+  // Em viagens entre cidades, continua usando "horaSaida".
+  const horaIda=(($('horaSaida')?.value||$('hora')?.value||'')).trim();
+  const horaVolta=(($('horaRetorno')?.value||$('retornoHora')?.value||'')).trim();
   let pg='';
   if(emp.pix){pg=`\n\n*RESERVA / PAGAMENTO*\nSinal (${n('sinalPct').toFixed(0)}%): *${brl(sinal)}*\nSaldo: ${brl(saldo)}\nPIX: ${emp.pix}${emp.fav?`\nFavorecido: ${emp.fav}`:''}${emp.banco?`\nBanco: ${emp.banco}`:''}\nApós o pagamento, envie o comprovante para confirmação.`}
   const blocoIda=`🚗 *IDA*\n${data?`📅 Data: ${data}\n`:''}${horaIda?`🕐 Horário de saída/busca: ${horaIda}\n`:''}📍 Local de saída: ${origem||'-'}\n🏁 Destino: ${destino||'-'}`;
@@ -1946,7 +1948,7 @@ function resumoFinanceiroAtividades(){
 
 </script>
 <footer style="text-align:center;color:#64748b;font-size:13px;padding:22px 10px 34px">
-<strong>MICHELON Viagens Executivas</strong> • Versão 7.19.5 BETA • Atualizado em 17/09/2026 • Financeiro organizado
+<strong>MICHELON Viagens Executivas</strong> • Versão 7.19.6 BETA • Atualizado em 17/09/2026 • Financeiro organizado
 </footer>
 
 <script>
