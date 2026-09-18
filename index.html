@@ -1956,7 +1956,7 @@ function resumoFinanceiroAtividades(){
 
 </script>
 <footer style="text-align:center;color:#64748b;font-size:13px;padding:22px 10px 34px">
-<strong>MICHELON Viagens Executivas</strong> • Versão 7.20.3 BETA • Atualizado em 17/09/2026 • Financeiro organizado
+<strong>MICHELON Viagens Executivas</strong> • Versão 7.20.5 BETA • Atualizado em 17/09/2026 • Financeiro organizado
 </footer>
 
 <script>
@@ -2279,8 +2279,25 @@ function snapshotOrcamento(){
  return {id:'orc_'+Date.now(),salvoEm:new Date().toISOString(),enviadoEm:new Date().toISOString(),status:'Aguardando cliente',cliente:valCampo('cliente')||'Cliente',origem:valCampo('enderecoOrigem')||valCampo('origem'),destino:valCampo('enderecoDestino')||valCampo('destino'),data:valCampo('data')||valCampo('dataViagem'),hora:valCampo('horaSaida'),preco:txtCampo('precoSugerido')||txtCampo('preco'),mensagem:valCampo('mensagemOrcamento'),campos};
 }
 function salvarOrcamentoPendente(){
- const o=snapshotOrcamento(); if(!o.origem||!o.destino){alert('Calcule/preencha o orçamento antes de salvar.');return}
- const a=lerPendentes();a.unshift(o);gravarPendentes(a);alert('Orçamento salvo em Pendentes.');
+ const o=snapshotOrcamento();
+ if(!o.origem||!o.destino){alert('Calcule/preencha o orçamento antes de salvar.');return}
+ const a=lerPendentes();
+ a.unshift(o);
+ gravarPendentes(a);
+
+ // Só limpa depois que o orçamento já foi gravado com sucesso em Pendentes.
+ alert('Orçamento salvo em Pendentes. A tela será limpa para o próximo cliente.');
+ try{
+   if(typeof window.limparCotacao==='function'){
+     window.limparCotacao();
+   }else{
+     // Fallback seguro: limpa somente campos da cotação, sem tocar em Pendentes/Agenda.
+     const ids=['cliente','telefone','enderecoOrigem','enderecoDestino','enderecoParada',
+       'origem','destino','origemRetorno','destinoRetorno','data','dataViagem','dataRetorno',
+       'horaSaida','horaRetorno','obsViagem','kmTotalInput','tempo','pedagios','mensagemOrcamento'];
+     ids.forEach(id=>{const el=document.getElementById(id);if(el){el.value='';}});
+   }
+ }catch(e){}
 }
 function carregarPendente(id){
  const o=lerPendentes().find(x=>x.id===id);if(!o)return;
@@ -2297,6 +2314,12 @@ function confirmarPendente(id){
 function formatarDataHoraPendente(iso){
  try{return new Date(iso).toLocaleString('pt-BR',{dateStyle:'short',timeStyle:'short'})}catch(e){return ''}
 }
+function formatarDataPendenteBR(data){
+ const s=String(data||'').trim();
+ const m=s.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+ if(m)return `${m[3]}/${m[2]}/${m[1]}`;
+ return s;
+}
 function statusPendente(id,novo){
  const a=lerPendentes(),o=a.find(x=>x.id===id);if(!o)return;
  o.status=novo;gravarPendentes(a);
@@ -2311,7 +2334,7 @@ function renderPendentes(){
   <span style="font-weight:800">${o.status||'Aguardando cliente'}</span>
  </div>
  <span>${o.origem||'-'} → ${o.destino||'-'}</span><br>
- <small>${o.data||''}${o.hora?' • '+o.hora:''}${o.preco?' • '+o.preco:''}</small><br>
+ <small>${formatarDataPendenteBR(o.data)}${o.hora?' • '+o.hora:''}${o.preco?' • '+o.preco:''}</small><br>
  <small>📤 Enviado em: ${formatarDataHoraPendente(o.enviadoEm||o.salvoEm)}</small>
  <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:9px">
   <button type="button" onclick="carregarPendente('${o.id}')">📂 Abrir</button>
