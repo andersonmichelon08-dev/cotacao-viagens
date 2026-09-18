@@ -198,7 +198,7 @@ async function compartilharCartao(){
     <label>Mensagem do orçamento</label>
     <textarea id="mensagem"></textarea>
     <div class="btns" style="margin-top:9px">
-      <button class="primary" onclick="calcular();setTimeout(atualizarMensagemClienteMichelon,50)">Calcular e gerar orçamento</button>
+      <button class="primary" onclick="calcular()">Calcular e gerar orçamento</button>
       <button class="secondary" onclick="copiar()">Copiar orçamento</button><button class="secondary" onclick="salvarOrcamento()">💾 Salvar orçamento</button><button class="primary" onclick="registrarViagem()">✅ Confirmar viagem</button>
       <a id="whats" class="button ghost" href="#" target="_blank" rel="noopener">Enviar no WhatsApp</a>
       <a id="maps" class="button ghost" href="#" target="_blank" rel="noopener">Abrir rota no Google Maps</a>
@@ -1851,10 +1851,13 @@ function calcular(autosave=true){
   const urbano=$('modoCotacao')?.value==='urbano';
   const cliente=$('cliente').value.trim(), origem=(urbano?$('enderecoOrigem').value:$('origem').value).trim(), destino=(urbano?$('enderecoDestino').value:$('destino').value).trim(), data=dataBR($('data').value), tempo=$('tempo').value, emp=getEmpresa();
   const temRetorno=$('idaVolta').value==='sim', origemRetorno=($('origemRetorno')?.value||'').trim(), destinoRetorno=($('destinoRetorno')?.value||'').trim();
-  const linhaRetorno=temRetorno?`\n↩️ Retorno: ${origemRetorno||destino||'-'} → ${destinoRetorno||origem||'-'}`:'';
+  const horaIda=($('horaSaida')?.value||'').trim();
+  const horaVolta=($('horaRetorno')?.value||'').trim();
   let pg='';
   if(emp.pix){pg=`\n\n*RESERVA / PAGAMENTO*\nSinal (${n('sinalPct').toFixed(0)}%): *${brl(sinal)}*\nSaldo: ${brl(saldo)}\nPIX: ${emp.pix}${emp.fav?`\nFavorecido: ${emp.fav}`:''}${emp.banco?`\nBanco: ${emp.banco}`:''}\nApós o pagamento, envie o comprovante para confirmação.`}
-  const msg=`🚗 *${(emp.nome||'MICHELON VIAGENS EXECUTIVAS').toUpperCase()}*\n_Conforto e segurança em cada destino._\n\n*ORÇAMENTO DE VIAGEM*\n\n${cliente?`👤 Cliente: ${cliente}\n`:''}📍 Origem: ${origem||'-'}\n📍 Destino: ${destino||'-'}${linhaRetorno}\n${data?`📅 Data: ${data}\n`:''}${$('horaSaida').value?`🕐 Saída: ${$('horaSaida').value}${$('horaRetorno').value?` • Retorno: ${$('horaRetorno').value}`:''}\n`:''}🚘 Serviço: ${$('tipoServico').value}\n👥 Passageiros: ${passageiros}${$('obsViagem').value.trim()?`\n📝 Observações: ${$('obsViagem').value.trim()}`:''}\n\n🛣️ Distância total: ${km.toFixed(1)} km\n⏱️ Tempo estimado: ${tempo||'-'}\n💰 Pedágios estimados: ${brl(pedagios)}\n\n💵 *VALOR DA VIAGEM: ${brl(preco)}*\n💲 Valor por passageiro: ${brl(porPass)}${pg}\n\nOrçamento sujeito à disponibilidade na data solicitada.`;
+  const blocoIda=`🚗 *IDA*\n${data?`📅 Data: ${data}\n`:''}${horaIda?`🕐 Horário de saída/busca: ${horaIda}\n`:''}📍 Local de saída: ${origem||'-'}\n🏁 Destino: ${destino||'-'}`;
+  const blocoRetorno=temRetorno?`\n\n🔄 *RETORNO*\n${data?`📅 Data: ${data}\n`:''}${horaVolta?`🕐 Horário de busca para retorno: ${horaVolta}\n`:''}📍 Local de busca: ${origemRetorno||destino||'-'}\n🏁 Destino do retorno: ${destinoRetorno||origem||'-'}`:'';
+  const msg=`🚗 *${(emp.nome||'MICHELON VIAGENS EXECUTIVAS').toUpperCase()}*\n_Conforto e segurança em cada destino._\n\n*ORÇAMENTO DE VIAGEM*\n\n${cliente?`👤 Cliente: ${cliente}\n\n`:''}${blocoIda}${blocoRetorno}\n\n🚘 Serviço: ${$('tipoServico').value}\n👥 Passageiros: ${passageiros}${$('obsViagem').value.trim()?`\n📝 Observações: ${$('obsViagem').value.trim()}`:''}\n\n🛣️ Distância total: ${km.toFixed(1)} km\n⏱️ Tempo estimado: ${tempo||'-'}\n💰 Pedágios estimados: ${brl(pedagios)}\n\n💵 *VALOR DA VIAGEM: ${brl(preco)}*\n💲 Valor por passageiro: ${brl(porPass)}${pg}\n\nOrçamento sujeito à disponibilidade na data solicitada.`;
   $('mensagem').value=msg;
   $('whats').href='https://wa.me/?text='+encodeURIComponent(msg);
   $('maps').href=mapsLink();
@@ -1943,7 +1946,7 @@ function resumoFinanceiroAtividades(){
 
 </script>
 <footer style="text-align:center;color:#64748b;font-size:13px;padding:22px 10px 34px">
-<strong>MICHELON Viagens Executivas</strong> • Versão 7.19.4 BETA • Atualizado em 17/09/2026 • Financeiro organizado
+<strong>MICHELON Viagens Executivas</strong> • Versão 7.19.5 BETA • Atualizado em 17/09/2026 • Financeiro organizado
 </footer>
 
 <script>
