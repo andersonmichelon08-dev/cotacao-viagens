@@ -1943,7 +1943,7 @@ function resumoFinanceiroAtividades(){
 
 </script>
 <footer style="text-align:center;color:#64748b;font-size:13px;padding:22px 10px 34px">
-<strong>MICHELON Viagens Executivas</strong> • Versão 7.19.3 BETA • Atualizado em 17/09/2026 • Financeiro organizado
+<strong>MICHELON Viagens Executivas</strong> • Versão 7.19.4 BETA • Atualizado em 17/09/2026 • Financeiro organizado
 </footer>
 
 <script>
@@ -2197,35 +2197,48 @@ document.addEventListener('DOMContentLoaded',function(){
 
 function gerarMensagemClienteMichelon(){
   const v=id=>String(document.getElementById(id)?.value||'').trim();
-  const txt=id=>String(document.getElementById(id)?.textContent||'').trim();
-  const modo=v('modoCotacao');
-  const urbano=modo==='urbano';
+  const urbano=v('modoCotacao')==='urbano';
   const origem=urbano?v('enderecoOrigem'):v('origem');
   const destino=urbano?v('enderecoDestino'):v('destino');
-  const data=v('dataViagem');
-  const hora=v('horaSaida');
-  const retorno=v('previsaoRetorno')||v('horaRetorno');
+
+  const dataIda=v('data')||v('dataViagem');
+  const horaIda=v('hora')||v('horaSaida');
   const passageiros=v('passageiros')||'1';
+
+  const idaVolta=v('idaVolta')==='sim';
+  const origemRet=v('origemRetorno')||destino;
+  const destinoRet=v('destinoRetorno')||origem;
+  const dataRet=v('dataRetorno')||v('retornoData');
+  const horaRet=v('horaRetorno')||v('retornoHora')||v('previsaoRetorno');
+
   const forma=v('formaPagamento')||'PIX';
   const sinal=v('sinal')||v('sinalReserva')||'';
-  const preco=(document.getElementById('precoSugerido')?.textContent||document.getElementById('preco')?.textContent||'').trim();
+  const preco=(document.getElementById('precoSugerido')?.textContent||
+               document.getElementById('preco')?.textContent||'').trim();
 
-  let linhas=[
+  const linhas=[
     '🚗 *MICHELON VIAGENS EXECUTIVAS*',
     '_Conforto e segurança em cada destino._',
     '',
     '*ORÇAMENTO DE VIAGEM*',
     '',
-    origem ? '📍 *Saída:* '+origem : '',
-    destino ? '🏁 *Destino:* '+destino : '',
-    data ? '📅 *Data:* '+data : '',
-    hora ? '🕐 *Horário de saída:* '+hora : '',
-    retorno ? '↩️ *Previsão de retorno:* '+retorno : '',
-    passageiros ? '👥 *Passageiros:* '+passageiros : '',
+    '🚗 *IDA*',
+    dataIda ? '📅 Data: '+dataIda : '',
+    horaIda ? '🕐 Horário de saída/busca: '+horaIda : '',
+    origem ? '📍 Local de saída: '+origem : '',
+    destino ? '🏁 Destino: '+destino : '',
     '',
-    preco ? '💰 *VALOR DO SERVIÇO: '+preco+'*' : '',
-    sinal ? '✅ *Reserva:* sinal de '+sinal+'%' : '',
-    forma ? '💳 *Forma de pagamento:* '+forma : '',
+    idaVolta ? '🔄 *RETORNO*' : '',
+    idaVolta && dataRet ? '📅 Data: '+dataRet : '',
+    idaVolta && horaRet ? '🕐 Horário de busca para retorno: '+horaRet : '',
+    idaVolta && origemRet ? '📍 Local de busca: '+origemRet : '',
+    idaVolta && destinoRet ? '🏁 Destino do retorno: '+destinoRet : '',
+    idaVolta ? '' : '',
+    '👥 Passageiros: '+passageiros,
+    '',
+    preco ? '💰 *VALOR TOTAL DA VIAGEM: '+preco+'*' : '',
+    sinal ? '✅ Reserva: sinal de '+sinal+'%' : '',
+    forma ? '💳 Forma de pagamento: '+forma : '',
     '',
     'Para confirmar a reserva, responda esta mensagem.',
     '',
