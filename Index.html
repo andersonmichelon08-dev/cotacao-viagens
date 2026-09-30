@@ -42,7 +42,97 @@ details summary{cursor:pointer;font-weight:700}.note{font-size:12px;color:var(--
 
 .urbanoList{top:48px}
 </style>
-<style id="driver721">html,body{width:100%;max-width:100%;overflow-x:hidden!important;overscroll-behavior-x:none}*,*:before,*:after{box-sizing:border-box}.wrap,.card,.grid,.agendaItem,input,select,textarea,button{max-width:100%}@media(max-width:700px){body{position:relative;touch-action:pan-y}.wrap{width:100%!important;max-width:100%!important;margin-left:auto!important;margin-right:auto!important;overflow-x:clip}#cardFloat{left:max(12px,env(safe-area-inset-left))!important;right:max(12px,env(safe-area-inset-right))!important;width:auto!important;transform:none!important}}.driver-main{background:#0f766e!important;color:#fff!important;border:0!important;font-weight:900!important}</style></head>
+<style id="driver721">html,body{width:100%;max-width:100%;overflow-x:hidden!important;overscroll-behavior-x:none}*,*:before,*:after{box-sizing:border-box}.wrap,.card,.grid,.agendaItem,input,select,textarea,button{max-width:100%}@media(max-width:700px){body{position:relative;touch-action:pan-y}.wrap{width:100%!important;max-width:100%!important;margin-left:auto!important;margin-right:auto!important;overflow-x:clip}#cardFloat{left:max(12px,env(safe-area-inset-left))!important;right:max(12px,env(safe-area-inset-right))!important;width:auto!important;transform:none!important}}.driver-main{background:#0f766e!important;color:#fff!important;border:0!important;font-weight:900!important}</style>
+<style id="michelon-iphone-width-fix-v7211">
+html{
+  width:100%;
+  max-width:100%;
+  overflow-x:hidden !important;
+}
+body{
+  width:100%;
+  max-width:100%;
+  min-width:0 !important;
+  margin-left:0 !important;
+  margin-right:0 !important;
+  overflow-x:hidden !important;
+  overscroll-behavior-x:none;
+}
+*,*::before,*::after{
+  box-sizing:border-box !important;
+  min-width:0;
+}
+img,svg,video,canvas,iframe{
+  max-width:100% !important;
+}
+.wrap,.card,.grid,.agendaItem,.btns,
+#blocoCotacaoRecebida,#cotacaoRecebida,
+textarea,input,select,button{
+  max-width:100% !important;
+}
+textarea,input,select{
+  width:100% !important;
+}
+@media (max-width:700px){
+  html,body{
+    position:relative;
+    left:0;
+    right:0;
+    touch-action:pan-y;
+  }
+  .wrap{
+    width:100% !important;
+    max-width:100% !important;
+    margin-left:auto !important;
+    margin-right:auto !important;
+    overflow-x:hidden !important;
+  }
+  .card{
+    width:100% !important;
+    max-width:100% !important;
+    overflow:hidden !important;
+  }
+  .grid{
+    width:100% !important;
+    max-width:100% !important;
+  }
+  .grid>*{
+    min-width:0 !important;
+    max-width:100% !important;
+  }
+  .dash{
+    width:100% !important;
+    max-width:100% !important;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+  }
+  .metric{
+    min-width:0 !important;
+    max-width:100% !important;
+  }
+  #cardFloat{
+    position:fixed !important;
+    left:max(12px,env(safe-area-inset-left)) !important;
+    right:max(12px,env(safe-area-inset-right)) !important;
+    width:auto !important;
+    max-width:none !important;
+    transform:none !important;
+  }
+}
+</style>
+<script>
+(function(){
+  function corrigirLarguraMichelon(){
+    document.documentElement.style.overflowX='hidden';
+    document.body.style.overflowX='hidden';
+    // Prevent any accidental horizontal position left by Safari.
+    if(window.scrollX!==0) window.scrollTo(0,window.scrollY);
+  }
+  window.addEventListener('load',corrigirLarguraMichelon);
+  window.addEventListener('orientationchange',()=>setTimeout(corrigirLarguraMichelon,150));
+})();
+</script>
+
+</head>
 <body>
 <div id="importarCotacaoBox" style="max-width:980px;margin:12px auto;padding:14px;border:2px solid #111827;border-radius:16px;background:#fff;box-sizing:border-box">
   <div style="font-size:18px;font-weight:900;margin-bottom:6px">📥 Cotação recebida do cliente</div>
@@ -1967,7 +2057,7 @@ function resumoFinanceiroAtividades(){
 
 </script>
 <footer style="text-align:center;color:#64748b;font-size:13px;padding:22px 10px 34px">
-<strong>MICHELON Viagens Executivas</strong> • Versão 7.21.0 BETA • Atualizado em 17/09/2026 • Financeiro organizado
+<strong>MICHELON Viagens Executivas</strong> • Versão 7.21.1 BETA • Atualizado em 17/09/2026 • Financeiro organizado
 </footer>
 
 <script>
