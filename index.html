@@ -97,27 +97,1106 @@ input,select,textarea{width:100% !important;}
 }
 </style>
 
+
+<style id="michelon-modern-ui-v7220">
+:root{
+  --mx-navy:#0f172a;
+  --mx-teal:#0f766e;
+  --mx-teal2:#14b8a6;
+  --mx-gold:#d8aa50;
+  --mx-bg:#f4f7fb;
+  --mx-text:#0f172a;
+  --mx-muted:#64748b;
+}
+body{background:var(--mx-bg)!important;color:var(--mx-text)!important;}
+#mxHero{
+  width:min(920px,calc(100% - 20px));
+  margin:14px auto;
+  padding:20px 18px;
+  border-radius:24px;
+  color:#fff;
+  background:linear-gradient(135deg,#0f172a 0%,#172554 55%,#0f766e 100%);
+  box-shadow:0 12px 30px rgba(15,23,42,.14);
+}
+#mxHero .mxBrand{font-size:26px;font-weight:950;letter-spacing:.2px}
+#mxHero .mxSub{margin-top:4px;color:#dbeafe;font-size:14px}
+#mxHero .mxLine{height:1px;background:rgba(255,255,255,.18);margin:16px 0}
+#mxQuick{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+}
+.mxQuickBtn{
+  border:1px solid rgba(255,255,255,.16)!important;
+  border-radius:16px!important;
+  padding:14px 10px!important;
+  min-height:74px;
+  background:rgba(255,255,255,.10)!important;
+  color:#fff!important;
+  box-shadow:none!important;
+  font-weight:900!important;
+  font-size:14px!important;
+  cursor:pointer;
+  backdrop-filter:blur(8px);
+}
+.mxQuickBtn:active{transform:scale(.98)}
+.mxQuickBtn .ico{display:block;font-size:23px;margin-bottom:5px}
+.mxSectionTitle{
+  width:min(920px,calc(100% - 20px));
+  margin:20px auto 8px;
+  font-size:18px;
+  font-weight:950;
+}
+.card{
+  border-radius:20px!important;
+  box-shadow:0 5px 18px rgba(15,23,42,.06);
+  border-color:#e2e8f0!important;
+}
+summary{
+  border-radius:14px!important;
+  font-weight:900!important;
+}
+.btns button,.btns .button,.mini{
+  border-radius:14px!important;
+  min-height:46px;
+  font-weight:900!important;
+}
+.primary,.driver-main{background:linear-gradient(135deg,#0f766e,#0d9488)!important}
+.secondary{background:#e8eef6!important;color:#0f172a!important}
+.danger{border-radius:14px!important}
+#resumoFinanceiroAtividades{
+  border-radius:18px;
+}
+@media(max-width:700px){
+  #mxHero{width:calc(100% - 20px);padding:18px 14px}
+  #mxQuick{grid-template-columns:1fr 1fr 1fr;gap:7px}
+  .mxQuickBtn{min-height:68px;padding:11px 5px!important;font-size:12px!important}
+  .mxQuickBtn .ico{font-size:20px}
+}
+</style>
+
+
+<style id="michelon-clean-shell-v7230">
+:root{
+  --mc-bg:#f5f7fa;--mc-card:#fff;--mc-text:#142033;--mc-muted:#6b778c;
+  --mc-line:#e7ebf0;--mc-primary:#0f766e;--mc-primary2:#14b8a6;
+  --mc-shadow:0 8px 24px rgba(20,32,51,.07);
+}
+body{background:var(--mc-bg)!important;color:var(--mc-text)!important;padding-bottom:82px!important}
+#mxHero{background:linear-gradient(145deg,#101827,#17304a)!important;border-radius:24px!important;box-shadow:var(--mc-shadow)!important}
+#mcHomeDash{
+  width:min(920px,calc(100% - 20px));margin:10px auto 0;
+}
+.mcWelcome{font-size:13px;color:var(--mc-muted);margin:0 0 8px 2px}
+.mcStats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.mcStat{background:var(--mc-card);border:1px solid var(--mc-line);border-radius:18px;padding:14px;box-shadow:var(--mc-shadow)}
+.mcStat small{display:block;color:var(--mc-muted);font-size:11px;font-weight:800}
+.mcStat strong{display:block;margin-top:5px;font-size:21px}
+.mcNext{margin-top:10px;background:var(--mc-card);border:1px solid var(--mc-line);border-radius:20px;padding:16px;box-shadow:var(--mc-shadow)}
+.mcNextHead{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.mcPill{font-size:11px;font-weight:900;padding:6px 9px;border-radius:999px;background:#e7f7f3;color:#0f766e}
+.mcNextTitle{font-size:18px;font-weight:950;margin-top:10px}
+.mcNextInfo{margin-top:7px;color:#42506a;line-height:1.55}
+.mcNextBtn{width:100%;margin-top:12px!important;min-height:48px!important;border:0!important;border-radius:15px!important;background:linear-gradient(135deg,var(--mc-primary),var(--mc-primary2))!important;color:#fff!important;font-weight:950!important}
+.mcSection{width:min(920px,calc(100% - 20px));margin:18px auto 8px;font-weight:950;font-size:17px}
+.mcActions{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;width:min(920px,calc(100% - 20px));margin:0 auto}
+.mcAction{background:#fff;border:1px solid var(--mc-line);border-radius:17px;padding:13px 7px;text-align:center;font-weight:900;color:var(--mc-text);box-shadow:var(--mc-shadow);cursor:pointer}
+.mcAction span{display:block;font-size:22px;margin-bottom:5px}
+.mcBottom{
+  position:fixed;left:0;right:0;bottom:0;z-index:9990;
+  padding:7px max(10px,env(safe-area-inset-left)) calc(7px + env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-right));
+  background:rgba(255,255,255,.96);backdrop-filter:blur(14px);
+  border-top:1px solid var(--mc-line);box-shadow:0 -8px 24px rgba(20,32,51,.08);
+}
+.mcNav{width:min(620px,100%);margin:auto;display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
+.mcNav button{border:0;background:transparent;color:#738096;padding:6px 2px;border-radius:13px;font-weight:850;font-size:10px;cursor:pointer}
+.mcNav button.active{color:var(--mc-primary);background:#edf8f6}
+.mcNav i{display:block;font-style:normal;font-size:19px;line-height:21px;margin-bottom:2px}
+.card{border-radius:20px!important;box-shadow:var(--mc-shadow)!important;border-color:var(--mc-line)!important}
+@media(max-width:700px){
+  #mxHero{width:calc(100% - 20px)!important}
+  #mcHomeDash,.mcSection,.mcActions{width:calc(100% - 20px)}
+  .mcActions{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .mcStat strong{font-size:19px}
+}
+</style>
+
+
+
+
+
+<style id="michelon-clean-nav-v7241">
+html{scroll-behavior:smooth}
+.mc-top-section{
+  width:min(920px,calc(100% - 20px));
+  margin:12px auto;
+}
+.mc-top-section .mc-section-card{
+  background:#fff;border:1px solid #e7ebf0;border-radius:20px;
+  padding:14px;box-shadow:0 8px 24px rgba(20,32,51,.07);
+}
+.mc-top-section .mc-section-card .mc-section-title{
+  font-size:18px;font-weight:950;margin-bottom:10px;
+}
+.mc-back-top{
+  display:inline-flex;align-items:center;gap:6px;
+  border:1px solid #e2e8f0;background:#fff;color:#334155;
+  border-radius:12px;padding:9px 12px;font-weight:900;
+}
+#mcCardClean{
+  background:linear-gradient(145deg,#101827 0%,#162c46 52%,#0f766e 100%);
+  border-radius:26px;padding:24px 18px;color:#fff;
+  box-shadow:0 16px 36px rgba(15,23,42,.16);
+}
+.mcCardLogo{font-size:12px;font-weight:900;letter-spacing:1.5px;opacity:.8}
+.mcCardName{font-size:27px;font-weight:950;margin-top:7px}
+.mcCardRole{font-size:14px;color:#cbd5e1;margin-top:3px}
+.mcCardLine{height:1px;background:rgba(255,255,255,.16);margin:20px 0}
+.mcCardContact{display:grid;gap:10px}
+.mcCardContact a{
+  display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;
+  border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.09);
+  border-radius:15px;padding:13px 14px;font-weight:850;
+}
+.mcCardActions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}
+.mcCardActions button{
+  border:0;border-radius:14px;padding:13px 8px;font-weight:950;
+  background:#fff;color:#0f172a;
+}
+.mcCardActions .gold{background:#d8aa50;color:#101827}
+@media(max-width:700px){
+  .mc-top-section{width:calc(100% - 20px)}
+  #mcCardClean{padding:22px 15px}
+}
+</style>
+
+
+<style id="michelon-pro-v7250">
+:root{
+  --p-bg:#f6f7f9;
+  --p-surface:#ffffff;
+  --p-text:#172033;
+  --p-muted:#697586;
+  --p-line:#e8ebef;
+  --p-primary:#116e68;
+  --p-primary-soft:#e8f4f2;
+  --p-gold:#c89b3c;
+  --p-shadow:0 4px 14px rgba(23,32,51,.055);
+}
+html,body{background:var(--p-bg)!important;color:var(--p-text)!important;}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Arial,sans-serif!important;}
+/* Remove duplicated/visually heavy quick-access layer from the older version. */
+#mxQuick,.mxSectionTitle{display:none!important;}
+/* Compact brand header. */
+#mxHero{
+  width:min(920px,calc(100% - 24px))!important;
+  margin:12px auto 10px!important;
+  padding:17px 16px!important;
+  border-radius:19px!important;
+  background:#142033!important;
+  box-shadow:none!important;
+}
+#mxHero .mxBrand{font-size:21px!important;letter-spacing:0!important;}
+#mxHero .mxSub{font-size:12px!important;color:#c8d1dc!important;}
+#mxHero .mxLine{margin:12px 0!important;background:#ffffff18!important;}
+/* Home dashboard: flat, calm, compact. */
+#mcHomeDash{width:min(920px,calc(100% - 24px))!important;margin:10px auto 0!important;}
+.mcWelcome{font-size:12px!important;color:var(--p-muted)!important;margin:0 0 7px 2px!important;}
+.mcStats{gap:8px!important;}
+.mcStat{
+  padding:13px!important;border-radius:15px!important;
+  border:1px solid var(--p-line)!important;box-shadow:none!important;
+}
+.mcStat small{font-size:10px!important;color:var(--p-muted)!important;}
+.mcStat strong{font-size:18px!important;margin-top:4px!important;}
+.mcNext{
+  margin-top:8px!important;padding:15px!important;border-radius:17px!important;
+  border:1px solid var(--p-line)!important;box-shadow:none!important;
+}
+.mcNextTitle{font-size:17px!important;}
+.mcNextInfo{font-size:13px!important;line-height:1.45!important;}
+.mcNextBtn{
+  margin-top:10px!important;min-height:45px!important;border-radius:13px!important;
+  background:var(--p-primary)!important;box-shadow:none!important;
+}
+/* Quick actions: four compact professional tiles. */
+.mcSection{width:min(920px,calc(100% - 24px))!important;margin:15px auto 7px!important;font-size:15px!important;}
+.mcActions{width:min(920px,calc(100% - 24px))!important;gap:7px!important;}
+.mcAction{
+  padding:11px 6px!important;border-radius:14px!important;
+  border:1px solid var(--p-line)!important;box-shadow:none!important;
+  font-size:12px!important;background:var(--p-surface)!important;
+}
+.mcAction span{font-size:20px!important;margin-bottom:3px!important;}
+/* Existing cards and buttons become flatter and more consistent. */
+.card{
+  border-radius:17px!important;border:1px solid var(--p-line)!important;
+  box-shadow:none!important;background:var(--p-surface)!important;
+}
+.btns button,.btns .button,.mini{
+  border-radius:12px!important;min-height:44px!important;
+  box-shadow:none!important;
+}
+.primary,.driver-main{background:var(--p-primary)!important;}
+.secondary{background:#edf1f5!important;}
+/* Bottom nav: understated and app-like. */
+.mcBottom{
+  background:rgba(255,255,255,.97)!important;
+  border-top:1px solid var(--p-line)!important;
+  box-shadow:0 -3px 12px rgba(23,32,51,.045)!important;
+  padding-top:5px!important;
+}
+.mcNav button{font-size:9px!important;color:#7a8494!important;padding:5px 2px!important;}
+.mcNav button.active{color:var(--p-primary)!important;background:var(--p-primary-soft)!important;}
+.mcNav i{font-size:18px!important;line-height:19px!important;}
+/* Clean card screen. */
+#mcCardOverlay{background:#f6f7f9!important;padding:10px 10px 90px!important;}
+#mcCardOverlay > div > div:first-child{background:#f6f7f9!important;}
+#mcCardClean{
+  max-width:520px;margin:8px auto!important;padding:22px 18px!important;
+  border-radius:22px!important;
+  background:#142033!important;
+  box-shadow:0 10px 28px rgba(20,32,51,.12)!important;
+}
+#mcCardClean .mcCardName{font-size:24px!important;}
+#mcCardClean .mcCardRole{font-size:13px!important;color:#c8d1dc!important;}
+#mcCardClean .mcCardLine{margin:16px 0!important;}
+#mcCardClean img{
+  width:154px!important;height:154px!important;border-radius:12px!important;
+}
+.mcCardActions button{border-radius:12px!important;padding:11px 7px!important;}
+.mcCardActions .gold{background:var(--p-gold)!important;}
+@media(max-width:700px){
+  #mxHero,#mcHomeDash,.mcSection,.mcActions{width:calc(100% - 20px)!important;}
+  .mcStats{grid-template-columns:1fr 1fr!important;}
+  .mcAction{min-height:62px!important;}
+}
+</style>
+
+
+<style id="michelon-signature-theme-v7260">
+:root{
+  --sig-navy:#07111f;
+  --sig-blue:#0d2742;
+  --sig-teal:#087f78;
+  --sig-teal2:#11b6a4;
+  --sig-gold:#d5aa4d;
+  --sig-gold2:#f0cf78;
+  --sig-cream:#fbfaf6;
+  --sig-bg:#f3f6f8;
+  --sig-text:#122033;
+  --sig-muted:#667386;
+  --sig-line:#e3e8ee;
+}
+body{background:var(--sig-bg)!important;color:var(--sig-text)!important;}
+#mxHero{
+  position:relative!important;overflow:hidden!important;
+  background:linear-gradient(135deg,var(--sig-navy) 0%,var(--sig-blue) 52%,#075e5a 100%)!important;
+  border:1px solid rgba(213,170,77,.28)!important;
+  box-shadow:0 12px 28px rgba(7,17,31,.13)!important;
+}
+#mxHero:before{
+  content:"";position:absolute;width:180px;height:180px;border-radius:50%;
+  right:-70px;top:-80px;border:1px solid rgba(240,207,120,.25);
+  box-shadow:0 0 0 18px rgba(240,207,120,.04),0 0 0 36px rgba(240,207,120,.025);
+}
+#mxHero:after{
+  content:"";position:absolute;left:-80px;bottom:-110px;width:220px;height:220px;border-radius:50%;
+  background:radial-gradient(circle,rgba(17,182,164,.18),transparent 68%);
+}
+#mxHero .mxBrand,#mxHero .mxSub,#mxHero .mxLine{position:relative;z-index:1}
+#mxHero .mxBrand{font-size:24px!important;font-weight:950!important;letter-spacing:.6px!important}
+#mxHero .mxBrand:after{
+  content:"";display:block;width:54px;height:3px;margin-top:9px;border-radius:4px;
+  background:linear-gradient(90deg,var(--sig-gold),var(--sig-gold2));
+}
+#mxHero .mxSub{font-size:12px!important;color:#d7e3ee!important;margin-top:9px!important}
+#mcHomeDash{margin-top:12px!important}
+.mcWelcome{color:var(--sig-muted)!important;font-weight:750!important}
+.mcStat{
+  background:linear-gradient(180deg,#fff,#fbfcfd)!important;
+  border:1px solid var(--sig-line)!important;
+  box-shadow:0 5px 14px rgba(18,32,51,.045)!important;
+}
+.mcStat:first-child{border-top:3px solid var(--sig-teal)!important}
+.mcStat:nth-child(2){border-top:3px solid var(--sig-gold)!important}
+.mcStat:nth-child(3){border-top:3px solid #2c78b8!important}
+.mcStat:nth-child(4){border-top:3px solid #7c5ac7!important}
+.mcNext{
+  background:linear-gradient(135deg,#fff 0%,#f7fbfa 100%)!important;
+  border:1px solid #dce9e7!important;
+  box-shadow:0 7px 18px rgba(8,127,120,.07)!important;
+}
+.mcPill{background:#e5f5f2!important;color:var(--sig-teal)!important}
+.mcNextBtn{
+  background:linear-gradient(135deg,var(--sig-teal),var(--sig-teal2))!important;
+  box-shadow:0 7px 15px rgba(8,127,120,.18)!important;
+}
+.mcAction{
+  background:#fff!important;border:1px solid var(--sig-line)!important;
+  box-shadow:0 5px 13px rgba(18,32,51,.04)!important;
+  transition:transform .15s ease,box-shadow .15s ease;
+}
+.mcAction:active{transform:translateY(1px)}
+.mcAction:nth-child(1) span{color:var(--sig-teal)}
+.mcAction:nth-child(2) span{color:var(--sig-gold)}
+.mcAction:nth-child(3) span{color:#2677b7}
+.mcAction:nth-child(4) span{color:#7255b5}
+.card{border:1px solid var(--sig-line)!important;box-shadow:0 6px 16px rgba(18,32,51,.045)!important}
+.primary,.driver-main{background:linear-gradient(135deg,var(--sig-teal),var(--sig-teal2))!important}
+.mcBottom{
+  border-top:1px solid rgba(227,232,238,.9)!important;
+  background:rgba(255,255,255,.97)!important;
+}
+.mcNav button.active{background:#e5f5f2!important;color:var(--sig-teal)!important}
+
+/* Signature digital card */
+#mcCardClean{
+  background:
+    radial-gradient(circle at 90% 8%,rgba(240,207,120,.16),transparent 28%),
+    radial-gradient(circle at 8% 92%,rgba(17,182,164,.15),transparent 32%),
+    linear-gradient(145deg,#06101d 0%,#0b2037 56%,#075e5a 100%)!important;
+  border:1px solid rgba(213,170,77,.52)!important;
+  box-shadow:0 18px 42px rgba(7,17,31,.22)!important;
+}
+#mcCardClean .mcCardLogo{
+  color:var(--sig-gold2)!important;letter-spacing:2px!important
+}
+#mcCardClean .mcCardName{font-size:28px!important;letter-spacing:.2px!important}
+#mcCardClean .mcCardRole{color:#d6e2ec!important}
+#mcCardClean .mcCardLine{background:linear-gradient(90deg,transparent,rgba(240,207,120,.65),transparent)!important}
+#mcCardClean .mcCardContact a{
+  background:rgba(255,255,255,.08)!important;
+  border-color:rgba(255,255,255,.14)!important;
+}
+#mcCardClean img{
+  border:4px solid #fff!important;
+  box-shadow:0 8px 20px rgba(0,0,0,.25)!important;
+}
+#mcCardClean .mcCardActions button{box-shadow:none!important}
+#mcCardClean .mcCardActions .gold{
+  background:linear-gradient(135deg,var(--sig-gold),var(--sig-gold2))!important;
+}
+@media(max-width:700px){
+  #mxHero .mxBrand{font-size:22px!important}
+  .mcAction{min-height:64px!important}
+}
+</style>
+
+
+<style id="michelon-top-button-v7263">
+#mcTopButton{
+  position:fixed;
+  right:16px;
+  bottom:76px;
+  z-index:10050;
+  width:48px;
+  height:48px;
+  border:0;
+  border-radius:50%;
+  background:#0f766e;
+  color:#fff;
+  font-size:22px;
+  font-weight:950;
+  box-shadow:0 6px 18px rgba(15,118,110,.28);
+  display:none;
+  align-items:center;
+  justify-content:center;
+}
+#mcTopButton.visible{display:flex;}
+#mcTopButton:active{transform:scale(.95);}
+@media(max-width:700px){
+  #mcTopButton{right:14px;bottom:76px;width:46px;height:46px;}
+}
+</style>
+
+
+<style id="michelon-cotacao-clean-v7270">
+.cotacaoLauncher{
+  width:min(920px,calc(100% - 24px));margin:12px auto 8px;
+  background:#fff;border:1px solid #e5e9ef;border-radius:18px;
+  box-shadow:0 5px 16px rgba(19,32,51,.05);padding:10px;
+}
+.cotacaoLauncher button{
+  width:100%;border:0;border-radius:14px;padding:14px 16px;
+  background:linear-gradient(135deg,#087f78,#13aa9b);color:#fff;
+  font-size:15px;font-weight:950;text-align:left;
+}
+#cotacaoImportWrap{
+  width:min(920px,calc(100% - 24px));margin:8px auto 14px;
+  display:none;
+}
+#cotacaoImportWrap.open{display:block}
+#cotacaoImportWrap .cotacaoImportHead{
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+  margin-bottom:8px;
+}
+#cotacaoImportWrap .cotacaoClose{
+  border:1px solid #e2e7ed;background:#fff;border-radius:10px;
+  padding:7px 10px;font-weight:900;color:#526174;
+}
+</style>
+
+
+<style id="michelon-quick-top-v7271">
+.appTop + .appSectionTitle{margin-top:14px!important}
+.appTiles{margin-bottom:4px!important}
+.appTile{min-height:66px!important;padding:10px 5px!important}
+</style>
+
+
+<style id="michelon-header-order-v7272">
+#appShell{padding-top:8px!important}
+.appTop{margin-bottom:10px!important}
+.cotacaoLauncher{margin:0 auto 10px!important}
+.appSectionTitle{margin-top:12px!important}
+.appTop + .cotacaoLauncher + .appSectionTitle{margin-top:12px!important}
+</style>
+
+
+<style id="michelon-home-order-v7273">
+.cotacaoLauncher{
+  width:min(920px,calc(100% - 24px));margin:10px auto 9px;
+}
+.cotacaoLauncher button{
+  width:100%;border:0;border-radius:14px;padding:14px 16px;
+  background:linear-gradient(135deg,#087f78,#13aa9b);color:#fff;
+  font-size:15px;font-weight:950;text-align:left;
+  box-shadow:0 5px 14px rgba(8,127,120,.16);
+}
+.cotacaoLauncher button span{float:right}
+#cotacaoImportWrap{display:none!important;width:min(920px,calc(100% - 24px));margin:8px auto 14px}
+#cotacaoImportWrap.open{display:block!important}
+.mcSection{margin-top:8px!important}
+.mcActions{margin-bottom:8px!important}
+</style>
+
+
+<style id="michelon-final-order-v7274">
+#mxHero{margin-top:0!important}
+#mxHero .mxQuickBtn{display:none!important}
+.mcSection{margin-top:10px!important}
+.cotacaoLauncher{margin:9px auto!important}
+</style>
+
+
+<style id="michelon-card-one-screen-v7275">
+/* CARTÃO DIGITAL — UMA ÚNICA TELA */
+#mcCardOverlay{
+  position:fixed!important;
+  inset:0!important;
+  height:100dvh!important;
+  max-height:100dvh!important;
+  overflow:hidden!important;
+  padding:8px 10px calc(8px + env(safe-area-inset-bottom))!important;
+  background:#eef2f5!important;
+}
+#mcCardOverlay > div{
+  width:min(560px,100%)!important;
+  height:100%!important;
+  margin:0 auto!important;
+  display:flex!important;
+  flex-direction:column!important;
+}
+#mcCardOverlay > div > div:first-child{
+  position:relative!important;
+  flex:0 0 auto!important;
+  min-height:42px!important;
+  margin:0 0 6px!important;
+  padding:2px 0!important;
+  background:transparent!important;
+}
+#mcCardOverlay .mc-back-top{
+  padding:8px 11px!important;
+  border-radius:11px!important;
+  font-size:12px!important;
+}
+#mcCardClean{
+  flex:1 1 auto!important;
+  min-height:0!important;
+  max-height:calc(100dvh - 62px)!important;
+  overflow:hidden!important;
+  margin:0 auto!important;
+  width:100%!important;
+  max-width:500px!important;
+  box-sizing:border-box!important;
+  padding:15px 16px 13px!important;
+  border-radius:23px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  text-align:center!important;
+  background:
+    radial-gradient(circle at 90% 5%,rgba(240,207,120,.17),transparent 24%),
+    radial-gradient(circle at 8% 95%,rgba(17,182,164,.14),transparent 27%),
+    linear-gradient(150deg,#06101d 0%,#102d47 58%,#08736d 100%)!important;
+  border:1px solid rgba(213,170,77,.58)!important;
+  box-shadow:0 14px 34px rgba(7,17,31,.20)!important;
+}
+#mcCardClean .mcCardLogo{
+  font-size:11px!important;
+  letter-spacing:2.5px!important;
+  color:#f0d58b!important;
+  margin-bottom:4px!important;
+}
+#mcCardClean .mcCardName{
+  font-size:25px!important;
+  line-height:1.05!important;
+  margin:0!important;
+}
+#mcCardClean .mcCardRole{
+  font-size:12px!important;
+  margin-top:4px!important;
+}
+#mcCardClean .mcCardLine{
+  margin:10px 0!important;
+}
+#mcCardClean > div[style*="text-align:center"]{
+  margin:0 0 8px!important;
+}
+#mcCardClean > div[style*="text-align:center"] > div:first-child{
+  font-size:10px!important;
+  margin-bottom:5px!important;
+}
+#mcCardClean > div[style*="text-align:center"] > div:nth-child(2){
+  padding:6px!important;
+  border-radius:12px!important;
+}
+#mcCardClean > div[style*="text-align:center"] img{
+  width:112px!important;
+  height:112px!important;
+}
+#mcCardClean .mcCardContact{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:7px!important;
+  margin:0!important;
+}
+#mcCardClean .mcCardContact a{
+  padding:10px 6px!important;
+  border-radius:11px!important;
+  font-size:12px!important;
+  white-space:nowrap!important;
+}
+#mcCardClean .mcCardActions{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:7px!important;
+  margin-top:7px!important;
+}
+#mcCardClean .mcCardActions button{
+  padding:10px 5px!important;
+  border-radius:11px!important;
+  font-size:11px!important;
+}
+#mcCardClean:after{
+  content:"Conforto  •  Segurança  •  Pontualidade";
+  display:block!important;
+  color:#e7d69e!important;
+  font-size:9px!important;
+  letter-spacing:.7px!important;
+  margin-top:8px!important;
+}
+@media(max-height:700px){
+  #mcCardClean{padding:10px 13px 9px!important}
+  #mcCardClean .mcCardName{font-size:22px!important}
+  #mcCardClean > div[style*="text-align:center"] img{width:92px!important;height:92px!important}
+  #mcCardClean .mcCardLine{margin:7px 0!important}
+  #mcCardClean .mcCardContact a,#mcCardClean .mcCardActions button{padding:8px 5px!important}
+  #mcCardClean:after{margin-top:5px!important}
+}
+</style>
+
+
+<style id="michelon-remove-duplicate-card-v7276">
+/* O cartão é acessado somente pelo atalho 📇 Cartão */
+#mcFixedCardBar,
+.mcFixedCardBar,
+[id*="fixedCard"],
+[class*="fixed-card"],
+[class*="fixedCard"]{
+  display:none!important;
+}
+</style>
+
+
+<style id="michelon-remove-exact-card-bar-v7277">
+#btnMeuCartao{display:none!important;}
+</style>
+
+
+<style id="michelon-card-buttons-v7278">
+/* Botões do cartão com tamanho padrão */
+#mcCardClean .mcCardContact,
+#mcCardClean .mcCardActions{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:8px!important;
+  width:100%!important;
+  margin:0!important;
+}
+#mcCardClean .mcCardContact a,
+#mcCardClean .mcCardActions button,
+#mcCardClean .mcBudgetBtn{
+  box-sizing:border-box!important;
+  width:100%!important;
+  height:42px!important;
+  min-height:42px!important;
+  max-height:42px!important;
+  padding:0 10px!important;
+  margin:0!important;
+  border-radius:11px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  font-size:12px!important;
+  font-weight:850!important;
+  line-height:1!important;
+  white-space:nowrap!important;
+}
+#mcCardClean .mcBudgetBtn{
+  grid-column:1 / -1!important;
+  background:linear-gradient(135deg,#d8a83f,#f0cb69)!important;
+  color:#101820!important;
+  border:0!important;
+  text-decoration:none!important;
+}
+@media(max-height:700px){
+  #mcCardClean .mcCardContact a,
+  #mcCardClean .mcCardActions button,
+  #mcCardClean .mcBudgetBtn{
+    height:38px!important;
+    min-height:38px!important;
+    max-height:38px!important;
+  }
+}
+</style>
+
+
+<style id="michelon-card-budget-v7279">
+#mcCardClean .mcBudgetBtn{
+  display:flex!important;
+  width:100%!important;
+  height:40px!important;
+  min-height:40px!important;
+  max-height:40px!important;
+  margin-top:7px!important;
+  box-sizing:border-box!important;
+  align-items:center!important;
+  justify-content:center!important;
+  border-radius:11px!important;
+  background:linear-gradient(135deg,#d8a83f,#f0cb69)!important;
+  color:#101820!important;
+  text-decoration:none!important;
+  font-size:12px!important;
+  font-weight:950!important;
+}
+@media(max-height:700px){
+  #mcCardClean .mcBudgetBtn{
+    height:36px!important;
+    min-height:36px!important;
+    max-height:36px!important;
+    margin-top:5px!important;
+  }
+}
+</style>
+
+
+<style id="michelon-whatsapp-icon-v7280">
+#mcCardClean .mcCardContact a[href*="wa.me"]{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:7px!important;
+}
+#mcCardClean .mcCardContact a[href*="wa.me"]::first-letter{
+  font-size:15px!important;
+}
+</style>
+
+
+<style id="michelon-card-topbar-standard-v7281-disabled">
+/* Barra superior do cartão: todos os comandos no mesmo padrão */
+#mcCardOverlay .mcCardTopBar,
+#mcCardOverlay .cardTopBar{
+  display:grid!important;
+  grid-template-columns:110px 1fr 110px!important;
+  align-items:center!important;
+  gap:8px!important;
+  width:min(560px,100%)!important;
+  margin:0 auto 8px!important;
+}
+#mcCardOverlay .mcCardTopBar > *,
+#mcCardOverlay .cardTopBar > *,
+#mcCardOverlay > div > div:first-child > *{
+  box-sizing:border-box!important;
+  height:48px!important;
+  min-height:48px!important;
+  max-height:48px!important;
+  margin:0!important;
+  border-radius:12px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  padding:0 10px!important;
+  font-size:13px!important;
+  font-weight:900!important;
+  line-height:1!important;
+  white-space:nowrap!important;
+  border:1px solid #dfe5ea!important;
+}
+#mcCardOverlay .mcCardTopBar .back,
+#mcCardOverlay .cardTopBar .back{
+  background:#fff!important;
+  color:#10233a!important;
+}
+#mcCardOverlay .mcCardTopBar .home,
+#mcCardOverlay .cardTopBar .home{
+  background:#fff!important;
+  color:#10233a!important;
+}
+#mcCardOverlay .mcCardTopBar .title,
+#mcCardOverlay .cardTopBar .title{
+  background:transparent!important;
+  border:0!important;
+  color:#10233a!important;
+  font-size:16px!important;
+}
+@media(max-width:430px){
+  #mcCardOverlay .mcCardTopBar,
+  #mcCardOverlay .cardTopBar{
+    grid-template-columns:88px 1fr 88px!important;
+    gap:6px!important;
+  }
+  #mcCardOverlay .mcCardTopBar > *,
+  #mcCardOverlay .cardTopBar > *,
+  #mcCardOverlay > div > div:first-child > *{
+    height:44px!important;
+    min-height:44px!important;
+    max-height:44px!important;
+    padding:0 7px!important;
+    font-size:11px!important;
+  }
+  #mcCardOverlay .mcCardTopBar .title,
+  #mcCardOverlay .cardTopBar .title{
+    font-size:14px!important;
+  }
+}
+</style>
+
+
+<style id="michelon-card-header-final-v7282">
+/* Cabeçalho do cartão: três elementos com exatamente o mesmo padrão */
+#mcCardOverlay .mcCardHeaderBar{
+  width:min(920px,100%)!important;
+  display:grid!important;
+  grid-template-columns:1fr 1fr 1fr!important;
+  align-items:center!important;
+  gap:8px!important;
+  margin:4px auto 12px!important;
+  padding:8px 0!important;
+  position:sticky!important;
+  top:0!important;
+  z-index:20!important;
+  background:#f5f7fa!important;
+}
+#mcCardOverlay .mcTopBtn,
+#mcCardOverlay .mcTopTitle{
+  box-sizing:border-box!important;
+  width:100%!important;
+  height:48px!important;
+  min-height:48px!important;
+  max-height:48px!important;
+  border-radius:12px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  margin:0!important;
+  padding:0 10px!important;
+  font-size:13px!important;
+  font-weight:900!important;
+  line-height:1!important;
+  white-space:nowrap!important;
+}
+#mcCardOverlay .mcTopBtn{
+  border:1px solid #d8dee7!important;
+  background:#fff!important;
+  color:#142033!important;
+  box-shadow:0 3px 10px rgba(20,32,51,.08)!important;
+}
+#mcCardOverlay .mcTopTitle{
+  border:1px solid #d8dee7!important;
+  background:#fff!important;
+  color:#142033!important;
+}
+#mcCardClean .mcWaIcon{
+  width:21px!important;
+  height:21px!important;
+  min-width:21px!important;
+  border-radius:50%!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  margin-right:7px!important;
+  background:#25D366!important;
+  color:#fff!important;
+  font-family:Arial,sans-serif!important;
+  font-size:13px!important;
+  font-weight:900!important;
+  line-height:1!important;
+}
+#mcCardClean .mcWaIcon span{
+  transform:rotate(-18deg)!important;
+  display:block!important;
+}
+#mcCardClean .mcCardContact a[href*="wa.me"]{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:0!important;
+}
+@media(max-width:430px){
+  #mcCardOverlay .mcCardHeaderBar{
+    grid-template-columns:1fr 1fr 1fr!important;
+    gap:5px!important;
+  }
+  #mcCardOverlay .mcTopBtn,
+  #mcCardOverlay .mcTopTitle{
+    height:42px!important;
+    min-height:42px!important;
+    max-height:42px!important;
+    padding:0 5px!important;
+    font-size:11px!important;
+    border-radius:10px!important;
+  }
+}
+</style>
+
+
+<style id="michelon-card-polish-v7283">
+/* V7.29.3 — acabamento visual profissional, preservando a estrutura */
+#mcCardClean{
+  border-radius:24px!important;
+  overflow:hidden!important;
+  box-shadow:0 18px 45px rgba(10,25,40,.22)!important;
+}
+#mcCardClean .mcBrand{
+  letter-spacing:4px!important;
+  font-size:13px!important;
+  font-weight:900!important;
+}
+#mcCardClean .mcName{
+  font-size:24px!important;
+  letter-spacing:-.3px!important;
+  margin-top:3px!important;
+}
+#mcCardClean .mcRole{
+  opacity:.88!important;
+  font-size:12px!important;
+  letter-spacing:.2px!important;
+}
+#mcCardClean .mcQrHint{
+  font-size:10px!important;
+  font-weight:800!important;
+  letter-spacing:.1px!important;
+  margin:8px 0 7px!important;
+}
+#mcCardClean .mcCardContact a,
+#mcCardClean .mcCardActions button,
+#mcCardClean .mcBudgetBtn{
+  border-radius:12px!important;
+  font-weight:900!important;
+  letter-spacing:0!important;
+  transition:transform .15s ease,box-shadow .15s ease!important;
+}
+#mcCardClean .mcCardContact a[href*="wa.me"]{
+  background:#25D366!important;
+  color:#fff!important;
+  border:1px solid #25D366!important;
+}
+#mcCardClean .mcCardContact a[href^="tel:"]{
+  background:rgba(255,255,255,.12)!important;
+  color:#fff!important;
+}
+#mcCardClean .mcBudgetBtn{
+  box-shadow:0 6px 16px rgba(216,168,63,.24)!important;
+}
+#mcCardClean .mcTagline{
+  font-size:10px!important;
+  letter-spacing:.25px!important;
+  opacity:.9!important;
+  margin-top:8px!important;
+}
+#mcCardClean .mcFooterPhrase{
+  font-size:9px!important;
+  opacity:.72!important;
+  margin-top:3px!important;
+}
+@media(max-width:430px){
+  #mcCardClean .mcName{font-size:21px!important;}
+  #mcCardClean .mcQrHint{margin-top:5px!important;margin-bottom:5px!important;}
+  #mcCardClean .mcTagline{margin-top:5px!important;}
+}
+</style>
+
+
+<style id="michelon-brand-size-v7284">
+#mcCardClean .mcBrand{
+  font-size:19px!important;
+  letter-spacing:5px!important;
+  font-weight:950!important;
+  line-height:1!important;
+}
+@media(max-width:430px){
+  #mcCardClean .mcBrand{
+    font-size:17px!important;
+    letter-spacing:4px!important;
+  }
+}
+</style>
+
+
+<style id="michelon-remove-top-quick-access-v7285">
+/* O acesso rápido fica somente na navegação inferior */
+.top-quick-access,
+.quick-access.top-quick-access{
+  display:none!important;
+}
+</style>
+
+
+<style id="michelon-cotacao-bottom-v7287">
+/* Nova Cotação no fim do conteúdo, antes da navegação inferior */
+.cotacaoLauncher{
+  margin:18px auto!important;
+  max-width:980px!important;
+}
+.cotacaoLauncher button{
+  width:100%!important;
+  min-height:50px!important;
+  border-radius:14px!important;
+}
+</style>
+
+
+<style id="michelon-bottom-cotacao-v7289">
+.mcNav{grid-template-columns:repeat(6,1fr)!important;gap:2px!important}
+.mcNav button{font-size:9px!important;padding:5px 1px!important;white-space:nowrap}
+.mcNav i{font-size:18px!important;line-height:20px!important}
+@media(max-width:380px){
+  .mcNav button{font-size:8px!important}
+  .mcNav i{font-size:17px!important}
+}
+</style>
+
+
+<style id="michelon-bottom-nav-size-v7290">
+.mcBottom{
+  padding-top:10px!important;
+  padding-bottom:calc(10px + env(safe-area-inset-bottom))!important;
+}
+.mcNav{
+  gap:4px!important;
+  max-width:720px!important;
+}
+.mcNav button{
+  min-height:58px!important;
+  font-size:11px!important;
+  padding:7px 2px!important;
+}
+.mcNav i{
+  font-size:22px!important;
+  line-height:24px!important;
+  margin-bottom:3px!important;
+}
+@media(max-width:380px){
+  .mcNav button{font-size:10px!important;min-height:56px!important}
+  .mcNav i{font-size:21px!important}
+}
+</style>
+
+
+<style id="michelon-card-brand-v7291">
+/* Marca MICHELON do cartão digital */
+.cardFloat .brand,
+.cardFloat .cardBrand,
+.cardFloat .michelonBrand,
+.cardFloat .brandName{
+  font-size:20px!important;
+  font-weight:900!important;
+  letter-spacing:3px!important;
+}
+</style>
+
+
+<style id="michelon-card-logo-real-v7292">
+.mcCardLogo{
+  font-size:21px!important;
+  font-weight:950!important;
+  letter-spacing:4px!important;
+  opacity:1!important;
+  color:#d8ad3f!important;
+  text-shadow:0 1px 8px rgba(216,173,63,.18);
+}
+</style>
+
+
+<style id="michelon-card-logo-final-v7293">
+#mcCardClean .mcCardLogo{
+  font-size:24px!important;
+  font-weight:950!important;
+  letter-spacing:5px!important;
+  line-height:1.1!important;
+  opacity:1!important;
+  color:#d8ad3f!important;
+  margin-bottom:6px!important;
+  text-shadow:0 1px 8px rgba(216,173,63,.20)!important;
+}
+</style>
+
 </head>
 <body>
+<section id="mxHero" aria-label="Painel principal MICHELON">
+  <div class="mxBrand">MICHELON</div>
+  <div class="mxSub">Viagens Executivas · Gestão</div>
+  <div class="mxLine"></div>
+</section>
+<section id="mcHomeDash" aria-label="Resumo do MICHELON">
 
 
 
-<div id="importarCotacaoBox" style="max-width:980px;margin:12px auto;padding:14px;border:2px solid #111827;border-radius:16px;background:#fff;box-sizing:border-box">
-  <div style="font-size:18px;font-weight:900;margin-bottom:6px">📥 Cotação recebida do cliente</div>
-  <div style="font-size:13px;color:#475569;margin-bottom:9px">Copie a mensagem inteira que chegou no WhatsApp e cole aqui.</div>
-  <textarea id="textoCotacaoRecebida" rows="5" placeholder="Cole aqui a cotação recebida pelo WhatsApp..." style="width:100%;box-sizing:border-box;padding:12px;border:1px solid #cbd5e1;border-radius:10px;font-size:16px"></textarea>
-  <button type="button" onclick="importarCotacaoRecebida()" style="width:100%;margin-top:9px;border:0;border-radius:11px;padding:14px;font-weight:900;font-size:16px;background:#111827;color:#fff">📥 IMPORTAR PARA O MICHELON</button>
-  <div style="font-size:12px;color:#64748b;margin-top:7px">Depois confira os campos preenchidos e calcule a rota normalmente.</div>
-</div>
 
-<button id="btnMeuCartao" type="button" onclick="abrirMeuCartao()" style="position:fixed;right:14px;bottom:18px;z-index:9998;border:0;border-radius:999px;padding:13px 17px;font-weight:800;background:#111827;color:#fff;box-shadow:0 8px 24px rgba(0,0,0,.25)">📇 Meu Cartão</button>
+
+
+<div class="mcWelcome">Visão geral do seu dia</div>
+  <div class="mcStats">
+    <div class="mcStat"><small>VIAGENS HOJE</small><strong id="mcStatViagens">0</strong></div>
+    <div class="mcStat"><small>A RECEBER</small><strong id="mcStatReceber">R$ 0,00</strong></div>
+    <div class="mcStat"><small>RECEBIDO HOJE</small><strong id="mcStatRecebido">R$ 0,00</strong></div>
+    <div class="mcStat"><small>EM ANDAMENTO</small><strong id="mcStatAndamento">0</strong></div>
+  </div>
+  <div class="mcNext" id="mcNextTrip">
+    <div class="mcNextHead"><b>PRÓXIMA VIAGEM</b><span class="mcPill">Agenda</span></div>
+    <div class="mcNextTitle" id="mcNextTitle">Nenhuma viagem agendada</div>
+    <div class="mcNextInfo" id="mcNextInfo">Suas próximas viagens aparecerão aqui.</div>
+    <button class="mcNextBtn" id="mcNextBtn" type="button" style="display:none">🚗 INICIAR VIAGEM</button>
+  </div>
+</section>
+
+
+
+
+
+
+
+
 <div id="modalMeuCartao" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.94);padding:8px;overflow:auto" onclick="if(event.target===this)fecharMeuCartao()">
  <div style="max-width:520px;margin:8px auto">
   <div style="display:flex;justify-content:flex-end;margin-bottom:6px"><button type="button" onclick="fecharMeuCartao()" style="border:0;border-radius:10px;padding:9px 12px;font-weight:800">✕ Fechar</button></div>
   <iframe title="Cartão digital MICHELON" srcdoc="&lt;!doctype html&gt;&lt;html lang=&quot;pt-BR&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1&quot;&gt;&lt;meta name=&quot;theme-color&quot; content=&quot;#090909&quot;&gt;&lt;title&gt;Michelon Viagens Executivas - V4&lt;/title&gt;&lt;style&gt;
-*{box-sizing:border-box}body{margin:0;background:#080808;color:#f7f1df;font-family:Arial,sans-serif}.wrap{max-width:520px;margin:auto;min-height:100vh;padding:34px 20px;background:radial-gradient(circle at top,#272014,#0b0b0b 38%,#050505)}.card{border:1px solid #b98a35;border-radius:28px;padding:28px 22px;box-shadow:0 0 35px #000}.logo{text-align:center}.mark{font-family:Georgia,serif;font-weight:bold;font-size:74px;line-height:.9;color:#d8aa50;text-shadow:0 2px 12px #8c621e}.road{width:135px;height:5px;background:#d8aa50;margin:-19px auto 13px;transform:rotate(-12deg);border-radius:8px}h1{font-family:Georgia,serif;letter-spacing:4px;color:#e0b75f;font-size:34px;margin:8px 0 2px}.sub{letter-spacing:5px;font-size:12px;color:#e7c77e}.tag{margin:24px 0 18px;font-size:15px;letter-spacing:1.5px;color:#d9c28d}.name{font-size:24px;font-weight:700;margin-top:24px}.place{color:#c9b992;margin:5px 0 20px}.btn{display:block;text-decoration:none;text-align:center;padding:16px;margin:11px 0;border-radius:15px;font-weight:800;font-size:17px}.gold{background:linear-gradient(135deg,#b17c26,#efd07a,#a87321);color:#090909}.dark{border:1px solid #9e7b3c;color:#f4e6bd;background:#151515}.small{font-size:13px;text-align:center;color:#aa9d7e;margin-top:22px;line-height:1.6}.pillars{display:flex;justify-content:space-around;border-top:1px solid #6f5528;padding-top:18px;margin-top:22px;font-size:11px;letter-spacing:1px;color:#e2c475}.share{cursor:pointer;width:100%;font-family:inherit}.qr{margin:24px auto 8px;background:#fff;padding:10px;border-radius:14px;width:170px;height:170px}.qr img{width:150px;height:150px;display:block}.qrlabel{text-align:center;color:#d9c28d;font-size:12px;margin-bottom:16px}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;main class=&quot;wrap&quot;&gt;&lt;section class=&quot;card&quot;&gt;&lt;div class=&quot;logo&quot;&gt;&lt;div class=&quot;mark&quot;&gt;M&lt;/div&gt;&lt;div class=&quot;road&quot;&gt;&lt;/div&gt;&lt;h1&gt;MICHELON&lt;/h1&gt;&lt;div class=&quot;sub&quot;&gt;VIAGENS EXECUTIVAS&lt;/div&gt;&lt;div class=&quot;tag&quot;&gt;Mais que viagens, conexões que importam.&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;name&quot;&gt;Anderson Michelon&lt;/div&gt;&lt;div class=&quot;place&quot;&gt;Limeira – SP&lt;/div&gt;&lt;a class=&quot;btn gold&quot; href=&quot;https://wa.me/5519992462362?text=Olá%20Anderson%2C%20gostaria%20de%20solicitar%20um%20orçamento.&quot;&gt;💬 Solicitar orçamento no WhatsApp&lt;/a&gt;&lt;a class=&quot;btn dark&quot; href=&quot;tel:+5519992462362&quot; onclick=&quot;window.location.href=\&#x27;tel:+5519992462362\&#x27;;return false;&quot;&gt;📞 Ligar agora&lt;/a&gt;&lt;a class=&quot;btn dark&quot; href=&quot;mailto:andersonmichelon08@gmail.com?subject=Contato%20-%20Michelon%20Viagens%20Executivas&quot; onclick=&quot;window.location.href=\&#x27;mailto:andersonmichelon08@gmail.com?subject=Contato%20-%20Michelon%20Viagens%20Executivas\&#x27;;return false;&quot;&gt;✉️ Enviar e-mail&lt;/a&gt;&lt;a class=&quot;btn dark&quot; href=&quot;data:text/vcard;charset=utf-8,BEGIN%3AVCARD%0AVERSION%3A3.0%0AFN%3AAnderson%20Michelon%0AORG%3AMichelon%20Viagens%20Executivas%0ATEL%3BTYPE%3DCELL%3A%2B5519992462362%0AEMAIL%3Aandersonmichelon08%40gmail.com%0AADR%3A%3B%3B%3BLimeira%3BSP%3B%3BBrasil%0AEND%3AVCARD&quot; download=&quot;Anderson_Michelon.vcf&quot;&gt;👤 Salvar contato&lt;/a&gt;
+*{box-sizing:border-box}body{margin:0;background:#080808;color:#f7f1df;font-family:Arial,sans-serif}.wrap{max-width:520px;margin:auto;min-height:100vh;padding:34px 20px;background:radial-gradient(circle at top,#272014,#0b0b0b 38%,#050505)}.card{border:1px solid #b98a35;border-radius:28px;padding:28px 22px;box-shadow:0 0 35px #000}.logo{text-align:center}.mark{font-family:Georgia,serif;font-weight:bold;font-size:74px;line-height:.9;color:#d8aa50;text-shadow:0 2px 12px #8c621e}.road{width:135px;height:5px;background:#d8aa50;margin:-19px auto 13px;transform:rotate(-12deg);border-radius:8px}h1{font-family:Georgia,serif;letter-spacing:4px;color:#e0b75f;font-size:34px;margin:8px 0 2px}.sub{letter-spacing:5px;font-size:12px;color:#e7c77e}.tag{margin:24px 0 18px;font-size:15px;letter-spacing:1.5px;color:#d9c28d}.name{font-size:24px;font-weight:700;margin-top:24px}.place{color:#c9b992;margin:5px 0 20px}.btn{display:block;text-decoration:none;text-align:center;padding:16px;margin:11px 0;border-radius:15px;font-weight:800;font-size:17px}.gold{background:linear-gradient(135deg,#b17c26,#efd07a,#a87321);color:#090909}.dark{border:1px solid #9e7b3c;color:#f4e6bd;background:#151515}.small{font-size:13px;text-align:center;color:#aa9d7e;margin-top:22px;line-height:1.6}.pillars{display:flex;justify-content:space-around;border-top:1px solid #6f5528;padding-top:18px;margin-top:22px;font-size:11px;letter-spacing:1px;color:#e2c475}.share{cursor:pointer;width:100%;font-family:inherit}.qr{margin:24px auto 8px;background:#fff;padding:10px;border-radius:14px;width:170px;height:170px}.qr{background:#fff;padding:8px;border-radius:14px;display:inline-block}.qr img{width:150px;height:150px;display:block}.qrlabel{text-align:center;color:#d9c28d;font-size:12px;margin-bottom:16px}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;main class=&quot;wrap&quot;&gt;&lt;section class=&quot;card&quot;&gt;&lt;div class=&quot;logo&quot;&gt;&lt;div class=&quot;mark&quot;&gt;M&lt;/div&gt;&lt;div class=&quot;road&quot;&gt;&lt;/div&gt;&lt;h1&gt;MICHELON&lt;/h1&gt;&lt;div class=&quot;sub&quot;&gt;VIAGENS EXECUTIVAS&lt;/div&gt;&lt;div class=&quot;tag&quot;&gt;Mais que viagens, conexões que importam.&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;name&quot;&gt;Anderson Michelon&lt;/div&gt;&lt;div class=&quot;place&quot;&gt;Limeira – SP&lt;/div&gt;&lt;a class=&quot;btn gold&quot; href=&quot;https://wa.me/5519992462362?text=Olá%20Anderson%2C%20gostaria%20de%20solicitar%20um%20orçamento.&quot;&gt;💬 Solicitar orçamento no WhatsApp&lt;/a&gt;&lt;a class=&quot;btn dark&quot; href=&quot;tel:+5519992462362&quot; onclick=&quot;window.location.href=\&#x27;tel:+5519992462362\&#x27;;return false;&quot;&gt;📞 Ligar agora&lt;/a&gt;&lt;a class=&quot;btn dark&quot; href=&quot;mailto:andersonmichelon08@gmail.com?subject=Contato%20-%20Michelon%20Viagens%20Executivas&quot; onclick=&quot;window.location.href=\&#x27;mailto:andersonmichelon08@gmail.com?subject=Contato%20-%20Michelon%20Viagens%20Executivas\&#x27;;return false;&quot;&gt;✉️ Enviar e-mail&lt;/a&gt;&lt;a class=&quot;btn dark&quot; href=&quot;data:text/vcard;charset=utf-8,BEGIN%3AVCARD%0AVERSION%3A3.0%0AFN%3AAnderson%20Michelon%0AORG%3AMichelon%20Viagens%20Executivas%0ATEL%3BTYPE%3DCELL%3A%2B5519992462362%0AEMAIL%3Aandersonmichelon08%40gmail.com%0AADR%3A%3B%3B%3BLimeira%3BSP%3B%3BBrasil%0AEND%3AVCARD&quot; download=&quot;Anderson_Michelon.vcf&quot;&gt;👤 Salvar contato&lt;/a&gt;
 &lt;button class=&quot;btn dark share&quot; onclick=&quot;compartilharCartao()&quot;&gt;📲 Compartilhar cartão&lt;/button&gt;
-&lt;div class=&quot;qr&quot;&gt;&lt;img alt=&quot;QR Code WhatsApp&quot; src=&quot;https://api.qrserver.com/v1/create-qr-code/?size=150x150&amp;data=https%3A%2F%2Fandersonmichelon08-dev.github.io%2Fcartao-michelon%2F&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;qr&quot;&gt;&lt;img alt=&quot;QR Code WhatsApp&quot; src=&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASgAAAEoAQAAAADDfFG0AAAB9klEQVR4nO2a247kQAhDj0f5/1/2PABVyfTuap5SSAvdUl9iqS0EbkNF5hfx9RvQoAb1ERco3hmQkWXlF+tKV/ZH8oUhs2bZykxZXle6sj+TLwQGYa1qI4osrrRl3wBlLLBl/wP1Pq8mqOvxySIe0Y4HeXVFXZACRrZjpcnyutKV/fsoVtv5D4+CdGV/pL5235n6ZJXUH+LVFRWOCyCtl0GWkctjHOHVG2WX54JQ/JVENP7rFhcgU+5rCX68WBbuy/4MyhDtiKLOosp2S7Zm/zrKQjEJZUdmURH23tOP93D4Bv+wEXY+GT/xiJUV8DN52aZ48vUTFUmLvsRpMXJRMX7iHlftuRSKDyDH0E3omGb/tSPmbQNKk5rW3nKW2xFeXVHYOQUZO5XMe3oc/fpAhZGPElNkTq7pUbNffcT2pA6Hb7aM1Vq6Lfsz8zaZlVD3+D7sfh2CdGV/ah5yqrxQGbLYFgpNfX2iSrdqnYNl1Xh0kFdblJEg5u2aJ6vcRu+fqOg/l1yxbL3Lt3Zm/zLqdr7t2oOBFbuwlPu27A/pfRjVGhpZ65x1iNuZ/buotZKotgznau/enH3OX1Ch+OnCKoGjX4+4n2/nkbYc+mXPvP0Rt/PtPBzydvjrfVf2Z/KVSam7vhDafmz+Hx9xv6vknV8c1P+E+gYQkyIC3z7x2gAAAABJRU5ErkJggg==&quot;&gt;&lt;/div&gt;
 &lt;div class=&quot;qrlabel&quot;&gt;Aponte a câmera para abrir meu cartão digital&lt;/div&gt;
 &lt;div class=&quot;pillars&quot;&gt;&lt;span&gt;CONFORTO&lt;/span&gt;&lt;span&gt;SEGURANÇA&lt;/span&gt;&lt;span&gt;PONTUALIDADE&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;small&quot;&gt;(19) 99246-2362&lt;br&gt;andersonmichelon08@gmail.com&lt;br&gt;Seu destino, nossa prioridade.&lt;/div&gt;&lt;/section&gt;&lt;/main&gt;&lt;script&gt;
 async function compartilharCartao(){
@@ -265,7 +1344,7 @@ async function compartilharCartao(){
   </div>
 
 
-  <div class="card">
+  <div class="card" id="mxAgenda"><div class="card">
     
 <details open>
       <summary>📅 Agenda e reservas</summary>
@@ -307,7 +1386,7 @@ async function compartilharCartao(){
   </div>
 
 
-  <div class="card">
+  <div class="card" id="mxUber"><div class="card">
     <details>
       <summary>🚕 Ganhos por App / Uber</summary>
       <div class="grid" style="margin-top:12px">
@@ -352,7 +1431,7 @@ async function compartilharCartao(){
     </details>
   </div>
 
-  <div class="card">
+  <div class="card" id="mxFinanceiro"><div class="card">
     <details open>
       <summary>💰 Financeiro e histórico</summary>
 
@@ -1774,7 +2853,7 @@ function michelonFind(id){return getHist().find(v=>v.id===id)}
 function abrirWazeReserva(id){const x=michelonFind(id);if(!x)return;const d=(x.destino||'').trim();if(!d){alert('Esta viagem não possui destino salvo.');return;}location.href='https://waze.com/ul?q='+encodeURIComponent(d)+'&navigate=yes'}
 function ligarReserva(id){const x=michelonFind(id);if(!x||!x.fone){alert('Cliente sem telefone cadastrado.');return;}let n=String(x.fone).replace(/\D/g,'');location.href='tel:'+(n.startsWith('55')?'+':'+55')+n}
 function iniciarCorrida(id){const h=getHist(),x=h.find(v=>v.id===id);if(!x||x.concluida)return;if(!x.iniciadaEm)x.iniciadaEm=new Date().toISOString();x.status='em_andamento';setHist(h);if(confirm('Viagem iniciada. Abrir o Waze agora?'))abrirWazeReserva(id)}
-function reciboReserva(x){const emp=(typeof getEmpresa==='function'?getEmpresa():{})||{},fim=x.finalizadaEm?new Date(x.finalizadaEm):new Date(),dt=fim.toLocaleDateString('pt-BR'),hr=fim.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});return `🚗 *${(emp.nome||'MICHELON VIAGENS EXECUTIVAS').toUpperCase()}*\n_Conforto e segurança em cada destino._\n\n*RECIBO DE VIAGEM*\n\n👤 Cliente: ${x.cliente||'Cliente'}\n📅 Data da viagem: ${dataBR(x.data)}${x.horaSaida?`\n🕐 Horário: ${x.horaSaida}`:''}\n📍 Origem: ${x.origem||'-'}\n🏁 Destino: ${x.destino||'-'}\n🚘 Serviço: ${x.tipoServico||'Viagem executiva'}\n💵 Valor da viagem: *${brl(+x.valor||0)}*\n💰 Valor recebido: *${brl(+x.recebido||0)}*\n💳 Forma de pagamento: ${x.forma||'-'}\n\n🏁 Viagem finalizada em ${dt} às ${hr}.\n\nAnderson Michelon\nMICHELON Viagens Executivas`}
+function reciboReserva(x){const emp=(typeof getEmpresa==='function'?getEmpresa():{})||{},fim=x.finalizadaEm?new Date(x.finalizadaEm):new Date(),dt=fim.toLocaleDateString('pt-BR'),hr=fim.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});return `🚗 *${(emp.nome||'MICHELON VIAGENS EXECUTIVAS').toUpperCase()}*\n_Conforto e segurança em cada destino._\n\n*RECIBO DE VIAGEM*\n\n👤 Cliente: ${x.cliente||'Cliente'}\n📅 Data da viagem: ${dataBR(x.data)}${x.horaSaida?`\n🕐 Horário: ${x.horaSaida}`:''}\n📍 Origem: ${x.origem||'-'}\n🏁 Destino: ${x.destino||'-'}\n🚘 Serviço: ${x.tipoServico||'Viagem executiva'}\n💵 Valor da viagem: *${brl(+x.valor||0)}*\n💰 Valor recebido: *${brl(+x.recebido||0)}*\n💳 Pagamento: ${(+x.recebido||0)>0 ? (x.forma||'Informado') : 'Pendente'}\n\n🏁 Viagem finalizada em ${dt} às ${hr}.\n\nAnderson Michelon\nMICHELON Viagens Executivas`}
 function enviarRecibo(id){const x=michelonFind(id);if(!x)return;let n=String(x.fone||'').replace(/\D/g,'');if(n&&!n.startsWith('55'))n='55'+n;window.open('https://wa.me/'+n+'?text='+encodeURIComponent(reciboReserva(x)),'_blank')}
 function finalizarCorrida(id){const h=getHist(),x=h.find(v=>v.id===id);if(!x)return;if(!confirm('Finalizar esta viagem e gerar o recibo?'))return;x.concluida=true;x.finalizadaEm=new Date().toISOString();x.status=(+x.recebido||0)>=(+x.valor||0)?'pago':'confirmada';setHist(h);if(confirm('Viagem finalizada. Deseja enviar o recibo pelo WhatsApp agora?'))enviarRecibo(id)}
 function renderAgenda(){
@@ -2025,7 +3104,7 @@ function resumoFinanceiroAtividades(){
 
 </script>
 <footer style="text-align:center;color:#64748b;font-size:13px;padding:22px 10px 34px">
-<strong>MICHELON Viagens Executivas</strong> • Versão 7.21.5 BETA • Atualizado em 17/09/2026 • Financeiro organizado
+<strong>MICHELON Viagens Executivas</strong> • Versão 7.28.3 BETA • Atualizado em 17/09/2026 • Financeiro organizado
 </footer>
 
 <script>
@@ -2434,6 +3513,186 @@ document.addEventListener('DOMContentLoaded',renderPendentes);
   });
 })();
 </script>
+
+
+<script id="michelon-modern-nav-v7220">
+function mxIr(id){
+  const el=document.getElementById(id);
+  if(el){
+    el.scrollIntoView({behavior:'smooth',block:'start'});
+    const d=el.querySelector('details');
+    if(d) d.open=true;
+  }
+}
+</script>
+
+
+</div>
+
+
+<div id="mcCardOverlay" style="display:none;position:fixed;inset:0;z-index:10020;background:#f5f7fa;overflow:auto;padding:16px 10px 100px;">
+  <div style="width:min(920px,100%);margin:auto;">
+    <div class="mcCardHeaderBar">
+      <button class="mcTopBtn" onclick="mcCloseCard()">← VOLTAR</button>
+      <div class="mcTopTitle">📇 Meu Cartão</div>
+      <button class="mcTopBtn" onclick="mcCloseCard()">← Início</button>
+    </div>
+    <div id="mcCardClean">
+      <div class="mcCardLogo">MICHELON</div>
+      <div class="mcCardName">Anderson Michelon</div>
+      <div class="mcCardRole">Viagens Executivas</div>
+      <div class="mcCardLine"></div>
+<div style="text-align:center;margin:6px 0 16px;">
+  <div style="font-size:13px;font-weight:900;color:#cbd5e1;margin-bottom:9px;">Aponte a câmera para abrir o cartão</div>
+  <div style="display:inline-block;background:#fff;padding:10px;border-radius:16px;">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASgAAAEoAQAAAADDfFG0AAAB9klEQVR4nO2a247kQAhDj0f5/1/2PABVyfTuap5SSAvdUl9iqS0EbkNF5hfx9RvQoAb1ERco3hmQkWXlF+tKV/ZH8oUhs2bZykxZXle6sj+TLwQGYa1qI4osrrRl3wBlLLBl/wP1Pq8mqOvxySIe0Y4HeXVFXZACRrZjpcnyutKV/fsoVtv5D4+CdGV/pL5235n6ZJXUH+LVFRWOCyCtl0GWkctjHOHVG2WX54JQ/JVENP7rFhcgU+5rCX68WBbuy/4MyhDtiKLOosp2S7Zm/zrKQjEJZUdmURH23tOP93D4Bv+wEXY+GT/xiJUV8DN52aZ48vUTFUmLvsRpMXJRMX7iHlftuRSKDyDH0E3omGb/tSPmbQNKk5rW3nKW2xFeXVHYOQUZO5XMe3oc/fpAhZGPElNkTq7pUbNffcT2pA6Hb7aM1Vq6Lfsz8zaZlVD3+D7sfh2CdGV/ah5yqrxQGbLYFgpNfX2iSrdqnYNl1Xh0kFdblJEg5u2aJ6vcRu+fqOg/l1yxbL3Lt3Zm/zLqdr7t2oOBFbuwlPu27A/pfRjVGhpZ65x1iNuZ/buotZKotgznau/enH3OX1Ch+OnCKoGjX4+4n2/nkbYc+mXPvP0Rt/PtPBzydvjrfVf2Z/KVSam7vhDafmz+Hx9xv6vknV8c1P+E+gYQkyIC3z7x2gAAAABJRU5ErkJggg==" alt="QR Code do cartão digital" style="display:block;width:190px;height:190px;max-width:100%;image-rendering:pixelated;">
+  </div>
+</div>
+
+      <div class="mcCardContact">
+        <a href="tel:+5519992462362">📞 (19) 99246-2362</a>
+        <a href="https://wa.me/5519992462362" target="_blank">
+          <span class="mcWaIcon" aria-hidden="true"><span>☎</span></span> WhatsApp
+        </a>
+      </div>
+      <div class="mcCardActions">
+        <button onclick="mcCopyCard()">🔗 Copiar cartão</button>
+        <button class="gold" onclick="window.open('https://andersonmichelon08-dev.github.io/cartao-michelon/','_blank')">📇 Abrir cartão</button>
+      </div>
+      <a class="mcBudgetBtn" href="https://wa.me/5519992462362?text=Ol%C3%A1!%20Gostaria%20de%20solicitar%20um%20or%C3%A7amento%20de%20viagem." target="_blank" rel="noopener">💬 Solicitar orçamento</a>
+    </div>
+  </div>
+</div>
+
+<nav class="mcBottom" aria-label="Navegação principal">
+<div class="mcNav">
+<button class="active" onclick="mcHome()"><i>🏠</i>Início</button>
+<button onclick="mcGo('mxAgenda')"><i>📅</i>Agenda</button>
+<button onclick="mcGo('mxFinanceiro')"><i>💰</i>Financeiro</button>
+<button onclick="mcGo('mxUber')"><i>🚕</i>Uber / Apps</button>
+<button onclick="mcGo('cardFloat')"><i>📇</i>Cartão</button>
+<button onclick="toggleCotacaoImport()" aria-label="Nova cotação"><i>📥</i>Cotação</button>
+</div>
+</nav>
+
+
+
+<script id="michelon-clean-nav-v7241">
+function mcGo(id){
+  if(id==='cardFloat'){ mcOpenCard(); return; }
+  var el=document.getElementById(id);
+  if(!el)return;
+  var d=el.querySelector && el.querySelector('details');
+  if(d)d.open=true;
+  window.scrollTo({top:Math.max(0,el.getBoundingClientRect().top+window.scrollY-12),behavior:'smooth'});
+}
+function mcHome(){window.scrollTo({top:0,behavior:'smooth'});}
+function mcOpenCard(){
+  var o=document.getElementById('mcCardOverlay');
+  if(o){o.style.display='block';document.body.style.overflow='hidden';window.scrollTo(0,0);}
+}
+function mcCloseCard(){
+  var o=document.getElementById('mcCardOverlay');
+  if(o)o.style.display='none';
+  document.body.style.overflow='';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function mcCopyCard(){
+  var u='https://andersonmichelon08-dev.github.io/cartao-michelon/';
+  if(navigator.clipboard){navigator.clipboard.writeText(u).then(function(){alert('Link do cartão copiado!');});}
+  else{alert(u);}
+}
+</script>
+
+
+<button id="mcTopButton" type="button" aria-label="Voltar ao topo" onclick="mcVoltarTopo()">↑</button>
+<script id="michelon-top-button-js-v7263">
+function mcVoltarTopo(){
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+(function(){
+  function atualizaBotaoTopo(){
+    var b=document.getElementById('mcTopButton');
+    if(!b)return;
+    b.classList.toggle('visible',window.scrollY>280);
+  }
+  window.addEventListener('scroll',atualizaBotaoTopo,{passive:true});
+  document.addEventListener('DOMContentLoaded',atualizaBotaoTopo);
+})();
+</script>
+
+
+<script id="michelon-cotacao-clean-js-v7270">
+function toggleCotacaoImport(){
+  var w=document.getElementById('cotacaoImportWrap');
+  if(!w)return;
+  w.classList.toggle('open');
+  if(w.classList.contains('open')){
+    setTimeout(function(){
+      w.scrollIntoView({behavior:'smooth',block:'start'});
+    },50);
+  }
+}
+</script>
+
+
+<script id="michelon-home-order-js-v7273">
+function toggleCotacaoImport(){
+  var w=document.getElementById('cotacaoImportWrap');
+  if(!w)return;
+  w.classList.toggle('open');
+  if(w.classList.contains('open')){
+    setTimeout(function(){w.scrollIntoView({behavior:'smooth',block:'start'});},50);
+  }
+}
+</script>
+
+
+<script id="michelon-remove-card-bar-js-v7276">
+(function(){
+  function removeDuplicateCardBar(){
+    var nodes=document.querySelectorAll('body *');
+    nodes.forEach(function(el){
+      if(el.children.length===0 && (el.textContent||'').trim()==='🗃️ Meu Cartão'){
+        var p=el;
+        for(var i=0;i<4 && p;i++,p=p.parentElement){
+          var st=window.getComputedStyle(p);
+          if(st.position==='fixed' || (p.offsetWidth>500 && p.offsetHeight<100)){
+            p.style.display='none';
+            break;
+          }
+        }
+      }
+    });
+  }
+  document.addEventListener('DOMContentLoaded',removeDuplicateCardBar);
+  setTimeout(removeDuplicateCardBar,300);
+})();
+</script>
+
+
+<script id="michelon-card-topbar-js-v7281">
+(function(){
+  function padronizarTopoCartao(){
+    var ov=document.getElementById('mcCardOverlay');
+    if(!ov)return;
+    var top=ov.querySelector('.mcCardTopBar,.cardTopBar');
+    if(!top) top=ov.querySelector(':scope > div > div:first-child');
+    if(!top)return;
+    top.classList.add('mcCardTopBar');
+    var els=Array.from(top.children).filter(function(e){
+      return e.nodeType===1 && e.offsetParent!==null;
+    });
+    if(els.length>=1) els[0].classList.add('back');
+    if(els.length>=2) els[1].classList.add('title');
+    if(els.length>=3) els[2].classList.add('home');
+  }
+  document.addEventListener('DOMContentLoaded',padronizarTopoCartao);
+  setTimeout(padronizarTopoCartao,100);
+})();
+</script>
+
+
 
 </body>
 </html>
