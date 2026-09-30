@@ -42,8 +42,73 @@ details summary{cursor:pointer;font-weight:700}.note{font-size:12px;color:var(--
 
 .urbanoList{top:48px}
 </style>
+<style id="driver721">html,body{width:100%;max-width:100%;overflow-x:hidden!important;overscroll-behavior-x:none}*,*:before,*:after{box-sizing:border-box}.wrap,.card,.grid,.agendaItem,input,select,textarea,button{max-width:100%}@media(max-width:700px){body{position:relative;touch-action:pan-y}.wrap{width:100%!important;max-width:100%!important;margin-left:auto!important;margin-right:auto!important;overflow-x:clip}#cardFloat{left:max(12px,env(safe-area-inset-left))!important;right:max(12px,env(safe-area-inset-right))!important;width:auto!important;transform:none!important}}.driver-main{background:#0f766e!important;color:#fff!important;border:0!important;font-weight:900!important}</style>
+
+
+
+<style id="michelon-ios-structural-width-v7213">
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  overflow-x: clip !important;
+}
+body {
+  position: static !important;
+  touch-action: pan-y !important;
+  overscroll-behavior-x: none !important;
+}
+*, *::before, *::after { box-sizing: border-box !important; }
+
+.wrap {
+  width: min(100%, 920px) !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+.wrap > *, .card, .grid, .grid > *, .agendaItem, .btns, .dash, .metric {
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+input, select, textarea {
+  display: block;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+img, svg, canvas, video, iframe { max-width: 100% !important; }
+
+@media (max-width: 700px) {
+  .wrap { padding-left: 14px !important; padding-right: 14px !important; }
+  .card { width: 100% !important; margin-left: 0 !important; margin-right: 0 !important; }
+  .grid { grid-template-columns: minmax(0,1fr) !important; }
+  .dash { grid-template-columns: minmax(0,1fr) minmax(0,1fr) !important; }
+  .metric { width: auto !important; }
+  table { width: 100% !important; max-width: 100% !important; table-layout: fixed; }
+  td, th { overflow-wrap: anywhere; }
+  pre, code, .note, p, small, label { overflow-wrap: anywhere; }
+
+  /* Floating card stays centered without increasing document width. */
+  #cardFloat, .card-float, [class*="cardFloat"] {
+    left: 14px !important;
+    right: 14px !important;
+    width: auto !important;
+    max-width: calc(100% - 28px) !important;
+    transform: none !important;
+  }
+}
+</style>
+
 </head>
 <body>
+
+<div id="versaoMichelon" style="position:fixed;top:6px;right:8px;z-index:99999;
+font:700 11px Arial;background:#0f766e;color:white;padding:4px 7px;border-radius:8px;
+opacity:.92">V7.21.4</div>
+
 <div id="importarCotacaoBox" style="max-width:980px;margin:12px auto;padding:14px;border:2px solid #111827;border-radius:16px;background:#fff;box-sizing:border-box">
   <div style="font-size:18px;font-weight:900;margin-bottom:6px">📥 Cotação recebida do cliente</div>
   <div style="font-size:13px;color:#475569;margin-bottom:9px">Copie a mensagem inteira que chegou no WhatsApp e cole aqui.</div>
@@ -1712,16 +1777,23 @@ function salvarReservaDireta(){
  if($('resPassageiros'))$('resPassageiros').value=1;
  alert('✅ Reserva salva na agenda.');renderAgenda();
 }
+function michelonFind(id){return getHist().find(v=>v.id===id)}
+function abrirWazeReserva(id){const x=michelonFind(id);if(!x)return;const d=(x.destino||'').trim();if(!d){alert('Esta viagem não possui destino salvo.');return;}location.href='https://waze.com/ul?q='+encodeURIComponent(d)+'&navigate=yes'}
+function ligarReserva(id){const x=michelonFind(id);if(!x||!x.fone){alert('Cliente sem telefone cadastrado.');return;}let n=String(x.fone).replace(/\D/g,'');location.href='tel:'+(n.startsWith('55')?'+':'+55')+n}
+function iniciarCorrida(id){const h=getHist(),x=h.find(v=>v.id===id);if(!x||x.concluida)return;if(!x.iniciadaEm)x.iniciadaEm=new Date().toISOString();x.status='em_andamento';setHist(h);if(confirm('Viagem iniciada. Abrir o Waze agora?'))abrirWazeReserva(id)}
+function reciboReserva(x){const emp=(typeof getEmpresa==='function'?getEmpresa():{})||{},fim=x.finalizadaEm?new Date(x.finalizadaEm):new Date(),dt=fim.toLocaleDateString('pt-BR'),hr=fim.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});return `🚗 *${(emp.nome||'MICHELON VIAGENS EXECUTIVAS').toUpperCase()}*\n_Conforto e segurança em cada destino._\n\n*RECIBO DE VIAGEM*\n\n👤 Cliente: ${x.cliente||'Cliente'}\n📅 Data da viagem: ${dataBR(x.data)}${x.horaSaida?`\n🕐 Horário: ${x.horaSaida}`:''}\n📍 Origem: ${x.origem||'-'}\n🏁 Destino: ${x.destino||'-'}\n🚘 Serviço: ${x.tipoServico||'Viagem executiva'}\n💵 Valor da viagem: *${brl(+x.valor||0)}*\n💰 Valor recebido: *${brl(+x.recebido||0)}*\n💳 Forma de pagamento: ${x.forma||'-'}\n\n🏁 Viagem finalizada em ${dt} às ${hr}.\n\nAnderson Michelon\nMICHELON Viagens Executivas`}
+function enviarRecibo(id){const x=michelonFind(id);if(!x)return;let n=String(x.fone||'').replace(/\D/g,'');if(n&&!n.startsWith('55'))n='55'+n;window.open('https://wa.me/'+n+'?text='+encodeURIComponent(reciboReserva(x)),'_blank')}
+function finalizarCorrida(id){const h=getHist(),x=h.find(v=>v.id===id);if(!x)return;if(!confirm('Finalizar esta viagem e gerar o recibo?'))return;x.concluida=true;x.finalizadaEm=new Date().toISOString();x.status=(+x.recebido||0)>=(+x.valor||0)?'pago':'confirmada';setHist(h);if(confirm('Viagem finalizada. Deseja enviar o recibo pelo WhatsApp agora?'))enviarRecibo(id)}
 function renderAgenda(){
  const box=$('agendaLista');if(!box)return;
  let h=getHist().slice();
  const f=$('agendaFiltro')?$('agendaFiltro').value:'proximas',hoje=new Date().toISOString().slice(0,10);
- if(f==='proximas')h=h.filter(x=>(x.status==='confirmada'||x.status==='pago')&&(x.data||'')>=hoje);
+ if(f==='proximas')h=h.filter(x=>(x.status==='confirmada'||x.status==='pago'||x.status==='em_andamento')&&(x.data||'')>=hoje);
  else if(f!=='todas')h=h.filter(x=>x.status===f);
  h.sort((a,b)=>((a.data||'')+(a.horaSaida||'')).localeCompare((b.data||'')+(b.horaSaida||'')));
  box.innerHTML=h.length?h.slice(0,50).map(x=>{
    const recebido=+x.recebido||0, valor=+x.valor||0, saldo=Math.max(0,valor-recebido);
-   const status=x.status==='cancelada'?'Cancelada':x.concluida?'Concluída':x.status==='pago'?'Paga':x.status==='confirmada'?'Confirmada':'Orçamento';
+   const status=x.status==='cancelada'?'Cancelada':x.concluida?'Concluída':x.status==='em_andamento'?'Em andamento':x.status==='pago'?'Paga':x.status==='confirmada'?'Confirmada':'Orçamento';
    return `<div class="agendaItem">
     <strong>${dataBR(x.data)} ${x.horaSaida?`• ${x.horaSaida}`:''}${x.horaRetorno?` → ${x.dataRetorno&&x.dataRetorno!==x.data?dataBR(x.dataRetorno)+' • ':''}${x.horaRetorno}`:''}</strong>
     <span class="badge">${status}</span>
@@ -1733,7 +1805,11 @@ function renderAgenda(){
     ${x.status!=='cancelada'?`<div class="btns" style="margin-top:9px">
       ${saldo>0?`<button class="mini primary" onclick="registrarSinal(${x.id})">💰 Registrar recebimento</button>`:''}
       ${x.fone?`<button class="mini secondary" onclick="whatsReserva(${x.id})">📲 WhatsApp</button>`:''}
-      ${!x.concluida?`<button class="mini secondary" onclick="concluirReserva(${x.id})">✅ Concluir</button>`:''}
+      ${!x.concluida&&x.status!=='em_andamento'?`<button class="mini driver-main" onclick="iniciarCorrida(${x.id})">🚗 INICIAR VIAGEM</button>`:''}
+      ${x.status==='em_andamento'&&!x.concluida?`<button class="mini secondary" onclick="abrirWazeReserva(${x.id})">🧭 ABRIR WAZE</button>`:''}
+      ${x.status==='em_andamento'&&x.fone&&!x.concluida?`<button class="mini secondary" onclick="ligarReserva(${x.id})">📞 LIGAR</button>`:''}
+      ${x.status==='em_andamento'&&!x.concluida?`<button class="mini driver-main" onclick="finalizarCorrida(${x.id})">🏁 FINALIZAR VIAGEM</button>`:''}
+      ${x.concluida?`<button class="mini secondary" onclick="enviarRecibo(${x.id})">🧾 ENVIAR RECIBO</button>`:''}
       ${!x.concluida?`<button class="mini danger" onclick="cancelarReserva(${x.id})">Cancelar</button>`:''}
     </div>`:''}
     <div style="margin-top:7px"><button class="mini danger" onclick="excluirReserva(${x.id})">🗑️ Excluir reserva</button></div>
@@ -1956,7 +2032,7 @@ function resumoFinanceiroAtividades(){
 
 </script>
 <footer style="text-align:center;color:#64748b;font-size:13px;padding:22px 10px 34px">
-<strong>MICHELON Viagens Executivas</strong> • Versão 7.20.7 BETA • Atualizado em 17/09/2026 • Financeiro organizado
+<strong>MICHELON Viagens Executivas</strong> • Versão 7.21.4 BETA • Atualizado em 17/09/2026 • Financeiro organizado
 </footer>
 
 <script>
@@ -2341,8 +2417,32 @@ function renderPendentes(){
 document.addEventListener('DOMContentLoaded',renderPendentes);
 </script>
 
+
+<script id="michelon-driver-guard-v7214">
+(function(){
+  function reforcarModoMotorista(){
+    document.querySelectorAll('#agendaLista button').forEach(function(btn){
+      var t=(btn.textContent||'').trim();
+      if(t.includes('Concluir') && btn.getAttribute('onclick')){
+        var oc=btn.getAttribute('onclick')||'';
+        var m=oc.match(/\((\d+)\)/);
+        if(m){
+          btn.textContent='🚗 INICIAR VIAGEM';
+          btn.className='mini driver-main';
+          btn.setAttribute('onclick','iniciarCorrida('+m[1]+')');
+        }
+      }
+    });
+  }
+  window.addEventListener('load',function(){
+    reforcarModoMotorista();
+    var alvo=document.getElementById('agendaLista');
+    if(alvo)new MutationObserver(reforcarModoMotorista).observe(alvo,{childList:true,subtree:true});
+  });
+})();
+</script>
+
 </body>
 </html>
-
 
 
