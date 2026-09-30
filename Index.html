@@ -43,97 +43,72 @@ details summary{cursor:pointer;font-weight:700}.note{font-size:12px;color:var(--
 .urbanoList{top:48px}
 </style>
 <style id="driver721">html,body{width:100%;max-width:100%;overflow-x:hidden!important;overscroll-behavior-x:none}*,*:before,*:after{box-sizing:border-box}.wrap,.card,.grid,.agendaItem,input,select,textarea,button{max-width:100%}@media(max-width:700px){body{position:relative;touch-action:pan-y}.wrap{width:100%!important;max-width:100%!important;margin-left:auto!important;margin-right:auto!important;overflow-x:clip}#cardFloat{left:max(12px,env(safe-area-inset-left))!important;right:max(12px,env(safe-area-inset-right))!important;width:auto!important;transform:none!important}}.driver-main{background:#0f766e!important;color:#fff!important;border:0!important;font-weight:900!important}</style>
-<style id="michelon-iphone-width-fix-v7211">
-html{
-  width:100%;
-  max-width:100%;
-  overflow-x:hidden !important;
+
+
+
+<style id="michelon-ios-structural-width-v7213">
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  overflow-x: clip !important;
 }
-body{
-  width:100%;
-  max-width:100%;
-  min-width:0 !important;
-  margin-left:0 !important;
-  margin-right:0 !important;
-  overflow-x:hidden !important;
-  overscroll-behavior-x:none;
+body {
+  position: static !important;
+  touch-action: pan-y !important;
+  overscroll-behavior-x: none !important;
 }
-*,*::before,*::after{
-  box-sizing:border-box !important;
-  min-width:0;
+*, *::before, *::after { box-sizing: border-box !important; }
+
+.wrap {
+  width: min(100%, 920px) !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
-img,svg,video,canvas,iframe{
-  max-width:100% !important;
+.wrap > *, .card, .grid, .grid > *, .agendaItem, .btns, .dash, .metric {
+  min-width: 0 !important;
+  max-width: 100% !important;
 }
-.wrap,.card,.grid,.agendaItem,.btns,
-#blocoCotacaoRecebida,#cotacaoRecebida,
-textarea,input,select,button{
-  max-width:100% !important;
+input, select, textarea {
+  display: block;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
 }
-textarea,input,select{
-  width:100% !important;
-}
-@media (max-width:700px){
-  html,body{
-    position:relative;
-    left:0;
-    right:0;
-    touch-action:pan-y;
-  }
-  .wrap{
-    width:100% !important;
-    max-width:100% !important;
-    margin-left:auto !important;
-    margin-right:auto !important;
-    overflow-x:hidden !important;
-  }
-  .card{
-    width:100% !important;
-    max-width:100% !important;
-    overflow:hidden !important;
-  }
-  .grid{
-    width:100% !important;
-    max-width:100% !important;
-  }
-  .grid>*{
-    min-width:0 !important;
-    max-width:100% !important;
-  }
-  .dash{
-    width:100% !important;
-    max-width:100% !important;
-    grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
-  }
-  .metric{
-    min-width:0 !important;
-    max-width:100% !important;
-  }
-  #cardFloat{
-    position:fixed !important;
-    left:max(12px,env(safe-area-inset-left)) !important;
-    right:max(12px,env(safe-area-inset-right)) !important;
-    width:auto !important;
-    max-width:none !important;
-    transform:none !important;
+img, svg, canvas, video, iframe { max-width: 100% !important; }
+
+@media (max-width: 700px) {
+  .wrap { padding-left: 14px !important; padding-right: 14px !important; }
+  .card { width: 100% !important; margin-left: 0 !important; margin-right: 0 !important; }
+  .grid { grid-template-columns: minmax(0,1fr) !important; }
+  .dash { grid-template-columns: minmax(0,1fr) minmax(0,1fr) !important; }
+  .metric { width: auto !important; }
+  table { width: 100% !important; max-width: 100% !important; table-layout: fixed; }
+  td, th { overflow-wrap: anywhere; }
+  pre, code, .note, p, small, label { overflow-wrap: anywhere; }
+
+  /* Floating card stays centered without increasing document width. */
+  #cardFloat, .card-float, [class*="cardFloat"] {
+    left: 14px !important;
+    right: 14px !important;
+    width: auto !important;
+    max-width: calc(100% - 28px) !important;
+    transform: none !important;
   }
 }
 </style>
-<script>
-(function(){
-  function corrigirLarguraMichelon(){
-    document.documentElement.style.overflowX='hidden';
-    document.body.style.overflowX='hidden';
-    // Prevent any accidental horizontal position left by Safari.
-    if(window.scrollX!==0) window.scrollTo(0,window.scrollY);
-  }
-  window.addEventListener('load',corrigirLarguraMichelon);
-  window.addEventListener('orientationchange',()=>setTimeout(corrigirLarguraMichelon,150));
-})();
-</script>
 
 </head>
 <body>
+
+<div id="versaoMichelon" style="position:fixed;top:6px;right:8px;z-index:99999;
+font:700 11px Arial;background:#0f766e;color:white;padding:4px 7px;border-radius:8px;
+opacity:.92">V7.21.4</div>
+
 <div id="importarCotacaoBox" style="max-width:980px;margin:12px auto;padding:14px;border:2px solid #111827;border-radius:16px;background:#fff;box-sizing:border-box">
   <div style="font-size:18px;font-weight:900;margin-bottom:6px">📥 Cotação recebida do cliente</div>
   <div style="font-size:13px;color:#475569;margin-bottom:9px">Copie a mensagem inteira que chegou no WhatsApp e cole aqui.</div>
@@ -2057,7 +2032,7 @@ function resumoFinanceiroAtividades(){
 
 </script>
 <footer style="text-align:center;color:#64748b;font-size:13px;padding:22px 10px 34px">
-<strong>MICHELON Viagens Executivas</strong> • Versão 7.21.1 BETA • Atualizado em 17/09/2026 • Financeiro organizado
+<strong>MICHELON Viagens Executivas</strong> • Versão 7.21.4 BETA • Atualizado em 17/09/2026 • Financeiro organizado
 </footer>
 
 <script>
@@ -2440,6 +2415,31 @@ function renderPendentes(){
 </div>`).join('');
 }
 document.addEventListener('DOMContentLoaded',renderPendentes);
+</script>
+
+
+<script id="michelon-driver-guard-v7214">
+(function(){
+  function reforcarModoMotorista(){
+    document.querySelectorAll('#agendaLista button').forEach(function(btn){
+      var t=(btn.textContent||'').trim();
+      if(t.includes('Concluir') && btn.getAttribute('onclick')){
+        var oc=btn.getAttribute('onclick')||'';
+        var m=oc.match(/\((\d+)\)/);
+        if(m){
+          btn.textContent='🚗 INICIAR VIAGEM';
+          btn.className='mini driver-main';
+          btn.setAttribute('onclick','iniciarCorrida('+m[1]+')');
+        }
+      }
+    });
+  }
+  window.addEventListener('load',function(){
+    reforcarModoMotorista();
+    var alvo=document.getElementById('agendaLista');
+    if(alvo)new MutationObserver(reforcarModoMotorista).observe(alvo,{childList:true,subtree:true});
+  });
+})();
 </script>
 
 </body>
