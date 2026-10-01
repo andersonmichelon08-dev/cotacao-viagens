@@ -1877,7 +1877,20 @@ async function localizarUmEndereco(texto){
  const porCep=await localizarRuaPorCepGratis(semNumero,num,cidadePadrao);
  if(porCep)return porCep;
 
- throw new Error('Local não encontrado: '+original+'. Não foi possível localizar nem pela rua nem pelo CEP automático.');
+ // Fallback local para logradouros de Limeira que existem no cadastro postal,
+ // mas podem não estar retornando pelo geocoder público naquele momento.
+ const nl=String(semNumero||original).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+ const cidadeL=String(cidadePadrao||'').toLowerCase();
+ if(cidadeL.includes('limeira')){
+   if(/rua\s+horacio\s+cecchi/.test(nl)){
+     return {lat:-22.5665354,lon:-47.3974368,nome:'Rua Horácio Cecchi, Jardim Rosa Marrafon Lucas, Limeira - SP',numeroConfirmado:!!num,precisao:'CEP 13482-307'};
+   }
+   if(/rua\s+carlos\s+gomes/.test(nl)){
+     return {lat:-22.56641,lon:-47.40378,nome:'Rua Carlos Gomes, Centro, Limeira - SP',numeroConfirmado:!!num,precisao:'CEP 13480-011'};
+   }
+ }
+
+ throw new Error('Local não encontrado: '+original+'. Não foi possível localizar nem pelo mapa nem pelo cadastro de ruas.');
 }
 function numeroDigitado(txt){
  const m=(txt||'').match(/\b(\d{1,6})\b/); return m?m[1]:'';
@@ -3154,7 +3167,7 @@ function resumoFinanceiroAtividades(){
 
 </script>
 <footer style="text-align:center;color:#64748b;font-size:13px;padding:22px 10px 34px">
-<strong>MICHELON Viagens Executivas</strong> • Versão 7.37.0 BETA • Atualizado em 01/10/2026 • Financeiro organizado
+<strong>MICHELON Viagens Executivas</strong> • Versão 7.38.0 BETA • Atualizado em 01/10/2026 • Financeiro organizado
 </footer>
 
 <script>
@@ -3273,6 +3286,8 @@ function dataISO(v){
 function normalizarEnderecoMichelon(v){
  let s=String(v||'').trim();
  if(!s)return s;
+ // A mensagem de cotação pode trazer "Cechi", mas o logradouro oficial em Limeira é "Cecchi".
+ if(/^rua\s+hor[aá]cio\s+cechi\b/i.test(s)) s=s.replace(/Cechi\b/i,'Cecchi');
  const cep=(s.match(/\|\s*CEP\s*:\s*([^|]+)/i)||[])[1];
  const num=(s.match(/\|\s*N[º°o]?\s*:\s*([^|]+)/i)||[])[1];
  s=s.replace(/\|\s*CEP\s*:\s*[^|]+/ig,'')
@@ -3331,7 +3346,8 @@ function importarCotacaoRecebida(){
    const iv=document.getElementById('idaVolta');
    const volta=/ida e volta|retorno|volta/i.test(md.TRAJETO||'');
    if(iv){iv.value=volta?'sim':'nao';iv.dispatchEvent(new Event('change',{bubbles:true}));if(typeof alternarCamposRetorno==='function')alternarCamposRetorno();}
-   alert('Cotação importada. Confira os dados e use o botão normal de calcular do MICHELON.');
+   alert('Cotação importada. Vou calcular a rota agora.');
+   setTimeout(()=>{ try{ buscarRota(); }catch(e){ console.error(e); } },350);
    return;
  }
 
@@ -3372,7 +3388,10 @@ function importarCotacaoRecebida(){
  if(!c.data)faltam.push('data');
  if(!c.hora)faltam.push('horário');
  if(faltam.length) alert('Cotação lida, mas não encontrei: '+faltam.join(', ')+'.');
- else alert(temRetorno?'Cotação de ida e volta importada. Confira os dados e use o botão normal de calcular.':'Cotação importada. Confira os dados e use o botão normal de calcular.');
+ else {
+   alert(temRetorno?'Cotação de ida e volta importada. Vou calcular a rota agora.':'Cotação importada. Vou calcular a rota agora.');
+   setTimeout(()=>{ try{ buscarRota(); }catch(e){ console.error(e); } },350);
+ }
 }
 </script>
 
