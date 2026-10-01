@@ -3154,7 +3154,7 @@ function resumoFinanceiroAtividades(){
 
 </script>
 <footer style="text-align:center;color:#64748b;font-size:13px;padding:22px 10px 34px">
-<strong>MICHELON Viagens Executivas</strong> • Versão 7.28.3 BETA • Atualizado em 17/09/2026 • Financeiro organizado
+<strong>MICHELON Viagens Executivas</strong> • Versão 7.33.0 • Atualizado em 30/09/2026 • Financeiro organizado
 </footer>
 
 <script>
@@ -3474,58 +3474,7 @@ document.addEventListener('DOMContentLoaded',function(){
 </script>
 
 
-function gerarMensagemClienteMichelon(){
-  const v=id=>String(document.getElementById(id)?.value||'').trim();
-  const urbano=v('modoCotacao')==='urbano';
-  const origem=urbano?v('enderecoOrigem'):v('origem');
-  const destino=urbano?v('enderecoDestino'):v('destino');
 
-  const dataIda=v('data')||v('dataViagem');
-  const horaIda=v('hora')||v('horaSaida');
-  const passageiros=v('passageiros')||'1';
-
-  const idaVolta=v('idaVolta')==='sim';
-  const origemRet=v('origemRetorno')||destino;
-  const destinoRet=v('destinoRetorno')||origem;
-  const dataRet=v('dataRetorno')||v('retornoData');
-  const horaRet=v('horaRetorno')||v('retornoHora')||v('previsaoRetorno');
-
-  const forma=v('formaPagamento')||'PIX';
-  const sinal=v('sinal')||v('sinalReserva')||'';
-  const preco=(document.getElementById('precoSugerido')?.textContent||
-               document.getElementById('preco')?.textContent||'').trim();
-
-  const linhas=[
-    '🚗 *MICHELON VIAGENS EXECUTIVAS*',
-    '_Conforto e segurança em cada destino._',
-    '',
-    '*ORÇAMENTO DE VIAGEM*',
-    '',
-    '🚗 *IDA*',
-    dataIda ? '📅 Data: '+dataIda : '',
-    horaIda ? '🕐 Horário de saída/busca: '+horaIda : '',
-    origem ? '📍 Local de saída: '+origem : '',
-    destino ? '🏁 Destino: '+destino : '',
-    '',
-    idaVolta ? '🔄 *RETORNO*' : '',
-    idaVolta && dataRet ? '📅 Data: '+dataRet : '',
-    idaVolta && horaRet ? '🕐 Horário de busca para retorno: '+horaRet : '',
-    idaVolta && origemRet ? '📍 Local de busca: '+origemRet : '',
-    idaVolta && destinoRet ? '🏁 Destino do retorno: '+destinoRet : '',
-    idaVolta ? '' : '',
-    '👥 Passageiros: '+passageiros,
-    '',
-    preco ? '💰 *VALOR TOTAL DA VIAGEM: '+preco+'*' : '',
-    sinal ? '✅ Reserva: sinal de '+sinal+'%' : '',
-    forma ? '💳 Forma de pagamento: '+forma : '',
-    '',
-    'Para confirmar a reserva, responda esta mensagem.',
-    '',
-    '*MICHELON VIAGENS EXECUTIVAS*'
-  ].filter(x=>x!=='');
-
-  return linhas.join('\n');
-}
 
 function atualizarMensagemClienteMichelon(){
   const box=document.getElementById('mensagemOrcamento');
@@ -3814,6 +3763,60 @@ function toggleCotacaoImportLegacy(){
 
 
 
+<script id="michelon-client-message-js-v7330">
+function gerarMensagemClienteMichelon(){
+  const v=id=>String(document.getElementById(id)?.value||'').trim();
+  const urbano=v('modoCotacao')==='urbano';
+  const origem=urbano?v('enderecoOrigem'):v('origem');
+  const destino=urbano?v('enderecoDestino'):v('destino');
+
+  const dataIda=v('data')||v('dataViagem');
+  const horaIda=v('hora')||v('horaSaida');
+  const passageiros=v('passageiros')||'1';
+
+  const idaVolta=v('idaVolta')==='sim';
+  const origemRet=v('origemRetorno')||destino;
+  const destinoRet=v('destinoRetorno')||origem;
+  const dataRet=v('dataRetorno')||v('retornoData');
+  const horaRet=v('horaRetorno')||v('retornoHora')||v('previsaoRetorno');
+
+  const forma=v('formaPagamento')||'PIX';
+  const sinal=v('sinal')||v('sinalReserva')||'';
+  const preco=(document.getElementById('precoSugerido')?.textContent||
+               document.getElementById('preco')?.textContent||'').trim();
+
+  const linhas=[
+    '🚗 *MICHELON VIAGENS EXECUTIVAS*',
+    '_Conforto e segurança em cada destino._',
+    '',
+    '*ORÇAMENTO DE VIAGEM*',
+    '',
+    '🚗 *IDA*',
+    dataIda ? '📅 Data: '+dataIda : '',
+    horaIda ? '🕐 Horário de saída/busca: '+horaIda : '',
+    origem ? '📍 Local de saída: '+origem : '',
+    destino ? '🏁 Destino: '+destino : '',
+    '',
+    idaVolta ? '🔄 *RETORNO*' : '',
+    idaVolta && dataRet ? '📅 Data: '+dataRet : '',
+    idaVolta && horaRet ? '🕐 Horário de busca para retorno: '+horaRet : '',
+    idaVolta && origemRet ? '📍 Local de busca: '+origemRet : '',
+    idaVolta && destinoRet ? '🏁 Destino do retorno: '+destinoRet : '',
+    idaVolta ? '' : '',
+    '👥 Passageiros: '+passageiros,
+    '',
+    preco ? '💰 *VALOR TOTAL DA VIAGEM: '+preco+'*' : '',
+    sinal ? '✅ Reserva: sinal de '+sinal+'%' : '',
+    forma ? '💳 Forma de pagamento: '+forma : '',
+    '',
+    'Para confirmar a reserva, responda esta mensagem.',
+    '',
+    '*MICHELON VIAGENS EXECUTIVAS*'
+  ].filter(x=>x!=='');
+
+  return linhas.join('\n');
+}
+</script>
 </body>
 </html>
 
