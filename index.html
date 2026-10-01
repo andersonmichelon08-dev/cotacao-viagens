@@ -974,7 +974,7 @@ body{background:var(--sig-bg)!important;color:var(--sig-text)!important;}
 
 
 <style id="michelon-card-polish-v7283">
-/* V7.30.0 — acabamento visual profissional, preservando a estrutura */
+/* V7.31.0 — acabamento visual profissional, preservando a estrutura */
 #mcCardClean{
   border-radius:24px!important;
   overflow:hidden!important;
@@ -3224,6 +3224,32 @@ function normalizarChaveCotacao(s){
 function camposDaMensagem(txt){
  const linhas=String(txt||'').replace(/\r/g,'').split('\n').map(x=>x.trim()).filter(Boolean);
  const out={};
+
+ function valorDepoisDaChave(re){
+   for(const linha of linhas){
+     const lim=limparLinhaCotacao(linha);
+     const m=lim.match(re);
+     if(m)return (m[1]||'').trim();
+   }
+   return '';
+ }
+
+ // Formato atual enviado pelo formulário do cliente MICHELON.
+ out.cliente=valorDepoisDaChave(/^(?:👤\s*)?cliente\s*:\s*(.+)$/i);
+ out.telefone=valorDepoisDaChave(/^(?:📱\s*)?whatsapp\s*:\s*(.+)$/i);
+ out.servico=valorDepoisDaChave(/^(?:🚘\s*)?servi(?:ç|c)o\s*:\s*(.+)$/i);
+ out.tipo=valorDepoisDaChave(/^(?:🛣️\s*)?trajeto\s*:\s*(.+)$/i);
+ out.origem=valorDepoisDaChave(/^(?:📍\s*)?origem\s*:\s*(.+?)(?:\s*\|\s*n[º°o]?\s*:\s*.+)?$/i);
+ out.destino=valorDepoisDaChave(/^(?:🏁\s*)?destino\s*:\s*(.+?)(?:\s*\|\s*n[º°o]?\s*:\s*.+)?$/i);
+ out.data=valorDepoisDaChave(/^(?:📅\s*)?data\s*:\s*(.+)$/i);
+ out.hora=valorDepoisDaChave(/^(?:🕐\s*)?hor[aá]rio\s*:\s*(.+)$/i);
+ out.passageiros=valorDepoisDaChave(/^(?:👥\s*)?passageiros\s*:\s*(.+)$/i);
+ out.origemRetorno=valorDepoisDaChave(/^(?:📍\s*)?origem\s+do\s+retorno\s*:\s*(.+?)(?:\s*\|\s*n[º°o]?\s*:\s*.+)?$/i);
+ out.destinoRetorno=valorDepoisDaChave(/^(?:🏁\s*)?destino\s+do\s+retorno\s*:\s*(.+?)(?:\s*\|\s*n[º°o]?\s*:\s*.+)?$/i);
+ out.dataRetorno=valorDepoisDaChave(/^(?:📅\s*)?data\s+do\s+retorno\s*:\s*(.+)$/i);
+ out.horaRetorno=valorDepoisDaChave(/^(?:🕐\s*)?hor[aá]rio\s+do\s+retorno\s*:\s*(.+)$/i);
+
+ // Compatibilidade com formatos antigos de mensagem.
  const chaves=[
   ['origemRetorno',['origem do retorno','saida do retorno']],
   ['destinoRetorno',['destino do retorno']],
@@ -3259,6 +3285,7 @@ function camposDaMensagem(txt){
  }
  return out;
 }
+
 function setSeExiste(id,v){
  const e=document.getElementById(id);
  if(e&&v){e.value=v;e.dispatchEvent(new Event('input',{bubbles:true}));return true}
@@ -3332,7 +3359,18 @@ function importarCotacaoRecebida(){
      setSeExiste('origemRetorno',normalizarEnderecoMichelon(md.ORIGEM_RETORNO));
      setSeExiste('destinoRetorno',normalizarEnderecoMichelon(md.DESTINO_RETORNO));
    }
-   alert('Cotação MICHELON carregada automaticamente. Confira os dados e calcule a rota.');
+   alert('Cotação MICHELON carregada automaticamente. Vou localizar e calcular a rota agora.');
+   setTimeout(async function(){
+     try{
+       if(modo==='urbano'){
+         if(typeof urbanoResolvido!=='undefined') urbanoResolvido={origem:null,destino:null,parada:null};
+         const ok=await localizarEnderecosUrbanos();
+         if(ok) await buscarRotaUrbana();
+       }else{
+         await buscarRotaViagem();
+       }
+     }catch(e){ console.error(e); }
+   },250);
    return;
  }
 
@@ -3347,22 +3385,35 @@ function importarCotacaoRecebida(){
    alternarModoCotacao();
  }
 
+ setSeExiste('cliente',c.cliente);
+ setSeExiste('clienteFone',c.telefone);
+
  if(modo==='urbano'){
-   setSeExiste('cidadeUrbana',c.cidade);
+   setSeExiste('cidadeUrbana',c.cidade||'Limeira, SP');
+   // A importação é uma nova cotação: nunca reutilizar coordenadas da cotação anterior.
+   if(typeof urbanoResolvido!=='undefined'){
+     urbanoResolvido={origem:null,destino:null,parada:null};
+   }
    setSeExiste('enderecoOrigem',normalizarEnderecoMichelon(c.origem));
    setSeExiste('enderecoDestino',normalizarEnderecoMichelon(c.destino));
    setSeExiste('enderecoParada',c.parada);
  }else{
-   setSeExiste('origem',c.origem);
-   setSeExiste('destino',c.destino);
+   setSeExiste('origem',normalizarEnderecoMichelon(c.origem));
+   setSeExiste('destino',normalizarEnderecoMichelon(c.destino));
  }
 
  setSeExiste('data',dataISO(c.data));
  setSeExiste('horaSaida',c.hora);
- setSeExiste('passageiros',c.passageiros);
+ setSeExiste('passageiros',c.passageiros||'1');
 
  // Detect ida e volta from explicit fields or text.
  const temRetorno=!!(c.origemRetorno||c.destinoRetorno||c.dataRetorno||c.horaRetorno||/ida e volta|retorno/i.test(c.tipo||''));
+ const iv=document.getElementById('idaVolta');
+ if(iv){
+   iv.value=temRetorno?'sim':'nao';
+   iv.dispatchEvent(new Event('change',{bubbles:true}));
+   if(typeof alternarCamposRetorno==='function')alternarCamposRetorno();
+ }
  const tipoEl=document.getElementById('tipoServico')||document.getElementById('tipo')||document.getElementById('trajeto');
  if(tipoEl&&temRetorno){
    const opt=[...tipoEl.options].find(o=>/ida e volta|viagem/i.test(o.textContent||'')&&/volta|retorno/i.test(o.textContent||''));
@@ -3388,7 +3439,24 @@ function importarCotacaoRecebida(){
  if(faltam.length){
    alert('Cotação lida, mas não encontrei: '+faltam.join(', ')+'. Confira a mensagem e complete esses campos.');
  }else{
-   alert(temRetorno?'Cotação de ida e volta importada. Confira os dados e calcule a rota.':'Cotação importada. Confira os dados e calcule a rota.');
+   alert(temRetorno?'Cotação de ida e volta importada. Vou localizar e calcular a rota agora.':'Cotação importada. Vou localizar e calcular a rota agora.');
+   setTimeout(async function(){
+     try{
+       if(modo==='urbano'){
+         if(typeof urbanoResolvido!=='undefined'){
+           urbanoResolvido={origem:null,destino:null,parada:null};
+         }
+         const ok=await localizarEnderecosUrbanos();
+         if(ok) await buscarRotaUrbana();
+       }else{
+         await buscarRotaViagem();
+       }
+     }catch(e){
+       console.error('Falha ao iniciar cálculo automático',e);
+       const st=document.getElementById('rotaStatus');
+       if(st) st.textContent='⚠️ A cotação foi importada, mas não foi possível calcular a rota automaticamente. Toque em “Buscar KM grátis e localizar pedágios”.';
+     }
+   },250);
  }
 }
 </script>
