@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090909"><title>Solicitar Cotação | MICHELON V7.41.0</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#080808;color:#f7f1df;font-family:Arial,sans-serif}
+.wrap{max-width:560px;margin:auto;min-height:100vh;padding:28px 18px;background:radial-gradient(circle at top,#282014,#0b0b0b 38%,#050505)}
+.card{border:1px solid #b98a35;border-radius:26px;padding:24px 20px;box-shadow:0 0 30px #000}
+.logo{text-align:center;color:#e0b75f;font-family:Georgia,serif;letter-spacing:3px;font-size:30px;font-weight:bold}
+.sub{text-align:center;letter-spacing:4px;font-size:11px;color:#e7c77e;margin:5px 0 25px}
+h2{font-size:21px;margin:0 0 8px}.hint{color:#bfb394;font-size:13px;line-height:1.45;margin-bottom:18px}
+label{display:block;color:#d9c28d;font-size:13px;font-weight:bold;margin:13px 0 6px}
+input,select,textarea{width:100%;padding:14px;border-radius:12px;border:1px solid #66512b;background:#151515;color:#fff;font-size:16px}
+textarea{min-height:85px;resize:vertical}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn{width:100%;border:0;border-radius:14px;padding:16px;margin-top:20px;font-size:17px;font-weight:800;background:linear-gradient(135deg,#b17c26,#efd07a,#a87321);color:#090909}
+.backBtn{display:flex;align-items:center;justify-content:center;width:100%;padding:12px 14px;margin:0 0 18px;border:1px solid #b98a35;border-radius:12px;background:#111;color:#efd07a;text-decoration:none;font-size:15px;font-weight:800}.backBtn:active{transform:scale(.99)}.note{text-align:center;font-size:12px;color:#9f9479;margin-top:16px}@media(max-width:430px){.grid{grid-template-columns:1fr}}
+
+<style id="michelon-endereco-cliente-v7410">
+.addrWrap{position:relative}
+.addrSug{position:absolute;z-index:50;left:0;right:0;top:100%;margin-top:4px;background:#151515;border:1px solid #8f6d32;border-radius:12px;box-shadow:0 12px 25px #000;overflow:hidden}
+.addrSug button{display:block;width:100%;text-align:left;border:0;border-bottom:1px solid #342a18;background:#151515;color:#fff;padding:12px 13px;font-size:14px;line-height:1.35}
+.addrSug button:last-child{border-bottom:0}
+.addrSug button:active{background:#29200f}
+.addrHint{font-size:11px;color:#9f9479;margin-top:4px}
+</style>
+</style></head><body><main class="wrap"><section class="card">
+<a class="backBtn" href="./" aria-label="Voltar ao aplicativo">← Voltar ao aplicativo</a><div class="logo">MICHELON</div><div class="sub">VIAGENS EXECUTIVAS</div>
+<h2>🚐 Solicitar cotação</h2><div class="hint">Preencha os dados da viagem. Ao final, sua solicitação será enviada pelo WhatsApp para a MICHELON.</div>
+<div id="importBox" style="margin:14px 0 20px;padding:14px;border:1px solid #b98a35;border-radius:16px;background:#101010">
+<div style="font-weight:900;color:#efd07a;font-size:16px;margin-bottom:6px">📥 Importar cotação recebida do WhatsApp</div>
+<div style="font-size:12px;color:#bfb394;line-height:1.4;margin-bottom:9px">Copie a mensagem inteira do WhatsApp, cole aqui e toque em importar. O MICHELON preencherá os campos automaticamente.</div>
+<textarea id="textoCotacaoRecebida" rows="6" placeholder="Cole aqui a cotação recebida pelo WhatsApp..." style="min-height:110px"></textarea>
+<button type="button" class="btn" style="margin-top:9px;padding:13px" onclick="importarCotacaoRecebida()">📥 IMPORTAR PARA O MICHELON</button>
+</div>
+
+<label>Seu nome *</label><input id="nome" placeholder="Nome do cliente">
+<label>Seu WhatsApp</label><input id="fone" inputmode="tel" placeholder="(19) 99999-9999">
+<label>Tipo de serviço</label>
+<select id="servico" onchange="mudarServico()">
+<option value="viagem">🛣️ Viagem entre cidades</option>
+<option value="urbano">📍 Corrida dentro da cidade</option>
+</select>
+<label>Tipo de trajeto</label><select id="tipo" onchange="mudarTrajeto()"><option>Ida</option><option>Ida e volta</option></select>
+<label id="lblOrigem">Cidade de origem *</label><div class="addrWrap"><input id="origem" autocomplete="off" placeholder="Ex.: Limeira, SP"><div id="sugOrigem" class="addrSug" style="display:none"></div></div>
+<label id="lblDestino">Cidade de destino *</label><div class="addrWrap"><input id="destino" autocomplete="off" placeholder="Ex.: Campinas, SP"><div id="sugDestino" class="addrSug" style="display:none"></div></div><div id="cepBox" style="display:none">
+<div class="grid">
+<div><label>CEP de saída (opcional)</label><input id="cepOrigem" inputmode="numeric" maxlength="9" placeholder="13480-000"></div>
+<div><label>Número de saída</label><input id="numOrigem" inputmode="numeric" placeholder="Ex.: 366"></div>
+</div>
+<div class="grid">
+<div><label>CEP de destino (opcional)</label><input id="cepDestino" inputmode="numeric" maxlength="9" placeholder="13480-000"></div>
+<div><label>Número do destino</label><input id="numDestino" inputmode="numeric" placeholder="Ex.: 100"></div>
+</div>
+<div class="hint" style="margin-top:8px">Se o mapa não encontrar a rua pelo nome, informe o CEP. O endereço será preenchido automaticamente e o número ficará registrado.</div>
+</div>
+<div id="localizarBox" style="display:none">
+<button type="button" class="btn" style="margin-top:12px;padding:13px" onclick="localizarEnderecos()">🔎 Localizar endereços</button>
+<div id="statusEndereco" class="hint" style="margin:10px 0 0"></div>
+</div>
+<div class="grid"><div><label>Data *</label><input id="data" type="date"></div><div><label>Horário *</label><input id="hora" type="time"></div></div>
+<div class="grid"><div><label>Passageiros</label><input id="passageiros" type="number" min="1" value="1"></div><div id="retornoResumo" style="display:none"></div></div>
+<div id="camposRetorno" style="display:none;border-top:1px solid #66512b;margin-top:18px;padding-top:6px">
+<h2 style="font-size:18px;margin-top:14px">↩️ Dados do retorno</h2>
+<div class="hint">Os locais são preenchidos automaticamente invertendo a ida, mas o cliente pode alterar.</div>
+<label>Origem do retorno *</label><div class="addrWrap"><input id="origemRetorno" autocomplete="off" placeholder="Local onde começa o retorno"><div id="sugOrigemRetorno" class="addrSug" style="display:none"></div></div>
+<label>Destino do retorno *</label><div class="addrWrap"><input id="destinoRetorno" autocomplete="off" placeholder="Local final do retorno"><div id="sugDestinoRetorno" class="addrSug" style="display:none"></div></div>
+<div class="grid">
+<div><label>Data do retorno *</label><input id="dataRetorno" type="date"></div>
+<div><label>Horário do retorno *</label><input id="horaRetorno" type="time"></div>
+</div>
+</div>
+<label>Parada opcional</label><input id="parada" placeholder="Outro local no trajeto">
+<label>Observações</label><textarea id="obs" placeholder="Ex.: malas, aeroporto, cadeirinha, horário especial..."></textarea>
+<button class="btn" onclick="enviar()">📲 Enviar solicitação pelo WhatsApp</button>
+<div class="note">Nenhum custo interno ou parâmetro de cálculo é exibido ao cliente.</div><a class="backBtn" style="margin-top:18px;margin-bottom:0" href="./">← Voltar ao aplicativo</a>
+</section></main>
+<script>
+const $=id=>document.getElementById(id);
+function mudarServico(){
+ const urbano=$('servico').value==='urbano';
+ $('lblOrigem').textContent=urbano?'Endereço completo de saída *':'Cidade de origem *';
+ $('lblDestino').textContent=urbano?'Endereço completo de destino *':'Cidade de destino *';
+ $('origem').placeholder=urbano?'Ex.: Avenida Campinas, 1441, Limeira - SP':'Ex.: Limeira, SP';
+ $('destino').placeholder=urbano?'Ex.: Shopping, empresa ou endereço, Limeira - SP':'Ex.: Campinas, SP';
+ $('localizarBox').style.display=urbano?'block':'none';
+ $('cepBox').style.display=urbano?'block':'none';
+}
+let enderecosConfirmados=false;
+function numeroDigitado(txt){const m=(txt||'').match(/\b(\d{1,6})\b/);return m?m[1]:''}
+async function acharLocal(txt){
+ const tentativas=[txt,txt+', Limeira, SP, Brasil'];
+ for(const q of tentativas){
+  try{
+   const u='https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=1&countrycodes=br&q='+encodeURIComponent(q);
+   const r=await fetch(u,{headers:{'Accept-Language':'pt-BR,pt;q=0.9'}});
+   if(!r.ok)continue; const j=await r.json();
+   if(j&&j[0])return j[0];
+  }catch(e){}
+ }
+ throw new Error('Não foi possível localizar: '+txt);
+}
+function linhaConfirmacao(rotulo, digitado, achado){
+ const n=numeroDigitado(digitado), okNum=!n||(achado.display_name||'').includes(n);
+ return '✅ <b>'+rotulo+':</b> '+achado.display_name+(okNum?'':'<br>⚠️ O mapa não confirmou o número '+n+'. Confira antes de enviar.');
+}
+async function buscarCEP(cep){
+ cep=(cep||'').replace(/\D/g,''); if(cep.length!==8)return null;
+ try{
+  const r=await fetch('https://viacep.com.br/ws/'+cep+'/json/');
+  if(!r.ok)return null; const j=await r.json(); if(j.erro)return null;
+  return j;
+ }catch(e){return null}
+}
+function montarEnderecoCEP(j,n){
+ return [j.logradouro,n,j.bairro,j.localidade,j.uf].filter(Boolean).join(', ');
+}
+async function localizarEnderecos(){
+ let o=$('origem').value.trim(),d=$('destino').value.trim(),st=$('statusEndereco');
+ const co=$('cepOrigem').value.trim(),cd=$('cepDestino').value.trim(),no=$('numOrigem').value.trim(),nd=$('numDestino').value.trim();
+ if(!o&&!co||!d&&!cd){st.textContent='⚠️ Informe saída e destino pelo endereço ou CEP.';return}
+ st.textContent='🔎 Localizando endereços...'; enderecosConfirmados=false;
+ try{
+  if(co){const j=await buscarCEP(co);if(!j)throw new Error('CEP de saída não encontrado.');o=montarEnderecoCEP(j,no);$('origem').value=o}
+  if(cd){const j=await buscarCEP(cd);if(!j)throw new Error('CEP de destino não encontrado.');d=montarEnderecoCEP(j,nd);$('destino').value=d}
+  if($('tipo').value==='Ida e volta'){
+    $('origemRetorno').value=$('destino').value.trim();
+    $('destinoRetorno').value=$('origem').value.trim();
+  }
+  let a=null,b=null,erroA='',erroB='';
+  try{a=await acharLocal(o)}catch(e){erroA=e.message}
+  try{b=await acharLocal(d)}catch(e){erroB=e.message}
+  const la=a?linhaConfirmacao('Saída',o,a):'⚠️ <b>Saída:</b> endereço registrado, mas o mapa não confirmou o ponto exato.';
+  const lb=b?linhaConfirmacao('Destino',d,b):'⚠️ <b>Destino:</b> endereço registrado, mas o mapa não confirmou o ponto exato.';
+  st.innerHTML=la+'<br>'+lb;
+  // Client may still send a quote request even when the free map lacks the exact house number.
+  enderecosConfirmados=true;
+ }catch(e){st.textContent='⚠️ '+e.message}
+}
+function mudarTrajeto(){
+ const volta=$('tipo').value==='Ida e volta';
+ $('camposRetorno').style.display=volta?'block':'none';
+ if(volta){
+  $('origemRetorno').value=$('destino').value.trim();
+  $('destinoRetorno').value=$('origem').value.trim();
+ }
+}
+['origem','destino'].forEach(id=>{
+ const el=$(id);
+ if(el)el.addEventListener('change',()=>{
+  if($('tipo').value==='Ida e volta'){
+   if(id==='origem')$('destinoRetorno').value=el.value.trim();
+   if(id==='destino')$('origemRetorno').value=el.value.trim();
+  }
+ });
+});
+function enviar(){
+ const nome=$('nome').value.trim(),origem=$('origem').value.trim(),destino=$('destino').value.trim(),data=$('data').value,hora=$('hora').value;
+ if(!nome||!origem||!destino||!data||!hora){alert('Preencha nome, origem, destino, data e horário.');return}
+ if($('servico').value==='urbano'&&!enderecosConfirmados){alert('Primeiro toque em “Localizar endereços” para conferir saída e destino.');return}
+ if($('tipo').value==='Ida e volta'){
+  if(!$('origemRetorno').value.trim()||!$('destinoRetorno').value.trim()||!$('dataRetorno').value||!$('horaRetorno').value){
+   alert('Preencha origem, destino, data e horário do retorno.');return
+  }
+ }
+ const dataBR=data.split('-').reverse().join('/');
+ const linhas=['🚐 *SOLICITAÇÃO DE COTAÇÃO - MICHELON*','',
+ '👤 Cliente: '+nome,
+ $('fone').value.trim()?'📱 WhatsApp: '+$('fone').value.trim():'',
+ '🚘 Serviço: '+($('servico').value==='urbano'?'Corrida dentro da cidade':'Viagem entre cidades'),
+ '🛣️ Trajeto: '+$('tipo').value,
+ '📍 Origem: '+origem+($('cepOrigem').value.trim()?' | CEP: '+$('cepOrigem').value.trim():'')+($('numOrigem').value.trim()?' | Nº: '+$('numOrigem').value.trim():''),
+ '🏁 Destino: '+destino+($('cepDestino').value.trim()?' | CEP: '+$('cepDestino').value.trim():'')+($('numDestino').value.trim()?' | Nº: '+$('numDestino').value.trim():'') ,
+ $('parada').value.trim()?'📌 Parada: '+$('parada').value.trim():'',
+ '📅 Data: '+dataBR,
+ '🕐 Horário: '+hora,
+ '👥 Passageiros: '+$('passageiros').value,
+ $('tipo').value==='Ida e volta'?'':'',
+ $('tipo').value==='Ida e volta'?'↩️ *RETORNO*':'',
+ $('tipo').value==='Ida e volta'?'📍 Origem do retorno: '+$('origemRetorno').value.trim():'',
+ $('tipo').value==='Ida e volta'?'🏁 Destino do retorno: '+$('destinoRetorno').value.trim():'',
+ $('tipo').value==='Ida e volta'?'📅 Data do retorno: '+$('dataRetorno').value.split('-').reverse().join('/'):'',
+ $('tipo').value==='Ida e volta'?'🕐 Horário do retorno: '+$('horaRetorno').value:'',
+ 
+ $('obs').value.trim()?'📝 Observações: '+$('obs').value.trim():'',
+ '','Gostaria de receber uma cotação.'].filter(Boolean);
+ const dadosMichelon=[
+ '---MICHELON-DADOS---',
+ 'VERSAO=1',
+ 'SERVICO='+($('servico').value==='urbano'?'urbano':'viagem'),
+ 'TRAJETO='+$('tipo').value,
+ 'ORIGEM='+origem,
+ 'DESTINO='+destino,
+ 'PARADA='+$('parada').value.trim(),
+ 'DATA='+data,
+ 'HORA='+hora,
+ 'PASSAGEIROS='+$('passageiros').value,
+ 'ORIGEM_RETORNO='+($('tipo').value==='Ida e volta'?$('origemRetorno').value.trim():''),
+ 'DESTINO_RETORNO='+($('tipo').value==='Ida e volta'?$('destinoRetorno').value.trim():''),
+ 'DATA_RETORNO='+($('tipo').value==='Ida e volta'?$('dataRetorno').value:''),
+ 'HORA_RETORNO='+($('tipo').value==='Ida e volta'?$('horaRetorno').value:''),
+ '---FIM-MICHELON-DADOS---'
+ ];
+ location.href='https://wa.me/5519992462362?text='+encodeURIComponent(linhas.join('\n')+'\n\n'+dadosMichelon.join('\n'));
+}
+mudarTrajeto();
+</script>
+<script id="michelon-import-whatsapp-v7400">
+function setCampo(id,val){var e=document.getElementById(id);if(e&&val!==undefined&&val!==null&&String(val).trim()!=='')e.value=String(val).trim();}
+function firstMatch(txt,re){var m=txt.match(re);return m?(m[1]||'').trim():'';}
+function importarCotacaoRecebida(){
+ var box=document.getElementById('textoCotacaoRecebida'),txt=(box&&box.value||'').trim();
+ if(!txt){alert('Cole primeiro a mensagem da cotação recebida pelo WhatsApp.');return;}
+ var o={},lines=txt.split(/\r?\n/);
+ lines.forEach(function(line){var p=line.indexOf('=');if(p>0)o[line.slice(0,p).trim().toUpperCase()]=line.slice(p+1).trim();});
+ var estruturada=/---MICHELON-DADOS---/i.test(txt);
+ var servico=estruturada?((o.SERVICO||'').toLowerCase()==='urbano'?'urbano':'viagem'):(/corrida dentro da cidade|servi[cç]o:\s*urbano/i.test(txt)?'urbano':'viagem');
+ var trajeto=estruturada?(o.TRAJETO||'Ida'):(firstMatch(txt,/Trajeto:\s*(.+)/i)||(/ida e volta/i.test(txt)?'Ida e volta':'Ida'));
+ var origem=estruturada?(o.ORIGEM||''):firstMatch(txt,/Origem:\s*(.+)/i);
+ var destino=estruturada?(o.DESTINO||''):firstMatch(txt,/Destino:\s*(.+)/i);
+ var parada=estruturada?(o.PARADA||''):firstMatch(txt,/Parada:\s*(.+)/i);
+ var data=estruturada?(o.DATA||''):firstMatch(txt,/Data:\s*(\d{1,2}\/\d{1,2}\/\d{2,4})/i);
+ if(!estruturada&&data){var p=data.split('/');data=(p[2].length===2?'20'+p[2]:p[2])+'-'+('0'+p[1]).slice(-2)+'-'+('0'+p[0]).slice(-2);}
+ var hora=estruturada?(o.HORA||''):firstMatch(txt,/Hor[aá]rio:\s*([0-2]?\d:[0-5]\d)/i);
+ var passageiros=estruturada?(o.PASSAGEIROS||''):firstMatch(txt,/Passageiros:\s*(\d+)/i);
+ var or=estruturada?(o.ORIGEM_RETORNO||''):firstMatch(txt,/Origem do retorno:\s*(.+)/i);
+ var dr=estruturada?(o.DESTINO_RETORNO||''):firstMatch(txt,/Destino do retorno:\s*(.+)/i);
+ var dataR=estruturada?(o.DATA_RETORNO||''):firstMatch(txt,/Data do retorno:\s*(\d{1,2}\/\d{1,2}\/\d{2,4})/i);
+ if(!estruturada&&dataR){var rp=dataR.split('/');dataR=(rp[2].length===2?'20'+rp[2]:rp[2])+'-'+('0'+rp[1]).slice(-2)+'-'+('0'+rp[0]).slice(-2);}
+ var horaR=estruturada?(o.HORA_RETORNO||''):firstMatch(txt,/Hor[aá]rio do retorno:\s*([0-2]?\d:[0-5]\d)/i);
+ var nome=estruturada?(o.NOME||''):firstMatch(txt,/Cliente:\s*(.+)/i);
+ var fone=estruturada?(o.FONE||''):firstMatch(txt,/WhatsApp:\s*(.+)/i);
+ var obs=estruturada?(o.OBS||''):firstMatch(txt,/Observa[cç][oõ]es:\s*(.+)/i);
+ setCampo('nome',nome);setCampo('fone',fone);setCampo('servico',servico);mudarServico();setCampo('tipo',trajeto);mudarTrajeto();
+ setCampo('origem',origem);setCampo('destino',destino);setCampo('parada',parada);setCampo('data',data);setCampo('hora',hora);setCampo('passageiros',passageiros);
+ setCampo('origemRetorno',or);setCampo('destinoRetorno',dr);setCampo('dataRetorno',dataR);setCampo('horaRetorno',horaR);setCampo('obs',obs);
+ if(servico==='urbano'){document.getElementById('localizarBox').style.display='block';document.getElementById('cepBox').style.display='block';}
+ alert('✅ Cotação importada! Confira os dados preenchidos e prossiga normalmente.');
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+
+
+<script id="michelon-endereco-cliente-v7410">
+(function(){
+ const defs=[
+  ['origem','sugOrigem'],['destino','sugDestino'],
+  ['origemRetorno','sugOrigemRetorno'],['destinoRetorno','sugDestinoRetorno']
+ ];
+ const timers={};
+ function limpar(s){return String(s||'').replace(/\s+/g,' ').trim();}
+ async function buscar(q){
+   const base=limpar(q);
+   if(base.length<3)return [];
+   const qs=[base];
+   if(!/limeira|sp|s[aã]o paulo/i.test(base))qs.push(base+', Limeira, SP, Brasil');
+   for(const x of qs){
+     try{
+       const u='https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=5&countrycodes=br&q='+encodeURIComponent(x);
+       const r=await fetch(u,{headers:{'Accept-Language':'pt-BR,pt;q=0.9'}});
+       if(r.ok){
+         const j=await r.json();
+         if(j&&j.length)return j;
+       }
+     }catch(e){}
+   }
+   return [];
+ }
+ function mostrar(list,items,q){
+   list.innerHTML='';
+   if(!items.length){list.style.display='none';return}
+   items.forEach(item=>{
+     const b=document.createElement('button'); b.type='button';
+     const nome=item.display_name||q;
+     b.textContent='📍 '+nome;
+     b.onclick=function(){
+       const inp=document.getElementById(q.id);
+       if(inp){
+         const n=(q.value.match(/\b\d{1,6}\b/)||[])[0];
+         let val=nome;
+         if(n && !new RegExp('(^|\\D)'+n+'(\\D|$)').test(val)) val += ', '+n;
+         inp.value=val;
+         inp.dispatchEvent(new Event('change',{bubbles:true}));
+       }
+       list.style.display='none';
+     };
+     list.appendChild(b);
+   });
+   list.style.display='block';
+ }
+ defs.forEach(([id,lid])=>{
+   const inp=document.getElementById(id), list=document.getElementById(lid);
+   if(!inp||!list)return;
+   inp.addEventListener('input',function(){
+     clearTimeout(timers[id]);
+     list.style.display='none';
+     const value=limpar(inp.value);
+     if(value.length<3)return;
+     timers[id]=setTimeout(async()=>{
+       const items=await buscar(value);
+       mostrar(list,items,{id:id,value:value});
+     },350);
+   });
+   inp.addEventListener('focus',function(){
+     if(limpar(inp.value).length>=3){
+       clearTimeout(timers[id]);
+       timers[id]=setTimeout(async()=>mostrar(list,await buscar(inp.value),{id:id,value:inp.value}),150);
+     }
+   });
+   inp.addEventListener('blur',function(){setTimeout(()=>list.style.display='none',220)});
+ });
+})();
+</script>
+</body></html>
