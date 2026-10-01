@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f766e">
-<title>Michelon Viagens Executivas • V7.32.0</title>
+<title>Michelon Viagens Executivas • V7.9.3</title>
 <style>
 :root{--bg:#f8fafc;--card:#fff;--text:#0f172a;--muted:#64748b;--line:#e2e8f0;--primary:#0f766e;--primary2:#115e59;--ok:#166534;--warn:#92400e;--danger:#b91c1c}
 *{box-sizing:border-box}
@@ -208,7 +208,7 @@ body{background:var(--mc-bg)!important;color:var(--mc-text)!important;padding-bo
   background:rgba(255,255,255,.96);backdrop-filter:blur(14px);
   border-top:1px solid var(--mc-line);box-shadow:0 -8px 24px rgba(20,32,51,.08);
 }
-.mcNav{width:min(620px,100%);margin:auto;display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
+.mcNav{width:min(620px,100%);margin:auto;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:3px}
 .mcNav button{border:0;background:transparent;color:#738096;padding:6px 2px;border-radius:13px;font-weight:850;font-size:10px;cursor:pointer}
 .mcNav button.active{color:var(--mc-primary);background:#edf8f6}
 .mcNav i{display:block;font-style:normal;font-size:19px;line-height:21px;margin-bottom:2px}
@@ -974,7 +974,7 @@ body{background:var(--sig-bg)!important;color:var(--sig-text)!important;}
 
 
 <style id="michelon-card-polish-v7283">
-/* V7.28.9 — acabamento visual profissional, preservando a estrutura */
+/* V7.30.0 — acabamento visual profissional, preservando a estrutura */
 #mcCardClean{
   border-radius:24px!important;
   overflow:hidden!important;
@@ -1089,15 +1089,123 @@ body{background:var(--sig-bg)!important;color:var(--sig-text)!important;}
 }
 </style>
 
-<style id="michelon-rodape-fix-v7300">
-.mcBottom{padding:6px 4px calc(6px + env(safe-area-inset-bottom)) !important;}
-.mcNav{width:100% !important;max-width:760px !important;grid-template-columns:repeat(6,minmax(0,1fr)) !important;gap:2px !important;min-width:0 !important;}
-.mcNav button{width:100% !important;min-width:0 !important;max-width:none !important;height:58px !important;min-height:58px !important;max-height:58px !important;padding:3px 1px !important;margin:0 !important;display:flex !important;flex-direction:column !important;align-items:center !important;justify-content:center !important;gap:1px !important;overflow:hidden !important;white-space:normal !important;word-break:normal !important;font-size:8.5px !important;line-height:10px !important;font-weight:900 !important;}
-.mcNav i{display:block !important;width:100% !important;font-size:16px !important;line-height:18px !important;margin:0 !important;}
-@media(max-width:430px){.mcNav button{font-size:8px !important;line-height:9px !important;height:58px !important;min-height:58px !important;max-height:58px !important}.mcNav i{font-size:16px !important;line-height:18px !important;}}
+
+<style id="michelon-bottom-nav-size-v7290">
+.mcBottom{
+  padding-top:10px!important;
+  padding-bottom:calc(10px + env(safe-area-inset-bottom))!important;
+}
+.mcNav{
+  gap:4px!important;
+  max-width:720px!important;
+}
+.mcNav button{
+  min-height:58px!important;
+  font-size:11px!important;
+  padding:7px 2px!important;
+}
+.mcNav i{
+  font-size:22px!important;
+  line-height:24px!important;
+  margin-bottom:3px!important;
+}
+@media(max-width:380px){
+  .mcNav button{font-size:10px!important;min-height:56px!important}
+  .mcNav i{font-size:21px!important}
+}
+</style>
+
+
+<style id="michelon-card-brand-v7291">
+/* Marca MICHELON do cartão digital */
+.cardFloat .brand,
+.cardFloat .cardBrand,
+.cardFloat .michelonBrand,
+.cardFloat .brandName{
+  font-size:20px!important;
+  font-weight:900!important;
+  letter-spacing:3px!important;
+}
+</style>
+
+
+<style id="michelon-card-logo-real-v7292">
+.mcCardLogo{
+  font-size:21px!important;
+  font-weight:950!important;
+  letter-spacing:4px!important;
+  opacity:1!important;
+  color:#d8ad3f!important;
+  text-shadow:0 1px 8px rgba(216,173,63,.18);
+}
+</style>
+
+
+<style id="michelon-card-logo-final-v7293">
+#mcCardClean .mcCardLogo{
+  font-size:24px!important;
+  font-weight:950!important;
+  letter-spacing:5px!important;
+  line-height:1.1!important;
+  opacity:1!important;
+  color:#d8ad3f!important;
+  margin-bottom:6px!important;
+  text-shadow:0 1px 8px rgba(216,173,63,.20)!important;
+}
+</style>
+
+
+<style id="michelon-cotacao-import-v7300">
+#cotacaoImportWrap{
+  display:none;
+  width:min(920px,calc(100% - 20px));
+  margin:12px auto 18px;
+}
+#cotacaoImportWrap.open{display:block}
+.cotacaoImportCard{
+  background:#fff;border:1px solid #dbe2ea;border-radius:18px;
+  padding:14px;box-shadow:0 8px 24px rgba(20,32,51,.07);
+}
+.cotacaoImportHead{
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+  margin-bottom:8px;font-size:16px;font-weight:950;
+}
+.cotacaoClose{
+  width:auto!important;padding:8px 11px!important;border:1px solid #dbe2ea!important;
+  background:#fff!important;color:#334155!important;border-radius:10px!important;
+}
+#textoCotacaoRecebida{
+  width:100%;box-sizing:border-box;min-height:150px;resize:vertical;
+  padding:12px;border:1px solid #cbd5e1;border-radius:11px;font-size:15px;
+}
+.cotacaoImportBtn{
+  margin-top:9px!important;background:#111827!important;color:#fff!important;
+  font-weight:950!important;
+}
+@media(max-width:700px){
+  #cotacaoImportWrap{width:calc(100% - 20px);margin-bottom:88px}
+}
 </style>
 </head>
 <body>
+
+<div id="cotacaoImportWrap">
+  <div class="cotacaoImportCard">
+    <div class="cotacaoImportHead">
+      <span>📥 Cotação recebida do cliente</span>
+      <button type="button" class="cotacaoClose" onclick="toggleCotacaoImport()">Fechar</button>
+    </div>
+    <div style="font-size:13px;color:#64748b;margin-bottom:9px">
+      Copie a mensagem inteira que chegou no WhatsApp e cole aqui.
+    </div>
+    <textarea id="textoCotacaoRecebida" placeholder="Cole aqui a cotação recebida pelo WhatsApp..."></textarea>
+    <button type="button" class="cotacaoImportBtn" onclick="importarCotacaoRecebida()">📥 IMPORTAR PARA O MICHELON</button>
+    <div style="font-size:12px;color:#64748b;margin-top:7px">
+      Depois confira os campos preenchidos e calcule a rota normalmente.
+    </div>
+  </div>
+</div>
+
 <section id="mxHero" aria-label="Painel principal MICHELON">
   <div class="mxBrand">MICHELON</div>
   <div class="mxSub">Viagens Executivas · Gestão</div>
@@ -1132,7 +1240,24 @@ body{background:var(--sig-bg)!important;color:var(--sig-text)!important;}
 
 
 
-<!-- Cartão antigo removido na V7.32.0 -->
+<div id="modalMeuCartao" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.94);padding:8px;overflow:auto" onclick="if(event.target===this)fecharMeuCartao()">
+ <div style="max-width:520px;margin:8px auto">
+  <div style="display:flex;justify-content:flex-end;margin-bottom:6px"><button type="button" onclick="fecharMeuCartao()" style="border:0;border-radius:10px;padding:9px 12px;font-weight:800">✕ Fechar</button></div>
+  <iframe title="Cartão digital MICHELON" srcdoc="&lt;!doctype html&gt;&lt;html lang=&quot;pt-BR&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1&quot;&gt;&lt;meta name=&quot;theme-color&quot; content=&quot;#090909&quot;&gt;&lt;title&gt;Michelon Viagens Executivas - V4&lt;/title&gt;&lt;style&gt;
+*{box-sizing:border-box}body{margin:0;background:#080808;color:#f7f1df;font-family:Arial,sans-serif}.wrap{max-width:520px;margin:auto;min-height:100vh;padding:34px 20px;background:radial-gradient(circle at top,#272014,#0b0b0b 38%,#050505)}.card{border:1px solid #b98a35;border-radius:28px;padding:28px 22px;box-shadow:0 0 35px #000}.logo{text-align:center}.mark{font-family:Georgia,serif;font-weight:bold;font-size:74px;line-height:.9;color:#d8aa50;text-shadow:0 2px 12px #8c621e}.road{width:135px;height:5px;background:#d8aa50;margin:-19px auto 13px;transform:rotate(-12deg);border-radius:8px}h1{font-family:Georgia,serif;letter-spacing:4px;color:#e0b75f;font-size:34px;margin:8px 0 2px}.sub{letter-spacing:5px;font-size:12px;color:#e7c77e}.tag{margin:24px 0 18px;font-size:15px;letter-spacing:1.5px;color:#d9c28d}.name{font-size:24px;font-weight:700;margin-top:24px}.place{color:#c9b992;margin:5px 0 20px}.btn{display:block;text-decoration:none;text-align:center;padding:16px;margin:11px 0;border-radius:15px;font-weight:800;font-size:17px}.gold{background:linear-gradient(135deg,#b17c26,#efd07a,#a87321);color:#090909}.dark{border:1px solid #9e7b3c;color:#f4e6bd;background:#151515}.small{font-size:13px;text-align:center;color:#aa9d7e;margin-top:22px;line-height:1.6}.pillars{display:flex;justify-content:space-around;border-top:1px solid #6f5528;padding-top:18px;margin-top:22px;font-size:11px;letter-spacing:1px;color:#e2c475}.share{cursor:pointer;width:100%;font-family:inherit}.qr{margin:24px auto 8px;background:#fff;padding:10px;border-radius:14px;width:170px;height:170px}.qr{background:#fff;padding:8px;border-radius:14px;display:inline-block}.qr img{width:150px;height:150px;display:block}.qrlabel{text-align:center;color:#d9c28d;font-size:12px;margin-bottom:16px}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;main class=&quot;wrap&quot;&gt;&lt;section class=&quot;card&quot;&gt;&lt;div class=&quot;logo&quot;&gt;&lt;div class=&quot;mark&quot;&gt;M&lt;/div&gt;&lt;div class=&quot;road&quot;&gt;&lt;/div&gt;&lt;h1&gt;MICHELON&lt;/h1&gt;&lt;div class=&quot;sub&quot;&gt;VIAGENS EXECUTIVAS&lt;/div&gt;&lt;div class=&quot;tag&quot;&gt;Mais que viagens, conexões que importam.&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;name&quot;&gt;Anderson Michelon&lt;/div&gt;&lt;div class=&quot;place&quot;&gt;Limeira – SP&lt;/div&gt;&lt;a class=&quot;btn gold&quot; href=&quot;https://wa.me/5519992462362?text=Olá%20Anderson%2C%20gostaria%20de%20solicitar%20um%20orçamento.&quot;&gt;💬 Solicitar orçamento no WhatsApp&lt;/a&gt;&lt;a class=&quot;btn dark&quot; href=&quot;tel:+5519992462362&quot; onclick=&quot;window.location.href=\&#x27;tel:+5519992462362\&#x27;;return false;&quot;&gt;📞 Ligar agora&lt;/a&gt;&lt;a class=&quot;btn dark&quot; href=&quot;mailto:andersonmichelon08@gmail.com?subject=Contato%20-%20Michelon%20Viagens%20Executivas&quot; onclick=&quot;window.location.href=\&#x27;mailto:andersonmichelon08@gmail.com?subject=Contato%20-%20Michelon%20Viagens%20Executivas\&#x27;;return false;&quot;&gt;✉️ Enviar e-mail&lt;/a&gt;&lt;a class=&quot;btn dark&quot; href=&quot;data:text/vcard;charset=utf-8,BEGIN%3AVCARD%0AVERSION%3A3.0%0AFN%3AAnderson%20Michelon%0AORG%3AMichelon%20Viagens%20Executivas%0ATEL%3BTYPE%3DCELL%3A%2B5519992462362%0AEMAIL%3Aandersonmichelon08%40gmail.com%0AADR%3A%3B%3B%3BLimeira%3BSP%3B%3BBrasil%0AEND%3AVCARD&quot; download=&quot;Anderson_Michelon.vcf&quot;&gt;👤 Salvar contato&lt;/a&gt;
+&lt;button class=&quot;btn dark share&quot; onclick=&quot;compartilharCartao()&quot;&gt;📲 Compartilhar cartão&lt;/button&gt;
+&lt;div class=&quot;qr&quot;&gt;&lt;img alt=&quot;QR Code WhatsApp&quot; src=&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASgAAAEoAQAAAADDfFG0AAAB9klEQVR4nO2a247kQAhDj0f5/1/2PABVyfTuap5SSAvdUl9iqS0EbkNF5hfx9RvQoAb1ERco3hmQkWXlF+tKV/ZH8oUhs2bZykxZXle6sj+TLwQGYa1qI4osrrRl3wBlLLBl/wP1Pq8mqOvxySIe0Y4HeXVFXZACRrZjpcnyutKV/fsoVtv5D4+CdGV/pL5235n6ZJXUH+LVFRWOCyCtl0GWkctjHOHVG2WX54JQ/JVENP7rFhcgU+5rCX68WBbuy/4MyhDtiKLOosp2S7Zm/zrKQjEJZUdmURH23tOP93D4Bv+wEXY+GT/xiJUV8DN52aZ48vUTFUmLvsRpMXJRMX7iHlftuRSKDyDH0E3omGb/tSPmbQNKk5rW3nKW2xFeXVHYOQUZO5XMe3oc/fpAhZGPElNkTq7pUbNffcT2pA6Hb7aM1Vq6Lfsz8zaZlVD3+D7sfh2CdGV/ah5yqrxQGbLYFgpNfX2iSrdqnYNl1Xh0kFdblJEg5u2aJ6vcRu+fqOg/l1yxbL3Lt3Zm/zLqdr7t2oOBFbuwlPu27A/pfRjVGhpZ65x1iNuZ/buotZKotgznau/enH3OX1Ch+OnCKoGjX4+4n2/nkbYc+mXPvP0Rt/PtPBzydvjrfVf2Z/KVSam7vhDafmz+Hx9xv6vknV8c1P+E+gYQkyIC3z7x2gAAAABJRU5ErkJggg==&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;qrlabel&quot;&gt;Aponte a câmera para abrir meu cartão digital&lt;/div&gt;
+&lt;div class=&quot;pillars&quot;&gt;&lt;span&gt;CONFORTO&lt;/span&gt;&lt;span&gt;SEGURANÇA&lt;/span&gt;&lt;span&gt;PONTUALIDADE&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;small&quot;&gt;(19) 99246-2362&lt;br&gt;andersonmichelon08@gmail.com&lt;br&gt;Seu destino, nossa prioridade.&lt;/div&gt;&lt;/section&gt;&lt;/main&gt;&lt;script&gt;
+async function compartilharCartao(){
+ const dados={title:&#x27;Michelon Viagens Executivas&#x27;,text:&#x27;Anderson Michelon • Viagens Executivas\n🚗 MICHELON VIAGENS EXECUTIVAS\nMais que viagens, conexões que importam.\n📇 Acesse meu cartão digital:&#x27;,url:&#x27;https://andersonmichelon08-dev.github.io/cartao-michelon/&#x27;};
+ if(navigator.share){try{await navigator.share(dados)}catch(e){}}else{
+  try{await navigator.clipboard.writeText(dados.text+&#x27;\n&#x27;+dados.url);alert(&#x27;Dados do cartão copiados.&#x27;)}catch(e){alert(&#x27;Compartilhe pelo WhatsApp: (19) 99246-2362&#x27;)}
+ }
+}
+&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;" style="width:100%;height:790px;border:0;border-radius:18px;background:#080808"></iframe>
+ </div>
+</div>
 
 <div class="wrap">
   <h1>🚗 MICHELON</h1>
@@ -3029,7 +3154,7 @@ function resumoFinanceiroAtividades(){
 
 </script>
 <footer style="text-align:center;color:#64748b;font-size:13px;padding:22px 10px 34px">
-<strong>MICHELON Viagens Executivas</strong> • Versão 7.32.0 • Atualizado em 30/09/2026 • Financeiro organizado
+<strong>MICHELON Viagens Executivas</strong> • Versão 7.28.3 BETA • Atualizado em 17/09/2026 • Financeiro organizado
 </footer>
 
 <script>
@@ -3082,8 +3207,8 @@ document.addEventListener('DOMContentLoaded',function(){
 })();
 </script><script>ligarAutocompleteUrbano();</script>
 <script>
-function abrirMeuCartao(){ if(typeof mcOpenCard==='function'){ mcOpenCard(); } }
-function fecharMeuCartao(){ if(typeof mcCloseCard==='function'){ mcCloseCard(); } }
+function abrirMeuCartao(){const m=document.getElementById('modalMeuCartao');if(m){m.style.display='block';document.body.style.overflow='hidden';}}
+function fecharMeuCartao(){const m=document.getElementById('modalMeuCartao');if(m){m.style.display='none';document.body.style.overflow='';}}
 </script>
 
 <script>
@@ -3281,7 +3406,6 @@ document.addEventListener('DOMContentLoaded',function(){
 </script>
 
 
-<script id="michelon-orcamento-message-v7320">
 function gerarMensagemClienteMichelon(){
   const v=id=>String(document.getElementById(id)?.value||'').trim();
   const urbano=v('modoCotacao')==='urbano';
@@ -3340,8 +3464,6 @@ function atualizarMensagemClienteMichelon(){
   if(box) box.value=gerarMensagemClienteMichelon();
 }
 
-
-</script>
 
 <script>
 const CHAVE_PENDENTES='michelon_orcamentos_pendentes_v1';
@@ -3498,25 +3620,12 @@ function mxIr(id){
 <button onclick="mcGo('mxAgenda')"><i>📅</i>Agenda</button>
 <button onclick="mcGo('mxFinanceiro')"><i>💰</i>Financeiro</button>
 <button onclick="mcGo('mxUber')"><i>🚕</i>Uber / Apps</button>
-<button onclick="abrirCartaoNovo()" aria-label="Cartão"><i>📇</i>Cartão</button>
-<button onclick="window.location.href='cotacao.html?v=7320'" aria-label="Cotação"><i>📥</i>Cotação</button>
+<button onclick="mcGo('cardFloat')"><i>📇</i>Cartão</button>
+<button onclick="toggleCotacaoImport()" aria-label="Nova cotação"><i>📥</i>Cotação</button>
 </div>
 </nav>
 
 
-
-<script id="michelon-cartao-novo-v7310">
-function abrirCartaoNovo(){
-  var antigo=document.getElementById('modalMeuCartao');
-  if(antigo) antigo.style.display='none';
-  var novo=document.getElementById('mcCardOverlay');
-  if(novo){
-    novo.style.display='block';
-    document.body.style.overflow='hidden';
-    window.scrollTo(0,0);
-  }
-}
-</script>
 
 <script id="michelon-clean-nav-v7241">
 function mcGo(id){
@@ -3571,14 +3680,16 @@ function toggleCotacaoImport(){
   if(w.classList.contains('open')){
     setTimeout(function(){
       w.scrollIntoView({behavior:'smooth',block:'start'});
-    },50);
+      var t=document.getElementById('textoCotacaoRecebida');
+      if(t)t.focus();
+    },80);
   }
 }
 </script>
 
 
 <script id="michelon-home-order-js-v7273">
-function toggleCotacaoImport(){
+function toggleCotacaoImportLegacy(){
   var w=document.getElementById('cotacaoImportWrap');
   if(!w)return;
   w.classList.toggle('open');
