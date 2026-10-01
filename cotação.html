@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090909"><title>Solicitar Cotação | MICHELON V7.32.0</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#080808;color:#f7f1df;font-family:Arial,sans-serif}
+.wrap{max-width:560px;margin:auto;min-height:100vh;padding:28px 18px;background:radial-gradient(circle at top,#282014,#0b0b0b 38%,#050505)}
+.card{border:1px solid #b98a35;border-radius:26px;padding:24px 20px;box-shadow:0 0 30px #000}
+.logo{text-align:center;color:#e0b75f;font-family:Georgia,serif;letter-spacing:3px;font-size:30px;font-weight:bold}
+.sub{text-align:center;letter-spacing:4px;font-size:11px;color:#e7c77e;margin:5px 0 25px}
+h2{font-size:21px;margin:0 0 8px}.hint{color:#bfb394;font-size:13px;line-height:1.45;margin-bottom:18px}
+label{display:block;color:#d9c28d;font-size:13px;font-weight:bold;margin:13px 0 6px}
+input,select,textarea{width:100%;padding:14px;border-radius:12px;border:1px solid #66512b;background:#151515;color:#fff;font-size:16px}
+textarea{min-height:85px;resize:vertical}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn{width:100%;border:0;border-radius:14px;padding:16px;margin-top:20px;font-size:17px;font-weight:800;background:linear-gradient(135deg,#b17c26,#efd07a,#a87321);color:#090909}
+.note{text-align:center;font-size:12px;color:#9f9479;margin-top:16px}@media(max-width:430px){.grid{grid-template-columns:1fr}}
+
+.backbar{display:flex;gap:9px;margin-bottom:16px}
+.backbtn{flex:1;display:flex;align-items:center;justify-content:center;text-decoration:none;
+  border:1px solid #8f6d32;border-radius:12px;padding:12px 10px;
+  background:#151515;color:#f3d98c;font-size:15px;font-weight:800}
+.backbtn:active{transform:scale(.99)}
+</style></head><body><main class="wrap">
+<div class="backbar">
+  <a class="backbtn" href="./?v=7320">← Voltar para o início</a>
+</div>
+<section class="card">
+<div class="logo">MICHELON</div><div class="sub">VIAGENS EXECUTIVAS</div>
+<h2>🚐 Solicitar cotação</h2><div class="hint">Preencha os dados da viagem. Ao final, sua solicitação será enviada pelo WhatsApp para a MICHELON.</div>
+<label>Seu nome *</label><input id="nome" placeholder="Nome do cliente">
+<label>Seu WhatsApp</label><input id="fone" inputmode="tel" placeholder="(19) 99999-9999">
+<label>Tipo de serviço</label>
+<select id="servico" onchange="mudarServico()">
+<option value="viagem">🛣️ Viagem entre cidades</option>
+<option value="urbano">📍 Corrida dentro da cidade</option>
+</select>
+<label>Tipo de trajeto</label><select id="tipo"><option>Ida</option><option>Ida e volta</option></select>
+<label id="lblOrigem">Cidade de origem *</label><input id="origem" placeholder="Ex.: Limeira, SP">
+<label id="lblDestino">Cidade de destino *</label><input id="destino" placeholder="Ex.: Campinas, SP"><div id="localizarBox" style="display:none">
+<button type="button" class="btn" style="margin-top:12px;padding:13px" onclick="localizarEnderecos()">🔎 Localizar endereços</button>
+<div id="statusEndereco" class="hint" style="margin:10px 0 0"></div>
+</div>
+<div class="grid"><div><label>Data *</label><input id="data" type="date"></div><div><label>Horário *</label><input id="hora" type="time"></div></div>
+<div class="grid"><div><label>Passageiros</label><input id="passageiros" type="number" min="1" value="1"></div><div><label>Data de retorno prevista</label><input id="retorno" type="date"></div></div>
+<label>Parada opcional</label><input id="parada" placeholder="Outro local no trajeto">
+<label>Observações</label><textarea id="obs" placeholder="Ex.: malas, aeroporto, cadeirinha, horário especial..."></textarea>
+<button class="btn" onclick="enviar()">📲 Enviar solicitação pelo WhatsApp</button>
+<div class="note">Nenhum custo interno ou parâmetro de cálculo é exibido ao cliente.</div>
+</section>
+<div class="backbar" style="margin-top:18px;margin-bottom:0">
+  <a class="backbtn" href="./?v=7320">← Voltar para o início</a>
+</div>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+function mudarServico(){
+ const urbano=$('servico').value==='urbano';
+ $('lblOrigem').textContent=urbano?'Endereço completo de saída *':'Cidade de origem *';
+ $('lblDestino').textContent=urbano?'Endereço completo de destino *':'Cidade de destino *';
+ $('origem').placeholder=urbano?'Ex.: Avenida Campinas, 1441, Limeira - SP':'Ex.: Limeira, SP';
+ $('destino').placeholder=urbano?'Ex.: Shopping, empresa ou endereço, Limeira - SP':'Ex.: Campinas, SP';
+ $('localizarBox').style.display=urbano?'block':'none';
+}
+let enderecosConfirmados=false;
+function numeroDigitado(txt){const m=(txt||'').match(/\b(\d{1,6})\b/);return m?m[1]:''}
+async function acharLocal(txt){
+ const tentativas=[txt,txt+', Limeira, SP, Brasil'];
+ for(const q of tentativas){
+  try{
+   const u='https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=1&countrycodes=br&q='+encodeURIComponent(q);
+   const r=await fetch(u,{headers:{'Accept-Language':'pt-BR,pt;q=0.9'}});
+   if(!r.ok)continue; const j=await r.json();
+   if(j&&j[0])return j[0];
+  }catch(e){}
+ }
+ throw new Error('Não foi possível localizar: '+txt);
+}
+function linhaConfirmacao(rotulo, digitado, achado){
+ const n=numeroDigitado(digitado), okNum=!n||(achado.display_name||'').includes(n);
+ return '✅ <b>'+rotulo+':</b> '+achado.display_name+(okNum?'':'<br>⚠️ O mapa não confirmou o número '+n+'. Confira antes de enviar.');
+}
+async function localizarEnderecos(){
+ const o=$('origem').value.trim(),d=$('destino').value.trim(),st=$('statusEndereco');
+ if(!o||!d){st.textContent='⚠️ Informe saída e destino.';return}
+ st.textContent='🔎 Localizando endereços...'; enderecosConfirmados=false;
+ try{
+  const a=await acharLocal(o),b=await acharLocal(d);
+  st.innerHTML=linhaConfirmacao('Saída',o,a)+'<br>'+linhaConfirmacao('Destino',d,b);
+  enderecosConfirmados=true;
+ }catch(e){st.textContent='⚠️ '+e.message}
+}
+function enviar(){
+ const nome=$('nome').value.trim(),origem=$('origem').value.trim(),destino=$('destino').value.trim(),data=$('data').value,hora=$('hora').value;
+ if(!nome||!origem||!destino||!data||!hora){alert('Preencha nome, origem, destino, data e horário.');return}
+ if($('servico').value==='urbano'&&!enderecosConfirmados){alert('Primeiro toque em “Localizar endereços” para conferir saída e destino.');return}
+ const dataBR=data.split('-').reverse().join('/');
+ const linhas=['🚐 *SOLICITAÇÃO DE COTAÇÃO - MICHELON*','',
+ '👤 Cliente: '+nome,
+ $('fone').value.trim()?'📱 WhatsApp: '+$('fone').value.trim():'',
+ '🚘 Serviço: '+($('servico').value==='urbano'?'Corrida dentro da cidade':'Viagem entre cidades'),
+ '🛣️ Trajeto: '+$('tipo').value,
+ '📍 Origem: '+origem,
+ '🏁 Destino: '+destino,
+ $('parada').value.trim()?'📌 Parada: '+$('parada').value.trim():'',
+ '📅 Data: '+dataBR,
+ '🕐 Horário: '+hora,
+ '👥 Passageiros: '+$('passageiros').value,
+ $('retorno').value?'↩️ Data de retorno prevista: '+$('retorno').value.split('-').reverse().join('/'):'',
+ $('obs').value.trim()?'📝 Observações: '+$('obs').value.trim():'',
+ '','Gostaria de receber uma cotação.'].filter(Boolean);
+ location.href='https://wa.me/5519992462362?text='+encodeURIComponent(linhas.join('\n'));
+}
+</script></body></html>
