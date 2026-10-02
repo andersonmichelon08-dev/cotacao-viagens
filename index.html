@@ -41,6 +41,14 @@ details summary{cursor:pointer;font-weight:700}.note{font-size:12px;color:var(--
 .cityitem:hover,.cityitem:active{background:#f1f5f9}
 
 .urbanoList{top:48px}
+.mcBottom{display:none!important}
+
+#btnLimparCotacao{
+  width:100%;margin-top:8px;min-height:54px;border:1px solid #d7dee8;
+  border-radius:14px;background:#eef2f7;color:#142033;font-weight:950;
+  font-size:16px;cursor:pointer;
+}
+#btnLimparCotacao:active{transform:scale(.99)}
 </style>
 <style id="driver721">html,body{width:100%;max-width:100%;overflow-x:hidden!important;overscroll-behavior-x:none}*,*:before,*:after{box-sizing:border-box}.wrap,.card,.grid,.agendaItem,input,select,textarea,button{max-width:100%}@media(max-width:700px){body{position:relative;touch-action:pan-y}.wrap{width:100%!important;max-width:100%!important;margin-left:auto!important;margin-right:auto!important;overflow-x:clip}#cardFloat{left:max(12px,env(safe-area-inset-left))!important;right:max(12px,env(safe-area-inset-right))!important;width:auto!important;transform:none!important}}.driver-main{background:#0f766e!important;color:#fff!important;border:0!important;font-weight:900!important}</style>
 
@@ -1186,6 +1194,118 @@ body{background:var(--sig-bg)!important;color:var(--sig-text)!important;}
   #cotacaoImportWrap{width:calc(100% - 20px);margin-bottom:88px}
 }
 </style>
+
+<style id="michelon-projeto-consolidado-menu">
+/* RASCUNHO CONSOLIDADO — nova organização do app */
+body{padding-bottom:92px!important}
+#michelonNewMenu{
+  position:fixed;inset:0;z-index:30000;display:none;
+  background:rgba(10,16,28,.48);backdrop-filter:blur(4px);
+}
+#michelonNewMenu.open{display:block}
+#michelonMenuSheet{
+  position:absolute;left:0;right:0;bottom:0;
+  background:#fff;border-radius:24px 24px 0 0;
+  padding:12px 14px calc(18px + env(safe-area-inset-bottom));
+  box-shadow:0 -12px 40px rgba(15,23,42,.22);
+  max-height:78vh;overflow:auto;
+}
+#michelonMenuHandle{width:46px;height:5px;border-radius:99px;background:#cbd5e1;margin:2px auto 12px}
+#michelonMenuTitle{font-size:23px;font-weight:950;color:#142033;margin:0 4px 14px;padding-right:52px}
+#michelonMenuClose{
+  position:absolute;right:14px;top:18px;width:42px;height:42px;border:0;
+  border-radius:50%;background:#eef2f7;color:#142033;font-size:25px;
+  font-weight:900;line-height:42px;text-align:center;
+}
+#michelonMenuClose:active{transform:scale(.96)}
+.mcMenuGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mcMenuItem{
+  min-height:72px;border:1px solid #e2e8f0;border-radius:17px;
+  background:#f8fafc;color:#142033;font-weight:900;font-size:16px;
+  display:flex;align-items:center;gap:11px;padding:13px;text-align:left;
+}
+.mcMenuItem span{font-size:24px}
+#michelonNewBottom{
+  position:fixed;left:0;right:0;bottom:0;z-index:29990;
+  background:rgba(255,255,255,.97);backdrop-filter:blur(10px);
+  border-top:1px solid #dfe5ec;
+  padding:5px 7px calc(5px + env(safe-area-inset-bottom));
+}
+#michelonNewNav{
+  max-width:760px;margin:auto;display:grid;grid-template-columns:repeat(5,1fr);gap:3px;
+}
+#michelonNewNav button{
+  border:0;background:transparent;color:#526176;
+  min-height:76px;border-radius:14px;font-weight:900;
+  font-size:14px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:4px;
+}
+#michelonNewNav button span{font-size:29px;line-height:29px}
+#michelonNewNav button.active{color:#0f766e;background:#e8f7f5}
+#michelonNewNav button:active,.mcMenuItem:active{transform:scale(.98)}
+@media(max-width:380px){
+  #michelonNewNav button{font-size:11px}
+  #michelonNewNav button span{font-size:23px}
+}
+</style>
+
+
+<style id="acoesCotacaoProfissionaisCSS">
+#acoesCotacaoProfissionais{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin:14px 0 16px;
+}
+#acoesCotacaoProfissionais button{
+  width:100%;
+  min-height:58px;
+  border-radius:15px;
+  border:1px solid #d6dee8;
+  font-size:15px;
+  font-weight:950;
+  letter-spacing:.1px;
+  box-shadow:0 2px 7px rgba(20,32,51,.08);
+}
+#acoesCotacaoProfissionais button:first-child{
+  background:linear-gradient(135deg,#0f9f93,#0b8279);
+  color:#fff;
+  border-color:#0b8279;
+}
+#acoesCotacaoProfissionais button:last-child{
+  background:#f4f6f9;
+  color:#182437;
+}
+#acoesCotacaoProfissionais button:active{transform:translateY(1px)}
+@media(max-width:620px){
+  #acoesCotacaoProfissionais{
+    grid-template-columns:1fr;
+    gap:8px;
+  }
+}
+</style>
+
+
+
+<style id="acoesCotacaoUnificadasCSS">
+#acoesCotacaoUnificadas{margin:18px 0 20px;padding:14px;background:#f7f9fb;border:1px solid #e7ebf0;border-radius:22px;box-shadow:0 4px 16px rgba(15,23,42,.06)}
+#acoesCotacaoUnificadas .acoes-rota{display:grid;grid-template-columns:1.7fr .8fr;gap:10px;margin-bottom:10px}
+#acoesCotacaoUnificadas .acoes-orcamento{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#acoesCotacaoUnificadas button{width:100%;min-height:62px;padding:10px 14px;border-radius:17px;border:1px solid #e2e8f0;background:#fff;color:#172033;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:15px;font-weight:850;line-height:1.15;cursor:pointer;box-shadow:0 2px 6px rgba(15,23,42,.05);transition:.15s}
+#acoesCotacaoUnificadas button:hover{box-shadow:0 5px 13px rgba(15,23,42,.09);transform:translateY(-1px)}
+#acoesCotacaoUnificadas button:active{transform:translateY(0)}
+#acoesCotacaoUnificadas .acoes-rota button:first-child{background:#0f9f93;color:#fff;border-color:#0f9f93}
+#acoesCotacaoUnificadas .acoes-rota button:last-child{background:#fff;color:#9f1d27;border-color:#f1c6ca}
+#acoesCotacaoUnificadas .acoes-orcamento button:first-child{background:#0f9f93;color:#fff;border-color:#0f9f93}
+#acoesCotacaoUnificadas .acoes-orcamento button:nth-child(2),#acoesCotacaoUnificadas .acoes-orcamento button:nth-child(3),#acoesCotacaoUnificadas .acoes-orcamento button:nth-child(4),#acoesCotacaoUnificadas .acoes-orcamento button:nth-child(5){background:#fff}
+#acoesCotacaoUnificadas .acoes-orcamento button:nth-child(2){border-left:4px solid #4f46e5}
+#acoesCotacaoUnificadas .acoes-orcamento button:nth-child(3){border-left:4px solid #0f9f93}
+#acoesCotacaoUnificadas .acoes-orcamento button:nth-child(4){border-left:4px solid #d97706}
+#acoesCotacaoUnificadas .acoes-orcamento button:nth-child(5){border-left:4px solid #2563eb}
+@media(max-width:620px){#acoesCotacaoUnificadas{padding:11px;border-radius:19px}#acoesCotacaoUnificadas .acoes-rota,#acoesCotacaoUnificadas .acoes-orcamento{grid-template-columns:1fr}#acoesCotacaoUnificadas button{min-height:58px;font-size:16px}}
+</style>
+
+
 </head>
 <body>
 
@@ -1220,11 +1340,12 @@ body{background:var(--sig-bg)!important;color:var(--sig-text)!important;}
 
 <div class="mcWelcome">Visão geral do seu dia</div>
   <div class="mcStats">
-    <div class="mcStat"><small>VIAGENS HOJE</small><strong id="mcStatViagens">0</strong></div>
+    <div class="mcStat"><small>VIAGENS AGENDADAS</small><strong id="mcStatViagens">0</strong></div>
     <div class="mcStat"><small>A RECEBER</small><strong id="mcStatReceber">R$ 0,00</strong></div>
     <div class="mcStat"><small>RECEBIDO HOJE</small><strong id="mcStatRecebido">R$ 0,00</strong></div>
     <div class="mcStat"><small>EM ANDAMENTO</small><strong id="mcStatAndamento">0</strong></div>
   </div>
+  <div id="mcReminderBox" aria-label="Lembretes de viagem" style="margin:10px 0;padding:12px 14px;border:1px solid #dbe3ea;border-radius:16px;background:#fff;box-shadow:0 4px 14px rgba(19,32,51,.05)"></div>
   <div class="mcNext" id="mcNextTrip">
     <div class="mcNextHead"><b>PRÓXIMA VIAGEM</b><span class="mcPill">Agenda</span></div>
     <div class="mcNextTitle" id="mcNextTitle">Nenhuma viagem agendada</div>
@@ -1310,7 +1431,25 @@ async function compartilharCartao(){
 <div class="hint">Escolha em cada orçamento. Máximo: R$ 4,00/km.</div>
 </div>
 <label>Passageiros</label><input id="passageiros" type="number" min="1" value="1"></div>
-      <div><label>Ida e volta?</label><select id="idaVolta" onchange="alternarCamposRetorno()"><option value="sim" selected>Sim</option><option value="nao">Não</option></select></div>
+      <div><label>Ida e volta para o cliente?</label><select id="idaVolta" onchange="alternarCamposRetorno()"><option value="sim" selected>Sim</option><option value="nao">Não</option></select></div>
+      <div id="retornoMotoristaBox" class="full" style="display:none">
+        <div class="card" style="margin:0;background:#f8fafc;border:1px solid #dbe4ee">
+          <div style="font-weight:950;font-size:16px;margin-bottom:8px">🚗 Retorno do motorista</div>
+          <div class="hint" style="margin-bottom:10px">O cliente pediu somente ida, mas o cálculo pode considerar sua volta sem passageiro. O retorno fica <b>fora da mensagem enviada ao cliente</b>.</div>
+          <div class="grid">
+            <div><label>Considerar retorno do motorista?</label>
+              <select id="retornoMotorista" onchange="alternarRetornoMotorista()">
+                <option value="sim" selected>Sim</option><option value="nao">Não</option>
+              </select>
+            </div>
+            <div id="retornoMotoristaDestinoBox">
+              <label>Destino da volta do motorista</label>
+              <input id="destinoRetornoMotorista" autocomplete="off" placeholder="Por padrão: origem da viagem">
+              <div class="hint">Se deixar vazio, o sistema calcula a volta do destino até a origem da viagem.</div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div id="retornoCampos" class="full">
         <div class="grid">
           <div class="full"><div class="hint"><b>↩️ Rota real do retorno</b> • Os locais abaixo começam invertendo a ida, mas você pode alterar quando o retorno sair ou terminar em outro local.</div></div>
@@ -1318,7 +1457,8 @@ async function compartilharCartao(){
           <div><label>Destino do retorno</label><input id="destinoRetorno" autocomplete="off" placeholder="Local de chegada no retorno"><div class="cityhelp">Se o nome da rua falhar, use CEP + número.</div><div class="grid" style="margin-top:7px"><div><label>CEP (opcional)</label><input id="cepDestinoRetorno" inputmode="numeric" placeholder="00000-000"></div><div><label>Número</label><input id="numDestinoRetorno" inputmode="numeric" placeholder="Ex.: 366"></div></div></div>
         </div>
       </div>
-      <div class="full"><button class="primary" onclick="buscarRota()">📍 Buscar KM grátis e localizar pedágios</button><div id="rotaStatus" class="status"></div></div>
+      <div class="full"><button class="primary" onclick="buscarRota()">📍 Buscar KM grátis e localizar pedágios</button>
+      <button class="danger full" onclick="limparCotacaoCompleta()">Limpar cotação</button><div id="rotaStatus" class="status"></div></div>
       <div class="full"><div id="tollBox" class="tollbox"><div class="tollhead">🛣️ Pedágios encontrados na rota</div><div id="tollList"></div><div class="tollhint">Digite o valor de cada pedágio uma vez. O app salva no celular e reutiliza automaticamente quando encontrar a mesma praça em uma próxima cotação.</div></div></div>
       <div><label>KM total</label><input id="kmTotalInput" type="number" step="0.1"></div>
       <div><label>Tempo estimado</label><input id="tempo" value="-" readonly></div>
@@ -1389,7 +1529,7 @@ async function compartilharCartao(){
       <button class="secondary" onclick="copiar()">Copiar orçamento</button><button class="secondary" onclick="salvarOrcamento()">💾 Salvar orçamento</button><button class="secondary" onclick="salvarOrcamentoPendente()">📋 Salvar como pendente</button><button class="primary" onclick="registrarViagem()">✅ Confirmar viagem</button>
       <a id="whats" class="button ghost" href="#" target="_blank" rel="noopener">Enviar no WhatsApp</a>
       <a id="maps" class="button ghost" href="#" target="_blank" rel="noopener">Abrir rota no Google Maps</a>
-      <button class="danger full" onclick="limpar()">Limpar cotação</button>
+      
     </div>
   </div>
 
@@ -1469,7 +1609,7 @@ async function compartilharCartao(){
         <div class="appKpi"><small>Líquido / hora</small><b id="appHoraPrev">R$ 0,00</b></div>
         <div class="appKpi"><small>Líquido / km</small><b id="appKmValPrev">R$ 0,00</b></div>
       </div>
-      <div class="btns"><button class="primary" onclick="salvarGanhoApp()">💾 Salvar dia de trabalho</button><button class="secondary" onclick="limparGanhoApp()">Limpar</button></div>
+      <div class="btns"><button class="primary" onclick="salvarGanhoApp()">💾 Salvar dia de trabalho</button><button class="secondary" onclick="limparCotacaoCompleta()">Limpar</button></div>
       <div class="appDash" style="margin-top:14px">
         <div class="appKpi"><small>Apps • Hoje</small><b id="appHoje">R$ 0,00</b></div>
         <div class="appKpi"><small>Apps • Semana</small><b id="appSemana">R$ 0,00</b></div>
@@ -1523,12 +1663,13 @@ async function compartilharCartao(){
     Executivo e Uber/App ficam separados. O Total soma as duas atividades.
   </div>
 </div>
+<button class="secondary" onclick="limparTestesAntigos()">🧹 Limpar testes antigos de 01/10/2026</button>
 <button class="secondary" onclick="exportarBackup()">⬇️ Exportar backup</button>
         <button class="secondary" onclick="document.getElementById('backupFile').click()">⬆️ Restaurar backup</button>
         <input id="backupFile" type="file" accept="application/json" style="display:none" onchange="restaurarBackup(this)">
       </div>
       <div style="overflow:auto;margin-top:12px"><table class="table"><thead><tr><th>Data</th><th>Cliente/rota</th><th>Valor</th><th>Status</th><th>Ação</th></tr></thead><tbody id="histBody"></tbody></table></div>
-      <p class="note">Orçamentos salvos não contam como faturamento. Uma viagem confirmada entra como faturada; use “Receber” para registrar o pagamento. O lucro é estimado pelo valor menos os custos calculados da viagem.</p>
+      <p class="note">Orçamentos salvos não contam como faturamento. Uma viagem confirmada entra como faturada; use “Receber” para registrar o pagamento. O lucro é estimado pelo valor menos os custos calculados da viagem. Cada orçamento pendente confirmado possui vínculo único para impedir lançamentos financeiros duplicados.</p>
     </details>
   </div>
 
@@ -2481,10 +2622,21 @@ function preencherRetornoPadrao(forcar=false){
     }
   }
 }
+function alternarRetornoMotorista(){
+  const box=$('retornoMotoristaDestinoBox');
+  const sim=$('retornoMotorista')?.value==='sim';
+  if(box) box.style.display=sim?'block':'none';
+}
 function alternarCamposRetorno(){
   const box=$('retornoCampos'), sim=$('idaVolta')?.value==='sim';
+  const op=$('retornoMotoristaBox');
   if(box) box.style.display=sim?'block':'none';
+  if(op) op.style.display=sim?'none':'block';
   if(sim) preencherRetornoPadrao(true);
+  else{
+    if($('retornoMotorista'))$('retornoMotorista').value='sim';
+    alternarRetornoMotorista();
+  }
 }
 function marcarRetornoEditado(e){ e.target.dataset.editado='1'; }
 
@@ -2499,28 +2651,31 @@ async function buscarRotaViagem(){
   const origem=String($('origem')?.value||'').trim();
   const destino=String($('destino')?.value||'').trim();
   const idaVolta=$('idaVolta')?.value==='sim';
+  const retornoMotorista=(!idaVolta && $('retornoMotorista')?.value==='sim');
+  const temRetornoOperacional=idaVolta || retornoMotorista;
 
   if(!origem||!destino){
     showStatus('Preencha a origem e o destino da ida.','warn');
     return;
   }
 
-  // A tela é a única fonte de verdade.
   let origemRetorno=String($('origemRetorno')?.value||'').trim();
   let destinoRetorno=String($('destinoRetorno')?.value||'').trim();
 
-  // Se o retorno estiver vazio, inverte a ida e mostra isso nos campos.
   if(idaVolta){
     if(!origemRetorno) origemRetorno=destino;
     if(!destinoRetorno) destinoRetorno=origem;
     if($('origemRetorno')) $('origemRetorno').value=origemRetorno;
     if($('destinoRetorno')) $('destinoRetorno').value=destinoRetorno;
+  }else if(retornoMotorista){
+    origemRetorno=destino;
+    destinoRetorno=String($('destinoRetornoMotorista')?.value||'').trim() || origem;
   }
 
   $('maps').href=mapsLink();
   showStatus(
     `🔎 Localizando: • IDA: ${origem} → ${destino}`+
-    (idaVolta?` • RETORNO: ${origemRetorno} → ${destinoRetorno}`:''),
+    (temRetornoOperacional?` • RETORNO DO MOTORISTA: ${origemRetorno} → ${destinoRetorno}`:''),
     'warn'
   );
 
@@ -2534,8 +2689,10 @@ async function buscarRotaViagem(){
     let km=ida.km, sec=ida.sec, coords=[...ida.coords]; let coordsIda=[...ida.coords], coordsVolta=[]; window.__michelonCoords=coords; window.__michelonRoads=[...(ida.roads||[])];
     let detalhe=`Ida: ${ida.km.toFixed(1)} km`;
 
-    if(idaVolta){
-      const [c,d]=await Promise.all([resolverPonto(origemRetorno,'cepOrigemRetorno','numOrigemRetorno'),resolverPonto(destinoRetorno,'cepDestinoRetorno','numDestinoRetorno')]);
+    if(temRetornoOperacional){
+      const [c,d]=retornoMotorista
+        ? await Promise.all([resolverPonto(origemRetorno,'cepDestino','numDestino'),resolverPonto(destinoRetorno,'cepOrigem','numOrigem')])
+        : await Promise.all([resolverPonto(origemRetorno,'cepOrigemRetorno','numOrigemRetorno'),resolverPonto(destinoRetorno,'cepDestinoRetorno','numDestinoRetorno')]);
       if(c.precisao && c.precisao!=='número') avisosPrecisao.push(`Origem do retorno localizada por ${c.precisao}`);
       if(d.precisao && d.precisao!=='número') avisosPrecisao.push(`Destino do retorno localizado por ${d.precisao}`);
       const volta=await rotaOSRM(c,d);
@@ -2680,11 +2837,13 @@ async function buscarRotaUrbana(){
    if($('pedagios'))$('pedagios').value='0';
    calcular(false);
 
-   // RETORNO URBANO: quando é a volta normal, reutiliza exatamente
-   // os pontos já confirmados da ida. Isso evita geocodificar tudo de novo.
-   if($('idaVolta')?.value==='sim'){
-     let ro=String($('origemRetorno')?.value||'').trim();
-     let rd=String($('destinoRetorno')?.value||'').trim();
+   // RETORNO URBANO: pode ser retorno contratado pelo cliente
+   // ou retorno operacional do motorista sem passageiro.
+   const idaVoltaUrb=$('idaVolta')?.value==='sim';
+   const retornoMotoristaUrb=(!idaVoltaUrb && $('retornoMotorista')?.value==='sim');
+   if(idaVoltaUrb || retornoMotoristaUrb){
+     let ro=idaVoltaUrb ? String($('origemRetorno')?.value||'').trim() : ed;
+     let rd=idaVoltaUrb ? String($('destinoRetorno')?.value||'').trim() : (String($('destinoRetornoMotorista')?.value||'').trim() || eo);
      if(!ro)ro=ed;
      if(!rd)rd=eo;
      if($('origemRetorno'))$('origemRetorno').value=ro;
@@ -2711,8 +2870,8 @@ async function buscarRotaUrbana(){
    if($('pedagios'))$('pedagios').value='0';
    calcular(false);
 
-   status.textContent=$('idaVolta')?.value==='sim'
-     ?`✅ Ida: ${idaKm.toFixed(1)} km • Retorno: ${voltaKm.toFixed(1)} km • Total: ${km.toFixed(1)} km • ${formatDuration(sec)} • Corrida urbana sem pedágio automático.`
+   status.textContent=(idaVoltaUrb || retornoMotoristaUrb)
+     ?`✅ Ida: ${idaKm.toFixed(1)} km • ${retornoMotoristaUrb?'Retorno do motorista':'Retorno'}: ${voltaKm.toFixed(1)} km • Total: ${km.toFixed(1)} km • ${formatDuration(sec)} • Corrida urbana sem pedágio automático.`
      :`✅ Rota urbana encontrada: ${km.toFixed(1)} km • ${formatDuration(sec)} • Corrida urbana sem pedágio automático.`;
  }catch(e){
    status.textContent='⚠️ Não foi possível calcular a rota urbana: '+(e.message||'erro de rota.');
@@ -2837,13 +2996,13 @@ function renderApps(){
 }
 
 function getHist(){try{return JSON.parse(localStorage.getItem(HISTKEY))||[]}catch(e){return []}}
-function setHist(h){localStorage.setItem(HISTKEY,JSON.stringify(h));renderFinanceiro();renderAgenda()}
+function setHist(h){localStorage.setItem(HISTKEY,JSON.stringify(h));renderFinanceiro();renderAgenda();if(typeof renderDashboard==='function')renderDashboard()}
 function snapshot(status){calcular(false);return {id:Date.now(),numero:'MV-'+new Date().getFullYear()+'-'+String(getHist().length+1).padStart(4,'0'),criado:new Date().toISOString(),data:$('data').value||new Date().toISOString().slice(0,10),horaSaida:$('horaSaida').value,horaRetorno:$('horaRetorno').value,tipoServico:$('tipoServico').value,horasDisposicao:n('horasDisposicao'),obs:$('obsViagem').value.trim(),cliente:$('cliente').value.trim(),fone:$('clienteFone').value.trim(),origem:$('origem').value.trim(),destino:$('destino').value.trim(),valor:window._calc.preco,custo:window._calc.custo,passageiros:Math.max(1,n('passageiros')),valorKm:Math.min(4,Math.max(0,n('valorKm'))),status,recebido:status==='pago'?window._calc.preco:0,sinalRecebido:0,forma:$('formaPg').value}}
 function salvarOrcamento(){calcular(false);if(window._calc.preco<=0){alert('O valor da viagem está zerado. Informe o preço do combustível e os pedágios/custos antes de salvar.');return}const h=getHist();h.unshift(snapshot('orcamento'));setHist(h);alert('Orçamento salvo no histórico.')}
 function minutos(h){if(!h)return null;const p=h.split(':');return (+p[0])*60+(+p[1])}
 function temConflito(item,ignorarId=null){if(!item.data||!item.horaSaida)return false;const ini=minutos(item.horaSaida),fim=minutos(item.horaRetorno)||ini+120;return getHist().some(x=>x.id!==ignorarId&&x.status==='confirmada'&&x.data===item.data&&x.horaSaida&&Math.max(ini,minutos(x.horaSaida))<Math.min(fim,minutos(x.horaRetorno)||minutos(x.horaSaida)+120))}
 function checarConflitoTela(){const item={data:$('data').value,horaSaida:$('horaSaida').value,horaRetorno:$('horaRetorno').value};const box=$('conflitoAgenda');if(temConflito(item)){box.style.display='block';box.textContent='⚠️ Atenção: já existe uma reserva confirmada nesse intervalo de horário.'}else{box.style.display='none';box.textContent=''}}
-function registrarViagem(){calcular(false);if(window._calc.preco<=0){alert('O valor da viagem está zerado. Complete combustível, pedágios e custos antes de confirmar.');return}const x=snapshot('confirmada');if(temConflito(x)&&!confirm('Já existe uma reserva confirmada nesse horário. Deseja confirmar mesmo assim?'))return;const h=getHist();h.unshift(x);setHist(h);alert('Reserva confirmada, adicionada à agenda e lançada no faturamento.')}
+function registrarViagem(){calcular(false);if(window._calc.preco<=0){alert('O valor da viagem está zerado. Complete combustível, pedágios e custos antes de confirmar.');return false}const x=snapshot('confirmada');if(temConflito(x)&&!confirm('Já existe uma reserva confirmada nesse horário. Deseja confirmar mesmo assim?'))return false;const h=getHist();h.unshift(x);setHist(h);salvarLembretesViagem(x);alert('Reserva confirmada, adicionada à agenda e lançada no faturamento.');return true}
 function excluirReserva(id){
  const h=getHist(),x=h.find(v=>v.id===id);if(!x)return;
  if(!confirm('Excluir esta reserva definitivamente? Esta ação não pode ser desfeita.'))return;
@@ -2985,9 +3144,30 @@ function renderMovFinanceiro(){
   body.innerHTML=mov.length?mov.slice(0,100).map(x=>`<tr><td>${dataBR(x.data)}</td><td><b>${x.origem}</b></td><td>${x.desc}</td><td>${brl(x.receita)}</td><td>${brl(x.despesa)}</td><td><b>${brl(x.resultado)}</b></td></tr>`).join(''):'<tr><td colspan="6">Nenhuma movimentação ainda.</td></tr>';
 }
 
-function receber(id){const h=getHist(),x=h.find(v=>v.id===id);if(!x)return;x.status='pago';x.recebido=x.valor;x.pagoEm=new Date().toISOString();setHist(h)}
-function excluirHist(id){if(!confirm('Excluir este lançamento?'))return;setHist(getHist().filter(x=>x.id!==id))}
-function sameDay(a,b){return a.toDateString()===b.toDateString()}
+function receber(id){const h=getHist(),x=h.find(v=>v.id===id);if(!x)return;x.status='pago';x.recebido=x.valor;x.pagoEm=new Date().toISOString();x.recebidoEm=x.pagoEm;setHist(h)}
+function excluirHist(id){if(!confirm('Excluir este lançamento?'))return;setHist(getHist().filter(x=>x.id!==id))} function limparTestesAntigos(){
+  const h=getHist();
+  const antigos=h.filter(x=>String(x.data||'')==='2026-10-01');
+  const pend=lerPendentes();
+  const pendAntigos=pend.filter(x=>String((x.campos||{}).data||x.data||'')==='2026-10-01');
+  if(!antigos.length && !pendAntigos.length){alert('Nenhum teste antigo de 01/10/2026 encontrado.');return}
+  const total=antigos.reduce((s,x)=>s+(Number(x.valor)||0),0);
+  const nomes=antigos.slice(0,8).map(x=>`${x.cliente||'Cliente'} • ${brl(Number(x.valor)||0)}`).join('\n');
+  const msg=`Serão removidos SOMENTE registros de teste com data 01/10/2026.\n\nFinanceiro: ${antigos.length} lançamento(s), total ${brl(total)}.\nPendentes: ${pendAntigos.length}.\n\n${nomes}${antigos.length>8?'\n...':''}\n\nAs viagens de 03/10/2026 (R$ 713,50) e 05/10/2026 (R$ 595,50) NÃO serão alteradas.`;
+  if(!confirm(msg+'\n\nDeseja continuar?'))return;
+  setHist(h.filter(x=>String(x.data||'')!=='2026-10-01'));
+  if(pendAntigos.length){gravarPendentes(pend.filter(x=>String((x.campos||{}).data||x.data||'')!=='2026-10-01'))} else renderPendentes();
+  alert('Testes antigos de 01/10/2026 removidos. As viagens de 03/10 e 05/10 foram preservadas.');
+  renderFinanceiro(); renderAgenda();
+}
+
+function sameDay(a,b){return a && b && a.toDateString()===b.toDateString()}
+function dataRecebimentoLocal(x){
+  const raw=x?.recebidoEm||x?.ultimoRecebimentoEm||x?.pagoEm||'';
+  if(!raw)return null;
+  const d=new Date(raw);
+  return isNaN(d.getTime())?null:d;
+}
 function renderFinanceiro(){
   const h=getHist(),now=new Date(),year=now.getFullYear(),month=now.getMonth();
   const startWeek=new Date(now);startWeek.setDate(now.getDate()-((now.getDay()+6)%7));startWeek.setHours(0,0,0,0);
@@ -2999,9 +3179,9 @@ function renderFinanceiro(){
     if(d.getFullYear()===year&&d.getMonth()===month)mes+=x.valor||0;
     if(x.status!=='pago')rec+=Math.max(0,(x.valor||0)-(x.recebido||0));
     if(x.status==='pago'){
-      const pd=new Date(x.pagoEm||x.criado);
-      if(sameDay(pd,now))hoje+=x.recebido||0;
-      if(pd>=startWeek)sem+=x.recebido||0;
+      const pd=dataRecebimentoLocal(x);
+      if(pd && sameDay(pd,now))hoje+=Number(x.recebido)||0;
+      if(pd && pd>=startWeek)sem+=Number(x.recebido)||0;
     }
     luc+=(x.valor||0)-(x.custo||0);
   }
@@ -3085,7 +3265,7 @@ function calcular(autosave=true){
   if(autosave)saveQuote();
 }
 function saveQuote(){
-  const ids=['veiculo','tipoComb','cliente','clienteFone','origem','destino','data','horaSaida','horaRetorno','tipoServico','horasDisposicao','obsViagem','passageiros','idaVolta','origemRetorno','destinoRetorno','cepOrigem','numOrigem','cepDestino','numDestino','cepOrigemRetorno','numOrigemRetorno','cepDestinoRetorno','numDestinoRetorno','kmTotalInput','tempo','pedagios','consumo','precoComb','motorista','hosp','outras','margem','sinalPct','formaPg'];
+  const ids=['veiculo','tipoComb','cliente','clienteFone','origem','destino','data','horaSaida','horaRetorno','tipoServico','horasDisposicao','obsViagem','passageiros','idaVolta','retornoMotorista','destinoRetornoMotorista','origemRetorno','destinoRetorno','cepOrigem','numOrigem','cepDestino','numDestino','cepOrigemRetorno','numOrigemRetorno','cepDestinoRetorno','numDestinoRetorno','kmTotalInput','tempo','pedagios','consumo','precoComb','motorista','hosp','outras','margem','sinalPct','formaPg'];
   const o={}; ids.forEach(id=>o[id]=$(id).value); localStorage.setItem('ultimaCotacaoAuto',JSON.stringify(o));
 }
 
@@ -3094,6 +3274,8 @@ function limpar(){if(!confirm('Limpar os dados desta cotação?'))return;localSt
 (function(){
   carregarCidades();
   alternarModoCotacao();
+  alternarCamposRetorno();
+  alternarRetornoMotorista();
   carregarConfig();
   carregarEmpresa();
   renderFinanceiro();
@@ -3167,8 +3349,48 @@ function resumoFinanceiroAtividades(){
 
 </script>
 <footer style="text-align:center;color:#64748b;font-size:13px;padding:22px 10px 34px">
-<strong>MICHELON Viagens Executivas</strong> • Versão 7.38.0 BETA • Atualizado em 01/10/2026 • Financeiro organizado
+<strong>MICHELON Viagens Executivas</strong> • Versão 7.37.0 BETA • Atualizado em 01/10/2026 • Financeiro organizado
 </footer>
+
+<script id="michelon-dashboard-sync-v52">
+function renderDashboard(){
+  try{
+    const h=Array.isArray(getHist())?getHist():[], now=new Date();
+    const pad=n=>String(n).padStart(2,'0');
+    const today=`${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}`;
+    const sameLocalDay=(v)=>{
+      if(!v)return false; const d=new Date(v);
+      return !isNaN(d.getTime()) && d.getFullYear()===now.getFullYear() && d.getMonth()===now.getMonth() && d.getDate()===now.getDate();
+    };
+    let viagensHoje=0,aReceber=0,recebidoHoje=0,andamento=0;
+    h.forEach(x=>{
+      const status=String(x.status||'').toLowerCase();
+      if(status==='orcamento')return;
+      const valor=Number(x.valor)||0, recebido=Number(x.recebido)||0;
+      if(['confirmada','pago','em_andamento'].includes(status) && String(x.data||'')===today) viagensHoje++;
+      if(status==='em_andamento') andamento++;
+      if(['confirmada','em_andamento'].includes(status)) aReceber+=Math.max(0,valor-recebido);
+      const rd=dataRecebimentoLocal(x);
+      if(recebido>0 && rd && sameLocalDay(rd.toISOString())){ recebidoHoje+=recebido; }
+    });
+    const set=(id,val)=>{const e=document.getElementById(id);if(e)e.textContent=val;};
+    set('mcStatViagens',String(viagensHoje));
+    set('mcStatReceber',brl(aReceber));
+    set('mcStatRecebido',brl(recebidoHoje));
+    set('mcStatAndamento',String(andamento));
+    const futuras=h.filter(x=>['confirmada','em_andamento'].includes(String(x.status||'').toLowerCase()) && String(x.data||'')>=today)
+      .sort((a,b)=>String(a.data+' '+(a.horaSaida||'')).localeCompare(String(b.data+' '+(b.horaSaida||'')));
+    const next=futuras[0];
+    set('mcNextTitle',next?`${next.cliente||'Cliente'} • ${next.origem||'-'} → ${next.destino||'-'}`:'Nenhuma viagem agendada');
+    set('mcNextInfo',next?`${dataBR(next.data)}${next.horaSaida?' • '+next.horaSaida:''} • ${brl(next.valor||0)}`:'Suas próximas viagens aparecerão aqui.');
+    renderLembreteDashboard(futuras);
+  }catch(e){console.error('Dashboard:',e)}
+}
+
+setInterval(checarLembretes,60000);
+document.addEventListener('DOMContentLoaded',()=>{checarLembretes();});
+</script>
+
 
 <script>
 document.addEventListener('DOMContentLoaded',function(){
@@ -3469,8 +3691,8 @@ function atualizarMensagemClienteMichelon(){
 
 
 
-</script>
-
+// Correção V8.43: funções de pendentes precisam permanecer dentro de um <script>
+// para que os onclick inline dos botões possam encontrá-las no escopo global.
 const CHAVE_PENDENTES='michelon_orcamentos_pendentes_v1';
 function lerPendentes(){try{return JSON.parse(localStorage.getItem(CHAVE_PENDENTES)||'[]')||[]}catch(e){return []}}
 function gravarPendentes(a){localStorage.setItem(CHAVE_PENDENTES,JSON.stringify(a));renderPendentes()}
@@ -3479,7 +3701,15 @@ function txtCampo(id){return String(document.getElementById(id)?.textContent||''
 function snapshotOrcamento(){
  const ids=['cliente','telefone','modoCotacao','cidadeUrbana','enderecoOrigem','enderecoDestino','enderecoParada','origem','destino','idaVolta','origemRetorno','destinoRetorno','data','dataViagem','dataRetorno','horaSaida','horaRetorno','passageiros','tipoServico','obsViagem','kmTotalInput','tempo','pedagios','precoManual','margem','valorKm','sinalPct','formaPagamento'];
  const campos={}; ids.forEach(id=>{const el=document.getElementById(id);if(el)campos[id]=el.value});
- return {id:'orc_'+Date.now(),salvoEm:new Date().toISOString(),enviadoEm:new Date().toISOString(),status:'Aguardando cliente',cliente:valCampo('cliente')||'Cliente',origem:valCampo('enderecoOrigem')||valCampo('origem'),destino:valCampo('enderecoDestino')||valCampo('destino'),data:valCampo('data')||valCampo('dataViagem'),hora:valCampo('horaSaida'),preco:txtCampo('precoSugerido')||txtCampo('preco'),mensagem:valCampo('mensagemOrcamento'),campos};
+ // Guarda o preço de forma robusta. Em algumas versões o preço é exibido em
+ // textContent; em outras ele fica em value ou em window._calc.
+ const precoEl=document.getElementById('precoSugerido')||document.getElementById('precoFinal')||document.getElementById('preco');
+ const precoRaw=(window._calc&&Number(window._calc.preco)>0?String(window._calc.preco):'') ||
+   String(precoEl?.value||'').trim() || String(precoEl?.textContent||'').trim();
+ const precoMatch=precoRaw.replace(/[^0-9,.-]/g,'').replace(/\.(?=\d{3}(?:\D|$))/g,'').replace(',','.');
+ const precoNum=parseFloat(precoMatch);
+ const precoSalvo=Number.isFinite(precoNum)&&precoNum>0?('R$ '+precoNum.toFixed(2).replace('.',',')):precoRaw;
+ return {id:'orc_'+Date.now(),salvoEm:new Date().toISOString(),enviadoEm:new Date().toISOString(),status:'Aguardando cliente',cliente:valCampo('cliente')||'Cliente',origem:valCampo('enderecoOrigem')||valCampo('origem'),destino:valCampo('enderecoDestino')||valCampo('destino'),data:valCampo('data')||valCampo('dataViagem'),hora:valCampo('horaSaida'),preco:precoSalvo,mensagem:valCampo('mensagemOrcamento'),campos};
 }
 function salvarOrcamentoPendente(){
  const o=snapshotOrcamento();
@@ -3504,8 +3734,85 @@ function carregarPendente(id){
 }
 function excluirPendente(id){if(!confirm('Excluir este orçamento pendente?'))return;gravarPendentes(lerPendentes().filter(x=>x.id!==id))}
 function confirmarPendente(id){
- carregarPendente(id);
- setTimeout(()=>{if(typeof window.confirmarViagem==='function'){window.confirmarViagem();gravarPendentes(lerPendentes().filter(x=>x.id!==id))}else{alert('Orçamento carregado. Agora toque em ✅ Confirmar viagem.')}},120);
+  if(window.__pendenteConfirmando===id)return;
+  window.__pendenteConfirmando=id;
+  try{
+    const pendentes=lerPendentes();
+    const o=pendentes.find(x=>x.id===id);
+    if(!o){ alert('Orçamento pendente não encontrado.'); return; }
+
+    // Confirma diretamente o registro salvo, sem depender dos campos da tela.
+    // IMPORTANTE: cada orçamento pendente recebe um vínculo único (pendenteId).
+    // Assim, um duplo clique, recarregamento ou repetição nunca cria duas viagens
+    // nem dois lançamentos financeiros para o mesmo orçamento.
+    const c=o.campos||{};
+    const num=(v)=>{ const n=parseFloat(String(v??'').replace(',','.')); return Number.isFinite(n)?n:0; };
+    const hist=getHist();
+
+    // Idempotência: se este pendente já foi confirmado, apenas remove o pendente
+    // residual e atualiza as telas. Não cria outro lançamento financeiro.
+    const existente=hist.find(x=>String(x.pendenteId||'')===String(id));
+    if(existente){
+      gravarPendentes(pendentes.filter(x=>x.id!==id));
+      if(typeof renderPendentes==='function')renderPendentes();
+      if(typeof renderAgenda==='function')renderAgenda();
+      if(typeof renderFinanceiro==='function')renderFinanceiro();
+      alert('Este orçamento já foi confirmado. Nenhum lançamento duplicado foi criado.');
+      return;
+    }
+
+    let valorSalvo=num(String(o.preco||'').replace(/[^0-9,.-]/g,''));
+    if(valorSalvo<=0 && o.mensagem){
+      const mm=String(o.mensagem).match(/VALOR(?: TOTAL)?(?: DA VIAGEM)?\s*:?\s*R?\$?\s*([0-9.]+,[0-9]{2})/i);
+      if(mm) valorSalvo=num(mm[1].replace(/\./g,'').replace(',','.'));
+    }
+    const valorAtual=(window._calc&&Number(window._calc.preco))||0;
+    const valor=valorSalvo>0?valorSalvo:valorAtual;
+    if(valor<=0){ alert('O orçamento pendente foi salvo sem o valor da viagem. Vamos abrir a cotação para recalcular e salvar novamente.'); return; }
+
+    const agora=new Date().toISOString();
+    const confirmado={
+      id:Date.now(),
+      numero:'MV-'+new Date().getFullYear()+'-'+String(hist.length+1).padStart(4,'0'),
+      pendenteId:id,
+      criado:agora,
+      origemPendente:o.id,
+      data:c.data||c.dataViagem||o.data||new Date().toISOString().slice(0,10),
+      horaSaida:c.horaSaida||o.hora||'',
+      horaRetorno:c.horaRetorno||'',
+      tipoServico:c.tipoServico||'Viagem',
+      horasDisposicao:num(c.horasDisposicao),
+      obs:c.obsViagem||'',
+      cliente:c.cliente||o.cliente||'Cliente',
+      fone:c.clienteFone||c.telefone||'',
+      origem:c.origem||o.origem||'',
+      destino:c.destino||o.destino||'',
+      valor:valor,
+      custo:(window._calc&&Number(window._calc.custo))||0,
+      passageiros:Math.max(1,num(c.passageiros)||1),
+      valorKm:Math.min(4,Math.max(0,num(c.valorKm))),
+      status:'confirmada',
+      recebido:0,
+      sinalRecebido:0,
+      forma:c.formaPg||c.formaPagamento||''
+    };
+
+    if(temConflito(confirmado)&&!confirm('Já existe uma reserva confirmada nesse horário. Deseja confirmar mesmo assim?')) return;
+
+    hist.unshift(confirmado);
+    setHist(hist);
+    salvarLembretesViagem(confirmado);
+    gravarPendentes(pendentes.filter(x=>x.id!==id));
+    if(typeof renderPendentes==='function')renderPendentes();
+    if(typeof renderAgenda==='function')renderAgenda();
+    if(typeof renderFinanceiro==='function')renderFinanceiro();
+    alert('Cliente confirmado! A viagem foi adicionada à Agenda e entrou uma única vez no Financeiro.');
+  }catch(e){
+    console.error('Erro ao confirmar orçamento pendente:',e);
+    alert('Não foi possível confirmar este orçamento. O pendente foi mantido para não perder os dados.');
+  }finally{
+    window.__pendenteConfirmando=null;
+  }
 }
 
 function formatarDataHoraPendente(iso){
@@ -3541,7 +3848,17 @@ function renderPendentes(){
  </div>
 </div>`).join('');
 }
-document.addEventListener('DOMContentLoaded',renderPendentes);
+document.addEventListener('DOMContentLoaded',function(){renderPendentes();if(typeof renderDashboard==='function')renderDashboard();});
+// Exposição explícita para os onclick dos botões.
+window.lerPendentes=lerPendentes;
+window.gravarPendentes=gravarPendentes;
+window.snapshotOrcamento=snapshotOrcamento;
+window.salvarOrcamentoPendente=salvarOrcamentoPendente;
+window.carregarPendente=carregarPendente;
+window.confirmarPendente=confirmarPendente;
+window.excluirPendente=excluirPendente;
+window.statusPendente=statusPendente;
+window.renderPendentes=renderPendentes;
 </script>
 
 
@@ -3618,6 +3935,66 @@ function mxIr(id){
     </div>
   </div>
 </div>
+
+
+<!-- RASCUNHO CONSOLIDADO: menu e rodapé reorganizados -->
+<div id="michelonNewMenu" onclick="if(event.target===this)mcCloseNewMenu()">
+  <div id="michelonMenuSheet" role="dialog" aria-label="Menu MICHELON">
+    <div id="michelonMenuHandle"></div>
+    <button id="michelonMenuClose" onclick="mcCloseNewMenu()" aria-label="Voltar e fechar menu">×</button>
+    <div id="michelonMenuTitle">☰ Menu MICHELON</div>
+    <div class="mcMenuGrid">
+      <button class="mcMenuItem" onclick="mcNewGo('quote')"><span>📋</span><b>Cotações</b></button>
+      <button class="mcMenuItem" onclick="mcNewGo('mxAgenda')"><span>📅</span><b>Agenda</b></button>
+      <button class="mcMenuItem" onclick="mcNewGo('mxFinanceiro')"><span>💰</span><b>Financeiro</b></button>
+      <button class="mcMenuItem" onclick="mcNewGo('mxUber')"><span>🚗</span><b>Uber / Apps</b></button>
+      <button class="mcMenuItem" onclick="mcNewGo('cardFloat')"><span>📇</span><b>Meu Cartão</b></button>
+      <button class="mcMenuItem" onclick="mcNewGo('trip')"><span>🏁</span><b>Viagem em andamento</b></button>
+      <button class="mcMenuItem" onclick="mcNewGo('costs')"><span>⛽</span><b>Custos da viagem</b></button>
+      <button class="mcMenuItem" onclick="mcNewGo('reports')"><span>📊</span><b>Relatórios</b></button>
+      <button class="mcMenuItem" onclick="mcNewGo('settings')"><span>⚙️</span><b>Configurações</b></button>
+    </div>
+  </div>
+</div>
+
+<nav id="michelonNewBottom" aria-label="Navegação principal MICHELON">
+  <div id="michelonNewNav">
+    <button class="active" onclick="mcNewGo('home')"><span>🏠</span>Início</button>
+    <button onclick="mcNewGo('mxAgenda')"><span>📅</span>Agenda</button>
+    <button onclick="mcNewGo('mxFinanceiro')"><span>💰</span>Financeiro</button>
+    <button onclick="mcNewGo('mxUber')"><span>🚗</span>Apps</button>
+    <button onclick="mcOpenNewMenu()"><span>☰</span>Menu</button>
+  </div>
+</nav>
+
+<script id="michelon-projeto-consolidado-menu-js">
+function mcOpenNewMenu(){
+  const m=document.getElementById('michelonNewMenu');
+  if(m){m.classList.add('open');document.body.style.overflow='hidden';}
+}
+function mcCloseNewMenu(){
+  const m=document.getElementById('michelonNewMenu');
+  if(m){m.classList.remove('open');document.body.style.overflow='';}
+}
+function mcNewGo(id){
+  mcCloseNewMenu();
+  document.querySelectorAll('#michelonNewNav button').forEach(b=>b.classList.remove('active'));
+  if(id==='home'){window.scrollTo({top:0,behavior:'smooth'});return;}
+  if(id==='quote'){
+    if(typeof toggleCotacaoImport==='function') toggleCotacaoImport();
+    return;
+  }
+  if(id==='cardFloat'){
+    if(typeof mcOpenCard==='function') mcOpenCard();
+    return;
+  }
+  if(['trip','costs','reports','settings'].includes(id)){
+    alert('Esta área será ligada na próxima etapa do projeto consolidado.');
+    return;
+  }
+  if(typeof mcGo==='function') mcGo(id);
+}
+</script>
 
 <nav class="mcBottom" aria-label="Navegação principal">
 <div class="mcNav">
@@ -3747,10 +4124,267 @@ function toggleCotacaoImportLegacy(){
   document.addEventListener('DOMContentLoaded',padronizarTopoCartao);
   setTimeout(padronizarTopoCartao,100);
 })();
+
+function limparCotacaoCompleta(){
+  const form = document.querySelector('form');
+  if(form) form.reset();
+
+  // Defaults requested for normal operation
+  if($('tipoComb')) $('tipoComb').value='etanol';
+  if($('consumo')) $('consumo').value='10';
+  if($('retornoMotorista')) $('retornoMotorista').value='sim';
+  if($('destinoRetornoMotorista')) $('destinoRetornoMotorista').value='';
+
+  // Clear route/calculation fields
+  ['kmTotalInput','tempo','pedagios','precoComb','valorCobrancaKm','precoKm',
+   'valorFinal','valorPassageiro','custoTotal','combustivel','lucroEstimado'].forEach(id=>{
+    const el=$(id); if(el && el.tagName==='INPUT') el.value='';
+    else if(el) el.textContent='';
+  });
+
+  // Clear textareas / generated message
+  document.querySelectorAll('textarea').forEach(el=>el.value='');
+  ['mensagemOrcamento','status','statusRota','rotaStatus'].forEach(id=>{
+    const el=$(id); if(el) el.textContent='';
+  });
+
+  // Remove address suggestions / validation messages
+  document.querySelectorAll('.autocomplete-list,.suggestions,.address-suggestions').forEach(el=>el.remove());
+  document.querySelectorAll('[data-editado]').forEach(el=>el.removeAttribute('data-editado'));
+
+  // Clear saved draft data so the old quote does not come back
+  try{
+    Object.keys(localStorage).filter(k=>/michelon|cotacao|orcamento/i.test(k))
+      .forEach(k=>localStorage.removeItem(k));
+  }catch(e){}
+
+  if(typeof alternarModoCotacao==='function') alternarModoCotacao();
+  if(typeof alternarCamposRetorno==='function') alternarCamposRetorno();
+  if(typeof alternarRetornoMotorista==='function') alternarRetornoMotorista();
+  if(typeof atualizarCalculo==='function') atualizarCalculo();
+  if(typeof gerarMensagemClienteMichelon==='function') gerarMensagemClienteMichelon();
+
+  window.scrollTo({top:0,behavior:'smooth'});
+  alert('Cotação limpa. Os campos foram resetados.');
+}
+
 </script>
 
 
 
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  const q = (sel) => document.querySelector(sel);
+  const findText = (txt) => [...document.querySelectorAll('button,div,h2,h3,h4,label')].find(el => (el.textContent||'').trim().includes(txt));
+
+  const kmBtn = [...document.querySelectorAll('button')].find(b => (b.textContent||'').includes('Buscar KM'));
+  const clearBtn = document.getElementById('btnLimparCotacao') ||
+                   [...document.querySelectorAll('button')].find(b => (b.textContent||'').toLowerCase().includes('limpar cotação'));
+  const priceEl = findText('Preço sugerido');
+  const msgEl = findText('Mensagem do orçamento');
+
+  if(!kmBtn || !clearBtn || !priceEl) return;
+
+  // Identify the card/section containing the price suggestion.
+  let priceSection = priceEl;
+  while(priceSection.parentElement && !/Preço sugerido/.test(priceSection.parentElement.textContent||'')){
+    priceSection = priceSection.parentElement;
+  }
+
+  // Identify the main action/button container around the existing KM button.
+  let actionBox = kmBtn.parentElement;
+  while(actionBox.parentElement && actionBox.parentElement.children.length <= 3){
+    actionBox = actionBox.parentElement;
+  }
+
+  // Put the two operational buttons together, immediately after the price area.
+  const actionWrap = document.createElement('div');
+  actionWrap.id='acoesCotacaoProfissionais';
+  actionWrap.className='acoes-cotacao-profissionais';
+  actionWrap.appendChild(kmBtn);
+  actionWrap.appendChild(clearBtn);
+
+  // Insert after the price section/card, before the message.
+  const insertionParent = priceSection.parentElement || priceSection;
+  insertionParent.appendChild(actionWrap);
+
+  // Move the generated budget message after the action buttons, if found.
+  if(msgEl){
+    let msgSection = msgEl;
+    while(msgSection.parentElement && !/Mensagem do orçamento/.test(msgSection.parentElement.textContent||'')){
+      msgSection = msgSection.parentElement;
+    }
+    actionWrap.after(msgSection);
+  }
+});
+</script>
+
+<script id="layoutCotacaoFinal">
+document.addEventListener('DOMContentLoaded', function(){
+  const all = (sel) => [...document.querySelectorAll(sel)];
+  const btns = all('button');
+
+  const findBtn = (text) => btns.find(b => (b.textContent||'').includes(text));
+  const kmBtn = findBtn('Buscar KM grátis');
+  const clearBtn = document.getElementById('btnLimparCotacao') || findBtn('Limpar cotação');
+  const calcBtn = findBtn('Calcular e gerar orçamento');
+  const copyBtn = findBtn('Copiar orçamento');
+  const saveBtn = findBtn('Salvar orçamento');
+  const pendingBtn = findBtn('Salvar como pendente');
+  const registerBtn = findBtn('Registrar viagem');
+
+  const msgLabel = [...document.querySelectorAll('label')].find(e => (e.textContent||'').trim()==='Mensagem do orçamento');
+  if(!msgLabel || !kmBtn || !clearBtn) return;
+
+  // The card containing the message textarea.
+  const msgCard = msgLabel.closest('.card') || msgLabel.parentElement;
+  const price = document.getElementById('precoFinal');
+  const priceCard = price ? (price.closest('.card') || price.parentElement) : null;
+
+  // Put all action buttons in one clean block directly before the message.
+  const actions = document.createElement('div');
+  actions.id='acoesCotacaoUnificadas';
+  actions.className='acoes-cotacao-unificadas';
+
+  const routeRow=document.createElement('div');
+  routeRow.className='acoes-rota';
+  routeRow.append(kmBtn, clearBtn);
+  actions.append(routeRow);
+
+  const quoteRow=document.createElement('div');
+  quoteRow.className='acoes-orcamento';
+  [calcBtn,copyBtn,saveBtn,pendingBtn,registerBtn].filter(Boolean).forEach(b=>quoteRow.appendChild(b));
+  actions.append(quoteRow);
+
+  // Insert after the price card so the price is immediately followed by the
+  // operational buttons, and the message comes after every action.
+  if(priceCard && priceCard.parentElement){
+    priceCard.parentElement.insertBefore(actions, msgCard);
+  }else if(msgCard.parentElement){
+    msgCard.parentElement.insertBefore(actions, msgCard);
+  }
+
+  // Remove the old empty wrapper effects around moved buttons where possible.
+  // Keep status/toll/calculation areas intact; only buttons are reordered.
+
+  // Make the message card visually read as the final communication step.
+  msgCard.classList.add('mensagem-final-cotacao');
+});
+</script>
+
+<script id="michelon-dashboard-final-sync-v50">
+(function(){
+  function sync(){
+    try{
+      if(typeof renderFinanceiro==='function') renderFinanceiro();
+      if(typeof renderAgenda==='function') renderAgenda();
+      if(typeof renderDashboard==='function') renderDashboard();
+    }catch(e){}
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){setTimeout(sync,80);});
+  else setTimeout(sync,80);
+})();
+</script>
+
+<script id="michelon-final-dashboard-refresh-v51">
+(function(){
+  function refresh(){ try{ if(typeof renderDashboard==='function') renderDashboard(); if(typeof renderFinanceiro==='function') renderFinanceiro(); }catch(e){} }
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)refresh();});
+  window.addEventListener('pageshow',refresh);
+  setTimeout(refresh,250);
+  setTimeout(refresh,1000);
+})();
+</script>
+<script id="michelon-dashboard-robust-sync-v52">
+(function(){
+  function r(){try{if(typeof renderDashboard==='function')renderDashboard();if(typeof renderFinanceiro==='function')renderFinanceiro();}catch(e){}}
+  window.addEventListener('storage',r);
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)r();});
+  window.addEventListener('pageshow',r);
+  setTimeout(r,100);setTimeout(r,500);setTimeout(r,1500);
+})();
+</script>
+
+<script id="michelon-v53-unified-dashboard">
+(function(){
+  function hist(){try{return JSON.parse(localStorage.getItem('michelonHistoricoV5')||'[]')||[]}catch(e){return[]}}
+  function br(v){try{return brl(v)}catch(e){return Number(v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}}
+  function localDate(iso){ if(!iso)return null; const d=new Date(iso); return isNaN(d)?null:d; }
+  function dayKey(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+  function render(){
+    const now=new Date(), today=dayKey(now), h=hist();
+    let viagens=0, receber=0, recebidoHoje=0, andamento=0;
+    h.forEach(x=>{
+      const st=String(x.status||'').toLowerCase(), valor=Number(x.valor)||0, rec=Number(x.recebido)||0;
+      // Dashboard: viagens agendadas = confirmadas/em andamento a partir de hoje.
+      if(['confirmada','em_andamento'].includes(st) && String(x.data||'')>=today) viagens++;
+      if(st==='em_andamento') andamento++;
+      if(['confirmada','em_andamento'].includes(st)) receber+=Math.max(0,valor-rec);
+      const rd=localDate(x.recebidoEm||x.ultimoRecebimentoEm||x.pagoEm);
+      if(rd && dayKey(rd)===today && rec>0) recebidoHoje+=rec;
+    });
+    const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
+    set('mcStatViagens',String(viagens)); set('mcStatReceber',br(receber)); set('mcStatRecebido',br(recebidoHoje)); set('mcStatAndamento',String(andamento));
+    const futuras=h.filter(x=>['confirmada','em_andamento'].includes(String(x.status||'').toLowerCase()) && String(x.data||'')>=today)
+      .sort((a,b)=>String(a.data+' '+(a.horaSaida||'')).localeCompare(String(b.data+' '+(b.horaSaida||''))));
+    const n=futuras[0];
+    set('mcNextTitle',n?`${n.cliente||'Cliente'} • ${n.origem||'-'} → ${n.destino||'-'}`:'Nenhuma viagem agendada');
+    set('mcNextInfo',n?`${dataBR(n.data)}${n.horaSaida?' • '+n.horaSaida:''} • ${br(n.valor||0)}`:'Suas próximas viagens aparecerão aqui.');
+    renderReminderBox(futuras);
+  }
+  function renderReminderBox(futuras){
+    const box=document.getElementById('mcReminderBox'); if(!box)return;
+    const n=futuras[0];
+    const enabled=localStorage.getItem('michelonNotifyEnabled')==='1';
+    box.innerHTML=`<div style="font-weight:900;font-size:15px">🔔 Lembretes de viagem</div>
+      <div style="margin-top:5px;color:#64748b;font-size:12px">${n?`Próxima: <b>${n.cliente||'Cliente'}</b> • ${dataBR(n.data)}${n.horaSaida?' às '+n.horaSaida:''}`:'Nenhuma viagem confirmada para lembrar.'}</div>
+      <button id="mcNotifyBtn" style="margin-top:9px;width:100%;min-height:44px;border:0;border-radius:12px;background:#116e68;color:#fff;font-weight:900">${enabled?'✅ Lembretes ativados':'🔔 Ativar notificações'}</button>
+      <div style="margin-top:5px;color:#64748b;font-size:11px">Avisos: 24h, 3h e 30min antes da viagem.</div>`;
+    const btn=document.getElementById('mcNotifyBtn');
+    btn.onclick=async function(){
+      try{
+        if(!('Notification' in window)){alert('Este navegador não disponibiliza notificações neste ambiente.');return;}
+        const p=await Notification.requestPermission();
+        if(p==='granted'){localStorage.setItem('michelonNotifyEnabled','1');alert('✅ Notificações ativadas.');render();checkReminders();}
+        else alert('As notificações não foram autorizadas.');
+      }catch(e){alert('Para ativar notificações, abra o aplicativo pelo endereço publicado/instalado, não como arquivo local.');}
+    };
+  }
+  function checkReminders(){
+    if(localStorage.getItem('michelonNotifyEnabled')!=='1' || !('Notification' in window) || Notification.permission!=='granted')return;
+    const now=Date.now(), h=hist();
+    h.filter(x=>['confirmada','em_andamento'].includes(String(x.status||'').toLowerCase())).forEach(x=>{
+      const t=Date.parse(String(x.data||'')+'T'+String(x.horaSaida||'00:00')+':00'); if(isNaN(t))return;
+      [86400000,10800000,1800000].forEach(off=>{
+        const key='michelonReminder:'+x.id+':'+off, due=t-off;
+        if(Math.abs(now-due)<90000 && !localStorage.getItem(key)){
+          localStorage.setItem(key,'1'); new Notification('MICHELON — Lembrete de viagem',{body:`${x.cliente||'Cliente'} • ${x.origem||'-'} → ${x.destino||'-'} • ${x.horaSaida||''}`});
+        }
+      });
+    });
+  }
+  window.renderDashboard=render;
+  window.renderLembreteDashboard=renderReminderBox;
+  window.checarLembretes=checkReminders;
+  document.addEventListener('DOMContentLoaded',()=>{render();checkReminders();});
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden){render();checkReminders();}});
+  window.addEventListener('pageshow',()=>{render();checkReminders();});
+  window.addEventListener('storage',()=>{render();checkReminders();if(typeof renderFinanceiro==='function')renderFinanceiro();});
+  setInterval(()=>{render();checkReminders()},60000);
+})();
+</script>
+<script id="michelon-v55-recebimento-unificado">
+(function(){
+  function atualizar(){
+    try{ if(typeof renderFinanceiro==='function') renderFinanceiro(); if(typeof renderDashboard==='function') renderDashboard(); }catch(e){console.error(e)}
+  }
+  window.addEventListener('focus',atualizar);
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)atualizar()});
+  setTimeout(atualizar,100);
+  setTimeout(atualizar,700);
+})();
+</script>
 </body>
 </html>
 
