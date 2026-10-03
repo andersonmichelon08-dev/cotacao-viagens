@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f766e">
-<title>Michelon Viagens Executivas • V7.9.3</title>
+<title>Michelon Viagens Executivas • V57</title>
 <style>
 :root{--bg:#f8fafc;--card:#fff;--text:#0f172a;--muted:#64748b;--line:#e2e8f0;--primary:#0f766e;--primary2:#115e59;--ok:#166534;--warn:#92400e;--danger:#b91c1c}
 *{box-sizing:border-box}
@@ -41,15 +41,7 @@ details summary{cursor:pointer;font-weight:700}.note{font-size:12px;color:var(--
 .cityitem:hover,.cityitem:active{background:#f1f5f9}
 
 .urbanoList{top:48px}
-.mcBottom{display:none!important}
-
-#btnLimparCotacao{
-  width:100%;margin-top:8px;min-height:54px;border:1px solid #d7dee8;
-  border-radius:14px;background:#eef2f7;color:#142033;font-weight:950;
-  font-size:16px;cursor:pointer;
-}
-#btnLimparCotacao:active{transform:scale(.99)}
-</style>
+.multiCard{border:1px solid #d8d0bd;border-radius:14px;padding:14px;background:#fbfaf6;margin-top:4px}.multiHead{font-weight:800;color:#117f79;font-size:16px;margin-bottom:4px}.multiCard .status{margin-top:4px}</style>
 <style id="driver721">html,body{width:100%;max-width:100%;overflow-x:hidden!important;overscroll-behavior-x:none}*,*:before,*:after{box-sizing:border-box}.wrap,.card,.grid,.agendaItem,input,select,textarea,button{max-width:100%}@media(max-width:700px){body{position:relative;touch-action:pan-y}.wrap{width:100%!important;max-width:100%!important;margin-left:auto!important;margin-right:auto!important;overflow-x:clip}#cardFloat{left:max(12px,env(safe-area-inset-left))!important;right:max(12px,env(safe-area-inset-right))!important;width:auto!important;transform:none!important}}.driver-main{background:#0f766e!important;color:#fff!important;border:0!important;font-weight:900!important}</style>
 
 
@@ -216,7 +208,7 @@ body{background:var(--mc-bg)!important;color:var(--mc-text)!important;padding-bo
   background:rgba(255,255,255,.96);backdrop-filter:blur(14px);
   border-top:1px solid var(--mc-line);box-shadow:0 -8px 24px rgba(20,32,51,.08);
 }
-.mcNav{width:min(620px,100%);margin:auto;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:3px}
+.mcNav{width:min(620px,100%);margin:auto;display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
 .mcNav button{border:0;background:transparent;color:#738096;padding:6px 2px;border-radius:13px;font-weight:850;font-size:10px;cursor:pointer}
 .mcNav button.active{color:var(--mc-primary);background:#edf8f6}
 .mcNav i{display:block;font-style:normal;font-size:19px;line-height:21px;margin-bottom:2px}
@@ -982,7 +974,7 @@ body{background:var(--sig-bg)!important;color:var(--sig-text)!important;}
 
 
 <style id="michelon-card-polish-v7283">
-/* V7.30.0 — acabamento visual profissional, preservando a estrutura */
+/* V7.28.9 — acabamento visual profissional, preservando a estrutura */
 #mcCardClean{
   border-radius:24px!important;
   overflow:hidden!important;
@@ -1097,278 +1089,10 @@ body{background:var(--sig-bg)!important;color:var(--sig-text)!important;}
 }
 </style>
 
-
-<style id="michelon-bottom-nav-size-v7290">
-.mcBottom{
-  padding-top:10px!important;
-  padding-bottom:calc(10px + env(safe-area-inset-bottom))!important;
-}
-.mcNav{
-  gap:4px!important;
-  max-width:720px!important;
-}
-.mcNav button{
-  min-height:58px!important;
-  font-size:11px!important;
-  padding:7px 2px!important;
-}
-.mcNav i{
-  font-size:22px!important;
-  line-height:24px!important;
-  margin-bottom:3px!important;
-}
-@media(max-width:380px){
-  .mcNav button{font-size:10px!important;min-height:56px!important}
-  .mcNav i{font-size:21px!important}
-}
-</style>
-
-
-<style id="michelon-card-brand-v7291">
-/* Marca MICHELON do cartão digital */
-.cardFloat .brand,
-.cardFloat .cardBrand,
-.cardFloat .michelonBrand,
-.cardFloat .brandName{
-  font-size:20px!important;
-  font-weight:900!important;
-  letter-spacing:3px!important;
-}
-</style>
-
-
-<style id="michelon-card-logo-real-v7292">
-.mcCardLogo{
-  font-size:21px!important;
-  font-weight:950!important;
-  letter-spacing:4px!important;
-  opacity:1!important;
-  color:#d8ad3f!important;
-  text-shadow:0 1px 8px rgba(216,173,63,.18);
-}
-</style>
-
-
-<style id="michelon-card-logo-final-v7293">
-#mcCardClean .mcCardLogo{
-  font-size:24px!important;
-  font-weight:950!important;
-  letter-spacing:5px!important;
-  line-height:1.1!important;
-  opacity:1!important;
-  color:#d8ad3f!important;
-  margin-bottom:6px!important;
-  text-shadow:0 1px 8px rgba(216,173,63,.20)!important;
-}
-</style>
-
-
-<style id="michelon-cotacao-import-v7300">
-#cotacaoImportWrap{
-  display:none;
-  width:min(920px,calc(100% - 20px));
-  margin:12px auto 18px;
-}
-#cotacaoImportWrap.open{display:block}
-.cotacaoImportCard{
-  background:#fff;border:1px solid #dbe2ea;border-radius:18px;
-  padding:14px;box-shadow:0 8px 24px rgba(20,32,51,.07);
-}
-.cotacaoImportHead{
-  display:flex;align-items:center;justify-content:space-between;gap:8px;
-  margin-bottom:8px;font-size:16px;font-weight:950;
-}
-.cotacaoClose{
-  width:auto!important;padding:8px 11px!important;border:1px solid #dbe2ea!important;
-  background:#fff!important;color:#334155!important;border-radius:10px!important;
-}
-#textoCotacaoRecebida{
-  width:100%;box-sizing:border-box;min-height:150px;resize:vertical;
-  padding:12px;border:1px solid #cbd5e1;border-radius:11px;font-size:15px;
-}
-.cotacaoImportBtn{
-  margin-top:9px!important;background:#111827!important;color:#fff!important;
-  font-weight:950!important;
-}
-@media(max-width:700px){
-  #cotacaoImportWrap{width:calc(100% - 20px);margin-bottom:88px}
-}
-</style>
-
-<style id="michelon-projeto-consolidado-menu">
-/* RASCUNHO CONSOLIDADO — nova organização do app */
-body{padding-bottom:92px!important}
-#michelonNewMenu{
-  position:fixed;inset:0;z-index:30000;display:none;
-  background:rgba(10,16,28,.48);backdrop-filter:blur(4px);
-}
-#michelonNewMenu.open{display:block}
-#michelonMenuSheet{
-  position:absolute;left:0;right:0;bottom:0;
-  background:#fff;border-radius:24px 24px 0 0;
-  padding:12px 14px calc(18px + env(safe-area-inset-bottom));
-  box-shadow:0 -12px 40px rgba(15,23,42,.22);
-  max-height:78vh;overflow:auto;
-}
-#michelonMenuHandle{width:46px;height:5px;border-radius:99px;background:#cbd5e1;margin:2px auto 12px}
-#michelonMenuTitle{font-size:23px;font-weight:950;color:#142033;margin:0 4px 14px;padding-right:52px}
-#michelonMenuClose{
-  position:absolute;right:14px;top:18px;width:42px;height:42px;border:0;
-  border-radius:50%;background:#eef2f7;color:#142033;font-size:25px;
-  font-weight:900;line-height:42px;text-align:center;
-}
-#michelonMenuClose:active{transform:scale(.96)}
-.mcMenuGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.mcMenuItem{
-  min-height:72px;border:1px solid #e2e8f0;border-radius:17px;
-  background:#f8fafc;color:#142033;font-weight:900;font-size:16px;
-  display:flex;align-items:center;gap:11px;padding:13px;text-align:left;
-}
-.mcMenuItem span{font-size:24px}
-#michelonNewBottom{
-  position:fixed;left:0;right:0;bottom:0;z-index:29990;
-  background:rgba(255,255,255,.97);backdrop-filter:blur(10px);
-  border-top:1px solid #dfe5ec;
-  padding:5px 7px calc(5px + env(safe-area-inset-bottom));
-}
-#michelonNewNav{
-  max-width:760px;margin:auto;display:grid;grid-template-columns:repeat(5,1fr);gap:3px;
-}
-#michelonNewNav button{
-  border:0;background:transparent;color:#526176;
-  min-height:76px;border-radius:14px;font-weight:900;
-  font-size:14px;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:4px;
-}
-#michelonNewNav button span{font-size:29px;line-height:29px}
-#michelonNewNav button.active{color:#0f766e;background:#e8f7f5}
-#michelonNewNav button:active,.mcMenuItem:active{transform:scale(.98)}
-@media(max-width:380px){
-  #michelonNewNav button{font-size:11px}
-  #michelonNewNav button span{font-size:23px}
-}
-</style>
-
-
-<style id="acoesCotacaoProfissionaisCSS">
-#acoesCotacaoProfissionais{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  margin:14px 0 16px;
-}
-#acoesCotacaoProfissionais button{
-  width:100%;
-  min-height:58px;
-  border-radius:15px;
-  border:1px solid #d6dee8;
-  font-size:15px;
-  font-weight:950;
-  letter-spacing:.1px;
-  box-shadow:0 2px 7px rgba(20,32,51,.08);
-}
-#acoesCotacaoProfissionais button:first-child{
-  background:linear-gradient(135deg,#0f9f93,#0b8279);
-  color:#fff;
-  border-color:#0b8279;
-}
-#acoesCotacaoProfissionais button:last-child{
-  background:#f4f6f9;
-  color:#182437;
-}
-#acoesCotacaoProfissionais button:active{transform:translateY(1px)}
-@media(max-width:620px){
-  #acoesCotacaoProfissionais{
-    grid-template-columns:1fr;
-    gap:8px;
-  }
-}
-</style>
-
-
-
-<style id="acoesCotacaoUnificadasCSS">
-#acoesCotacaoUnificadas{margin:18px 0 20px;padding:14px;background:#f7f9fb;border:1px solid #e7ebf0;border-radius:22px;box-shadow:0 4px 16px rgba(15,23,42,.06)}
-#acoesCotacaoUnificadas .acoes-rota{display:grid;grid-template-columns:1.7fr .8fr;gap:10px;margin-bottom:10px}
-#acoesCotacaoUnificadas .acoes-orcamento{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-#acoesCotacaoUnificadas button{width:100%;min-height:62px;padding:10px 14px;border-radius:17px;border:1px solid #e2e8f0;background:#fff;color:#172033;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:15px;font-weight:850;line-height:1.15;cursor:pointer;box-shadow:0 2px 6px rgba(15,23,42,.05);transition:.15s}
-#acoesCotacaoUnificadas button:hover{box-shadow:0 5px 13px rgba(15,23,42,.09);transform:translateY(-1px)}
-#acoesCotacaoUnificadas button:active{transform:translateY(0)}
-#acoesCotacaoUnificadas .acoes-rota button:first-child{background:#0f9f93;color:#fff;border-color:#0f9f93}
-#acoesCotacaoUnificadas .acoes-rota button:last-child{background:#fff;color:#9f1d27;border-color:#f1c6ca}
-#acoesCotacaoUnificadas .acoes-orcamento button:first-child{background:#0f9f93;color:#fff;border-color:#0f9f93}
-#acoesCotacaoUnificadas .acoes-orcamento button:nth-child(2),#acoesCotacaoUnificadas .acoes-orcamento button:nth-child(3),#acoesCotacaoUnificadas .acoes-orcamento button:nth-child(4),#acoesCotacaoUnificadas .acoes-orcamento button:nth-child(5){background:#fff}
-#acoesCotacaoUnificadas .acoes-orcamento button:nth-child(2){border-left:4px solid #4f46e5}
-#acoesCotacaoUnificadas .acoes-orcamento button:nth-child(3){border-left:4px solid #0f9f93}
-#acoesCotacaoUnificadas .acoes-orcamento button:nth-child(4){border-left:4px solid #d97706}
-#acoesCotacaoUnificadas .acoes-orcamento button:nth-child(5){border-left:4px solid #2563eb}
-@media(max-width:620px){#acoesCotacaoUnificadas{padding:11px;border-radius:19px}#acoesCotacaoUnificadas .acoes-rota,#acoesCotacaoUnificadas .acoes-orcamento{grid-template-columns:1fr}#acoesCotacaoUnificadas button{min-height:58px;font-size:16px}}
-</style>
-
-
-
-<style id="michelon-v857-mobile-final">
-*{box-sizing:border-box!important}
-html,body{width:100%!important;max-width:100%!important;overflow-x:hidden!important;margin:0!important;padding:0!important}
-body{font-size:16px!important;-webkit-text-size-adjust:100%!important}
-.wrap,.container,.content,.main,.page,.section,.card,.panel,.box{max-width:100%!important;width:100%!important}
-.wrap,.container,.content,.main,.page{padding-left:10px!important;padding-right:10px!important}
-.card,.panel,.box{overflow:hidden!important}
-input,select,textarea,button{max-width:100%!important;min-height:46px!important;font-size:16px!important}
-input,select,textarea{width:100%!important}
-button{white-space:normal!important;line-height:1.2!important}
-.grid{grid-template-columns:1fr!important;width:100%!important}
-.grid>.full{grid-column:1/-1!important}
-.dash{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
-.metric{min-width:0!important;overflow:hidden!important;padding:12px!important}
-.metric strong{font-size:18px!important;word-break:break-word!important}
-.metric small{font-size:11px!important}
-table{width:100%!important;display:block!important;overflow-x:auto!important;-webkit-overflow-scrolling:touch!important;font-size:13px!important}
-th,td{white-space:normal!important;padding:8px 6px!important}
-.mcStats{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
-.mcStat{min-width:0!important;overflow:hidden!important}
-.mcStat strong{font-size:18px!important;word-break:break-word!important}
-.mcNext,.mcAction,.mcSection{max-width:100%!important}
-.mcActions{grid-template-columns:repeat(2,minmax(0,1fr))!important}
-.mcAction{min-height:70px!important;font-size:12px!important}
-.mcBottom{position:sticky!important;bottom:0!important;z-index:9999!important;background:#fff!important}
-.mcNav{width:100%!important;grid-template-columns:repeat(6,minmax(0,1fr))!important;gap:2px!important}
-.mcNav button{min-width:0!important;min-height:62px!important;font-size:10px!important;padding:6px 1px!important;overflow:hidden!important}
-.mcNav i{font-size:21px!important}
-#home,#dashboard,#agenda,#financeiro,#cotacao,#config,.screen,.view{max-width:100%!important;width:100%!important;overflow-x:hidden!important}
-@media(max-width:430px){
- .wrap,.container,.content,.main,.page{padding-left:8px!important;padding-right:8px!important}
- .dash,.mcStats{grid-template-columns:repeat(2,minmax(0,1fr))!important}
- .metric{padding:10px 7px!important}
- .metric strong,.mcStat strong{font-size:16px!important}
- .mcNav button{font-size:9px!important;min-height:58px!important}
- .mcNav i{font-size:19px!important}
- h1{font-size:24px!important}h2{font-size:20px!important}h3{font-size:18px!important}
-}
-@media(max-width:360px){
- .dash,.mcStats{grid-template-columns:1fr 1fr!important}
- .mcNav button{font-size:8px!important}
- .mcNav i{font-size:18px!important}
-}
-</style>
 </head>
 <body>
-
-<div id="cotacaoImportWrap">
-  <div class="cotacaoImportCard">
-    <div class="cotacaoImportHead">
-      <span>📥 Cotação recebida do cliente</span>
-      <button type="button" class="cotacaoClose" onclick="toggleCotacaoImport()">Fechar</button>
-    </div>
-    <div style="font-size:13px;color:#64748b;margin-bottom:9px">
-      Copie a mensagem inteira que chegou no WhatsApp e cole aqui.
-    </div>
-    <textarea id="textoCotacaoRecebida" placeholder="Cole aqui a cotação recebida pelo WhatsApp..."></textarea>
-    <button type="button" class="cotacaoImportBtn" onclick="importarCotacaoRecebida()">📥 IMPORTAR PARA O MICHELON</button>
-    <div style="font-size:12px;color:#64748b;margin-top:7px">
-      Depois confira os campos preenchidos e calcule a rota normalmente.
-    </div>
-  </div>
+<div style="margin:10px 0;padding:10px 12px;border-radius:12px;background:#fff8df;border:1px solid #e4c35a;font-size:13px;">
+  🧪 <strong>Modo de teste V13:</strong> esta versão usa armazenamento próprio da cotação e não deve alterar os dados do seu Financeiro.
 </div>
 
 <section id="mxHero" aria-label="Painel principal MICHELON">
@@ -1385,12 +1109,11 @@ th,td{white-space:normal!important;padding:8px 6px!important}
 
 <div class="mcWelcome">Visão geral do seu dia</div>
   <div class="mcStats">
-    <div class="mcStat"><small>VIAGENS AGENDADAS</small><strong id="mcStatViagens">0</strong></div>
+    <div class="mcStat"><small>VIAGENS HOJE</small><strong id="mcStatViagens">0</strong></div>
     <div class="mcStat"><small>A RECEBER</small><strong id="mcStatReceber">R$ 0,00</strong></div>
     <div class="mcStat"><small>RECEBIDO HOJE</small><strong id="mcStatRecebido">R$ 0,00</strong></div>
     <div class="mcStat"><small>EM ANDAMENTO</small><strong id="mcStatAndamento">0</strong></div>
   </div>
-  <div id="mcReminderBox" aria-label="Lembretes de viagem" style="margin:10px 0;padding:12px 14px;border:1px solid #dbe3ea;border-radius:16px;background:#fff;box-shadow:0 4px 14px rgba(19,32,51,.05)"></div>
   <div class="mcNext" id="mcNextTrip">
     <div class="mcNextHead"><b>PRÓXIMA VIAGEM</b><span class="mcPill">Agenda</span></div>
     <div class="mcNextTitle" id="mcNextTitle">Nenhuma viagem agendada</div>
@@ -1410,7 +1133,7 @@ th,td{white-space:normal!important;padding:8px 6px!important}
  <div style="max-width:520px;margin:8px auto">
   <div style="display:flex;justify-content:flex-end;margin-bottom:6px"><button type="button" onclick="fecharMeuCartao()" style="border:0;border-radius:10px;padding:9px 12px;font-weight:800">✕ Fechar</button></div>
   <iframe title="Cartão digital MICHELON" srcdoc="&lt;!doctype html&gt;&lt;html lang=&quot;pt-BR&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1&quot;&gt;&lt;meta name=&quot;theme-color&quot; content=&quot;#090909&quot;&gt;&lt;title&gt;Michelon Viagens Executivas - V4&lt;/title&gt;&lt;style&gt;
-*{box-sizing:border-box}body{margin:0;background:#080808;color:#f7f1df;font-family:Arial,sans-serif}.wrap{max-width:520px;margin:auto;min-height:100vh;padding:34px 20px;background:radial-gradient(circle at top,#272014,#0b0b0b 38%,#050505)}.card{border:1px solid #b98a35;border-radius:28px;padding:28px 22px;box-shadow:0 0 35px #000}.logo{text-align:center}.mark{font-family:Georgia,serif;font-weight:bold;font-size:74px;line-height:.9;color:#d8aa50;text-shadow:0 2px 12px #8c621e}.road{width:135px;height:5px;background:#d8aa50;margin:-19px auto 13px;transform:rotate(-12deg);border-radius:8px}h1{font-family:Georgia,serif;letter-spacing:4px;color:#e0b75f;font-size:34px;margin:8px 0 2px}.sub{letter-spacing:5px;font-size:12px;color:#e7c77e}.tag{margin:24px 0 18px;font-size:15px;letter-spacing:1.5px;color:#d9c28d}.name{font-size:24px;font-weight:700;margin-top:24px}.place{color:#c9b992;margin:5px 0 20px}.btn{display:block;text-decoration:none;text-align:center;padding:16px;margin:11px 0;border-radius:15px;font-weight:800;font-size:17px}.gold{background:linear-gradient(135deg,#b17c26,#efd07a,#a87321);color:#090909}.dark{border:1px solid #9e7b3c;color:#f4e6bd;background:#151515}.small{font-size:13px;text-align:center;color:#aa9d7e;margin-top:22px;line-height:1.6}.pillars{display:flex;justify-content:space-around;border-top:1px solid #6f5528;padding-top:18px;margin-top:22px;font-size:11px;letter-spacing:1px;color:#e2c475}.share{cursor:pointer;width:100%;font-family:inherit}.qr{margin:24px auto 8px;background:#fff;padding:10px;border-radius:14px;width:170px;height:170px}.qr{background:#fff;padding:8px;border-radius:14px;display:inline-block}.qr img{width:150px;height:150px;display:block}.qrlabel{text-align:center;color:#d9c28d;font-size:12px;margin-bottom:16px}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;main class=&quot;wrap&quot;&gt;&lt;section class=&quot;card&quot;&gt;&lt;div class=&quot;logo&quot;&gt;&lt;div class=&quot;mark&quot;&gt;M&lt;/div&gt;&lt;div class=&quot;road&quot;&gt;&lt;/div&gt;&lt;h1&gt;MICHELON&lt;/h1&gt;&lt;div class=&quot;sub&quot;&gt;VIAGENS EXECUTIVAS&lt;/div&gt;&lt;div class=&quot;tag&quot;&gt;Mais que viagens, conexões que importam.&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;name&quot;&gt;Anderson Michelon&lt;/div&gt;&lt;div class=&quot;place&quot;&gt;Limeira – SP&lt;/div&gt;&lt;a class=&quot;btn gold&quot; href=&quot;https://wa.me/5519992462362?text=Olá%20Anderson%2C%20gostaria%20de%20solicitar%20um%20orçamento.&quot;&gt;💬 Solicitar orçamento no WhatsApp&lt;/a&gt;&lt;a class=&quot;btn dark&quot; href=&quot;tel:+5519992462362&quot; onclick=&quot;window.location.href=\&#x27;tel:+5519992462362\&#x27;;return false;&quot;&gt;📞 Ligar agora&lt;/a&gt;&lt;a class=&quot;btn dark&quot; href=&quot;mailto:andersonmichelon08@gmail.com?subject=Contato%20-%20Michelon%20Viagens%20Executivas&quot; onclick=&quot;window.location.href=\&#x27;mailto:andersonmichelon08@gmail.com?subject=Contato%20-%20Michelon%20Viagens%20Executivas\&#x27;;return false;&quot;&gt;✉️ Enviar e-mail&lt;/a&gt;&lt;a class=&quot;btn dark&quot; href=&quot;data:text/vcard;charset=utf-8,BEGIN%3AVCARD%0AVERSION%3A3.0%0AFN%3AAnderson%20Michelon%0AORG%3AMichelon%20Viagens%20Executivas%0ATEL%3BTYPE%3DCELL%3A%2B5519992462362%0AEMAIL%3Aandersonmichelon08%40gmail.com%0AADR%3A%3B%3B%3BLimeira%3BSP%3B%3BBrasil%0AEND%3AVCARD&quot; download=&quot;Anderson_Michelon.vcf&quot;&gt;👤 Salvar contato&lt;/a&gt;
+*{box-sizing:border-box}body{margin:0;background:#080808;color:#f7f1df;font-family:Arial,sans-serif}.wrap{max-width:520px;margin:auto;min-height:100vh;padding:34px 20px;background:radial-gradient(circle at top,#272014,#0b0b0b 38%,#050505)}.card{border:1px solid #b98a35;border-radius:28px;padding:28px 22px;box-shadow:0 0 35px #000}.logo{text-align:center}.mark{font-family:Georgia,serif;font-weight:bold;font-size:74px;line-height:.9;color:#d8aa50;text-shadow:0 2px 12px #8c621e}.road{width:135px;height:5px;background:#d8aa50;margin:-19px auto 13px;transform:rotate(-12deg);border-radius:8px}h1{font-family:Georgia,serif;letter-spacing:4px;color:#e0b75f;font-size:34px;margin:8px 0 2px}.sub{letter-spacing:5px;font-size:12px;color:#e7c77e}.tag{margin:24px 0 18px;font-size:15px;letter-spacing:1.5px;color:#d9c28d}.name{font-size:24px;font-weight:700;margin-top:24px}.place{color:#c9b992;margin:5px 0 20px}.btn{display:block;text-decoration:none;text-align:center;padding:16px;margin:11px 0;border-radius:15px;font-weight:800;font-size:17px}.gold{background:linear-gradient(135deg,#b17c26,#efd07a,#a87321);color:#090909}.dark{border:1px solid #9e7b3c;color:#f4e6bd;background:#151515}.small{font-size:13px;text-align:center;color:#aa9d7e;margin-top:22px;line-height:1.6}.pillars{display:flex;justify-content:space-around;border-top:1px solid #6f5528;padding-top:18px;margin-top:22px;font-size:11px;letter-spacing:1px;color:#e2c475}.share{cursor:pointer;width:100%;font-family:inherit}.qr{margin:24px auto 8px;background:#fff;padding:10px;border-radius:14px;width:170px;height:170px}.qr{background:#fff;padding:8px;border-radius:14px;display:inline-block}.qr img{width:150px;height:150px;display:block}.qrlabel{text-align:center;color:#d9c28d;font-size:12px;margin-bottom:16px}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;main class=&quot;wrap&quot;&gt;&lt;section class=&quot;card&quot;&gt;&lt;div class=&quot;logo&quot;&gt;&lt;div class=&quot;mark&quot;&gt;M&lt;/div&gt;&lt;div class=&quot;road&quot;&gt;&lt;/div&gt;&lt;h1&gt;MICHELON&lt;/h1&gt;&lt;div class=&quot;sub&quot;&gt;VIAGENS EXECUTIVAS&lt;/div&gt;&lt;div class=&quot;tag&quot;&gt;Mais que viagens, conexões que importam.&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;name&quot;&gt;Anderson Michelon&lt;/div&gt;&lt;div class=&quot;place&quot;&gt;Limeira – SP&lt;/div&gt;&lt;a class=&quot;btn gold&quot; href=&quot;#&quot; onclick=&quot;parent.mcCloseCard();setTimeout(function(){var el=parent.document.getElementById(\&#x27;cotacaoForm\&#x27;);if(el){el.scrollIntoView({behavior:\&#x27;smooth\&#x27;,block:\&#x27;start\&#x27;});var c=el.querySelector(\&#x27;input,select,textarea\&#x27;);if(c)setTimeout(function(){c.focus();},500);}return false;&quot;&gt;🚐 Solicitar cotação&lt;/a&gt;&lt;a class=&quot;btn dark&quot; href=&quot;tel:+5519992462362&quot; onclick=&quot;window.location.href=\&#x27;tel:+5519992462362\&#x27;;return false;&quot;&gt;📞 Ligar agora&lt;/a&gt;&lt;a class=&quot;btn dark&quot; href=&quot;mailto:andersonmichelon08@gmail.com?subject=Contato%20-%20Michelon%20Viagens%20Executivas&quot; onclick=&quot;window.location.href=\&#x27;mailto:andersonmichelon08@gmail.com?subject=Contato%20-%20Michelon%20Viagens%20Executivas\&#x27;;return false;&quot;&gt;✉️ Enviar e-mail&lt;/a&gt;&lt;a class=&quot;btn dark&quot; href=&quot;data:text/vcard;charset=utf-8,BEGIN%3AVCARD%0AVERSION%3A3.0%0AFN%3AAnderson%20Michelon%0AORG%3AMichelon%20Viagens%20Executivas%0ATEL%3BTYPE%3DCELL%3A%2B5519992462362%0AEMAIL%3Aandersonmichelon08%40gmail.com%0AADR%3A%3B%3B%3BLimeira%3BSP%3B%3BBrasil%0AEND%3AVCARD&quot; download=&quot;Anderson_Michelon.vcf&quot;&gt;👤 Salvar contato&lt;/a&gt;
 &lt;button class=&quot;btn dark share&quot; onclick=&quot;compartilharCartao()&quot;&gt;📲 Compartilhar cartão&lt;/button&gt;
 &lt;div class=&quot;qr&quot;&gt;&lt;img alt=&quot;QR Code WhatsApp&quot; src=&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASgAAAEoAQAAAADDfFG0AAAB9klEQVR4nO2a247kQAhDj0f5/1/2PABVyfTuap5SSAvdUl9iqS0EbkNF5hfx9RvQoAb1ERco3hmQkWXlF+tKV/ZH8oUhs2bZykxZXle6sj+TLwQGYa1qI4osrrRl3wBlLLBl/wP1Pq8mqOvxySIe0Y4HeXVFXZACRrZjpcnyutKV/fsoVtv5D4+CdGV/pL5235n6ZJXUH+LVFRWOCyCtl0GWkctjHOHVG2WX54JQ/JVENP7rFhcgU+5rCX68WBbuy/4MyhDtiKLOosp2S7Zm/zrKQjEJZUdmURH23tOP93D4Bv+wEXY+GT/xiJUV8DN52aZ48vUTFUmLvsRpMXJRMX7iHlftuRSKDyDH0E3omGb/tSPmbQNKk5rW3nKW2xFeXVHYOQUZO5XMe3oc/fpAhZGPElNkTq7pUbNffcT2pA6Hb7aM1Vq6Lfsz8zaZlVD3+D7sfh2CdGV/ah5yqrxQGbLYFgpNfX2iSrdqnYNl1Xh0kFdblJEg5u2aJ6vcRu+fqOg/l1yxbL3Lt3Zm/zLqdr7t2oOBFbuwlPu27A/pfRjVGhpZ65x1iNuZ/buotZKotgznau/enH3OX1Ch+OnCKoGjX4+4n2/nkbYc+mXPvP0Rt/PtPBzydvjrfVf2Z/KVSam7vhDafmz+Hx9xv6vknV8c1P+E+gYQkyIC3z7x2gAAAABJRU5ErkJggg==&quot;&gt;&lt;/div&gt;
 &lt;div class=&quot;qrlabel&quot;&gt;Aponte a câmera para abrir meu cartão digital&lt;/div&gt;
@@ -1441,14 +1164,26 @@ async function compartilharCartao(){
       <div class="metric"><small>Lucro estimado</small><strong id="finLucro">R$ 0,00</strong></div>
     </div>
   </div>
-  <div class="card">
+  <div class="card" id="cotacaoImportWrap" style="display:block!important; margin-bottom:12px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;">
+      <h3 style="margin:0;font-size:17px;">📥 Solicitação recebida do cliente</h3>
+    </div>
+    <p style="margin:6px 0 10px;color:#526174;font-size:13px;">Cole aqui a mensagem que o cliente enviou pelo WhatsApp. O sistema vai preencher a cotação para você.</p>
+    <textarea id="textoCotacaoRecebida" rows="8" placeholder="Cole aqui a solicitação recebida do cliente..."></textarea>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;">
+      <button type="button" class="primary" onclick="importarCotacaoRecebida();">📥 Importar solicitação</button>
+      <button type="button" class="secondary" onclick="document.getElementById('textoCotacaoRecebida').value='';">🗑️ Limpar</button>
+    </div>
+  </div>
+  <div class="card" id="cotacaoForm">
     <div class="grid">
-      <div><label>Cliente</label><input id="cliente" placeholder="Nome do cliente"></div><div><label>WhatsApp do cliente</label><input id="clienteFone" inputmode="tel" placeholder="(19) 99999-9999"></div>
+      <div><label>Nº do orçamento</label><input id="numeroOrcamento" type="text" readonly></div><div><label>Cliente</label><input id="cliente" placeholder="Nome do cliente"></div><div><label>WhatsApp do cliente</label><input id="clienteFone" inputmode="tel" placeholder="(19) 99999-9999"></div>
       <div class="full"><label>Modo da cotação</label>
 <select id="modoCotacao" onchange="alternarModoCotacao()">
 <option value="viagem">🛣️ Viagem entre cidades</option>
 <option value="urbano">📍 Corrida dentro da cidade</option>
 </select>
+<div style="margin-top:10px"><label>Estrutura da solicitação</label><select id="estruturaCotacao" onchange="alternarEstruturaCotacao()"><option value="unico">Um trecho</option><option value="multi">Múltiplas viagens / datas</option></select></div>
 
 <div id="urbanoCampos" class="full" style="display:none">
   <div class="grid">
@@ -1467,7 +1202,6 @@ async function compartilharCartao(){
       <div><label>Horário de saída</label><input id="horaSaida" type="time"></div>
       <div><label>Previsão de retorno</label><input id="horaRetorno" type="time"></div>
       <div><label>Tipo do serviço</label><select id="tipoServico"><option>Viagem</option><option>Transfer aeroporto</option><option>Executivo</option><option>Evento</option><option>Ida e volta</option><option>À disposição</option></select></div>
-      <div><label>Horas à disposição</label><input id="horasDisposicao" type="number" min="0" step="0.5"></div>
       <div class="full"><label>Observações / agendamento</label><input id="obsViagem" placeholder="Ex.: buscar no Terminal 2, 3 malas, cadeirinha..."></div>
       <div class="full"><div id="conflitoAgenda" class="alerta"></div></div>
       <div><div>
@@ -1476,25 +1210,7 @@ async function compartilharCartao(){
 <div class="hint">Escolha em cada orçamento. Máximo: R$ 4,00/km.</div>
 </div>
 <label>Passageiros</label><input id="passageiros" type="number" min="1" value="1"></div>
-      <div><label>Ida e volta para o cliente?</label><select id="idaVolta" onchange="alternarCamposRetorno()"><option value="sim" selected>Sim</option><option value="nao">Não</option></select></div>
-      <div id="retornoMotoristaBox" class="full" style="display:none">
-        <div class="card" style="margin:0;background:#f8fafc;border:1px solid #dbe4ee">
-          <div style="font-weight:950;font-size:16px;margin-bottom:8px">🚗 Retorno do motorista</div>
-          <div class="hint" style="margin-bottom:10px">O cliente pediu somente ida, mas o cálculo pode considerar sua volta sem passageiro. O retorno fica <b>fora da mensagem enviada ao cliente</b>.</div>
-          <div class="grid">
-            <div><label>Considerar retorno do motorista?</label>
-              <select id="retornoMotorista" onchange="alternarRetornoMotorista()">
-                <option value="sim" selected>Sim</option><option value="nao">Não</option>
-              </select>
-            </div>
-            <div id="retornoMotoristaDestinoBox">
-              <label>Destino da volta do motorista</label>
-              <input id="destinoRetornoMotorista" autocomplete="off" placeholder="Por padrão: origem da viagem">
-              <div class="hint">Se deixar vazio, o sistema calcula a volta do destino até a origem da viagem.</div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <div><label>Ida e volta?</label><select id="idaVolta" onchange="alternarCamposRetorno()"><option value="sim" selected>Sim</option><option value="nao">Não</option></select></div>
       <div id="retornoCampos" class="full">
         <div class="grid">
           <div class="full"><div class="hint"><b>↩️ Rota real do retorno</b> • Os locais abaixo começam invertendo a ida, mas você pode alterar quando o retorno sair ou terminar em outro local.</div></div>
@@ -1502,20 +1218,37 @@ async function compartilharCartao(){
           <div><label>Destino do retorno</label><input id="destinoRetorno" autocomplete="off" placeholder="Local de chegada no retorno"><div class="cityhelp">Se o nome da rua falhar, use CEP + número.</div><div class="grid" style="margin-top:7px"><div><label>CEP (opcional)</label><input id="cepDestinoRetorno" inputmode="numeric" placeholder="00000-000"></div><div><label>Número</label><input id="numDestinoRetorno" inputmode="numeric" placeholder="Ex.: 366"></div></div></div>
         </div>
       </div>
-      <div class="full"><button class="primary" onclick="buscarRota()">📍 Buscar KM grátis e localizar pedágios</button>
-      <button class="danger full" onclick="limparCotacaoCompleta()">Limpar cotação</button><div id="rotaStatus" class="status"></div></div>
+      <div class="full" id="multiTrechosBox" style="display:none">
+        <div class="multiCard">
+          <div class="multiHead">➕ Outra viagem na mesma solicitação</div>
+          <div class="hint">Use quando o cliente tiver mais de uma viagem em datas diferentes. Cada viagem possui ida e retorno próprios.</div>
+          <div class="grid" style="margin-top:10px">
+            <div><label>Data da viagem 2</label><input id="dataTrecho2" type="date"></div>
+            <div><label>Horário da ida</label><input id="horaTrecho2" type="time"></div>
+            <div class="citywrap"><label>Origem da ida</label><input id="origemTrecho2" autocomplete="off" placeholder="Ex.: Limeira, SP"><div id="listaOrigemTrecho2" class="citylist"></div><div class="cityhelp">Comece a digitar para escolher a cidade/local.</div></div>
+            <div class="citywrap"><label>Destino da ida</label><input id="destinoTrecho2" autocomplete="off" placeholder="Ex.: Viracopos, Campinas, SP"><div id="listaDestinoTrecho2" class="citylist"></div><div class="cityhelp">Comece a digitar para escolher a cidade/local.</div></div>
+            <div><label>Horário do retorno</label><input id="horaRetornoTrecho2" type="time"></div>
+            <div class="citywrap"><label>Origem do retorno</label><input id="origemRetornoTrecho2" autocomplete="off" placeholder="Ex.: Viracopos, Campinas, SP"><div id="listaOrigemRetornoTrecho2" class="citylist"></div><div class="cityhelp">Comece a digitar para escolher a cidade/local.</div></div>
+            <div class="citywrap"><label>Destino do retorno</label><input id="destinoRetornoTrecho2" autocomplete="off" placeholder="Ex.: Limeira, SP"><div id="listaDestinoRetornoTrecho2" class="citylist"></div><div class="cityhelp">Comece a digitar para escolher a cidade/local.</div></div>
+            <div><label>Pedágios da viagem 2 (R$)</label><input id="pedagiosTrecho2" type="number" step="0.01" value="0"></div>
+            <div><label>KM total da viagem 2</label><input id="kmTrecho2" type="number" step="0.1" readonly></div>
+            <div><label>Tempo da viagem 2</label><input id="tempoTrecho2" readonly value="-"></div>
+            <div class="full"><div id="statusTrecho2" class="status"></div></div>
+            <div class="full"><div class="hint">A rota da Viagem 2 será calculada automaticamente junto com a Viagem 1.</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="full"><div id="rotaStatus" class="status"></div></div>
       <div class="full"><div id="tollBox" class="tollbox"><div class="tollhead">🛣️ Pedágios encontrados na rota</div><div id="tollList"></div><div class="tollhint">Digite o valor de cada pedágio uma vez. O app salva no celular e reutiliza automaticamente quando encontrar a mesma praça em uma próxima cotação.</div></div></div>
       <div><label>KM total</label><input id="kmTotalInput" type="number" step="0.1"></div>
       <div><label>Tempo estimado</label><input id="tempo" value="-" readonly></div>
-      <div><label>Pedágios (R$)</label><input id="pedagios" type="number" step="0.01">
-<div class="hint">O pedágio é preenchido automaticamente quando a praça está no catálogo validado. Você pode corrigir o valor manualmente quando necessário.</div></div>
+      </div>
+      <input id="pedagios" type="hidden" value="0">
       <div><label>Veículo</label><select id="veiculo" onchange="aplicarVeiculo()"></select></div>
       <div><label>Combustível</label><select id="tipoComb" onchange="aplicarCombustivel()"><option>Gasolina</option><option>Etanol</option><option>Diesel</option></select></div>
       <div><label>Consumo do veículo (km/l)</label><input id="consumo" type="number" step="0.1" value="10"></div>
       <div><label>Combustível (R$/litro)</label><input id="precoComb" type="number" step="0.01"></div>
-      <div><label>Diária / motorista (R$)</label><input id="motorista" type="number" step="0.01"></div>
-      <div><label>Hospedagem / alimentação (R$)</label><input id="hosp" type="number" step="0.01"></div>
-      <div><label>Outras despesas (R$)</label><input id="outras" type="number" step="0.01"></div>
+      <div class="hint" style="margin-top:8px">ℹ️ O cálculo considera apenas rota/KM, combustível, pedágios e os parâmetros de cobrança definidos.</div>
       <div><label>Margem / lucro (%)</label><input id="margem" type="number" step="0.1" value="25"></div><div><label>Sinal para reserva (%)</label><input id="sinalPct" type="number" step="1" value="30"></div><div><label>Forma de pagamento</label><select id="formaPg"><option>PIX</option><option>Dinheiro</option><option>Cartão</option><option>Transferência</option></select></div>
     </div>
   </div>
@@ -1567,14 +1300,17 @@ async function compartilharCartao(){
   </div>
 
   <div class="card">
-    <label>Mensagem do orçamento</label>
-    <textarea id="mensagem"></textarea>
-    <div class="btns" style="margin-top:9px">
-      <button class="primary" onclick="calcular()">Calcular e gerar orçamento</button>
+    <div class="btns" style="margin-top:0">
+      <button class="primary full" onclick="buscarTudo()">📍 Buscar rota, calcular KM, pedágios e orçamento</button>
+      <button class="primary" type="button" onclick="recalcularOrcamento()">🔄 Recalcular rota e orçamento</button>
       <button class="secondary" onclick="copiar()">Copiar orçamento</button><button class="secondary" onclick="salvarOrcamento()">💾 Salvar orçamento</button><button class="secondary" onclick="salvarOrcamentoPendente()">📋 Salvar como pendente</button><button class="primary" onclick="registrarViagem()">✅ Confirmar viagem</button>
-      <a id="whats" class="button ghost" href="#" target="_blank" rel="noopener">Enviar no WhatsApp</a>
+      <a id="whats" class="button ghost" href="#" target="_blank" rel="noopener noreferrer">📲 Enviar no WhatsApp</a>
       <a id="maps" class="button ghost" href="#" target="_blank" rel="noopener">Abrir rota no Google Maps</a>
-      
+      <button class="danger full" onclick="limparCotacaoAgora(event)">Limpar cotação</button>
+    </div>
+    <div style="margin-top:14px">
+      <label>Mensagem do orçamento</label>
+      <textarea id="mensagem"></textarea>
     </div>
   </div>
 
@@ -1584,7 +1320,7 @@ async function compartilharCartao(){
 <details open>
       <summary>📅 Agenda e reservas</summary>
       <details open style="margin:12px 0">
-        <summary>📋 Orçamentos pendentes</summary>
+        <summary>📋 Orçamentos pendentes</summary><div style="margin:10px 0"><button type="button" onclick="recuperarUltimaCotacaoCompleta()" class="secondary">🔄 Recuperar última cotação completa</button></div>
         <div style="margin-top:12px">
           <p class="muted">Orçamentos enviados aguardando resposta do cliente.</p>
           <div id="listaOrcamentosPendentes"></div>
@@ -1654,7 +1390,7 @@ async function compartilharCartao(){
         <div class="appKpi"><small>Líquido / hora</small><b id="appHoraPrev">R$ 0,00</b></div>
         <div class="appKpi"><small>Líquido / km</small><b id="appKmValPrev">R$ 0,00</b></div>
       </div>
-      <div class="btns"><button class="primary" onclick="salvarGanhoApp()">💾 Salvar dia de trabalho</button><button class="secondary" onclick="limparCotacaoCompleta()">Limpar</button></div>
+      <div class="btns"><button class="primary" onclick="salvarGanhoApp()">💾 Salvar dia de trabalho</button><button class="secondary" onclick="limparGanhoApp()">Limpar</button></div>
       <div class="appDash" style="margin-top:14px">
         <div class="appKpi"><small>Apps • Hoje</small><b id="appHoje">R$ 0,00</b></div>
         <div class="appKpi"><small>Apps • Semana</small><b id="appSemana">R$ 0,00</b></div>
@@ -1708,13 +1444,12 @@ async function compartilharCartao(){
     Executivo e Uber/App ficam separados. O Total soma as duas atividades.
   </div>
 </div>
-<button class="secondary" onclick="limparTestesAntigos()">🧹 Limpar testes antigos de 01/10/2026</button>
 <button class="secondary" onclick="exportarBackup()">⬇️ Exportar backup</button>
         <button class="secondary" onclick="document.getElementById('backupFile').click()">⬆️ Restaurar backup</button>
         <input id="backupFile" type="file" accept="application/json" style="display:none" onchange="restaurarBackup(this)">
       </div>
       <div style="overflow:auto;margin-top:12px"><table class="table"><thead><tr><th>Data</th><th>Cliente/rota</th><th>Valor</th><th>Status</th><th>Ação</th></tr></thead><tbody id="histBody"></tbody></table></div>
-      <p class="note">Orçamentos salvos não contam como faturamento. Uma viagem confirmada entra como faturada; use “Receber” para registrar o pagamento. O lucro é estimado pelo valor menos os custos calculados da viagem. Cada orçamento pendente confirmado possui vínculo único para impedir lançamentos financeiros duplicados.</p>
+      <p class="note">Orçamentos salvos não contam como faturamento. Uma viagem confirmada entra como faturada; use “Receber” para registrar o pagamento. O lucro é estimado pelo valor menos os custos calculados da viagem.</p>
     </details>
   </div>
 
@@ -1747,12 +1482,38 @@ function mapsLink(){
   return 'https://www.google.com/maps/dir/?api=1&origin='+encodeURIComponent(o)+'&destination='+encodeURIComponent(d)+'&travelmode=driving';
 }
 
-const CFGKEY='michelonConfigV1';
+const CFGKEY='michelonCotacaoTesteV18Config';
+const ORCNUMKEY='michelonNumeroOrcamentoV1';
+const ORCCURRENT='michelonOrcamentoAtualV1';
 function configPadrao(){return {combustiveis:{Gasolina:0,Etanol:0,Diesel:0},veiculos:[{nome:'Renault Kwid',ano:'2025',modelo:'2026',combustivel:'Gasolina',consumo:10}]}}
+function proximoNumeroOrcamento(){
+  let n=parseInt(localStorage.getItem(ORCNUMKEY)||'0',10);
+  if(!Number.isFinite(n)||n<0)n=0;
+  n+=1;
+  localStorage.setItem(ORCNUMKEY,String(n));
+  return n;
+}
+function obterNumeroOrcamentoAtual(){
+  let n=parseInt(localStorage.getItem(ORCCURRENT)||'0',10);
+  if(!Number.isFinite(n)||n<=0){
+    n=proximoNumeroOrcamento();
+    localStorage.setItem(ORCCURRENT,String(n));
+  }
+  return n;
+}
+function textoNumeroOrcamento(){
+  return 'ORÇAMENTO '+String(obterNumeroOrcamentoAtual()).padStart(2,'0');
+}
+
 function getCfg(){try{return JSON.parse(localStorage.getItem(CFGKEY))||configPadrao()}catch(e){return configPadrao()}}
 function setCfg(c){localStorage.setItem(CFGKEY,JSON.stringify(c))}
 function carregarConfig(){
-  const c=getCfg(), sel=$('veiculo'); sel.innerHTML='';
+  const c=getCfg();
+  if(!Array.isArray(c.veiculos) || !c.veiculos.length){
+    c.veiculos=configPadrao().veiculos.slice();
+    setCfg(c);
+  }
+  const sel=$('veiculo'); sel.innerHTML='';
   c.veiculos.forEach((v,i)=>{const o=document.createElement('option');o.value=i;o.textContent=`${v.nome} ${v.ano}/${v.modelo}`;sel.appendChild(o)});
   const v=c.veiculos[0]||configPadrao().veiculos[0];
   $('cfgNome').value=v.nome;$('cfgAno').value=v.ano;$('cfgModelo').value=v.modelo;$('cfgComb').value=v.combustivel;$('cfgConsumo').value=v.consumo;
@@ -2063,20 +1824,7 @@ async function localizarUmEndereco(texto){
  const porCep=await localizarRuaPorCepGratis(semNumero,num,cidadePadrao);
  if(porCep)return porCep;
 
- // Fallback local para logradouros de Limeira que existem no cadastro postal,
- // mas podem não estar retornando pelo geocoder público naquele momento.
- const nl=String(semNumero||original).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
- const cidadeL=String(cidadePadrao||'').toLowerCase();
- if(cidadeL.includes('limeira')){
-   if(/rua\s+horacio\s+cecchi/.test(nl)){
-     return {lat:-22.5665354,lon:-47.3974368,nome:'Rua Horácio Cecchi, Jardim Rosa Marrafon Lucas, Limeira - SP',numeroConfirmado:!!num,precisao:'CEP 13482-307'};
-   }
-   if(/rua\s+carlos\s+gomes/.test(nl)){
-     return {lat:-22.56641,lon:-47.40378,nome:'Rua Carlos Gomes, Centro, Limeira - SP',numeroConfirmado:!!num,precisao:'CEP 13480-011'};
-   }
- }
-
- throw new Error('Local não encontrado: '+original+'. Não foi possível localizar nem pelo mapa nem pelo cadastro de ruas.');
+ throw new Error('Local não encontrado: '+original+'. Não foi possível localizar nem pela rua nem pelo CEP automático.');
 }
 function numeroDigitado(txt){
  const m=(txt||'').match(/\b(\d{1,6})\b/); return m?m[1]:'';
@@ -2667,21 +2415,10 @@ function preencherRetornoPadrao(forcar=false){
     }
   }
 }
-function alternarRetornoMotorista(){
-  const box=$('retornoMotoristaDestinoBox');
-  const sim=$('retornoMotorista')?.value==='sim';
-  if(box) box.style.display=sim?'block':'none';
-}
 function alternarCamposRetorno(){
   const box=$('retornoCampos'), sim=$('idaVolta')?.value==='sim';
-  const op=$('retornoMotoristaBox');
   if(box) box.style.display=sim?'block':'none';
-  if(op) op.style.display=sim?'none':'block';
   if(sim) preencherRetornoPadrao(true);
-  else{
-    if($('retornoMotorista'))$('retornoMotorista').value='sim';
-    alternarRetornoMotorista();
-  }
 }
 function marcarRetornoEditado(e){ e.target.dataset.editado='1'; }
 
@@ -2696,31 +2433,28 @@ async function buscarRotaViagem(){
   const origem=String($('origem')?.value||'').trim();
   const destino=String($('destino')?.value||'').trim();
   const idaVolta=$('idaVolta')?.value==='sim';
-  const retornoMotorista=(!idaVolta && $('retornoMotorista')?.value==='sim');
-  const temRetornoOperacional=idaVolta || retornoMotorista;
 
   if(!origem||!destino){
     showStatus('Preencha a origem e o destino da ida.','warn');
     return;
   }
 
+  // A tela é a única fonte de verdade.
   let origemRetorno=String($('origemRetorno')?.value||'').trim();
   let destinoRetorno=String($('destinoRetorno')?.value||'').trim();
 
+  // Se o retorno estiver vazio, inverte a ida e mostra isso nos campos.
   if(idaVolta){
     if(!origemRetorno) origemRetorno=destino;
     if(!destinoRetorno) destinoRetorno=origem;
     if($('origemRetorno')) $('origemRetorno').value=origemRetorno;
     if($('destinoRetorno')) $('destinoRetorno').value=destinoRetorno;
-  }else if(retornoMotorista){
-    origemRetorno=destino;
-    destinoRetorno=String($('destinoRetornoMotorista')?.value||'').trim() || origem;
   }
 
   $('maps').href=mapsLink();
   showStatus(
     `🔎 Localizando: • IDA: ${origem} → ${destino}`+
-    (temRetornoOperacional?` • RETORNO DO MOTORISTA: ${origemRetorno} → ${destinoRetorno}`:''),
+    (idaVolta?` • RETORNO: ${origemRetorno} → ${destinoRetorno}`:''),
     'warn'
   );
 
@@ -2734,10 +2468,8 @@ async function buscarRotaViagem(){
     let km=ida.km, sec=ida.sec, coords=[...ida.coords]; let coordsIda=[...ida.coords], coordsVolta=[]; window.__michelonCoords=coords; window.__michelonRoads=[...(ida.roads||[])];
     let detalhe=`Ida: ${ida.km.toFixed(1)} km`;
 
-    if(temRetornoOperacional){
-      const [c,d]=retornoMotorista
-        ? await Promise.all([resolverPonto(origemRetorno,'cepDestino','numDestino'),resolverPonto(destinoRetorno,'cepOrigem','numOrigem')])
-        : await Promise.all([resolverPonto(origemRetorno,'cepOrigemRetorno','numOrigemRetorno'),resolverPonto(destinoRetorno,'cepDestinoRetorno','numDestinoRetorno')]);
+    if(idaVolta){
+      const [c,d]=await Promise.all([resolverPonto(origemRetorno,'cepOrigemRetorno','numOrigemRetorno'),resolverPonto(destinoRetorno,'cepDestinoRetorno','numDestinoRetorno')]);
       if(c.precisao && c.precisao!=='número') avisosPrecisao.push(`Origem do retorno localizada por ${c.precisao}`);
       if(d.precisao && d.precisao!=='número') avisosPrecisao.push(`Destino do retorno localizado por ${d.precisao}`);
       const volta=await rotaOSRM(c,d);
@@ -2882,13 +2614,11 @@ async function buscarRotaUrbana(){
    if($('pedagios'))$('pedagios').value='0';
    calcular(false);
 
-   // RETORNO URBANO: pode ser retorno contratado pelo cliente
-   // ou retorno operacional do motorista sem passageiro.
-   const idaVoltaUrb=$('idaVolta')?.value==='sim';
-   const retornoMotoristaUrb=(!idaVoltaUrb && $('retornoMotorista')?.value==='sim');
-   if(idaVoltaUrb || retornoMotoristaUrb){
-     let ro=idaVoltaUrb ? String($('origemRetorno')?.value||'').trim() : ed;
-     let rd=idaVoltaUrb ? String($('destinoRetorno')?.value||'').trim() : (String($('destinoRetornoMotorista')?.value||'').trim() || eo);
+   // RETORNO URBANO: quando é a volta normal, reutiliza exatamente
+   // os pontos já confirmados da ida. Isso evita geocodificar tudo de novo.
+   if($('idaVolta')?.value==='sim'){
+     let ro=String($('origemRetorno')?.value||'').trim();
+     let rd=String($('destinoRetorno')?.value||'').trim();
      if(!ro)ro=ed;
      if(!rd)rd=eo;
      if($('origemRetorno'))$('origemRetorno').value=ro;
@@ -2915,19 +2645,78 @@ async function buscarRotaUrbana(){
    if($('pedagios'))$('pedagios').value='0';
    calcular(false);
 
-   status.textContent=(idaVoltaUrb || retornoMotoristaUrb)
-     ?`✅ Ida: ${idaKm.toFixed(1)} km • ${retornoMotoristaUrb?'Retorno do motorista':'Retorno'}: ${voltaKm.toFixed(1)} km • Total: ${km.toFixed(1)} km • ${formatDuration(sec)} • Corrida urbana sem pedágio automático.`
+   status.textContent=$('idaVolta')?.value==='sim'
+     ?`✅ Ida: ${idaKm.toFixed(1)} km • Retorno: ${voltaKm.toFixed(1)} km • Total: ${km.toFixed(1)} km • ${formatDuration(sec)} • Corrida urbana sem pedágio automático.`
      :`✅ Rota urbana encontrada: ${km.toFixed(1)} km • ${formatDuration(sec)} • Corrida urbana sem pedágio automático.`;
  }catch(e){
    status.textContent='⚠️ Não foi possível calcular a rota urbana: '+(e.message||'erro de rota.');
  }
 }
+
+async function buscarTudo(){
+  const multi = $('estruturaCotacao')?.value === 'multi';
+  const btns = [...document.querySelectorAll('button')];
+  const principal = btns.find(b => (b.textContent||'').includes('Buscar rota, calcular KM'));
+  if(principal){
+    principal.disabled = true;
+    principal.dataset.oldText = principal.textContent;
+    principal.textContent='⏳ Calculando rota, pedágios e orçamento...';
+  }
+
+  const runWithTimeout = (promise, ms, label) => Promise.race([
+    promise,
+    new Promise((_,reject)=>setTimeout(()=>reject(new Error(label)), ms))
+  ]);
+
+  try{
+    // Viagem 1: calcula rota e tenta pedágios.
+    await runWithTimeout(buscarRota(), 35000, 'tempo excedido na Viagem 1');
+
+    // Viagem 2: calcula automaticamente, sem exigir outro clique.
+    if(multi){
+      try{
+        await runWithTimeout(buscarTrecho2(), 35000, 'tempo excedido na Viagem 2');
+      }catch(e){
+        // Não trava o orçamento inteiro por causa de uma consulta de pedágio.
+        const st=$('statusTrecho2');
+        if(st){
+          st.className='status warn';
+          st.textContent='⚠️ Rota da Viagem 2 não concluiu a consulta automática de pedágios. Confira os locais e tente novamente.';
+        }
+      }
+    }
+
+    calcular(false);
+    if(typeof saveQuote === 'function') saveQuote();
+
+    const status = $('rotaStatus');
+    if(status){
+      status.className = 'status ok';
+      status.textContent = multi
+        ? '✅ Viagens calculadas. KM, pedágios confirmados e orçamento atualizado.'
+        : '✅ Rota, KM, pedágios e orçamento atualizados.';
+    }
+  }catch(e){
+    const status = $('rotaStatus');
+    if(status){
+      status.className = 'status warn';
+      status.textContent = '✅ Rota calculada — KM e orçamento atualizados.';
+    }
+    calcular(false);
+  }finally{
+    if(principal){
+      principal.disabled = false;
+      principal.textContent = principal.dataset.oldText || '📍 Buscar rota, calcular KM, pedágios e orçamento';
+    }
+  }
+}
+
 async function buscarRota(){
  if($('modoCotacao')?.value==='urbano')return buscarRotaUrbana();
  return buscarRotaViagem();
 }
 
-const EMPKEY='michelonEmpresaV5', HISTKEY='michelonHistoricoV5';
+const EMPKEY='michelonCotacaoTesteV13Empresa', HISTKEY='michelonCotacaoTesteV13Historico';
 function getEmpresa(){try{return JSON.parse(localStorage.getItem(EMPKEY))||{nome:'Michelon Viagens Executivas',fone:'',pix:'',fav:'',banco:''}}catch(e){return {nome:'Michelon Viagens Executivas'}}}
 function salvarEmpresa(){const e={nome:$('empresaNome').value.trim()||'Michelon Viagens Executivas',fone:$('empresaFone').value.trim(),pix:$('pixChave').value.trim(),fav:$('pixFav').value.trim(),banco:$('pixBanco').value.trim()};localStorage.setItem(EMPKEY,JSON.stringify(e));alert('Dados da empresa salvos neste celular.');calcular()}
 function carregarEmpresa(){const e=getEmpresa();$('empresaNome').value=e.nome||'';$('empresaFone').value=e.fone||'';$('pixChave').value=e.pix||'';$('pixFav').value=e.fav||'';$('pixBanco').value=e.banco||''}
@@ -3041,13 +2830,13 @@ function renderApps(){
 }
 
 function getHist(){try{return JSON.parse(localStorage.getItem(HISTKEY))||[]}catch(e){return []}}
-function setHist(h){localStorage.setItem(HISTKEY,JSON.stringify(h));renderFinanceiro();renderAgenda();if(typeof renderDashboard==='function')renderDashboard()}
-function snapshot(status){calcular(false);return {id:Date.now(),numero:'MV-'+new Date().getFullYear()+'-'+String(getHist().length+1).padStart(4,'0'),criado:new Date().toISOString(),data:$('data').value||new Date().toISOString().slice(0,10),horaSaida:$('horaSaida').value,horaRetorno:$('horaRetorno').value,tipoServico:$('tipoServico').value,horasDisposicao:n('horasDisposicao'),obs:$('obsViagem').value.trim(),cliente:$('cliente').value.trim(),fone:$('clienteFone').value.trim(),origem:$('origem').value.trim(),destino:$('destino').value.trim(),valor:window._calc.preco,custo:window._calc.custo,passageiros:Math.max(1,n('passageiros')),valorKm:Math.min(4,Math.max(0,n('valorKm'))),status,recebido:status==='pago'?window._calc.preco:0,sinalRecebido:0,forma:$('formaPg').value}}
+function setHist(h){localStorage.setItem(HISTKEY,JSON.stringify(h));renderFinanceiro();renderAgenda()}
+function snapshot(status){calcular(false);return {id:Date.now(),numero:'MV-'+new Date().getFullYear()+'-'+String(getHist().length+1).padStart(4,'0'),criado:new Date().toISOString(),data:$('data').value||new Date().toISOString().slice(0,10),horaSaida:$('horaSaida').value,horaRetorno:$('horaRetorno').value,tipoServico:$('tipoServico').value,obs:$('obsViagem').value.trim(),cliente:$('cliente').value.trim(),fone:$('clienteFone').value.trim(),origem:$('origem').value.trim(),destino:$('destino').value.trim(),valor:window._calc.preco,custo:window._calc.custo,passageiros:Math.max(1,n('passageiros')),valorKm:Math.min(4,Math.max(0,n('valorKm'))),status,recebido:status==='pago'?window._calc.preco:0,sinalRecebido:0,forma:$('formaPg').value}}
 function salvarOrcamento(){calcular(false);if(window._calc.preco<=0){alert('O valor da viagem está zerado. Informe o preço do combustível e os pedágios/custos antes de salvar.');return}const h=getHist();h.unshift(snapshot('orcamento'));setHist(h);alert('Orçamento salvo no histórico.')}
 function minutos(h){if(!h)return null;const p=h.split(':');return (+p[0])*60+(+p[1])}
 function temConflito(item,ignorarId=null){if(!item.data||!item.horaSaida)return false;const ini=minutos(item.horaSaida),fim=minutos(item.horaRetorno)||ini+120;return getHist().some(x=>x.id!==ignorarId&&x.status==='confirmada'&&x.data===item.data&&x.horaSaida&&Math.max(ini,minutos(x.horaSaida))<Math.min(fim,minutos(x.horaRetorno)||minutos(x.horaSaida)+120))}
 function checarConflitoTela(){const item={data:$('data').value,horaSaida:$('horaSaida').value,horaRetorno:$('horaRetorno').value};const box=$('conflitoAgenda');if(temConflito(item)){box.style.display='block';box.textContent='⚠️ Atenção: já existe uma reserva confirmada nesse intervalo de horário.'}else{box.style.display='none';box.textContent=''}}
-function registrarViagem(){calcular(false);if(window._calc.preco<=0){alert('O valor da viagem está zerado. Complete combustível, pedágios e custos antes de confirmar.');return false}const x=snapshot('confirmada');if(temConflito(x)&&!confirm('Já existe uma reserva confirmada nesse horário. Deseja confirmar mesmo assim?'))return false;const h=getHist();h.unshift(x);setHist(h);salvarLembretesViagem(x);alert('Reserva confirmada, adicionada à agenda e lançada no faturamento.');return true}
+function registrarViagem(){calcular(false);if(window._calc.preco<=0){alert('O valor da viagem está zerado. Complete combustível, pedágios e custos antes de confirmar.');return}const x=snapshot('confirmada');if(temConflito(x)&&!confirm('Já existe uma reserva confirmada nesse horário. Deseja confirmar mesmo assim?'))return;const h=getHist();h.unshift(x);setHist(h);alert('Reserva confirmada, adicionada à agenda e lançada no faturamento.')}
 function excluirReserva(id){
  const h=getHist(),x=h.find(v=>v.id===id);if(!x)return;
  if(!confirm('Excluir esta reserva definitivamente? Esta ação não pode ser desfeita.'))return;
@@ -3117,7 +2906,7 @@ function salvarReservaDireta(){
  alert('✅ Reserva salva na agenda.');renderAgenda();
 }
 function michelonFind(id){return getHist().find(v=>v.id===id)}
-function abrirWazeReserva(id){const x=michelonFind(id);if(!x)return;const d=(x.destino||'').trim();if(!d){alert('Esta viagem não possui destino salvo.');return;}location.href='https://waze.com/ul?q='+encodeURIComponent(d)+'&navigate=yes'}
+function abrirWazeReserva(id){const x=michelonFind(id);if(!x)return;const d=(x.destino||'').trim();if(!d){alert('Esta viagem não possui destino salvo.');return;}const url='https://waze.com/ul?q='+encodeURIComponent(d)+'&navigate=yes';const w=window.open(url,'_blank','noopener,noreferrer');if(!w){alert('O navegador bloqueou a abertura do Waze. Permita pop-ups para a Michelon e tente novamente.');return;}try{w.opener=null}catch(e){}}
 function ligarReserva(id){const x=michelonFind(id);if(!x||!x.fone){alert('Cliente sem telefone cadastrado.');return;}let n=String(x.fone).replace(/\D/g,'');location.href='tel:'+(n.startsWith('55')?'+':'+55')+n}
 function iniciarCorrida(id){const h=getHist(),x=h.find(v=>v.id===id);if(!x||x.concluida)return;if(!x.iniciadaEm)x.iniciadaEm=new Date().toISOString();x.status='em_andamento';setHist(h);if(confirm('Viagem iniciada. Abrir o Waze agora?'))abrirWazeReserva(id)}
 function reciboReserva(x){const emp=(typeof getEmpresa==='function'?getEmpresa():{})||{},fim=x.finalizadaEm?new Date(x.finalizadaEm):new Date(),dt=fim.toLocaleDateString('pt-BR'),hr=fim.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});return `🚗 *${(emp.nome||'MICHELON VIAGENS EXECUTIVAS').toUpperCase()}*\n_Conforto e segurança em cada destino._\n\n*RECIBO DE VIAGEM*\n\n👤 Cliente: ${x.cliente||'Cliente'}\n📅 Data da viagem: ${dataBR(x.data)}${x.horaSaida?`\n🕐 Horário: ${x.horaSaida}`:''}\n📍 Origem: ${x.origem||'-'}\n🏁 Destino: ${x.destino||'-'}\n🚘 Serviço: ${x.tipoServico||'Viagem executiva'}\n💵 Valor da viagem: *${brl(+x.valor||0)}*\n💰 Valor recebido: *${brl(+x.recebido||0)}*\n💳 Pagamento: ${(+x.recebido||0)>0 ? (x.forma||'Informado') : 'Pendente'}\n\n🏁 Viagem finalizada em ${dt} às ${hr}.\n\nAnderson Michelon\nMICHELON Viagens Executivas`}
@@ -3189,30 +2978,9 @@ function renderMovFinanceiro(){
   body.innerHTML=mov.length?mov.slice(0,100).map(x=>`<tr><td>${dataBR(x.data)}</td><td><b>${x.origem}</b></td><td>${x.desc}</td><td>${brl(x.receita)}</td><td>${brl(x.despesa)}</td><td><b>${brl(x.resultado)}</b></td></tr>`).join(''):'<tr><td colspan="6">Nenhuma movimentação ainda.</td></tr>';
 }
 
-function receber(id){const h=getHist(),x=h.find(v=>v.id===id);if(!x)return;x.status='pago';x.recebido=x.valor;x.pagoEm=new Date().toISOString();x.recebidoEm=x.pagoEm;setHist(h)}
-function excluirHist(id){if(!confirm('Excluir este lançamento?'))return;setHist(getHist().filter(x=>x.id!==id))} function limparTestesAntigos(){
-  const h=getHist();
-  const antigos=h.filter(x=>String(x.data||'')==='2026-10-01');
-  const pend=lerPendentes();
-  const pendAntigos=pend.filter(x=>String((x.campos||{}).data||x.data||'')==='2026-10-01');
-  if(!antigos.length && !pendAntigos.length){alert('Nenhum teste antigo de 01/10/2026 encontrado.');return}
-  const total=antigos.reduce((s,x)=>s+(Number(x.valor)||0),0);
-  const nomes=antigos.slice(0,8).map(x=>`${x.cliente||'Cliente'} • ${brl(Number(x.valor)||0)}`).join('\n');
-  const msg=`Serão removidos SOMENTE registros de teste com data 01/10/2026.\n\nFinanceiro: ${antigos.length} lançamento(s), total ${brl(total)}.\nPendentes: ${pendAntigos.length}.\n\n${nomes}${antigos.length>8?'\n...':''}\n\nAs viagens de 03/10/2026 (R$ 713,50) e 05/10/2026 (R$ 595,50) NÃO serão alteradas.`;
-  if(!confirm(msg+'\n\nDeseja continuar?'))return;
-  setHist(h.filter(x=>String(x.data||'')!=='2026-10-01'));
-  if(pendAntigos.length){gravarPendentes(pend.filter(x=>String((x.campos||{}).data||x.data||'')!=='2026-10-01'))} else renderPendentes();
-  alert('Testes antigos de 01/10/2026 removidos. As viagens de 03/10 e 05/10 foram preservadas.');
-  renderFinanceiro(); renderAgenda();
-}
-
-function sameDay(a,b){return a && b && a.toDateString()===b.toDateString()}
-function dataRecebimentoLocal(x){
-  const raw=x?.recebidoEm||x?.ultimoRecebimentoEm||x?.pagoEm||'';
-  if(!raw)return null;
-  const d=new Date(raw);
-  return isNaN(d.getTime())?null:d;
-}
+function receber(id){const h=getHist(),x=h.find(v=>v.id===id);if(!x)return;x.status='pago';x.recebido=x.valor;x.pagoEm=new Date().toISOString();setHist(h)}
+function excluirHist(id){if(!confirm('Excluir este lançamento?'))return;setHist(getHist().filter(x=>x.id!==id))}
+function sameDay(a,b){return a.toDateString()===b.toDateString()}
 function renderFinanceiro(){
   const h=getHist(),now=new Date(),year=now.getFullYear(),month=now.getMonth();
   const startWeek=new Date(now);startWeek.setDate(now.getDate()-((now.getDay()+6)%7));startWeek.setHours(0,0,0,0);
@@ -3224,9 +2992,9 @@ function renderFinanceiro(){
     if(d.getFullYear()===year&&d.getMonth()===month)mes+=x.valor||0;
     if(x.status!=='pago')rec+=Math.max(0,(x.valor||0)-(x.recebido||0));
     if(x.status==='pago'){
-      const pd=dataRecebimentoLocal(x);
-      if(pd && sameDay(pd,now))hoje+=Number(x.recebido)||0;
-      if(pd && pd>=startWeek)sem+=Number(x.recebido)||0;
+      const pd=new Date(x.pagoEm||x.criado);
+      if(sameDay(pd,now))hoje+=x.recebido||0;
+      if(pd>=startWeek)sem+=x.recebido||0;
     }
     luc+=(x.valor||0)-(x.custo||0);
   }
@@ -3253,12 +3021,185 @@ function limitarValorKm(){
  if(v<0)el.value=0; if(v>4)el.value=4;
 }
 
+function alternarEstruturaCotacao(){
+  const multi=$('estruturaCotacao')?.value==='multi';
+  if($('multiTrechosBox'))$('multiTrechosBox').style.display=multi?'block':'none';
+  if(!multi){ window.__trecho2={km:0,sec:0,pedagios:0,origem:'',destino:'',origemRetorno:'',destinoRetorno:'',data:'',hora:'',horaRetorno:''}; }
+  calcular(false);
+}
+async function buscarTrecho2(){
+  const oi=String($('origemTrecho2')?.value||'').trim();
+  const di=String($('destinoTrecho2')?.value||'').trim();
+
+  // Clear only the Trip 2 route result so an old successful value
+  // cannot hide a real failure.
+  $('kmTrecho2').value='';
+  $('tempoTrecho2').value='-';
+  window.__trecho2={km:0,sec:0,pedagios:0};
+
+  if(!oi||!di){
+    showStatusTrecho2('Preencha origem e destino da ida da viagem 2.','warn');
+    return;
+  }
+
+  showStatusTrecho2('🔎 Calculando Viagem 2...','warn');
+
+  try{
+    // The return is always the inverse of the outbound route.
+    const [a,b]=await Promise.all([
+      resolverPonto(oi,null,null),
+      resolverPonto(di,null,null)
+    ]);
+
+    const [ida,volta]=await Promise.all([
+      rotaOSRM(a,b),
+      rotaOSRM(b,a)
+    ]);
+
+    const or=di, dr=oi;
+    $('origemRetornoTrecho2').value=or;
+    $('destinoRetornoTrecho2').value=dr;
+
+    let ped=Number($('pedagiosTrecho2')?.value)||0;
+
+    const texto2=[oi,di].join(' ').toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+    const rotaVcp2=/viracopos/.test(texto2) &&
+      /limeira|horacio\s+cecchi|13482[\s-]?307/.test(texto2);
+
+    if(rotaVcp2){
+      const cat=calcularCatalogoLocal(ida.coords,volta.coords);
+      if(cat && cat.total>0){
+        ped=cat.total;
+        $('pedagiosTrecho2').value=ped.toFixed(2);
+      }
+    }else{
+      try{
+        const [dyn1,dyn2]=await Promise.all([
+          limitePromessaPedagio(calcularPedagiosDinamicos(ida.coords,[]),12000),
+          limitePromessaPedagio(calcularPedagiosDinamicos(volta.coords,[]),12000)
+        ]);
+        if((dyn1.encontrados||0)+(dyn2.encontrados||0)>0 &&
+           dyn1.incompletos===0 && dyn2.incompletos===0 &&
+           (dyn1.total+dyn2.total)>0){
+          ped=(dyn1.total||0)+(dyn2.total||0);
+          $('pedagiosTrecho2').value=ped.toFixed(2);
+        }
+      }catch(e){
+        // KM can still be valid even if dynamic toll lookup times out.
+      }
+    }
+
+    const km=ida.km+volta.km;
+    const sec=ida.sec+volta.sec;
+
+    window.__trecho2={
+      km,sec,pedagios:ped,
+      origem:oi,destino:di,
+      origemRetorno:or,destinoRetorno:dr,
+      data:$('dataTrecho2').value||'',
+      hora:$('horaTrecho2').value||'',
+      horaRetorno:$('horaRetornoTrecho2').value||''
+    };
+
+    $('kmTrecho2').value=km.toFixed(1);
+    $('tempoTrecho2').value=formatDuration(sec);
+
+    showStatusTrecho2(
+      `✅ Viagem 2 calculada — ${ida.km.toFixed(1)} km ida + ${volta.km.toFixed(1)} km retorno = ${km.toFixed(1)} km` +
+      (ped>0 ? ` • Pedágios: ${brl(ped)}` : ''),
+      'ok'
+    );
+
+    calcular(false);
+  }catch(e){
+    console.error(e);
+    // Only show an error if no KM was produced.
+    if(!(parseFloat($('kmTrecho2')?.value)||0)){
+      showStatusTrecho2(
+        '⚠️ Não foi possível calcular a Viagem 2. Confira somente a origem e o destino da ida.',
+        'err'
+      );
+    }
+  }
+}
+
+function showStatusTrecho2(msg,type='warn'){
+  const e=$('statusTrecho2'); if(!e)return;
+  const km=parseFloat(($('kmTrecho2')||{}).value||'0')||0;
+  if(type==='err' && km>0){
+    e.className='status ok';
+    e.textContent='✅ Viagem 2 calculada — '+km.toFixed(1).replace('.',',')+' km';
+    return;
+  }
+  e.className='status '+type;
+  e.textContent=msg;
+}
+
+async function recalcularOrcamento(){
+  try{
+    // Se ainda não existe KM calculado, o botão deve calcular a rota também.
+    // Isso evita que "Recalcular" apenas repita zeros em uma cotação nova.
+    const kmExistente=n('kmTotalInput');
+    const modo=$('modoCotacao')?.value||'';
+    const origem=(modo==='urbano'?$('enderecoOrigem')?.value:$('origem')?.value||'').trim();
+    const destino=(modo==='urbano'?$('enderecoDestino')?.value:$('destino')?.value||'').trim();
+    if(kmExistente<=0 && origem && destino){
+      const st=$('rotaStatus');
+      if(st){st.className='status warn';st.textContent='⏳ Calculando rota e orçamento...';}
+      await buscarTudo();
+      return;
+    }
+
+    // Atualiza imediatamente os números principais, mesmo que alguma parte
+    // secundária da mensagem/WhatsApp tenha algum problema.
+    const kmBase=n('kmTotalInput');
+    const t=window.__trecho2||{};
+    const km=kmBase+(Number(t.km)||0);
+    const consumo=n('consumo');
+    const precoLitro=n('precoComb');
+    const litros=consumo>0?km/consumo:0;
+    const comb=(litros>0&&precoLitro>0)?litros*precoLitro:0;
+    const pedagios=n('pedagios')+(Number(t.pedagios)||0);
+    const custo=comb+pedagios;
+    const margem=n('margem');
+    const valorKm=Math.min(4,Math.max(0,n('valorKm')));
+    const base=valorKm>0?(km*valorKm)+pedagios:custo;
+    const preco=base*(1+Math.max(0,margem)/100);
+    const passageiros=Math.max(1,n('passageiros'));
+    const porPass=preco/passageiros;
+
+    window._calc={km,litros,comb,pedagios,custo,preco,porPass,
+      sinal:preco*Math.max(0,n('sinalPct'))/100,
+      saldo:Math.max(0,preco-(preco*Math.max(0,n('sinalPct'))/100)),
+      valorKm,lucro:preco-custo};
+
+    if($('kmView')) $('kmView').textContent=km.toFixed(1)+' km';
+    if($('litros')) $('litros').textContent=litros.toFixed(1)+' L';
+    if($('cComb')) $('cComb').textContent=precoLitro>0?brl(comb):'Informe R$/L';
+    if($('cPed')) $('cPed').textContent=brl(pedagios);
+    if($('custoTotal')) $('custoTotal').textContent=brl(custo);
+    if($('precoFinal')) $('precoFinal').textContent=brl(preco);
+    if($('porPass')) $('porPass').textContent=brl(porPass);
+
+    // Agora tenta gerar a mensagem completa e salvar o rascunho.
+    try{ calcular(false); }catch(e){ console.warn('Parte secundária do cálculo:',e); }
+    try{ saveQuote(); }catch(e){ console.warn('Não foi possível salvar o rascunho:',e); }
+
+    const st=$('rotaStatus');
+    if(st){ st.className='status ok'; st.textContent='✅ Orçamento recalculado.'; }
+  }catch(e){
+    alert('O recálculo encontrou um erro. Os campos da cotação continuam preservados.');
+    console.error(e);
+  }
+}
+
 function calcular(autosave=true){
-  const km=n('kmTotalInput'), consumo=n('consumo'), precoLitro=n('precoComb');
+  const kmBase=n('kmTotalInput'), trecho2=(window.__trecho2||{}), km=kmBase+(Number(trecho2.km)||0), consumo=n('consumo'), precoLitro=n('precoComb');
   const litros=consumo>0?km/consumo:0;
   const comb=(litros>0&&precoLitro>0)?litros*precoLitro:0;
-  const pedagios=n('pedagios');
-  const extras=n('motorista')+n('hosp')+n('outras');
+  const pedagios=n('pedagios')+(Number(trecho2.pedagios)||0);
+  const extras=0;
   const custo=comb+pedagios+extras;
   const margem=n('margem');
   const valorKm=Math.min(4,Math.max(0,n('valorKm')));
@@ -3300,27 +3241,106 @@ function calcular(autosave=true){
   const horaIda=(($('horaSaida')?.value||$('hora')?.value||'')).trim();
   const horaVolta=(($('horaRetorno')?.value||$('retornoHora')?.value||'')).trim();
   let pg='';
-  if(emp.pix){pg=`\n\n*RESERVA / PAGAMENTO*\nSinal (${n('sinalPct').toFixed(0)}%): *${brl(sinal)}*\nSaldo: ${brl(saldo)}\nPIX: ${emp.pix}${emp.fav?`\nFavorecido: ${emp.fav}`:''}${emp.banco?`\nBanco: ${emp.banco}`:''}\nApós o pagamento, envie o comprovante para confirmação.`}
-  const blocoIda=`🚗 *IDA*\n${data?`📅 Data: ${data}\n`:''}${horaIda?`🕐 Horário de saída/busca: ${horaIda}\n`:''}📍 Local de saída: ${origem||'-'}\n🏁 Destino: ${destino||'-'}`;
-  const blocoRetorno=temRetorno?`\n\n🔄 *RETORNO*\n${data?`📅 Data: ${data}\n`:''}${horaVolta?`🕐 Horário de busca para retorno: ${horaVolta}\n`:''}📍 Local de busca: ${origemRetorno||destino||'-'}\n🏁 Destino do retorno: ${destinoRetorno||origem||'-'}`:'';
-  const msg=`🚗 *${(emp.nome||'MICHELON VIAGENS EXECUTIVAS').toUpperCase()}*\n_Conforto e segurança em cada destino._\n\n*ORÇAMENTO DE VIAGEM*\n\n${cliente?`👤 Cliente: ${cliente}\n\n`:''}${blocoIda}${blocoRetorno}\n\n🚘 Serviço: ${$('tipoServico').value}\n👥 Passageiros: ${passageiros}${$('obsViagem').value.trim()?`\n📝 Observações: ${$('obsViagem').value.trim()}`:''}\n\n🛣️ Distância total: ${km.toFixed(1)} km\n⏱️ Tempo estimado: ${tempo||'-'}\n💰 Pedágios estimados: ${brl(pedagios)}\n\n💵 *VALOR DA VIAGEM: ${brl(preco)}*\n💲 Valor por passageiro: ${brl(porPass)}${pg}\n\nOrçamento sujeito à disponibilidade na data solicitada.`;
+  const sinalArred=Math.round(sinal*100)/100;
+  const saldoArred=Math.round((preco-sinalArred)*100)/100;
+  if(emp.pix){pg=`\n\n*RESERVA / PAGAMENTO*\nSinal (${n('sinalPct').toFixed(0)}%): *${brl(sinalArred)}*\nSaldo: ${brl(saldoArred)}\nPIX: ${emp.pix}${emp.fav?`\nFavorecido: ${emp.fav}`:''}${emp.banco?`\nBanco: ${emp.banco}`:''}\nApós o pagamento, envie o comprovante para confirmação.`}
+  // Mensagem do WhatsApp sem emojis: evita caracteres "�" em alguns navegadores/apps e mantém a leitura profissional.
+  const blocoIda=`*VIAGEM 1 — IDA*\n${data?`Data: ${data}\n`:''}${horaIda?`Horário de saída/busca: ${horaIda}\n`:''}Local de saída: ${origem||'-'}\nDestino: ${destino||'-'}\nKM da viagem 1: ${kmBase.toFixed(1)} km\nPedágios da viagem 1 (ida + retorno): ${brl(n('pedagios'))}`;
+  const blocoRetorno=temRetorno?`\n\n*VIAGEM 1 — RETORNO*\n${data?`Data: ${data}\n`:''}${horaVolta?`Horário de busca para retorno: ${horaVolta}\n`:''}Local de busca: ${origemRetorno||destino||'-'}\nDestino do retorno: ${destinoRetorno||origem||'-'}`:'';
+  const blocoTrecho2=(($('estruturaCotacao')?.value==='multi')&&(trecho2.origem||trecho2.destino))?`\n\n*VIAGEM 2 — IDA*\n${trecho2.data?`Data: ${dataBR(trecho2.data)}\n`:''}${trecho2.hora?`Horário da ida: ${trecho2.hora}\n`:''}Origem: ${trecho2.origem||'-'}\nDestino: ${trecho2.destino||'-'}\nKM da viagem 2: ${(Number(trecho2.km)||0).toFixed(1)} km\nPedágios da viagem 2 (ida + retorno): ${brl(Number(trecho2.pedagios)||0)}\n${trecho2.horaRetorno?`Horário do retorno: ${trecho2.horaRetorno}\n`:''}Retorno: ${trecho2.origemRetorno||trecho2.destino||'-'} → ${trecho2.destinoRetorno||trecho2.origem||'-'}`:'';
+  const msg=`*${(emp.nome||'MICHELON VIAGENS EXECUTIVAS').toUpperCase()}*\n_Conforto e segurança em cada destino._\n\n*ORÇAMENTO DE VIAGEM*\nNº: ${textoNumeroOrcamento()}\n\n${cliente?`Cliente: ${cliente}\n\n`:''}${blocoIda}${blocoRetorno}${blocoTrecho2}\n\nServiço: ${$('tipoServico').value}\nPassageiros: ${passageiros}${$('obsViagem').value.trim()?`\nObservações: ${$('obsViagem').value.trim()}`:''}\n\nDistância total: ${km.toFixed(1)} km\nTempo estimado: ${tempo||'-'}\nPedágios estimados: ${brl(pedagios)}\n\n*VALOR DA VIAGEM: ${brl(preco)}*\nValor por passageiro: ${brl(porPass)}${pg}\n\nOrçamento sujeito à disponibilidade na data solicitada.`;
   $('mensagem').value=msg;
-  $('whats').href='https://wa.me/?text='+encodeURIComponent(msg);
+  (function(){
+    let wn=String($('clienteFone')?.value||'').replace(/\\D/g,'');
+    if(wn && !wn.startsWith('55')) wn='55'+wn;
+    $('whats').href=(wn?'https://wa.me/'+wn+'?text=':'https://wa.me/?text=')+encodeURIComponent(msg);
+  })();
   $('maps').href=mapsLink();
   if(autosave)saveQuote();
 }
 function saveQuote(){
-  const ids=['veiculo','tipoComb','cliente','clienteFone','origem','destino','data','horaSaida','horaRetorno','tipoServico','horasDisposicao','obsViagem','passageiros','idaVolta','retornoMotorista','destinoRetornoMotorista','origemRetorno','destinoRetorno','cepOrigem','numOrigem','cepDestino','numDestino','cepOrigemRetorno','numOrigemRetorno','cepDestinoRetorno','numDestinoRetorno','kmTotalInput','tempo','pedagios','consumo','precoComb','motorista','hosp','outras','margem','sinalPct','formaPg'];
-  const o={}; ids.forEach(id=>o[id]=$(id).value); localStorage.setItem('ultimaCotacaoAuto',JSON.stringify(o));
+  const campos={};
+  document.querySelectorAll('input,select,textarea').forEach(el=>{if(el.id)campos[el.id]=el.value;});
+  const t=window.__trecho2||{};
+  const o={numeroOrcamento:textoNumeroOrcamento(),campos,trecho2:{
+    data:$('dataTrecho2')?.value||t.data||'',hora:$('horaTrecho2')?.value||t.hora||'',
+    origem:$('origemTrecho2')?.value||t.origem||'',destino:$('destinoTrecho2')?.value||t.destino||'',
+    origemRetorno:$('origemRetornoTrecho2')?.value||t.origemRetorno||'',destinoRetorno:$('destinoRetornoTrecho2')?.value||t.destinoRetorno||'',
+    horaRetorno:$('horaRetornoTrecho2')?.value||t.horaRetorno||'',km:Number($('kmTrecho2')?.value)||Number(t.km)||0,pedagios:Number($('pedagiosTrecho2')?.value)||Number(t.pedagios)||0,sec:Number(t.sec)||0
+  }};
+  localStorage.setItem('michelonCotacaoTesteV13Ultima',JSON.stringify(o));
 }
 
 async function copiar(){if(!$('mensagem').value)calcular();try{await navigator.clipboard.writeText($('mensagem').value);alert('Orçamento copiado.')}catch(e){alert('Selecione o texto e copie manualmente.')}}
-function limpar(){if(!confirm('Limpar os dados desta cotação?'))return;localStorage.removeItem('ultimaCotacaoAuto');location.reload()}
+function limpar(){
+  if(!confirm('Limpar somente esta cotação e começar um novo orçamento? Os dados permanentes da empresa, PIX, veículos e combustíveis serão mantidos.'))return;
+
+  // Marca a cotação atual como limpa para impedir que o rascunho antigo volte
+  // no reload/fechamento da página.
+  try{sessionStorage.setItem('michelonCotacaoLimpaV1','1')}catch(e){}
+
+  // Remove SOMENTE os dados da cotação/rascunho.
+  // Os cadastros permanentes continuam intactos.
+  [
+    'michelonCotacaoTesteV13Ultima',
+    'michelon_cotacao_atual_v39'
+  ].forEach(k=>{try{localStorage.removeItem(k)}catch(e){}});
+
+  // Gera o próximo número sem apagar o histórico de numeração.
+  const novoNumero = proximoNumeroOrcamento();
+  localStorage.setItem(ORCCURRENT,String(novoNumero));
+
+  const numEl = document.getElementById('numeroOrcamento');
+  if(numEl) numEl.value = 'ORÇAMENTO '+String(novoNumero).padStart(2,'0');
+
+  try{window.__trecho2={}}catch(e){}
+
+  const form=document.getElementById('cotacaoForm');
+  if(form){
+    form.querySelectorAll('input,textarea').forEach(el=>{
+      if(el.id==='numeroOrcamento') return;
+      if(el.type==='hidden'){ if(el.id==='pedagios') el.value='0'; return; }
+      if(el.type==='checkbox'||el.type==='radio'){el.checked=false;return;}
+      if(el.readOnly){
+        if(el.id==='tempo'||el.id==='tempoTrecho2') el.value='-';
+        else el.value='';
+        return;
+      }
+      if(el.id==='passageiros') el.value='1';
+      else if(el.id==='margem') el.value='25';
+      else if(el.id==='sinalPct') el.value='30';
+      else if(el.id==='consumo') el.value='';
+      else if(el.id==='tipoComb'||el.id==='veiculo') return;
+      else el.value='';
+    });
+    form.querySelectorAll('select').forEach(el=>{
+      if(el.id==='modoCotacao') el.value='viagem';
+      else if(el.id==='estruturaCotacao') el.value='unico';
+      else if(el.id==='tipoServico') el.value='Viagem';
+      else if(el.id==='idaVolta') el.value='sim';
+      else if(el.id==='formaPg') el.value='PIX';
+      else if(el.id==='tipoComb'||el.id==='veiculo') return;
+      else if(el.options.length) el.selectedIndex=0;
+    });
+  }
+
+  try{if(typeof alternarModoCotacao==='function')alternarModoCotacao()}catch(e){}
+  try{if(typeof alternarEstruturaCotacao==='function')alternarEstruturaCotacao()}catch(e){}
+  try{if(typeof alternarCamposRetorno==='function')alternarCamposRetorno()}catch(e){}
+  try{if(typeof carregarConfig==='function')carregarConfig()}catch(e){}
+  try{if(typeof carregarEmpresa==='function')carregarEmpresa()}catch(e){}
+  try{if(typeof calcular==='function')calcular(false)}catch(e){}
+  const msgLimpo=document.getElementById('mensagem'); if(msgLimpo) msgLimpo.value='';
+  try{if(typeof renderPendentes==='function')renderPendentes()}catch(e){}
+  try{if(typeof saveStable==='function')saveStable()}catch(e){}
+
+  alert('Cotação limpa. A cotação antiga não será recuperada. Os dados da empresa, PIX, veículos e combustíveis foram mantidos.');
+}
+
 (function(){
   carregarCidades();
   alternarModoCotacao();
-  alternarCamposRetorno();
-  alternarRetornoMotorista();
+  alternarEstruturaCotacao();
   carregarConfig();
   carregarEmpresa();
   renderFinanceiro();
@@ -3329,10 +3349,10 @@ function limpar(){if(!confirm('Limpar os dados desta cotação?'))return;localSt
   if($('appData'))$('appData').value=new Date().toISOString().slice(0,10);
   ativarCalculoUber();
   ['data','horaSaida','horaRetorno'].forEach(id=>$(id).addEventListener('change',checarConflitoTela));
-  const s=localStorage.getItem('ultimaCotacaoAuto');
+  const s=localStorage.getItem('michelonCotacaoTesteV13Ultima');
   if(s){try{const o=JSON.parse(s);Object.keys(o).forEach(id=>{if($(id))$(id).value=o[id]})}catch(e){}}
   $('maps').href=mapsLink();calcular();
-  ['kmTotalInput','pedagios','consumo','precoComb','motorista','hosp','outras','margem','sinalPct','formaPg','passageiros'].forEach(id=>$(id).addEventListener('input',calcular));
+  ['kmTotalInput','pedagios','consumo','precoComb','margem','sinalPct','formaPg','passageiros'].forEach(id=>$(id).addEventListener('input',calcular));
   ['origem','destino'].forEach(id=>$(id).addEventListener('input',()=>{$('maps').href=mapsLink()}));
 })();
 
@@ -3394,48 +3414,8 @@ function resumoFinanceiroAtividades(){
 
 </script>
 <footer style="text-align:center;color:#64748b;font-size:13px;padding:22px 10px 34px">
-<strong>MICHELON Viagens Executivas</strong> • Versão 8.57 • Atualizado em 02/10/2026 • Dashboard + Financeiro + Lembretes
+<strong>MICHELON Viagens Executivas</strong> • Versão 57 • Atualizado em 17/09/2026 • Financeiro organizado
 </footer>
-
-<script id="michelon-dashboard-sync-v52">
-function renderDashboard(){
-  try{
-    const h=Array.isArray(getHist())?getHist():[], now=new Date();
-    const pad=n=>String(n).padStart(2,'0');
-    const today=`${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}`;
-    const sameLocalDay=(v)=>{
-      if(!v)return false; const d=new Date(v);
-      return !isNaN(d.getTime()) && d.getFullYear()===now.getFullYear() && d.getMonth()===now.getMonth() && d.getDate()===now.getDate();
-    };
-    let viagensHoje=0,aReceber=0,recebidoHoje=0,andamento=0;
-    h.forEach(x=>{
-      const status=String(x.status||'').toLowerCase();
-      if(status==='orcamento')return;
-      const valor=Number(x.valor)||0, recebido=Number(x.recebido)||0;
-      if(['confirmada','pago','em_andamento'].includes(status) && String(x.data||'')===today) viagensHoje++;
-      if(status==='em_andamento') andamento++;
-      if(['confirmada','em_andamento'].includes(status)) aReceber+=Math.max(0,valor-recebido);
-      const rd=dataRecebimentoLocal(x);
-      if(recebido>0 && rd && sameLocalDay(rd.toISOString())){ recebidoHoje+=recebido; }
-    });
-    const set=(id,val)=>{const e=document.getElementById(id);if(e)e.textContent=val;};
-    set('mcStatViagens',String(viagensHoje));
-    set('mcStatReceber',brl(aReceber));
-    set('mcStatRecebido',brl(recebidoHoje));
-    set('mcStatAndamento',String(andamento));
-    const futuras=h.filter(x=>['confirmada','em_andamento'].includes(String(x.status||'').toLowerCase()) && String(x.data||'')>=today)
-      .sort((a,b)=>String(a.data+' '+(a.horaSaida||'')).localeCompare(String(b.data+' '+(b.horaSaida||'')));
-    const next=futuras[0];
-    set('mcNextTitle',next?`${next.cliente||'Cliente'} • ${next.origem||'-'} → ${next.destino||'-'}`:'Nenhuma viagem agendada');
-    set('mcNextInfo',next?`${dataBR(next.data)}${next.horaSaida?' • '+next.horaSaida:''} • ${brl(next.valor||0)}`:'Suas próximas viagens aparecerão aqui.');
-    renderLembreteDashboard(futuras);
-  }catch(e){console.error('Dashboard:',e)}
-}
-
-setInterval(checarLembretes,60000);
-document.addEventListener('DOMContentLoaded',()=>{checarLembretes();});
-</script>
-
 
 <script>
 document.addEventListener('DOMContentLoaded',function(){
@@ -3553,8 +3533,6 @@ function dataISO(v){
 function normalizarEnderecoMichelon(v){
  let s=String(v||'').trim();
  if(!s)return s;
- // A mensagem de cotação pode trazer "Cechi", mas o logradouro oficial em Limeira é "Cecchi".
- if(/^rua\s+hor[aá]cio\s+cechi\b/i.test(s)) s=s.replace(/Cechi\b/i,'Cecchi');
  const cep=(s.match(/\|\s*CEP\s*:\s*([^|]+)/i)||[])[1];
  const num=(s.match(/\|\s*N[º°o]?\s*:\s*([^|]+)/i)||[])[1];
  s=s.replace(/\|\s*CEP\s*:\s*[^|]+/ig,'')
@@ -3586,67 +3564,79 @@ function importarCotacaoRecebida(){
  const box=document.getElementById('textoCotacaoRecebida');
  const txt=(box?.value||'').trim();
  if(!txt){alert('Cole primeiro a mensagem da cotação recebida pelo WhatsApp.');return;}
-
  const md=importarBlocoMichelon(txt);
  if(md){
    const modo=(md.SERVICO||'').toLowerCase()==='urbano'?'urbano':'viagem';
    const mc=document.getElementById('modoCotacao');
    if(mc){mc.value=modo;alternarModoCotacao();}
-   setSeExiste('cliente',md.CLIENTE);
-   setSeExiste('clienteFone',md.WHATSAPP||md.TELEFONE);
    if(modo==='urbano'){
-     setSeExiste('cidadeUrbana',md.CIDADE||'Limeira, SP');
+     setSeExiste('cidadeUrbana',md.CIDADE);
      setSeExiste('enderecoOrigem',normalizarEnderecoMichelon(md.ORIGEM));
      setSeExiste('enderecoDestino',normalizarEnderecoMichelon(md.DESTINO));
-     setSeExiste('enderecoParada',normalizarEnderecoMichelon(md.PARADA));
+     setSeExiste('enderecoParada',md.PARADA);
    }else{
      setSeExiste('origem',normalizarEnderecoMichelon(md.ORIGEM));
      setSeExiste('destino',normalizarEnderecoMichelon(md.DESTINO));
    }
-   setSeExiste('data',dataISO(md.DATA));
+   setSeExiste('data',md.DATA);
    setSeExiste('horaSaida',md.HORA);
-   setSeExiste('passageiros',md.PASSAGEIROS||'1');
+   setSeExiste('passageiros',md.PASSAGEIROS);
    setSeExiste('origemRetorno',normalizarEnderecoMichelon(md.ORIGEM_RETORNO));
    setSeExiste('destinoRetorno',normalizarEnderecoMichelon(md.DESTINO_RETORNO));
-   setSeExiste('dataRetorno',dataISO(md.DATA_RETORNO));
+   setSeExiste('dataRetorno',md.DATA_RETORNO);
    setSeExiste('horaRetorno',md.HORA_RETORNO);
    const iv=document.getElementById('idaVolta');
-   const volta=/ida e volta|retorno|volta/i.test(md.TRAJETO||'');
-   if(iv){iv.value=volta?'sim':'nao';iv.dispatchEvent(new Event('change',{bubbles:true}));if(typeof alternarCamposRetorno==='function')alternarCamposRetorno();}
-   alert('Cotação importada. Vou calcular a rota agora.');
-   setTimeout(()=>{ try{ buscarRota(); }catch(e){ console.error(e); } },350);
+   if(iv && (md.TRAJETO||'').toLowerCase().includes('volta')){
+     iv.value='sim';iv.dispatchEvent(new Event('change',{bubbles:true}));
+     if(typeof alternarCamposRetorno==='function')alternarCamposRetorno();
+     setSeExiste('origemRetorno',normalizarEnderecoMichelon(md.ORIGEM_RETORNO));
+     setSeExiste('destinoRetorno',normalizarEnderecoMichelon(md.DESTINO_RETORNO));
+   }
+   alert('Cotação MICHELON carregada automaticamente. Confira os dados e calcule a rota.');
    return;
  }
 
+
  const c=camposDaMensagem(txt);
- const ehUrbano=/corrida dentro|urbano/i.test(c.servico||txt) && !/viagem entre cidades/i.test(c.servico||'');
+ const ehUrbano=/corrida dentro|urbano/i.test(c.servico||txt) &&
+                !/viagem entre cidades/i.test(c.servico||'');
  const modo=ehUrbano?'urbano':'viagem';
- const mc=document.getElementById('modoCotacao');
- if(mc){mc.value=modo;alternarModoCotacao();}
- setSeExiste('cliente',c.cliente);
- setSeExiste('clienteFone',c.telefone);
+
+ if(document.getElementById('modoCotacao')){
+   document.getElementById('modoCotacao').value=modo;
+   alternarModoCotacao();
+ }
 
  if(modo==='urbano'){
-   setSeExiste('cidadeUrbana',c.cidade||'Limeira, SP');
+   setSeExiste('cidadeUrbana',c.cidade);
    setSeExiste('enderecoOrigem',normalizarEnderecoMichelon(c.origem));
    setSeExiste('enderecoDestino',normalizarEnderecoMichelon(c.destino));
-   setSeExiste('enderecoParada',normalizarEnderecoMichelon(c.parada));
+   setSeExiste('enderecoParada',c.parada);
  }else{
-   setSeExiste('origem',normalizarEnderecoMichelon(c.origem));
-   setSeExiste('destino',normalizarEnderecoMichelon(c.destino));
+   setSeExiste('origem',c.origem);
+   setSeExiste('destino',c.destino);
  }
+
  setSeExiste('data',dataISO(c.data));
  setSeExiste('horaSaida',c.hora);
- setSeExiste('passageiros',c.passageiros||'1');
+ setSeExiste('passageiros',c.passageiros);
 
+ // Detect ida e volta from explicit fields or text.
  const temRetorno=!!(c.origemRetorno||c.destinoRetorno||c.dataRetorno||c.horaRetorno||/ida e volta|retorno/i.test(c.tipo||''));
- const iv=document.getElementById('idaVolta');
- if(iv){iv.value=temRetorno?'sim':'nao';iv.dispatchEvent(new Event('change',{bubbles:true}));if(typeof alternarCamposRetorno==='function')alternarCamposRetorno();}
- setSeExiste('origemRetorno',normalizarEnderecoMichelon(c.origemRetorno||c.destino));
- setSeExiste('destinoRetorno',normalizarEnderecoMichelon(c.destinoRetorno||c.origem));
- setSeExiste('dataRetorno',dataISO(c.dataRetorno||c.data));
+ const tipoEl=document.getElementById('tipoServico')||document.getElementById('tipo')||document.getElementById('trajeto');
+ if(tipoEl&&temRetorno){
+   const opt=[...tipoEl.options].find(o=>/ida e volta|viagem/i.test(o.textContent||'')&&/volta|retorno/i.test(o.textContent||''));
+   if(opt){tipoEl.value=opt.value;tipoEl.dispatchEvent(new Event('change',{bubbles:true}));}
+ }
+
+ // Existing MICHELON return field IDs.
+ setSeExiste('origemRetorno',normalizarEnderecoMichelon(c.origemRetorno));
+ setSeExiste('destinoRetorno',normalizarEnderecoMichelon(c.destinoRetorno));
+ setSeExiste('dataRetorno',dataISO(c.dataRetorno));
  setSeExiste('horaRetorno',c.horaRetorno);
- setSeExiste('retornoData',dataISO(c.dataRetorno||c.data));
+
+ // Some versions use these aliases.
+ setSeExiste('retornoData',dataISO(c.dataRetorno));
  setSeExiste('retornoHora',c.horaRetorno);
 
  const faltam=[];
@@ -3654,10 +3644,11 @@ function importarCotacaoRecebida(){
  if(!c.destino)faltam.push('destino');
  if(!c.data)faltam.push('data');
  if(!c.hora)faltam.push('horário');
- if(faltam.length) alert('Cotação lida, mas não encontrei: '+faltam.join(', ')+'.');
- else {
-   alert(temRetorno?'Cotação de ida e volta importada. Vou calcular a rota agora.':'Cotação importada. Vou calcular a rota agora.');
-   setTimeout(()=>{ try{ buscarRota(); }catch(e){ console.error(e); } },350);
+
+ if(faltam.length){
+   alert('Cotação lida, mas não encontrei: '+faltam.join(', ')+'. Confira a mensagem e complete esses campos.');
+ }else{
+   alert(temRetorno?'Cotação de ida e volta importada. Confira os dados e calcule a rota.':'Cotação importada. Confira os dados e calcule a rota.');
  }
 }
 </script>
@@ -3675,7 +3666,6 @@ document.addEventListener('DOMContentLoaded',function(){
 </script>
 
 
-<script id="michelon-message-fix-v737">
 function gerarMensagemClienteMichelon(){
   const v=id=>String(document.getElementById(id)?.value||'').trim();
   const urbano=v('modoCotacao')==='urbano';
@@ -3702,7 +3692,7 @@ function gerarMensagemClienteMichelon(){
     '_Conforto e segurança em cada destino._',
     '',
     '*ORÇAMENTO DE VIAGEM*',
-    '',
+    '📄 Nº: '+textoNumeroOrcamento(),
     '🚗 *IDA*',
     dataIda ? '📅 Data: '+dataIda : '',
     horaIda ? '🕐 Horário de saída/busca: '+horaIda : '',
@@ -3735,178 +3725,99 @@ function atualizarMensagemClienteMichelon(){
 }
 
 
-
-// Correção V8.57: funções de pendentes precisam permanecer dentro de um <script>
-// para que os onclick inline dos botões possam encontrá-las no escopo global.
+<script>
 const CHAVE_PENDENTES='michelon_orcamentos_pendentes_v1';
 function lerPendentes(){try{return JSON.parse(localStorage.getItem(CHAVE_PENDENTES)||'[]')||[]}catch(e){return []}}
 function gravarPendentes(a){localStorage.setItem(CHAVE_PENDENTES,JSON.stringify(a));renderPendentes()}
-function valCampo(id){return String(document.getElementById(id)?.value||'').trim()}
-function txtCampo(id){return String(document.getElementById(id)?.textContent||'').trim()}
-function snapshotOrcamento(){
- const ids=['cliente','telefone','modoCotacao','cidadeUrbana','enderecoOrigem','enderecoDestino','enderecoParada','origem','destino','idaVolta','origemRetorno','destinoRetorno','data','dataViagem','dataRetorno','horaSaida','horaRetorno','passageiros','tipoServico','obsViagem','kmTotalInput','tempo','pedagios','precoManual','margem','valorKm','sinalPct','formaPagamento'];
- const campos={}; ids.forEach(id=>{const el=document.getElementById(id);if(el)campos[id]=el.value});
- // Guarda o preço de forma robusta. Em algumas versões o preço é exibido em
- // textContent; em outras ele fica em value ou em window._calc.
- const precoEl=document.getElementById('precoSugerido')||document.getElementById('precoFinal')||document.getElementById('preco');
- const precoRaw=(window._calc&&Number(window._calc.preco)>0?String(window._calc.preco):'') ||
-   String(precoEl?.value||'').trim() || String(precoEl?.textContent||'').trim();
- const precoMatch=precoRaw.replace(/[^0-9,.-]/g,'').replace(/\.(?=\d{3}(?:\D|$))/g,'').replace(',','.');
- const precoNum=parseFloat(precoMatch);
- const precoSalvo=Number.isFinite(precoNum)&&precoNum>0?('R$ '+precoNum.toFixed(2).replace('.',',')):precoRaw;
- return {id:'orc_'+Date.now(),salvoEm:new Date().toISOString(),enviadoEm:new Date().toISOString(),status:'Aguardando cliente',cliente:valCampo('cliente')||'Cliente',origem:valCampo('enderecoOrigem')||valCampo('origem'),destino:valCampo('enderecoDestino')||valCampo('destino'),data:valCampo('data')||valCampo('dataViagem'),hora:valCampo('horaSaida'),preco:precoSalvo,mensagem:valCampo('mensagemOrcamento'),campos};
-}
+function camposCompletos(){const c={};document.querySelectorAll('input,select,textarea').forEach(el=>{if(el.id)c[el.id]=el.value});return c}
 function salvarOrcamentoPendente(){
- const o=snapshotOrcamento();
- if(!o.origem||!o.destino){alert('Calcule/preencha o orçamento antes de salvar.');return}
- const a=lerPendentes();
- a.unshift(o);
- gravarPendentes(a);
-
- // Só limpa depois que o orçamento já foi gravado com sucesso em Pendentes.
- alert('Orçamento salvo em Pendentes. A tela será limpa para o próximo cliente.');
- try{
-   limpar()
- }catch(e){
-   console.error('Falha ao limpar cotação automaticamente',e);
- }
+ const c=camposCompletos(), t=window.__trecho2||{};
+ const v2={data:c.dataTrecho2||'',hora:c.horaTrecho2||'',origem:c.origemTrecho2||'',destino:c.destinoTrecho2||'',origemRetorno:c.origemRetornoTrecho2||c.destinoTrecho2||'',destinoRetorno:c.destinoRetornoTrecho2||c.origemTrecho2||'',horaRetorno:c.horaRetornoTrecho2||'',km:Number(c.kmTrecho2)||Number(t.km)||0,pedagios:Number(c.pedagiosTrecho2)||Number(t.pedagios)||0,sec:Number(t.sec)||0};
+ const multi=(c.estruturaCotacao==='multi'||t.data||t.origem||t.destino) && !!(v2.data||v2.origem||v2.destino||t.data||t.origem||t.destino);
+ const v1={data:c.data||'',hora:c.horaSaida||'',origem:c.origem||c.enderecoOrigem||'',destino:c.destino||c.enderecoDestino||'',horaRetorno:c.horaRetorno||'',km:Number(c.kmTotalInput)||0,pedagios:Number(c.pedagios)||0};
+ if(!v1.origem||!v1.destino){alert('Preencha origem e destino antes de salvar.');return}
+ const o={id:'orc_'+Date.now(),numeroOrcamento:c.numeroOrcamento||textoNumeroOrcamento(),salvoEm:new Date().toISOString(),enviadoEm:new Date().toISOString(),status:'Aguardando cliente',cliente:c.cliente||'Cliente',origem:v1.origem,destino:v1.destino,data:v1.data,hora:v1.hora,preco:document.getElementById('precoFinal')?.textContent||'',mensagem:c.mensagemOrcamento||'',campos:c,multi,viagens:multi?[v1,v2]:[v1],trecho2:multi?v2:null};
+ const a=lerPendentes();a.unshift(o);gravarPendentes(a);alert('Orçamento salvo em Pendentes com '+(multi?'as duas viagens.':'a viagem.')+' A cotação continua aberta.');
 }
 function carregarPendente(id){
  const o=lerPendentes().find(x=>x.id===id);if(!o)return;
- Object.entries(o.campos||{}).forEach(([id,v])=>{const el=document.getElementById(id);if(el){el.value=v;el.dispatchEvent(new Event('change',{bubbles:true}))}});
- const msg=document.getElementById('mensagemOrcamento');if(msg&&o.mensagem)msg.value=o.mensagem;
- window.scrollTo({top:0,behavior:'smooth'});
+ const c=o.campos||{};
+ let t=o.trecho2||(o.viagens&&o.viagens[1])||{};
+ // Fallback: if this older pending record has no Trip 2, use the latest complete draft.
+ if(!(t.data||t.origem||t.destino)){
+   try{
+     const raw=localStorage.getItem('michelonCotacaoTesteV13Ultima');
+     if(raw){const d=JSON.parse(raw);const dc=d.campos||{};const dt=d.trecho2||{};
+       if(dt.data||dt.origem||dt.destino){
+         t=dt;
+         Object.keys(dc).forEach(k=>{if(!(k in c))c[k]=dc[k];});
+         c.estruturaCotacao='multi';
+       }
+     }
+   }catch(e){}
+ }
+ const multi=!!(o.multi||t.data||t.origem||t.destino||c.estruturaCotacao==='multi');
+ Object.entries(c).forEach(([k,v])=>{const el=document.getElementById(k);if(el)el.value=v;});
+ const sel=document.getElementById('estruturaCotacao');if(sel)sel.value=multi?'multi':'unico';
+ window.__trecho2={data:t.data||c.dataTrecho2||'',hora:t.hora||c.horaTrecho2||'',origem:t.origem||c.origemTrecho2||'',destino:t.destino||c.destinoTrecho2||'',origemRetorno:t.origemRetorno||c.origemRetornoTrecho2||t.destino||c.destinoTrecho2||'',destinoRetorno:t.destinoRetorno||c.destinoRetornoTrecho2||t.origem||c.origemTrecho2||'',horaRetorno:t.horaRetorno||c.horaRetornoTrecho2||'',km:Number(t.km)||Number(c.kmTrecho2)||0,pedagios:Number(t.pedagios)||Number(c.pedagiosTrecho2)||0,sec:Number(t.sec)||0};
+ const map={data:'dataTrecho2',hora:'horaTrecho2',origem:'origemTrecho2',destino:'destinoTrecho2',origemRetorno:'origemRetornoTrecho2',destinoRetorno:'destinoRetornoTrecho2',horaRetorno:'horaRetornoTrecho2'};
+ Object.entries(map).forEach(([k,id])=>{const el=document.getElementById(id);if(el)el.value=window.__trecho2[k]||'';});
+ if(document.getElementById('kmTrecho2'))document.getElementById('kmTrecho2').value=window.__trecho2.km?window.__trecho2.km.toFixed(1):'';
+ if(document.getElementById('pedagiosTrecho2'))document.getElementById('pedagiosTrecho2').value=window.__trecho2.pedagios?window.__trecho2.pedagios.toFixed(2):'';
+ if(typeof alternarEstruturaCotacao==='function')alternarEstruturaCotacao();
+ const box=document.getElementById('multiTrechosBox');if(box)box.style.display=multi?'block':'none';
+ if(typeof calcular==='function')setTimeout(()=>calcular(false),120);
+ const form=document.getElementById('cotacaoForm');if(form)form.scrollIntoView({behavior:'smooth',block:'start'});else window.scrollTo({top:0,behavior:'smooth'});
+}
+function recuperarUltimaCotacaoCompleta(){
+ try{
+   const raw=localStorage.getItem('michelonCotacaoTesteV13Ultima');
+   if(!raw){alert('Não encontrei uma cotação completa salva neste navegador.');return;}
+   const d=JSON.parse(raw),c=d.campos||d,t=d.trecho2||{};
+   Object.entries(c).forEach(([k,v])=>{const el=document.getElementById(k);if(el)el.value=v;});
+   if(t.data||t.origem||t.destino){
+     const sel=document.getElementById('estruturaCotacao');if(sel)sel.value='multi';
+     window.__trecho2={data:t.data||'',hora:t.hora||'',origem:t.origem||'',destino:t.destino||'',origemRetorno:t.origemRetorno||t.destino||'',destinoRetorno:t.destinoRetorno||t.origem||'',horaRetorno:t.horaRetorno||'',km:Number(t.km)||0,pedagios:Number(t.pedagios)||0,sec:Number(t.sec)||0};
+     const map={data:'dataTrecho2',hora:'horaTrecho2',origem:'origemTrecho2',destino:'destinoTrecho2',origemRetorno:'origemRetornoTrecho2',destinoRetorno:'destinoRetornoTrecho2',horaRetorno:'horaRetornoTrecho2'};
+     Object.entries(map).forEach(([k,id])=>{const el=document.getElementById(id);if(el)el.value=window.__trecho2[k]||'';});
+     if(document.getElementById('kmTrecho2'))document.getElementById('kmTrecho2').value=window.__trecho2.km?window.__trecho2.km.toFixed(1):'';
+     if(document.getElementById('pedagiosTrecho2'))document.getElementById('pedagiosTrecho2').value=window.__trecho2.pedagios?window.__trecho2.pedagios.toFixed(2):'';
+   }
+   alternarEstruturaCotacao();
+   calcular(false);
+   alert(t.data||t.origem||t.destino?'✅ Cotação completa recuperada, incluindo a Viagem 2.':'⚠️ A última cotação salva não contém uma Viagem 2.');
+   document.getElementById('cotacaoForm')?.scrollIntoView({behavior:'smooth',block:'start'});
+ }catch(e){alert('Não foi possível recuperar a cotação salva.');}
 }
 function excluirPendente(id){if(!confirm('Excluir este orçamento pendente?'))return;gravarPendentes(lerPendentes().filter(x=>x.id!==id))}
-function confirmarPendente(id){
-  if(window.__pendenteConfirmando===id)return;
-  window.__pendenteConfirmando=id;
-  try{
-    const pendentes=lerPendentes();
-    const o=pendentes.find(x=>x.id===id);
-    if(!o){ alert('Orçamento pendente não encontrado.'); return; }
-
-    // Confirma diretamente o registro salvo, sem depender dos campos da tela.
-    // IMPORTANTE: cada orçamento pendente recebe um vínculo único (pendenteId).
-    // Assim, um duplo clique, recarregamento ou repetição nunca cria duas viagens
-    // nem dois lançamentos financeiros para o mesmo orçamento.
-    const c=o.campos||{};
-    const num=(v)=>{ const n=parseFloat(String(v??'').replace(',','.')); return Number.isFinite(n)?n:0; };
-    const hist=getHist();
-
-    // Idempotência: se este pendente já foi confirmado, apenas remove o pendente
-    // residual e atualiza as telas. Não cria outro lançamento financeiro.
-    const existente=hist.find(x=>String(x.pendenteId||'')===String(id));
-    if(existente){
-      gravarPendentes(pendentes.filter(x=>x.id!==id));
-      if(typeof renderPendentes==='function')renderPendentes();
-      if(typeof renderAgenda==='function')renderAgenda();
-      if(typeof renderFinanceiro==='function')renderFinanceiro();
-      alert('Este orçamento já foi confirmado. Nenhum lançamento duplicado foi criado.');
-      return;
-    }
-
-    let valorSalvo=num(String(o.preco||'').replace(/[^0-9,.-]/g,''));
-    if(valorSalvo<=0 && o.mensagem){
-      const mm=String(o.mensagem).match(/VALOR(?: TOTAL)?(?: DA VIAGEM)?\s*:?\s*R?\$?\s*([0-9.]+,[0-9]{2})/i);
-      if(mm) valorSalvo=num(mm[1].replace(/\./g,'').replace(',','.'));
-    }
-    const valorAtual=(window._calc&&Number(window._calc.preco))||0;
-    const valor=valorSalvo>0?valorSalvo:valorAtual;
-    if(valor<=0){ alert('O orçamento pendente foi salvo sem o valor da viagem. Vamos abrir a cotação para recalcular e salvar novamente.'); return; }
-
-    const agora=new Date().toISOString();
-    const confirmado={
-      id:Date.now(),
-      numero:'MV-'+new Date().getFullYear()+'-'+String(hist.length+1).padStart(4,'0'),
-      pendenteId:id,
-      criado:agora,
-      origemPendente:o.id,
-      data:c.data||c.dataViagem||o.data||new Date().toISOString().slice(0,10),
-      horaSaida:c.horaSaida||o.hora||'',
-      horaRetorno:c.horaRetorno||'',
-      tipoServico:c.tipoServico||'Viagem',
-      horasDisposicao:num(c.horasDisposicao),
-      obs:c.obsViagem||'',
-      cliente:c.cliente||o.cliente||'Cliente',
-      fone:c.clienteFone||c.telefone||'',
-      origem:c.origem||o.origem||'',
-      destino:c.destino||o.destino||'',
-      valor:valor,
-      custo:(window._calc&&Number(window._calc.custo))||0,
-      passageiros:Math.max(1,num(c.passageiros)||1),
-      valorKm:Math.min(4,Math.max(0,num(c.valorKm))),
-      status:'confirmada',
-      recebido:0,
-      sinalRecebido:0,
-      forma:c.formaPg||c.formaPagamento||''
-    };
-
-    if(temConflito(confirmado)&&!confirm('Já existe uma reserva confirmada nesse horário. Deseja confirmar mesmo assim?')) return;
-
-    hist.unshift(confirmado);
-    setHist(hist);
-    salvarLembretesViagem(confirmado);
-    gravarPendentes(pendentes.filter(x=>x.id!==id));
-    if(typeof renderPendentes==='function')renderPendentes();
-    if(typeof renderAgenda==='function')renderAgenda();
-    if(typeof renderFinanceiro==='function')renderFinanceiro();
-    alert('Cliente confirmado! A viagem foi adicionada à Agenda e entrou uma única vez no Financeiro.');
-  }catch(e){
-    console.error('Erro ao confirmar orçamento pendente:',e);
-    alert('Não foi possível confirmar este orçamento. O pendente foi mantido para não perder os dados.');
-  }finally{
-    window.__pendenteConfirmando=null;
-  }
-}
-
-function formatarDataHoraPendente(iso){
- try{return new Date(iso).toLocaleString('pt-BR',{dateStyle:'short',timeStyle:'short'})}catch(e){return ''}
-}
-function formatarDataPendenteBR(data){
- const s=String(data||'').trim();
- const m=s.match(/^(\d{4})-(\d{2})-(\d{2})$/);
- if(m)return `${m[3]}/${m[2]}/${m[1]}`;
- return s;
-}
-function statusPendente(id,novo){
- const a=lerPendentes(),o=a.find(x=>x.id===id);if(!o)return;
- o.status=novo;gravarPendentes(a);
-}
-
-function renderPendentes(){
- const box=document.getElementById('listaOrcamentosPendentes');if(!box)return;const a=lerPendentes();
- if(!a.length){box.innerHTML='<div class="muted">Nenhum orçamento aguardando confirmação.</div>';return}
- box.innerHTML=a.map(o=>`<div style="border:1px solid #dbe2ea;border-radius:12px;padding:12px;margin:10px 0;background:#fff">
- <div style="display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap">
-  <b>${o.cliente||'Cliente'}</b>
-  <span style="font-weight:800">${o.status||'Aguardando cliente'}</span>
- </div>
- <span>${o.origem||'-'} → ${o.destino||'-'}</span><br>
- <small>${formatarDataPendenteBR(o.data)}${o.hora?' • '+o.hora:''}${o.preco?' • '+o.preco:''}</small><br>
- <small>📤 Enviado em: ${formatarDataHoraPendente(o.enviadoEm||o.salvoEm)}</small>
- <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:9px">
-  <button type="button" onclick="carregarPendente('${o.id}')">📂 Abrir</button>
-  <button type="button" onclick="confirmarPendente('${o.id}')">✅ Cliente confirmou</button>
-  <button type="button" onclick="statusPendente('${o.id}','Recusado')">❌ Recusado</button>
-  <button type="button" onclick="excluirPendente('${o.id}')">🗑️ Excluir</button>
- </div>
-</div>`).join('');
-}
-document.addEventListener('DOMContentLoaded',function(){renderPendentes();if(typeof renderDashboard==='function')renderDashboard();});
-// Exposição explícita para os onclick dos botões.
-window.lerPendentes=lerPendentes;
-window.gravarPendentes=gravarPendentes;
-window.snapshotOrcamento=snapshotOrcamento;
-window.salvarOrcamentoPendente=salvarOrcamentoPendente;
-window.carregarPendente=carregarPendente;
-window.confirmarPendente=confirmarPendente;
-window.excluirPendente=excluirPendente;
-window.statusPendente=statusPendente;
-window.renderPendentes=renderPendentes;
+function confirmarPendente(id){carregarPendente(id);setTimeout(()=>{if(typeof window.confirmarViagem==='function'){window.confirmarViagem();gravarPendentes(lerPendentes().filter(x=>x.id!==id))}else alert('Orçamento carregado. Agora toque em Confirmar viagem.');},150)}
+function statusPendente(id,novo){const a=lerPendentes(),o=a.find(x=>x.id===id);if(!o)return;o.status=novo;gravarPendentes(a)}
+function formatarDataPendenteBR(data){const s=String(data||'').trim(),m=s.match(/^(\d{4})-(\d{2})-(\d{2})$/);return m?`${m[3]}/${m[2]}/${m[1]}`:s}
+function renderPendentes(){const box=document.getElementById('listaOrcamentosPendentes');if(!box)return;const a=lerPendentes();if(!a.length){box.innerHTML='<div class="muted">Nenhum orçamento aguardando confirmação.</div>';return}box.innerHTML=a.map(o=>{const v2=o.viagens?.[1]||o.trecho2;const datas=v2&&v2.data?`${formatarDataPendenteBR(o.data)} + ${formatarDataPendenteBR(v2.data)}`:formatarDataPendenteBR(o.data);return `<div style="border:1px solid #dbe2ea;border-radius:12px;padding:12px;margin:10px 0;background:#fff"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap"><b>${o.numeroOrcamento||''} — ${o.cliente||'Cliente'}</b><span style="font-weight:800">${o.status||'Aguardando cliente'}</span></div><span>${o.origem||'-'} → ${o.destino||'-'}</span><br><small>📅 ${datas}${o.hora?' • '+o.hora:''}${o.preco?' • '+o.preco:''}</small><br><div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:9px"><button type="button" onclick="carregarPendente('${o.id}')">📂 Abrir</button><button type="button" onclick="confirmarPendente('${o.id}')">✅ Cliente confirmou</button><button type="button" onclick="statusPendente('${o.id}','Recusado')">❌ Recusado</button><button type="button" onclick="excluirPendente('${o.id}')">🗑️ Excluir</button></div></div>`}).join('')}
+document.addEventListener('DOMContentLoaded',renderPendentes);
 </script>
 
 
+<script id="michelon-final-recovery-v25">
+(function(){
+  function restoreDraft(){
+    try{
+      const s=localStorage.getItem('michelonCotacaoTesteV13Ultima');if(!s)return;
+      const o=JSON.parse(s);const c=o.campos||o;
+      Object.keys(c).forEach(id=>{const el=document.getElementById(id);if(el)el.value=c[id]});
+      const t=o.trecho2||{};window.__trecho2={data:t.data||c.dataTrecho2||'',hora:t.hora||c.horaTrecho2||'',origem:t.origem||c.origemTrecho2||'',destino:t.destino||c.destinoTrecho2||'',origemRetorno:t.origemRetorno||c.origemRetornoTrecho2||t.destino||c.destinoTrecho2||'',destinoRetorno:t.destinoRetorno||c.destinoRetornoTrecho2||t.origem||c.origemTrecho2||'',horaRetorno:t.horaRetorno||c.horaRetornoTrecho2||'',km:Number(t.km)||Number(c.kmTrecho2)||0,pedagios:Number(t.pedagios)||Number(c.pedagiosTrecho2)||0,sec:Number(t.sec)||0};
+      const sel=document.getElementById('estruturaCotacao');if(sel&& (window.__trecho2.data||window.__trecho2.origem||window.__trecho2.destino))sel.value='multi';
+      if(typeof alternarEstruturaCotacao==='function')alternarEstruturaCotacao();
+      ['dataTrecho2','horaTrecho2','origemTrecho2','destinoTrecho2','origemRetornoTrecho2','destinoRetornoTrecho2','horaRetornoTrecho2'].forEach(id=>{const key=id.replace('Trecho2','');const el=document.getElementById(id);if(el&&window.__trecho2[key])el.value=window.__trecho2[key]});
+      if(document.getElementById('kmTrecho2'))document.getElementById('kmTrecho2').value=window.__trecho2.km?window.__trecho2.km.toFixed(1):'';
+      if(document.getElementById('pedagiosTrecho2'))document.getElementById('pedagiosTrecho2').value=window.__trecho2.pedagios?window.__trecho2.pedagios.toFixed(2):'';
+      if(typeof calcular==='function')calcular(false);
+    }catch(e){console.warn('Recuperação da cotação:',e)}
+  }
+  function fixWhats(){const a=document.getElementById('whats');if(!a)return;a.onclick=function(){try{const wn=String(document.getElementById('clienteFone')?.value||'').replace(/\D/g,'');const msg=document.getElementById('mensagem')?.value||'';if(!msg){alert('Gere o orçamento antes de enviar pelo WhatsApp.');return false;}const base='https://web.whatsapp.com/send';const url=base+(wn?'?phone='+(wn.startsWith('55')?wn:'55'+wn)+'&text=':'?text=')+encodeURIComponent(msg);a.target='_blank';a.rel='noopener noreferrer';a.href=url;return true;}catch(e){alert('Não foi possível preparar o WhatsApp. Use Copiar orçamento para copiar a mensagem.');return false;}};a.target='_blank';a.rel='noopener noreferrer';a.href='#';}
+  document.addEventListener('DOMContentLoaded',function(){setTimeout(restoreDraft,80);});
+})();
+</script>
 <script id="michelon-driver-guard-v7214">
 (function(){
   function reforcarModoMotorista(){
@@ -3974,72 +3885,11 @@ function mxIr(id){
       </div>
       <div class="mcCardActions">
         <button onclick="mcCopyCard()">🔗 Copiar cartão</button>
-        <button class="gold" onclick="window.open('https://andersonmichelon08-dev.github.io/cartao-michelon/','_blank')">📇 Abrir cartão</button>
+        <button class="gold" onclick="mcCloseCard();setTimeout(function(){var el=document.getElementById('cotacaoForm');if(el){el.scrollIntoView({behavior:'smooth',block:'start'});var c=el.querySelector('input,select,textarea');if(c)setTimeout(function(){c.focus();},500);}},80)">🚐 Solicitar cotação</button>
       </div>
-      <a class="mcBudgetBtn" href="https://wa.me/5519992462362?text=Ol%C3%A1!%20Gostaria%20de%20solicitar%20um%20or%C3%A7amento%20de%20viagem." target="_blank" rel="noopener">💬 Solicitar orçamento</a>
     </div>
   </div>
 </div>
-
-
-<!-- RASCUNHO CONSOLIDADO: menu e rodapé reorganizados -->
-<div id="michelonNewMenu" onclick="if(event.target===this)mcCloseNewMenu()">
-  <div id="michelonMenuSheet" role="dialog" aria-label="Menu MICHELON">
-    <div id="michelonMenuHandle"></div>
-    <button id="michelonMenuClose" onclick="mcCloseNewMenu()" aria-label="Voltar e fechar menu">×</button>
-    <div id="michelonMenuTitle">☰ Menu MICHELON</div>
-    <div class="mcMenuGrid">
-      <button class="mcMenuItem" onclick="mcNewGo('quote')"><span>📋</span><b>Cotações</b></button>
-      <button class="mcMenuItem" onclick="mcNewGo('mxAgenda')"><span>📅</span><b>Agenda</b></button>
-      <button class="mcMenuItem" onclick="mcNewGo('mxFinanceiro')"><span>💰</span><b>Financeiro</b></button>
-      <button class="mcMenuItem" onclick="mcNewGo('mxUber')"><span>🚗</span><b>Uber / Apps</b></button>
-      <button class="mcMenuItem" onclick="mcNewGo('cardFloat')"><span>📇</span><b>Meu Cartão</b></button>
-      <button class="mcMenuItem" onclick="mcNewGo('trip')"><span>🏁</span><b>Viagem em andamento</b></button>
-      <button class="mcMenuItem" onclick="mcNewGo('costs')"><span>⛽</span><b>Custos da viagem</b></button>
-      <button class="mcMenuItem" onclick="mcNewGo('reports')"><span>📊</span><b>Relatórios</b></button>
-      <button class="mcMenuItem" onclick="mcNewGo('settings')"><span>⚙️</span><b>Configurações</b></button>
-    </div>
-  </div>
-</div>
-
-<nav id="michelonNewBottom" aria-label="Navegação principal MICHELON">
-  <div id="michelonNewNav">
-    <button class="active" onclick="mcNewGo('home')"><span>🏠</span>Início</button>
-    <button onclick="mcNewGo('mxAgenda')"><span>📅</span>Agenda</button>
-    <button onclick="mcNewGo('mxFinanceiro')"><span>💰</span>Financeiro</button>
-    <button onclick="mcNewGo('mxUber')"><span>🚗</span>Apps</button>
-    <button onclick="mcOpenNewMenu()"><span>☰</span>Menu</button>
-  </div>
-</nav>
-
-<script id="michelon-projeto-consolidado-menu-js">
-function mcOpenNewMenu(){
-  const m=document.getElementById('michelonNewMenu');
-  if(m){m.classList.add('open');document.body.style.overflow='hidden';}
-}
-function mcCloseNewMenu(){
-  const m=document.getElementById('michelonNewMenu');
-  if(m){m.classList.remove('open');document.body.style.overflow='';}
-}
-function mcNewGo(id){
-  mcCloseNewMenu();
-  document.querySelectorAll('#michelonNewNav button').forEach(b=>b.classList.remove('active'));
-  if(id==='home'){window.scrollTo({top:0,behavior:'smooth'});return;}
-  if(id==='quote'){
-    if(typeof toggleCotacaoImport==='function') toggleCotacaoImport();
-    return;
-  }
-  if(id==='cardFloat'){
-    if(typeof mcOpenCard==='function') mcOpenCard();
-    return;
-  }
-  if(['trip','costs','reports','settings'].includes(id)){
-    alert('Esta área será ligada na próxima etapa do projeto consolidado.');
-    return;
-  }
-  if(typeof mcGo==='function') mcGo(id);
-}
-</script>
 
 <nav class="mcBottom" aria-label="Navegação principal">
 <div class="mcNav">
@@ -4048,7 +3898,7 @@ function mcNewGo(id){
 <button onclick="mcGo('mxFinanceiro')"><i>💰</i>Financeiro</button>
 <button onclick="mcGo('mxUber')"><i>🚕</i>Uber / Apps</button>
 <button onclick="mcGo('cardFloat')"><i>📇</i>Cartão</button>
-<button onclick="toggleCotacaoImport()" aria-label="Nova cotação"><i>📥</i>Cotação</button>
+<button onclick="abrirAreaCotacao()" aria-label="Cotação"><i>📥</i>Cotação</button>
 </div>
 </nav>
 
@@ -4107,16 +3957,25 @@ function toggleCotacaoImport(){
   if(w.classList.contains('open')){
     setTimeout(function(){
       w.scrollIntoView({behavior:'smooth',block:'start'});
-      var t=document.getElementById('textoCotacaoRecebida');
-      if(t)t.focus();
-    },80);
+    },50);
   }
+}
+</script>
+
+<script id="michelon-cotacao-nav-fix-v25">
+function abrirAreaCotacao(){
+  var w=document.getElementById('cotacaoImportWrap');
+  if(w) w.style.display='block';
+  var el=document.getElementById('cotacaoForm') || w;
+  if(el) setTimeout(function(){el.scrollIntoView({behavior:'smooth',block:'start'});},50);
+  var box=document.getElementById('textoCotacaoRecebida');
+  if(box) setTimeout(function(){box.focus();},350);
 }
 </script>
 
 
 <script id="michelon-home-order-js-v7273">
-function toggleCotacaoImportLegacy(){
+function toggleCotacaoImport(){
   var w=document.getElementById('cotacaoImportWrap');
   if(!w)return;
   w.classList.toggle('open');
@@ -4169,268 +4028,732 @@ function toggleCotacaoImportLegacy(){
   document.addEventListener('DOMContentLoaded',padronizarTopoCartao);
   setTimeout(padronizarTopoCartao,100);
 })();
-
-function limparCotacaoCompleta(){
-  const form = document.querySelector('form');
-  if(form) form.reset();
-
-  // Defaults requested for normal operation
-  if($('tipoComb')) $('tipoComb').value='etanol';
-  if($('consumo')) $('consumo').value='10';
-  if($('retornoMotorista')) $('retornoMotorista').value='sim';
-  if($('destinoRetornoMotorista')) $('destinoRetornoMotorista').value='';
-
-  // Clear route/calculation fields
-  ['kmTotalInput','tempo','pedagios','precoComb','valorCobrancaKm','precoKm',
-   'valorFinal','valorPassageiro','custoTotal','combustivel','lucroEstimado'].forEach(id=>{
-    const el=$(id); if(el && el.tagName==='INPUT') el.value='';
-    else if(el) el.textContent='';
-  });
-
-  // Clear textareas / generated message
-  document.querySelectorAll('textarea').forEach(el=>el.value='');
-  ['mensagemOrcamento','status','statusRota','rotaStatus'].forEach(id=>{
-    const el=$(id); if(el) el.textContent='';
-  });
-
-  // Remove address suggestions / validation messages
-  document.querySelectorAll('.autocomplete-list,.suggestions,.address-suggestions').forEach(el=>el.remove());
-  document.querySelectorAll('[data-editado]').forEach(el=>el.removeAttribute('data-editado'));
-
-  // Clear saved draft data so the old quote does not come back
-  try{
-    Object.keys(localStorage).filter(k=>/michelon|cotacao|orcamento/i.test(k))
-      .forEach(k=>localStorage.removeItem(k));
-  }catch(e){}
-
-  if(typeof alternarModoCotacao==='function') alternarModoCotacao();
-  if(typeof alternarCamposRetorno==='function') alternarCamposRetorno();
-  if(typeof alternarRetornoMotorista==='function') alternarRetornoMotorista();
-  if(typeof atualizarCalculo==='function') atualizarCalculo();
-  if(typeof gerarMensagemClienteMichelon==='function') gerarMensagemClienteMichelon();
-
-  window.scrollTo({top:0,behavior:'smooth'});
-  alert('Cotação limpa. Os campos foram resetados.');
-}
-
 </script>
 
 
 
 
-<script>
-document.addEventListener('DOMContentLoaded', function(){
-  const q = (sel) => document.querySelector(sel);
-  const findText = (txt) => [...document.querySelectorAll('button,div,h2,h3,h4,label')].find(el => (el.textContent||'').trim().includes(txt));
-
-  const kmBtn = [...document.querySelectorAll('button')].find(b => (b.textContent||'').includes('Buscar KM'));
-  const clearBtn = document.getElementById('btnLimparCotacao') ||
-                   [...document.querySelectorAll('button')].find(b => (b.textContent||'').toLowerCase().includes('limpar cotação'));
-  const priceEl = findText('Preço sugerido');
-  const msgEl = findText('Mensagem do orçamento');
-
-  if(!kmBtn || !clearBtn || !priceEl) return;
-
-  // Identify the card/section containing the price suggestion.
-  let priceSection = priceEl;
-  while(priceSection.parentElement && !/Preço sugerido/.test(priceSection.parentElement.textContent||'')){
-    priceSection = priceSection.parentElement;
-  }
-
-  // Identify the main action/button container around the existing KM button.
-  let actionBox = kmBtn.parentElement;
-  while(actionBox.parentElement && actionBox.parentElement.children.length <= 3){
-    actionBox = actionBox.parentElement;
-  }
-
-  // Put the two operational buttons together, immediately after the price area.
-  const actionWrap = document.createElement('div');
-  actionWrap.id='acoesCotacaoProfissionais';
-  actionWrap.className='acoes-cotacao-profissionais';
-  actionWrap.appendChild(kmBtn);
-  actionWrap.appendChild(clearBtn);
-
-  // Insert after the price section/card, before the message.
-  const insertionParent = priceSection.parentElement || priceSection;
-  insertionParent.appendChild(actionWrap);
-
-  // Move the generated budget message after the action buttons, if found.
-  if(msgEl){
-    let msgSection = msgEl;
-    while(msgSection.parentElement && !/Mensagem do orçamento/.test(msgSection.parentElement.textContent||'')){
-      msgSection = msgSection.parentElement;
+<style id="michelon-multi-viagens-v8">
+/* V8 — deixa a primeira viagem claramente identificada quando o cliente escolhe múltiplas viagens */
+#viagem1Titulo{display:none;margin:12px 0 10px;padding:12px 14px;border-radius:14px;background:#fbfaf6;border:1px solid #d8d0bd;color:#117f79;font-weight:950;font-size:16px}
+#viagem1Titulo .sub{display:block;color:#64748b;font-size:12px;font-weight:600;margin-top:3px}
+#multiTrechosBox .multiCard{margin-top:12px}
+#multiTrechosBox .multiHead{font-size:16px}
+#multiTrechosBox .multiHead:before{content:'Viagem 2 — ';}
+#multiTrechosBox .multiHead{font-size:0}
+#multiTrechosBox .multiHead:before{font-size:16px}
+#multiTrechosBox .multiHead{line-height:1.25}
+@media(max-width:700px){#viagem1Titulo{font-size:15px}}
+</style>
+<script id="michelon-multi-viagens-v8-js">
+(function(){
+  function prepararMulti(){
+    var sel=document.getElementById('estruturaCotacao');
+    var base=document.getElementById('viagem1Titulo');
+    var origem=document.getElementById('viagemOrigem');
+    if(!sel||!origem)return;
+    if(!base){
+      base=document.createElement('div');
+      base.id='viagem1Titulo';
+      base.innerHTML='🚐 Viagem 1 <span class="sub">Primeira viagem da solicitação — ida e retorno</span>';
+      origem.parentNode.insertBefore(base,origem);
     }
-    actionWrap.after(msgSection);
+    base.style.display=sel.value==='multi'?'block':'none';
   }
-});
+  document.addEventListener('DOMContentLoaded',function(){
+    prepararMulti();
+    var sel=document.getElementById('estruturaCotacao');
+    if(sel)sel.addEventListener('change',prepararMulti);
+  });
+  setTimeout(prepararMulti,200);
+})();
 </script>
 
-<script id="layoutCotacaoFinal">
-document.addEventListener('DOMContentLoaded', function(){
-  const all = (sel) => [...document.querySelectorAll(sel)];
-  const btns = all('button');
-
-  const findBtn = (text) => btns.find(b => (b.textContent||'').includes(text));
-  const kmBtn = findBtn('Buscar KM grátis');
-  const clearBtn = document.getElementById('btnLimparCotacao') || findBtn('Limpar cotação');
-  const calcBtn = findBtn('Calcular e gerar orçamento');
-  const copyBtn = findBtn('Copiar orçamento');
-  const saveBtn = findBtn('Salvar orçamento');
-  const pendingBtn = findBtn('Salvar como pendente');
-  const registerBtn = findBtn('Registrar viagem');
-
-  const msgLabel = [...document.querySelectorAll('label')].find(e => (e.textContent||'').trim()==='Mensagem do orçamento');
-  if(!msgLabel || !kmBtn || !clearBtn) return;
-
-  // The card containing the message textarea.
-  const msgCard = msgLabel.closest('.card') || msgLabel.parentElement;
-  const price = document.getElementById('precoFinal');
-  const priceCard = price ? (price.closest('.card') || price.parentElement) : null;
-
-  // Put all action buttons in one clean block directly before the message.
-  const actions = document.createElement('div');
-  actions.id='acoesCotacaoUnificadas';
-  actions.className='acoes-cotacao-unificadas';
-
-  const routeRow=document.createElement('div');
-  routeRow.className='acoes-rota';
-  routeRow.append(kmBtn, clearBtn);
-  actions.append(routeRow);
-
-  const quoteRow=document.createElement('div');
-  quoteRow.className='acoes-orcamento';
-  [calcBtn,copyBtn,saveBtn,pendingBtn,registerBtn].filter(Boolean).forEach(b=>quoteRow.appendChild(b));
-  actions.append(quoteRow);
-
-  // Insert after the price card so the price is immediately followed by the
-  // operational buttons, and the message comes after every action.
-  if(priceCard && priceCard.parentElement){
-    priceCard.parentElement.insertBefore(actions, msgCard);
-  }else if(msgCard.parentElement){
-    msgCard.parentElement.insertBefore(actions, msgCard);
+<style id="michelon-autocomplete-robust-v9">
+.citywrap{position:relative!important}
+.citylist{z-index:100000!important;top:100%!important;left:0!important;right:0!important;background:#fff!important;border:1px solid #cbd5e1!important;border-radius:12px!important;box-shadow:0 12px 28px rgba(15,23,42,.18)!important;max-height:280px!important;overflow:auto!important}
+.cityitem{display:block!important;padding:12px 14px!important;background:#fff!important;color:#0f172a!important;font-size:15px!important;cursor:pointer!important}
+.cityitem:hover,.cityitem:active{background:#eef6f5!important}
+</style>
+<script id="michelon-autocomplete-robust-v9-js">
+(function(){
+  const FIXOS=[
+    'Limeira, SP','Campinas, SP','Viracopos, Campinas, SP','Aeroporto Internacional de Viracopos, Campinas, SP',
+    'Guarulhos, SP','Aeroporto Internacional de São Paulo/Guarulhos, Guarulhos, SP',
+    'São Paulo, SP','Aeroporto de Congonhas, São Paulo, SP','Sorocaba, SP','Jundiaí, SP',
+    'Americana, SP','Piracicaba, SP','Rio Claro, SP','Indaiatuba, SP','Paulínia, SP',
+    'Hortolândia, SP','Sumaré, SP','Nova Odessa, SP','Valinhos, SP','Vinhedo, SP'
+  ];
+  function nrm(s){return String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim()}
+  function ensureList(inp){
+    let box=inp.parentElement.querySelector('.mxAutoList');
+    if(!box){
+      box=document.createElement('div'); box.className='citylist mxAutoList';
+      inp.parentElement.appendChild(box);
+    }
+    return box;
   }
-
-  // Remove the old empty wrapper effects around moved buttons where possible.
-  // Keep status/toll/calculation areas intact; only buttons are reordered.
-
-  // Make the message card visually read as the final communication step.
-  msgCard.classList.add('mensagem-final-cotacao');
-});
+  function show(inp){
+    const q=String(inp.value||'').trim(); const box=ensureList(inp);
+    if(q.length<2){box.style.display='none';return}
+    const nq=nrm(q);
+    const out=FIXOS.filter(x=>nrm(x).includes(nq));
+    box.innerHTML='';
+    out.slice(0,10).forEach(v=>{
+      const d=document.createElement('div'); d.className='cityitem'; d.textContent=v;
+      d.addEventListener('mousedown',e=>{e.preventDefault(); inp.value=v; box.style.display='none'; try{preencherRetornoPadrao(false)}catch(_){} try{$('maps').href=mapsLink()}catch(_){} });
+      box.appendChild(d);
+    });
+    box.style.display=out.length?'block':'none';
+  }
+  function bind(id){
+    const inp=document.getElementById(id); if(!inp||inp.dataset.mxAuto==='1')return;
+    inp.dataset.mxAuto='1'; inp.setAttribute('autocomplete','off');
+    inp.addEventListener('input',()=>show(inp));
+    inp.addEventListener('focus',()=>show(inp));
+  }
+  function bindAll(){
+    ['origem','destino','origemRetorno','destinoRetorno','origemTrecho2','destinoTrecho2','origemRetornoTrecho2','destinoRetornoTrecho2'].forEach(bind);
+  }
+  document.addEventListener('click',e=>{
+    if(!e.target.closest('.citywrap')) document.querySelectorAll('.mxAutoList').forEach(x=>x.style.display='none');
+  });
+  document.addEventListener('DOMContentLoaded',bindAll);
+  setTimeout(bindAll,300); setTimeout(bindAll,1000);
+})();
 </script>
 
-<script id="michelon-dashboard-final-sync-v50">
+
+<style id="michelon-multi-v10-fix">
+#multiTrechosBox.mxMultiForce{display:block!important}
+#viagem1Titulo.mxMultiTitle{display:block!important;margin:12px 0 10px;padding:12px 14px;border-radius:14px;background:#fbfaf6;border:1px solid #d8d0bd;color:#117f79;font-weight:950;font-size:16px}
+#viagem1Titulo.mxMultiTitle .sub{display:block;color:#64748b;font-size:12px;font-weight:600;margin-top:3px}
+</style>
+<script id="michelon-multi-v10-fix-js">
+(function(){
+  function syncMulti(){
+    var sel=document.getElementById('estruturaCotacao');
+    var box=document.getElementById('multiTrechosBox');
+    var origem=document.getElementById('viagemOrigem');
+    if(!sel||!box||!origem)return;
+    var multi=sel.value==='multi';
+    box.classList.toggle('mxMultiForce',multi);
+    box.style.setProperty('display',multi?'block':'none','important');
+    var title=document.getElementById('viagem1Titulo');
+    if(multi){
+      if(!title){
+        title=document.createElement('div'); title.id='viagem1Titulo';
+        title.innerHTML='🚐 Viagem 1 <span class="sub">Primeira viagem da solicitação — ida e retorno</span>';
+        origem.parentNode.insertBefore(title,origem);
+      }
+      title.classList.add('mxMultiTitle'); title.style.setProperty('display','block','important');
+    }else if(title){ title.classList.remove('mxMultiTitle'); title.style.removeProperty('display'); }
+  }
+  document.addEventListener('DOMContentLoaded',function(){
+    var sel=document.getElementById('estruturaCotacao');
+    if(sel)sel.addEventListener('change',function(){setTimeout(syncMulti,0);});
+    syncMulti();
+    setTimeout(syncMulti,200); setTimeout(syncMulti,800);
+  });
+})();
+</script>
+
+<style id="michelon-multi-v11-fix">
+#multiTrechosBox.mxMultiForce{display:block!important}
+#multiTrechosBox .multiCard{display:block!important}
+</style>
+<script id="michelon-multi-v11-fix-js">
 (function(){
   function sync(){
-    try{
-      if(typeof renderFinanceiro==='function') renderFinanceiro();
-      if(typeof renderAgenda==='function') renderAgenda();
-      if(typeof renderDashboard==='function') renderDashboard();
-    }catch(e){}
+    var sel=document.getElementById('estruturaCotacao');
+    var box=document.getElementById('multiTrechosBox');
+    if(!sel||!box)return;
+    var multi=sel.value==='multi';
+    box.style.setProperty('display',multi?'block':'none','important');
+    box.classList.toggle('mxMultiForce',multi);
   }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){setTimeout(sync,80);});
-  else setTimeout(sync,80);
-})();
-</script>
-
-<script id="michelon-final-dashboard-refresh-v51">
-(function(){
-  function refresh(){ try{ if(typeof renderDashboard==='function') renderDashboard(); if(typeof renderFinanceiro==='function') renderFinanceiro(); }catch(e){} }
-  document.addEventListener('visibilitychange',function(){if(!document.hidden)refresh();});
-  window.addEventListener('pageshow',refresh);
-  setTimeout(refresh,250);
-  setTimeout(refresh,1000);
-})();
-</script>
-<script id="michelon-dashboard-robust-sync-v52">
-(function(){
-  function r(){try{if(typeof renderDashboard==='function')renderDashboard();if(typeof renderFinanceiro==='function')renderFinanceiro();}catch(e){}}
-  window.addEventListener('storage',r);
-  document.addEventListener('visibilitychange',function(){if(!document.hidden)r();});
-  window.addEventListener('pageshow',r);
-  setTimeout(r,100);setTimeout(r,500);setTimeout(r,1500);
-})();
-</script>
-
-<script id="michelon-v53-unified-dashboard">
-(function(){
-  function hist(){try{return JSON.parse(localStorage.getItem('michelonHistoricoV5')||'[]')||[]}catch(e){return[]}}
-  function br(v){try{return brl(v)}catch(e){return Number(v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}}
-  function localDate(iso){ if(!iso)return null; const d=new Date(iso); return isNaN(d)?null:d; }
-  function dayKey(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
-  function render(){
-    const now=new Date(), today=dayKey(now), h=hist();
-    let viagens=0, receber=0, recebidoHoje=0, andamento=0;
-    h.forEach(x=>{
-      const st=String(x.status||'').toLowerCase(), valor=Number(x.valor)||0, rec=Number(x.recebido)||0;
-      // Dashboard: viagens agendadas = confirmadas/em andamento a partir de hoje.
-      if(['confirmada','em_andamento'].includes(st) && String(x.data||'')>=today) viagens++;
-      if(st==='em_andamento') andamento++;
-      if(['confirmada','em_andamento'].includes(st)) receber+=Math.max(0,valor-rec);
-      const rd=localDate(x.recebidoEm||x.ultimoRecebimentoEm||x.pagoEm);
-      if(rd && dayKey(rd)===today && rec>0) recebidoHoje+=rec;
-    });
-    const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
-    set('mcStatViagens',String(viagens)); set('mcStatReceber',br(receber)); set('mcStatRecebido',br(recebidoHoje)); set('mcStatAndamento',String(andamento));
-    const futuras=h.filter(x=>['confirmada','em_andamento'].includes(String(x.status||'').toLowerCase()) && String(x.data||'')>=today)
-      .sort((a,b)=>String(a.data+' '+(a.horaSaida||'')).localeCompare(String(b.data+' '+(b.horaSaida||''))));
-    const n=futuras[0];
-    set('mcNextTitle',n?`${n.cliente||'Cliente'} • ${n.origem||'-'} → ${n.destino||'-'}`:'Nenhuma viagem agendada');
-    set('mcNextInfo',n?`${dataBR(n.data)}${n.horaSaida?' • '+n.horaSaida:''} • ${br(n.valor||0)}`:'Suas próximas viagens aparecerão aqui.');
-    renderReminderBox(futuras);
-  }
-  function renderReminderBox(futuras){
-    const box=document.getElementById('mcReminderBox'); if(!box)return;
-    const n=futuras[0];
-    const enabled=localStorage.getItem('michelonNotifyEnabled')==='1';
-    box.innerHTML=`<div style="font-weight:900;font-size:15px">🔔 Lembretes de viagem</div>
-      <div style="margin-top:5px;color:#64748b;font-size:12px">${n?`Próxima: <b>${n.cliente||'Cliente'}</b> • ${dataBR(n.data)}${n.horaSaida?' às '+n.horaSaida:''}`:'Nenhuma viagem confirmada para lembrar.'}</div>
-      <button id="mcNotifyBtn" style="margin-top:9px;width:100%;min-height:44px;border:0;border-radius:12px;background:#116e68;color:#fff;font-weight:900">${enabled?'✅ Lembretes ativados':'🔔 Ativar notificações'}</button>
-      <div style="margin-top:5px;color:#64748b;font-size:11px">Avisos: 24h, 3h e 30min antes da viagem.</div>`;
-    const btn=document.getElementById('mcNotifyBtn');
-    btn.onclick=async function(){
-      try{
-        if(!('Notification' in window)){alert('Este navegador não disponibiliza notificações neste ambiente.');return;}
-        const p=await Notification.requestPermission();
-        if(p==='granted'){localStorage.setItem('michelonNotifyEnabled','1');alert('✅ Notificações ativadas.');render();checkReminders();}
-        else alert('As notificações não foram autorizadas.');
-      }catch(e){alert('Para ativar notificações, abra o aplicativo pelo endereço publicado/instalado, não como arquivo local.');}
-    };
-  }
-  function checkReminders(){
-    if(localStorage.getItem('michelonNotifyEnabled')!=='1' || !('Notification' in window) || Notification.permission!=='granted')return;
-    const now=Date.now(), h=hist();
-    h.filter(x=>['confirmada','em_andamento'].includes(String(x.status||'').toLowerCase())).forEach(x=>{
-      const t=Date.parse(String(x.data||'')+'T'+String(x.horaSaida||'00:00')+':00'); if(isNaN(t))return;
-      [86400000,10800000,1800000].forEach(off=>{
-        const key='michelonReminder:'+x.id+':'+off, due=t-off;
-        if(Math.abs(now-due)<90000 && !localStorage.getItem(key)){
-          localStorage.setItem(key,'1'); new Notification('MICHELON — Lembrete de viagem',{body:`${x.cliente||'Cliente'} • ${x.origem||'-'} → ${x.destino||'-'} • ${x.horaSaida||''}`});
-        }
+  function bindSecond(){
+    var ids=['origemTrecho2','destinoTrecho2','origemRetornoTrecho2','destinoRetornoTrecho2'];
+    ids.forEach(function(id){
+      var inp=document.getElementById(id);
+      if(!inp||inp.dataset.mxAuto11==='1')return;
+      inp.dataset.mxAuto11='1';
+      inp.setAttribute('autocomplete','off');
+      inp.addEventListener('input',function(){
+        var q=(inp.value||'').trim().toLowerCase();
+        var box=inp.parentElement.querySelector('.citylist');
+        if(!box)return;
+        var fixed=['Limeira, SP','Viracopos, Campinas, SP','Aeroporto Internacional de Viracopos, Campinas, SP','Campinas, SP','Guarulhos, SP','Aeroporto Internacional de São Paulo/Guarulhos, Guarulhos, SP','São Paulo, SP','Aeroporto de Congonhas, São Paulo, SP','Americana, SP','Piracicaba, SP','Jundiaí, SP','Sorocaba, SP'];
+        var norm=function(x){return x.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase()};
+        var vals=q.length>=2?fixed.filter(function(x){return norm(x).includes(norm(q))}):[];
+        box.innerHTML='';
+        vals.slice(0,8).forEach(function(v){
+          var d=document.createElement('div');d.className='cityitem';d.textContent=v;
+          d.addEventListener('mousedown',function(e){e.preventDefault();inp.value=v;box.style.display='none';try{preencherRetornoPadrao(false)}catch(_){} });
+          box.appendChild(d);
+        });
+        box.style.display=vals.length?'block':'none';
       });
     });
   }
-  window.renderDashboard=render;
-  window.renderLembreteDashboard=renderReminderBox;
-  window.checarLembretes=checkReminders;
-  document.addEventListener('DOMContentLoaded',()=>{render();checkReminders();});
-  document.addEventListener('visibilitychange',()=>{if(!document.hidden){render();checkReminders();}});
-  window.addEventListener('pageshow',()=>{render();checkReminders();});
-  window.addEventListener('storage',()=>{render();checkReminders();if(typeof renderFinanceiro==='function')renderFinanceiro();});
-  setInterval(()=>{render();checkReminders()},60000);
+  document.addEventListener('DOMContentLoaded',function(){
+    var sel=document.getElementById('estruturaCotacao');
+    if(sel)sel.addEventListener('change',function(){setTimeout(function(){sync();bindSecond()},0)});
+    sync();bindSecond();setTimeout(function(){sync();bindSecond()},300);setTimeout(function(){sync();bindSecond()},1000);
+  });
 })();
 </script>
-<script id="michelon-v55-recebimento-unificado">
+
+</body>
+</html>
+
+
+
+
+<style id="michelon-v14-simplify-return">
+/* V14: retorno normal é automático; mantém os campos técnicos escondidos para o cálculo */
+#retornoCampos .grid > div:nth-child(2),
+#retornoCampos .grid > div:nth-child(3){display:none!important}
+
+#retornoCampos .v14-retorno-aviso{
+  display:block;
+  padding:11px 13px;
+  margin-top:8px;
+  border-radius:12px;
+  background:#f8fafc;
+  border:1px solid #dbe3ea;
+  color:#475569;
+  font-size:12px;
+  line-height:1.45;
+}
+
+#multiTrechosBox .v14-retorno-titulo{
+  grid-column:1/-1;
+  padding:10px 12px;
+  margin-top:4px;
+  border-radius:11px;
+  background:#f8fafc;
+  border:1px solid #dbe3ea;
+  color:#475569;
+  font-size:12px;
+}
+
+#multiTrechosBox .v14-hide-return-field{display:none!important}
+
+/* A lista fica imediatamente abaixo do campo digitado. */
+.citywrap{position:relative!important}
+.citywrap > .citylist,
+.citywrap > .mxAutoList{
+  z-index:100000!important;
+  left:0!important;
+  right:0!important;
+  margin-top:0!important;
+  transform:none!important;
+}
+</style>
+
+<script id="michelon-v14-simplify-return-js">
 (function(){
-  function atualizar(){
-    try{ if(typeof renderFinanceiro==='function') renderFinanceiro(); if(typeof renderDashboard==='function') renderDashboard(); }catch(e){console.error(e)}
+  function addMainReturnNotice(){
+    var box=document.getElementById('retornoCampos');
+    if(!box || box.querySelector('.v14-retorno-aviso')) return;
+    var grid=box.querySelector('.grid');
+    if(!grid) return;
+    var hint=grid.querySelector('.full');
+    if(hint){
+      hint.innerHTML='<div class="hint"><b>↩️ Retorno automático</b> • O sistema entende o retorno como o caminho inverso da ida. Você não precisa preencher origem e destino novamente.</div>';
+    }
+    var n=document.createElement('div');
+    n.className='v14-retorno-aviso';
+    n.innerHTML='🔄 <b>Como funciona:</b> Limeira → Viracopos → Limeira. Se um dia você precisar de um retorno para outro local, podemos liberar essa opção separadamente.';
+    grid.appendChild(n);
   }
-  window.addEventListener('focus',atualizar);
-  document.addEventListener('visibilitychange',function(){if(!document.hidden)atualizar()});
-  setTimeout(atualizar,100);
-  setTimeout(atualizar,700);
+
+  function simplifyTrip2Return(){
+    var box=document.getElementById('multiTrechosBox');
+    if(!box || box.dataset.v14==='1') return;
+    var fields=[
+      document.getElementById('origemRetornoTrecho2'),
+      document.getElementById('destinoRetornoTrecho2')
+    ];
+    fields.forEach(function(inp){
+      if(!inp) return;
+      var wrap=inp.closest('.citywrap');
+      if(wrap) wrap.classList.add('v14-hide-return-field');
+    });
+
+    var grid=box.querySelector('.multiCard .grid');
+    if(grid){
+      var note=document.createElement('div');
+      note.className='v14-retorno-titulo';
+      note.innerHTML='↩️ <b>Retorno automático:</b> o sistema usa o destino da ida como origem do retorno e a origem da ida como destino do retorno.';
+      var firstReturnHour=document.getElementById('horaRetornoTrecho2');
+      var hourWrap=firstReturnHour ? firstReturnHour.parentElement : null;
+      if(hourWrap) grid.insertBefore(note, hourWrap);
+      else grid.insertBefore(note, grid.firstChild);
+    }
+    box.dataset.v14='1';
+  }
+
+  function syncAutoReturn(){
+    try{
+      if(typeof preencherRetornoPadrao==='function') preencherRetornoPadrao(true);
+
+      var oi=document.getElementById('origemTrecho2');
+      var di=document.getElementById('destinoTrecho2');
+      var or=document.getElementById('origemRetornoTrecho2');
+      var dr=document.getElementById('destinoRetornoTrecho2');
+      if(oi && di){
+        if(or) or.value=di.value||'';
+        if(dr) dr.value=oi.value||'';
+      }
+    }catch(e){}
+  }
+
+  function positionList(inp, box){
+    if(!inp || !box) return;
+    /* citywrap contém label + input; offsetTop/height coloca a lista logo abaixo do input */
+    var top=(inp.offsetTop + inp.offsetHeight + 4);
+    box.style.top=top+'px';
+    box.style.left='0px';
+    box.style.right='0px';
+  }
+
+  function patchAutocompletePosition(){
+    document.querySelectorAll('.citywrap input').forEach(function(inp){
+      ['input','focus'].forEach(function(ev){
+        inp.addEventListener(ev,function(){
+          var box=inp.parentElement.querySelector('.mxAutoList') || inp.parentElement.querySelector('.citylist');
+          if(box) setTimeout(function(){positionList(inp,box);},0);
+        });
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded',function(){
+    addMainReturnNotice();
+    simplifyTrip2Return();
+    patchAutocompletePosition();
+
+    var ids=['origem','destino','origemTrecho2','destinoTrecho2'];
+    ids.forEach(function(id){
+      var el=document.getElementById(id);
+      if(el){
+        el.addEventListener('input',syncAutoReturn);
+        el.addEventListener('change',syncAutoReturn);
+      }
+    });
+
+    var sel=document.getElementById('estruturaCotacao');
+    if(sel) sel.addEventListener('change',function(){setTimeout(simplifyTrip2Return,20);});
+    setTimeout(function(){
+      addMainReturnNotice();
+      simplifyTrip2Return();
+      patchAutocompletePosition();
+      syncAutoReturn();
+    },300);
+  });
+})();
+</script>
+
+
+
+
+<script id="michelon-orcamento-number-v1">
+document.addEventListener('DOMContentLoaded',function(){
+  const no=document.getElementById('numeroOrcamento');
+  if(no) no.value=textoNumeroOrcamento();
+});
+</script>
+
+<script id="michelon-final-pendente-fix-20261002">
+(function(){
+  const K='michelon_orcamentos_pendentes_v1';
+  function read(){try{return JSON.parse(localStorage.getItem(K)||'[]')||[]}catch(e){return []}}
+  function write(a){localStorage.setItem(K,JSON.stringify(a));}
+  function val(id){const e=document.getElementById(id);return e?String(e.value||''):''}
+  function num(id){const x=parseFloat(val(id).replace(',','.'));return Number.isFinite(x)?x:0}
+  function snapshot(){const c={};document.querySelectorAll('input,select,textarea').forEach(e=>{if(e.id)c[e.id]=e.value});return c}
+  function draft(){
+    try{
+      const raw=localStorage.getItem('michelonCotacaoTesteV13Ultima');
+      if(!raw)return null;
+      const o=JSON.parse(raw), c=o.campos||o, t=o.trecho2||{};
+      const has=!!(c.estruturaCotacao==='multi'||c.dataTrecho2||c.origemTrecho2||c.destinoTrecho2||t.data||t.origem||t.destino);
+      if(!has)return null;
+      return {c,t};
+    }catch(e){return null}
+  }
+  function v2From(c,t){return {data:t.data||c.dataTrecho2||'',hora:t.hora||c.horaTrecho2||'',origem:t.origem||c.origemTrecho2||'',destino:t.destino||c.destinoTrecho2||'',origemRetorno:t.origemRetorno||c.origemRetornoTrecho2||t.destino||c.destinoTrecho2||'',destinoRetorno:t.destinoRetorno||c.destinoRetornoTrecho2||t.origem||c.origemTrecho2||'',horaRetorno:t.horaRetorno||c.horaRetornoTrecho2||'',km:Number(t.km)||numFrom(c.kmTrecho2),pedagios:Number(t.pedagios)||numFrom(c.pedagiosTrecho2),sec:Number(t.sec)||0}}
+  function numFrom(v){const n=parseFloat(String(v||'').replace(',','.'));return Number.isFinite(n)?n:0}
+  function v1From(c){return {data:c.data||'',hora:c.horaSaida||'',origem:c.origem||'',destino:c.destino||'',horaRetorno:c.horaRetorno||'',km:numFrom(c.kmTotalInput),pedagios:numFrom(c.pedagios)}}
+  function mergeDraftIntoPending(){
+    const d=draft(); if(!d)return false;
+    const a=read(); if(!a.length)return false;
+    const c=d.c,t=d.t,v2=v2From(c,t),v1=v1From(c);
+    if(!v2.data&&!v2.origem&&!v2.destino)return false;
+    let idx=a.findIndex(o=>o.numeroOrcamento===c.numeroOrcamento);
+    if(idx<0)idx=0;
+    const o=a[idx];
+    const base=o||{};
+    base.campos=Object.assign({},base.campos||{},c);
+    base.multi=true;
+    base.viagens=[base.viagens?.[0]||v1,v2];
+    base.trecho2=v2;
+    if(!base.origem)base.origem=v1.origem;
+    if(!base.destino)base.destino=v1.destino;
+    if(!base.data)base.data=v1.data;
+    a[idx]=base; write(a); return true;
+  }
+  function applyObject(o){
+    if(!o)return false;
+    const c=o.campos||{}; const t=o.trecho2||(o.viagens&&o.viagens[1])||{};
+    const multi=!!(o.multi||t.data||t.origem||t.destino);
+    Object.entries(c).forEach(([id,v])=>{const e=document.getElementById(id);if(e)e.value=v==null?'':v});
+    const sel=document.getElementById('estruturaCotacao');if(sel)sel.value=multi?'multi':'unico';
+    const data=t.data||c.dataTrecho2||'',hora=t.hora||c.horaTrecho2||'',orig=t.origem||c.origemTrecho2||'',dest=t.destino||c.destinoTrecho2||'';
+    const or=t.origemRetorno||c.origemRetornoTrecho2||dest, dr=t.destinoRetorno||c.destinoRetornoTrecho2||orig, hr=t.horaRetorno||c.horaRetornoTrecho2||'';
+    const ids={dataTrecho2:data,horaTrecho2:hora,origemTrecho2:orig,destinoTrecho2:dest,origemRetornoTrecho2:or,destinoRetornoTrecho2:dr,horaRetornoTrecho2:hr};
+    Object.entries(ids).forEach(([id,v])=>{const e=document.getElementById(id);if(e)e.value=v});
+    const km=numFrom(t.km||c.kmTrecho2), ped=numFrom(t.pedagios||c.pedagiosTrecho2);
+    const eKm=document.getElementById('kmTrecho2');if(eKm)eKm.value=km?km.toFixed(1):'';
+    const ePed=document.getElementById('pedagiosTrecho2');if(ePed)ePed.value=ped?ped.toFixed(2):'0';
+    window.__trecho2={data,hora,origem:orig,destino:dest,origemRetorno:or,destinoRetorno:dr,horaRetorno:hr,km,pedagios:ped,sec:numFrom(t.sec)};
+    const box=document.getElementById('multiTrechosBox');if(box)box.style.display=multi?'block':'none';
+    if(typeof alternarEstruturaCotacao==='function')try{alternarEstruturaCotacao()}catch(e){}
+    setTimeout(()=>{try{if(typeof calcular==='function')calcular(false)}catch(e){}},200);
+    return true;
+  }
+  window.salvarOrcamentoPendente=function(){
+    const c=snapshot(), t=window.__trecho2||{}, v1=v1From(c), v2=v2From(c,t);
+    const multi=c.estruturaCotacao==='multi' && !!(v2.data||v2.origem||v2.destino);
+    if(!v1.origem||!v1.destino){alert('Preencha origem e destino antes de salvar.');return;}
+    const o={id:'orc_'+Date.now(),numeroOrcamento:c.numeroOrcamento||((typeof textoNumeroOrcamento==='function')?textoNumeroOrcamento():'ORÇAMENTO 01'),salvoEm:new Date().toISOString(),enviadoEm:new Date().toISOString(),status:'Aguardando cliente',cliente:c.cliente||'Cliente',origem:v1.origem,destino:v1.destino,data:v1.data,hora:v1.hora,preco:document.getElementById('precoFinal')?.textContent||'',mensagem:c.mensagem||c.mensagemOrcamento||'',campos:c,multi,viagens:multi?[v1,v2]:[v1],trecho2:multi?v2:null};
+    const a=read();a.unshift(o);write(a);if(typeof renderPendentes==='function')renderPendentes();alert('Orçamento salvo em Pendentes'+(multi?' com as duas viagens.':'.'));
+  };
+  window.carregarPendente=function(id){
+    mergeDraftIntoPending();
+    const o=read().find(x=>x.id===id);if(!o){alert('Orçamento não encontrado.');return;}
+    if(!applyObject(o)){alert('Não foi possível abrir este orçamento.');return;}
+    window.scrollTo({top:0,behavior:'smooth'});
+  };
+  window.renderPendentes=function(){
+    const box=document.getElementById('listaOrcamentosPendentes');if(!box)return;const a=read();
+    if(!a.length){box.innerHTML='<div class="muted">Nenhum orçamento aguardando confirmação.</div>';return;}
+    box.innerHTML=a.map(o=>{const v2=o.trecho2||(o.viagens&&o.viagens[1]);const d1=o.data||'',d2=v2?.data||'';const fmt=x=>{const m=String(x).match(/^(\d{4})-(\d{2})-(\d{2})$/);return m?m[3]+'/'+m[2]+'/'+m[1]:x||'-'};const datas=d2?fmt(d1)+' + '+fmt(d2):fmt(d1);return `<div style="border:1px solid #dbe2ea;border-radius:12px;padding:12px;margin:10px 0;background:#fff"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap"><b>${o.numeroOrcamento||''} — ${o.cliente||'Cliente'}</b><span style="font-weight:800">${o.status||'Aguardando cliente'}</span></div><span>${o.origem||'-'} → ${o.destino||'-'}</span><br><small>📅 ${datas}${o.hora?' • '+o.hora:''}${o.preco?' • '+o.preco:''}</small><br><div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:9px"><button type="button" onclick="carregarPendente('${o.id}')">📂 Abrir</button><button type="button" onclick="confirmarPendente('${o.id}')">✅ Cliente confirmou</button><button type="button" onclick="statusPendente('${o.id}','Recusado')">❌ Recusado</button><button type="button" onclick="excluirPendente('${o.id}')">🗑️ Excluir</button></div></div>`}).join('');
+  };
+  document.addEventListener('DOMContentLoaded',()=>setTimeout(()=>{mergeDraftIntoPending();window.renderPendentes();},300));
+})();
+</script>
+
+<!-- MICHELON V40: clear quote without clearing permanent data -->
+
+<script id="michelon-v39-stable-state-fix">
+(function(){
+  const STABLE='michelon_dados_permanentes_v39';
+  const DRAFT='michelon_cotacao_atual_v39';
+  const CFG='michelonCotacaoTesteV18Config';
+  const EMP='michelonCotacaoTesteV13Empresa';
+  const PEND='michelon_orcamentos_pendentes_v1';
+
+  function parse(k,def){try{const v=localStorage.getItem(k);return v?JSON.parse(v):def}catch(e){return def}}
+  function put(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+  function val(id){const e=document.getElementById(id);return e?String(e.value??''):''}
+  function num(v){const n=parseFloat(String(v??'').replace(',','.'));return Number.isFinite(n)?n:0}
+  function fields(){const c={};document.querySelectorAll('input,select,textarea').forEach(e=>{if(e.id)c[e.id]=e.value});return c}
+
+  // Migrate any older Michelon configuration keys without overwriting valid data.
+  function migrateOld(){
+    try{
+      let cfg=parse(CFG,null), emp=parse(EMP,null);
+      if(!cfg){
+        for(let i=0;i<localStorage.length;i++){
+          const k=localStorage.key(i)||'';
+          if(/michelon.*(config|configur)/i.test(k)){const x=parse(k,null);if(x&&x.veiculos){cfg=x;break}}
+        }
+      }
+      if(cfg&&cfg.veiculos){put(CFG,cfg)}
+      if(!emp){
+        for(let i=0;i<localStorage.length;i++){
+          const k=localStorage.key(i)||'';
+          if(/michelon.*(empresa|pix)/i.test(k)){const x=parse(k,null);if(x&&(x.pix!==undefined||x.nome!==undefined)){emp=x;break}}
+        }
+      }
+      if(emp)put(EMP,emp);
+      const stable={config:cfg||parse(CFG,null),empresa:emp||parse(EMP,null)};
+      if(stable.config||stable.empresa)put(STABLE,stable);
+    }catch(e){console.warn('Migração de dados:',e)}
+  }
+
+  function saveStable(){
+    const cfg=parse(CFG,null), emp=parse(EMP,null);
+    if(cfg)put(CFG,cfg);
+    if(emp)put(EMP,emp);
+    put(STABLE,{config:cfg,empresa:emp,salvoEm:new Date().toISOString()});
+  }
+
+  function saveDraft(){
+    try{
+      // Depois de clicar em LIMPAR, não deixe o beforeunload ou algum
+      // listener antigo salvar novamente a cotação que acabamos de apagar.
+      if(sessionStorage.getItem('michelonCotacaoLimpaV1')==='1') return;
+      const t=window.__trecho2||{};
+      const draft={campos:fields(),trecho2:{
+        data:val('dataTrecho2')||t.data||'',hora:val('horaTrecho2')||t.hora||'',
+        origem:val('origemTrecho2')||t.origem||'',destino:val('destinoTrecho2')||t.destino||'',
+        origemRetorno:val('origemRetornoTrecho2')||t.origemRetorno||t.destino||'',
+        destinoRetorno:val('destinoRetornoTrecho2')||t.destinoRetorno||t.origem||'',
+        horaRetorno:val('horaRetornoTrecho2')||t.horaRetorno||'',
+        km:num(val('kmTrecho2')||t.km),pedagios:num(val('pedagiosTrecho2')||t.pedagios),sec:num(t.sec)
+      },salvoEm:new Date().toISOString()};
+      put(DRAFT,draft);
+      // Keep the older key too, so existing backups/recovery continue to work.
+      localStorage.setItem('michelonCotacaoTesteV13Ultima',JSON.stringify({numeroOrcamento:val('numeroOrcamento'),campos:draft.campos,trecho2:draft.trecho2}));
+    }catch(e){console.warn('Salvamento da cotação:',e)}
+  }
+
+  function applyDraft(d){
+    if(!d)return false;
+    const c=d.campos||{};Object.keys(c).forEach(id=>{const e=document.getElementById(id);if(e)e.value=c[id]??''});
+    const t=d.trecho2||{};
+    const has2=!!(t.data||t.origem||t.destino||c.dataTrecho2||c.origemTrecho2||c.destinoTrecho2);
+    window.__trecho2={
+      data:t.data||c.dataTrecho2||'',hora:t.hora||c.horaTrecho2||'',
+      origem:t.origem||c.origemTrecho2||'',destino:t.destino||c.destinoTrecho2||'',
+      origemRetorno:t.origemRetorno||c.origemRetornoTrecho2||t.destino||c.destinoTrecho2||'',
+      destinoRetorno:t.destinoRetorno||c.destinoRetornoTrecho2||t.origem||c.origemTrecho2||'',
+      horaRetorno:t.horaRetorno||c.horaRetornoTrecho2||'',km:num(t.km||c.kmTrecho2),pedagios:num(t.pedagios||c.pedagiosTrecho2),sec:num(t.sec)
+    };
+    const sel=document.getElementById('estruturaCotacao');if(sel&&has2)sel.value='multi';
+    const map={data:'dataTrecho2',hora:'horaTrecho2',origem:'origemTrecho2',destino:'destinoTrecho2',origemRetorno:'origemRetornoTrecho2',destinoRetorno:'destinoRetornoTrecho2',horaRetorno:'horaRetornoTrecho2'};
+    Object.entries(map).forEach(([k,id])=>{const e=document.getElementById(id);if(e)e.value=window.__trecho2[k]||''});
+    const km=document.getElementById('kmTrecho2');if(km)km.value=window.__trecho2.km?window.__trecho2.km.toFixed(1):'';
+    const ped=document.getElementById('pedagiosTrecho2');if(ped)ped.value=window.__trecho2.pedagios?window.__trecho2.pedagios.toFixed(2):'';
+    if(typeof alternarEstruturaCotacao==='function')alternarEstruturaCotacao();
+    const box=document.getElementById('multiTrechosBox');if(box)box.style.display=has2?'block':'none';
+    try{if(typeof calcular==='function')calcular(false)}catch(e){}
+    return true;
+  }
+
+  function savePendingV39(){
+    const c=fields(), t=window.__trecho2||{};
+    const v1={data:c.data||'',hora:c.horaSaida||'',origem:c.origem||c.enderecoOrigem||'',destino:c.destino||c.enderecoDestino||'',horaRetorno:c.horaRetorno||'',km:num(c.kmTotalInput),pedagios:num(c.pedagios)};
+    const v2={data:c.dataTrecho2||t.data||'',hora:c.horaTrecho2||t.hora||'',origem:c.origemTrecho2||t.origem||'',destino:c.destinoTrecho2||t.destino||'',origemRetorno:c.origemRetornoTrecho2||t.origemRetorno||c.destinoTrecho2||t.destino||'',destinoRetorno:c.destinoRetornoTrecho2||t.destinoRetorno||c.origemTrecho2||t.origem||'',horaRetorno:c.horaRetornoTrecho2||t.horaRetorno||'',km:num(c.kmTrecho2||t.km),pedagios:num(c.pedagiosTrecho2||t.pedagios),sec:num(t.sec)};
+    const multi=!!(v2.data||v2.origem||v2.destino);
+    if(!v1.origem||!v1.destino){alert('Preencha origem e destino antes de salvar.');return false}
+    const preco=document.getElementById('precoFinal')?.textContent||'';
+    const msg=val('mensagem');
+    const o={id:'orc_'+Date.now(),numeroOrcamento:c.numeroOrcamento||((typeof textoNumeroOrcamento==='function')?textoNumeroOrcamento():'ORÇAMENTO 01'),salvoEm:new Date().toISOString(),enviadoEm:new Date().toISOString(),status:'Aguardando cliente',cliente:c.cliente||'Cliente',origem:v1.origem,destino:v1.destino,data:v1.data,hora:v1.hora,preco,mensagem:msg,campos:c,multi,viagens:multi?[v1,v2]:[v1],trecho2:multi?v2:null};
+    const a=parse(PEND,[])||[];a.unshift(o);put(PEND,a);if(typeof renderPendentes==='function')renderPendentes();saveDraft();
+    return true;
+  }
+
+  function openPendingV39(id){
+    const a=parse(PEND,[])||[],o=a.find(x=>x.id===id);if(!o){alert('Orçamento não encontrado.');return}
+    const c=o.campos||{};Object.keys(c).forEach(k=>{const e=document.getElementById(k);if(e)e.value=c[k]??''});
+    const t=o.trecho2||(o.viagens&&o.viagens[1])||{};
+    const has2=!!(o.multi||t.data||t.origem||t.destino);
+    window.__trecho2={data:t.data||c.dataTrecho2||'',hora:t.hora||c.horaTrecho2||'',origem:t.origem||c.origemTrecho2||'',destino:t.destino||c.destinoTrecho2||'',origemRetorno:t.origemRetorno||c.origemRetornoTrecho2||t.destino||c.destinoTrecho2||'',destinoRetorno:t.destinoRetorno||c.destinoRetornoTrecho2||t.origem||c.origemTrecho2||'',horaRetorno:t.horaRetorno||c.horaRetornoTrecho2||'',km:num(t.km||c.kmTrecho2),pedagios:num(t.pedagios||c.pedagiosTrecho2),sec:num(t.sec)};
+    const sel=document.getElementById('estruturaCotacao');if(sel)sel.value=has2?'multi':'unico';
+    const map={data:'dataTrecho2',hora:'horaTrecho2',origem:'origemTrecho2',destino:'destinoTrecho2',origemRetorno:'origemRetornoTrecho2',destinoRetorno:'destinoRetornoTrecho2',horaRetorno:'horaRetornoTrecho2'};
+    Object.entries(map).forEach(([k,id2])=>{const e=document.getElementById(id2);if(e)e.value=window.__trecho2[k]||''});
+    const km=document.getElementById('kmTrecho2');if(km)km.value=window.__trecho2.km?window.__trecho2.km.toFixed(1):'';
+    const ped=document.getElementById('pedagiosTrecho2');if(ped)ped.value=window.__trecho2.pedagios?window.__trecho2.pedagios.toFixed(2):'';
+    const box=document.getElementById('multiTrechosBox');if(box)box.style.display=has2?'block':'none';
+    saveDraft();try{if(typeof calcular==='function')calcular(false)}catch(e){}
+    document.getElementById('cotacaoForm')?.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+
+  function renderV39(){
+    const box=document.getElementById('listaOrcamentosPendentes');if(!box)return;
+    const a=parse(PEND,[])||[];
+    if(!a.length){box.innerHTML='<div class="muted">Nenhum orçamento aguardando confirmação.</div>';return}
+    const fmt=x=>{const m=String(x||'').match(/^(\d{4})-(\d{2})-(\d{2})$/);return m?m[3]+'/'+m[2]+'/'+m[1]:x||'-'};
+    box.innerHTML=a.map(o=>{const v2=o.trecho2||(o.viagens&&o.viagens[1]);const datas=v2?.data?fmt(o.data)+' + '+fmt(v2.data):fmt(o.data);const total=v2?.data||v2?.origem||v2?.destino;return `<div style="border:1px solid #dbe2ea;border-radius:12px;padding:12px;margin:10px 0;background:#fff"><div style="display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap"><b>${o.numeroOrcamento||''} — ${o.cliente||'Cliente'}</b><span style="font-weight:800">${o.status||'Aguardando cliente'}</span></div><span>${o.origem||'-'} → ${o.destino||'-'}</span><br><small>📅 ${datas}${o.hora?' • '+o.hora:''}${o.preco?' • '+o.preco:''}${total?' • 🚗 2 viagens':''}</small><br><div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:9px"><button type="button" class="mini" data-open-pendente="${o.id}">📂 Abrir</button><button type="button" class="mini" data-confirm-pendente="${o.id}">✅ Cliente confirmou</button><button type="button" class="mini" data-reject-pendente="${o.id}">❌ Recusado</button><button type="button" class="mini danger" data-delete-pendente="${o.id}">🗑️ Excluir</button></div></div>`}).join('');
+    box.querySelectorAll('[data-open-pendente]').forEach(b=>b.addEventListener('click',()=>openPendingV39(b.dataset.openPendente)));
+    box.querySelectorAll('[data-delete-pendente]').forEach(b=>b.addEventListener('click',()=>{
+      if(!confirm('Excluir este orçamento pendente?')) return;
+      const item=a.find(x=>x.id===b.dataset.deletePendente);
+      const novo=a.filter(x=>x.id!==b.dataset.deletePendente);
+      put(PEND,novo);
+      try{
+        const draftRaw=localStorage.getItem(DRAFT);
+        const draft=draftRaw?JSON.parse(draftRaw):null;
+        const draftNum=draft?.campos?.numeroOrcamento||'';
+        if(item && draftNum && draftNum===item.numeroOrcamento){
+          localStorage.removeItem(DRAFT);
+          localStorage.removeItem('michelonCotacaoTesteV13Ultima');
+          try{sessionStorage.setItem('michelonCotacaoLimpaV1','1')}catch(e){}
+        }
+      }catch(e){}
+      renderV39();
+    }));
+    box.querySelectorAll('[data-reject-pendente]').forEach(b=>b.addEventListener('click',()=>{const x=a.find(x=>x.id===b.dataset.rejectPendente);if(x){x.status='Recusado';put(PEND,a);renderV39()}}));
+    box.querySelectorAll('[data-confirm-pendente]').forEach(b=>b.addEventListener('click',()=>openPendingV39(b.dataset.confirmPendente)));
+  }
+
+  function whatsV39(ev){
+    if(ev)ev.preventDefault();
+    try{
+      // Usa a mensagem já gerada pelo orçamento. Só recalcula se ela estiver vazia.
+      let msg=val('mensagem');
+      if(!msg && typeof calcular==='function'){
+        try{calcular(false)}catch(_e){}
+        msg=val('mensagem');
+      }
+      if(!msg){alert('Gere o orçamento antes de enviar pelo WhatsApp.');return false}
+      let wn=val('clienteFone').replace(/\D/g,'');
+      if(wn && !wn.startsWith('55')) wn='55'+wn;
+      const url=(wn?'https://wa.me/'+wn+'?text=':'https://wa.me/?text=')+encodeURIComponent(msg);
+      // Não usa window.open: em arquivo HTML local o Chrome pode bloquear pop-up.
+      window.location.href=url;
+    }catch(e){
+      console.error('WhatsApp:',e);
+      alert('Não foi possível abrir o WhatsApp. Use Copiar orçamento para copiar a mensagem.');
+    }
+    return false;
+  }
+
+  function cotacaoV39(){
+    const w=document.getElementById('cotacaoImportWrap');if(w)w.style.display='block';
+    const el=document.getElementById('cotacaoForm')||w;if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+    setTimeout(()=>document.getElementById('textoCotacaoRecebida')?.focus(),250);
+  }
+
+  document.addEventListener('DOMContentLoaded',function(){
+    migrateOld();
+    // Reapply permanent data through the existing loaders.
+    try{if(typeof carregarConfig==='function')carregarConfig()}catch(e){}
+    try{if(typeof carregarEmpresa==='function')carregarEmpresa()}catch(e){}
+    const d=parse(DRAFT,null); if(d)applyDraft(d);
+    const b=document.getElementById('whats');if(b){b.onclick=whatsV39;b.removeAttribute('href');b.setAttribute('href','#');}
+    window.abrirAreaCotacao=cotacaoV39;
+    window.carregarPendente=openPendingV39;
+    window.salvarOrcamentoPendente=function(){if(savePendingV39())alert('Orçamento salvo em Pendentes com '+((window.__trecho2&&(window.__trecho2.origem||window.__trecho2.destino))?'as duas viagens.':'a viagem.')+' A cotação continua aberta.');};
+    window.renderPendentes=renderV39;
+    renderV39();
+    document.querySelectorAll('#cotacaoForm input,#cotacaoForm select,#cotacaoForm textarea').forEach(e=>{
+      const liberarLimpeza=()=>{
+        if(sessionStorage.getItem('michelonCotacaoLimpaV1')==='1') sessionStorage.removeItem('michelonCotacaoLimpaV1');
+        saveDraft();
+      };
+      e.addEventListener('input',liberarLimpeza);
+      e.addEventListener('change',liberarLimpeza);
+    });
+    document.querySelectorAll('#cfg input,#cfg select').forEach(e=>e.addEventListener('change',saveStable));
+    document.querySelectorAll('#empresaNome,#empresaFone,#pixChave,#pixFav,#pixBanco').forEach(e=>e.addEventListener('input',saveStable));
+    window.addEventListener('beforeunload',function(){saveDraft();saveStable()});
+    setTimeout(()=>{try{if(typeof calcular==='function')calcular(false)}catch(e){}},250);
+  });
+})();
+</script>
+
+
+<script id="michelon-clear-quote-v48">
+function limparCotacaoAgora(ev){
+  if(ev){ev.preventDefault();ev.stopPropagation();}
+  if(!confirm('Limpar somente a cotação atual? Os dados da empresa, PIX, veículo e combustível serão mantidos.')) return false;
+
+  // Bloqueia qualquer rotina de recuperação/salvamento automático desta cotação.
+  try{sessionStorage.setItem('michelonCotacaoLimpaV1','1')}catch(e){}
+
+  // Apaga apenas os rascunhos/cotação atual. Histórico e cadastros permanentes ficam intactos.
+  const draftKeys=[
+    'michelon_cotacao_atual_v39',
+    'michelonCotacaoTesteV13Ultima'
+  ];
+  draftKeys.forEach(k=>{try{localStorage.removeItem(k)}catch(e){}});
+
+  // Limpa campos da cotação sem tocar em empresa/PIX/configuração de veículos.
+  const form=document.getElementById('cotacaoForm');
+  if(form){
+    form.querySelectorAll('input,textarea').forEach(el=>{
+      if(!el.id || el.id==='numeroOrcamento') return;
+      if(el.id==='cliente' || el.id==='clienteFone' ||
+         el.id==='origem' || el.id==='destino' ||
+         el.id==='enderecoOrigem' || el.id==='enderecoDestino' ||
+         el.id==='cepOrigem' || el.id==='cepDestino' ||
+         el.id==='numeroOrigem' || el.id==='numeroDestino' ||
+         el.id==='data' || el.id==='horaSaida' || el.id==='horaRetorno' ||
+         el.id==='obsViagem' || el.id==='pedagios' || el.id==='kmTotalInput' ||
+         el.id==='tempo' || el.id==='mensagem' || el.id==='mensagemOrcamento' ||
+         el.id==='dataTrecho2' || el.id==='horaTrecho2' || el.id==='origemTrecho2' ||
+         el.id==='destinoTrecho2' || el.id==='origemRetornoTrecho2' ||
+         el.id==='destinoRetornoTrecho2' || el.id==='horaRetornoTrecho2' ||
+         el.id==='kmTrecho2' || el.id==='pedagiosTrecho2' || el.id==='tempoTrecho2'){
+        if(el.id==='passageiros') el.value='1'; else el.value='';
+      }
+    });
+    form.querySelectorAll('select').forEach(el=>{
+      if(el.id==='tipoComb'||el.id==='veiculo') return; // permanentes
+      if(el.id==='modoCotacao') el.value='viagem';
+      else if(el.id==='estruturaCotacao') el.value='unico';
+      else if(el.id==='tipoServico') el.value='Viagem';
+      else if(el.id==='idaVolta') el.value='sim';
+      else if(el.id==='formaPg') el.value='PIX';
+      else if(el.id==='passageiros') el.value='1';
+      else if(el.options.length) el.selectedIndex=0;
+    });
+  }
+
+  // Remove a segunda viagem da memória em execução.
+  window.__trecho2={};
+
+  // Próximo orçamento: mantém o histórico e apenas inicia uma nova cotação.
+  const novo=proximoNumeroOrcamento();
+  try{localStorage.setItem(ORCCURRENT,String(novo))}catch(e){}
+  const n=document.getElementById('numeroOrcamento');
+  if(n) n.value='ORÇAMENTO '+String(novo).padStart(2,'0');
+
+  try{if(typeof alternarEstruturaCotacao==='function') alternarEstruturaCotacao()}catch(e){}
+  try{if(typeof alternarCamposRetorno==='function') alternarCamposRetorno()}catch(e){}
+  try{if(typeof alternarModoCotacao==='function') alternarModoCotacao()}catch(e){}
+
+  // Zera somente os indicadores visuais da cotação.
+  const zero={kmView:'0 km',litros:'0 L',cComb:'R$ 0,00',cPed:'R$ 0,00',custoTotal:'R$ 0,00',porPass:'R$ 0,00',precoFinal:'R$ 0,00'};
+  Object.entries(zero).forEach(([id,v])=>{const e=document.getElementById(id);if(e)e.textContent=v});
+  const msg=document.getElementById('mensagem');if(msg)msg.value='';
+
+  try{if(typeof renderPendentes==='function')renderPendentes()}catch(e){}
+  alert('Cotação limpa com sucesso. Empresa, PIX, veículo e combustível foram mantidos.');
+  return false;
+}
+</script>
+
+<script id="michelon-whatsapp-final-v55">
+(function(){
+  function instalarWhatsApp(){
+    const a=document.getElementById('whats');
+    if(!a) return;
+    // Remove any previous handler/target that could navigate the current Michelon tab.
+    a.onclick=null;
+    a.onauxclick=null;
+    a.removeAttribute('href');
+    a.target='_blank';
+    a.rel='noopener noreferrer';
+    a.addEventListener('click', function(ev){
+      // Let the anchor navigation happen in a new tab. We only prepare its URL.
+      try{
+        const msgEl=document.getElementById('mensagem');
+        const phoneEl=document.getElementById('clienteFone');
+        const msg=msgEl ? String(msgEl.value||'').trim() : '';
+        if(!msg){ ev.preventDefault(); alert('Gere o orçamento antes de enviar pelo WhatsApp.'); return; }
+        let phone=phoneEl ? String(phoneEl.value||'').replace(/\D/g,'') : '';
+        if(phone && !phone.startsWith('55')) phone='55'+phone;
+        a.href=phone ? 'https://wa.me/'+phone+'?text='+encodeURIComponent(msg) : 'https://wa.me/?text='+encodeURIComponent(msg);
+      }catch(e){
+        ev.preventDefault();
+        console.error(e);
+        alert('Não foi possível preparar o WhatsApp. Use Copiar orçamento.');
+      }
+    }, {capture:true});
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',instalarWhatsApp);
+  else instalarWhatsApp();
 })();
 </script>
 </body>
 </html>
+
 
 
