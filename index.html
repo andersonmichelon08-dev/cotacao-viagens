@@ -209,8 +209,8 @@ body{background:var(--mc-bg)!important;color:var(--mc-text)!important;padding-bo
   border-top:1px solid var(--mc-line);box-shadow:0 -8px 24px rgba(20,32,51,.08);
 }
 .mcNav{width:min(620px,100%);margin:auto;display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
-.mcNav button{border:0;background:transparent;color:#738096;padding:6px 2px;border-radius:13px;font-weight:850;font-size:10px;cursor:pointer}
-.mcNav button.active{color:var(--mc-primary);background:#edf8f6}
+.mcNav :is(button,a){border:0;background:transparent;color:#738096;padding:6px 2px;border-radius:13px;font-weight:850;font-size:10px;cursor:pointer}
+.mcNav :is(button,a).active{color:var(--mc-primary);background:#edf8f6}
 .mcNav i{display:block;font-style:normal;font-size:19px;line-height:21px;margin-bottom:2px}
 .card{border-radius:20px!important;box-shadow:var(--mc-shadow)!important;border-color:var(--mc-line)!important}
 @media(max-width:700px){
@@ -346,8 +346,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Ar
   box-shadow:0 -3px 12px rgba(23,32,51,.045)!important;
   padding-top:5px!important;
 }
-.mcNav button{font-size:9px!important;color:#7a8494!important;padding:5px 2px!important;}
-.mcNav button.active{color:var(--p-primary)!important;background:var(--p-primary-soft)!important;}
+.mcNav :is(button,a){font-size:9px!important;color:#7a8494!important;padding:5px 2px!important;}
+.mcNav :is(button,a).active{color:var(--p-primary)!important;background:var(--p-primary-soft)!important;}
 .mcNav i{font-size:18px!important;line-height:19px!important;}
 /* Clean card screen. */
 #mcCardOverlay{background:#f6f7f9!important;padding:10px 10px 90px!important;}
@@ -448,7 +448,7 @@ body{background:var(--sig-bg)!important;color:var(--sig-text)!important;}
   border-top:1px solid rgba(227,232,238,.9)!important;
   background:rgba(255,255,255,.97)!important;
 }
-.mcNav button.active{background:#e5f5f2!important;color:var(--sig-teal)!important}
+.mcNav :is(button,a).active{background:#e5f5f2!important;color:var(--sig-teal)!important}
 
 /* Signature digital card */
 #mcCardClean{
@@ -1081,10 +1081,10 @@ body{background:var(--sig-bg)!important;color:var(--sig-text)!important;}
 
 <style id="michelon-bottom-cotacao-v7289">
 .mcNav{grid-template-columns:repeat(6,1fr)!important;gap:2px!important}
-.mcNav button{font-size:9px!important;padding:5px 1px!important;white-space:nowrap}
+.mcNav :is(button,a){font-size:9px!important;padding:5px 1px!important;white-space:nowrap}
 .mcNav i{font-size:18px!important;line-height:20px!important}
 @media(max-width:380px){
-  .mcNav button{font-size:8px!important}
+  .mcNav :is(button,a){font-size:8px!important}
   .mcNav i{font-size:17px!important}
 }
 </style>
@@ -1164,11 +1164,15 @@ async function compartilharCartao(){
       <div class="metric"><small>Lucro estimado</small><strong id="finLucro">R$ 0,00</strong></div>
     </div>
   </div>
-  <div class="card" id="cotacaoImportWrap" style="display:block!important; margin-bottom:12px;">
+  <div class="card open" id="cotacaoImportWrap" style="display:block!important; margin-bottom:12px;">
     <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;">
       <h3 style="margin:0;font-size:17px;">📥 Solicitação recebida do cliente</h3>
     </div>
     <p style="margin:6px 0 10px;color:#526174;font-size:13px;">Cole aqui a mensagem que o cliente enviou pelo WhatsApp. O sistema vai preencher a cotação para você.</p>
+    <label for="arquivoSolicitacaoCliente">Abrir solicitação em arquivo de texto (.txt)</label>
+    <input id="arquivoSolicitacaoCliente" type="file" accept=".txt,text/plain" onchange="abrirArquivoSolicitacaoCliente(this)" style="margin-bottom:12px">
+    <label for="textoCotacaoRecebida">Mensagem recebida pelo WhatsApp</label>
+    <p id="solicitacaoArquivoStatus" role="status" style="font-size:14px"></p>
     <textarea id="textoCotacaoRecebida" rows="8" placeholder="Cole aqui a solicitação recebida do cliente..."></textarea>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;">
       <button type="button" class="primary" onclick="importarCotacaoRecebida();">📥 Importar solicitação</button>
@@ -1176,6 +1180,7 @@ async function compartilharCartao(){
     </div>
   </div>
   <div class="card" id="cotacaoForm">
+    <button type="button" class="primary" style="margin-bottom:14px" onclick="abrirAreaCotacao()">📥 Importar solicitação do cliente</button>
     <div class="grid">
       <div><label>Nº do orçamento</label><input id="numeroOrcamento" type="text" readonly></div><div><label>Cliente</label><input id="cliente" placeholder="Nome do cliente"></div><div><label>WhatsApp do cliente</label><input id="clienteFone" inputmode="tel" placeholder="(19) 99999-9999"></div>
       <div class="full"><label>Modo da cotação</label>
@@ -3861,9 +3866,9 @@ function mxIr(id){
 <div id="mcCardOverlay" style="display:none;position:fixed;inset:0;z-index:10020;background:#f5f7fa;overflow:auto;padding:16px 10px 100px;">
   <div style="width:min(920px,100%);margin:auto;">
     <div class="mcCardHeaderBar">
-      <button class="mcTopBtn" onclick="mcCloseCard()">← VOLTAR</button>
+      <a class="mcTopBtn" href="#mxHero" onclick="mcCloseCard()">← VOLTAR</a>
       <div class="mcTopTitle">📇 Meu Cartão</div>
-      <button class="mcTopBtn" onclick="mcCloseCard()">← Início</button>
+      <a class="mcTopBtn" href="#mxHero" onclick="mcCloseCard()">← Início</a>
     </div>
     <div id="mcCardClean">
       <div class="mcCardLogo">MICHELON</div>
@@ -3891,34 +3896,48 @@ function mxIr(id){
   </div>
 </div>
 
-<nav class="mcBottom" aria-label="Navegação principal">
-<div class="mcNav">
-<button class="active" onclick="mcHome()"><i>🏠</i>Início</button>
-<button onclick="mcGo('mxAgenda')"><i>📅</i>Agenda</button>
-<button onclick="mcGo('mxFinanceiro')"><i>💰</i>Financeiro</button>
-<button onclick="mcGo('mxUber')"><i>🚕</i>Uber / Apps</button>
-<button onclick="mcGo('cardFloat')"><i>📇</i>Cartão</button>
-<button onclick="abrirAreaCotacao()" aria-label="Cotação"><i>📥</i>Cotação</button>
-</div>
-</nav>
+<nav class="mcBottom" aria-label="Navegação principal"><div class="mcNav">
+<a class="active" href="#mxHero" data-mc-section="home"><i>🏠</i>Início</a>
+<a href="#mxAgenda" data-mc-section="mxAgenda"><i>📅</i>Agenda</a>
+<a href="#mxFinanceiro" data-mc-section="mxFinanceiro"><i>💰</i>Financeiro</a>
+<a href="#mxUber" data-mc-section="mxUber"><i>🚕</i>Uber / Apps</a>
+<a href="#mcCardOverlay" data-mc-section="cardFloat"><i>📇</i>Cartão</a>
+<a href="#cotacaoImportWrap" data-mc-section="cotacao" aria-label="Cotação"><i>📥</i>Cotação</a>
+</div></nav>
 
 
 
 <script id="michelon-clean-nav-v7241">
+function mcActivateNav(target){
+ document.querySelectorAll('.mcNav :is(button,a)').forEach(function(button){
+  var action=button.getAttribute('onclick')||'';
+  var section=button.getAttribute('data-mc-section');
+  var active=section?section===target:target==='home'?action.includes('mcHome('):target==='cotacao'?action.includes('abrirAreaCotacao('):action.includes("'"+target+"'");
+  button.classList.toggle('active',active);button.setAttribute('aria-current',active?'page':'false');
+ });
+}
 function mcGo(id){
-  if(id==='cardFloat'){ mcOpenCard(); return; }
+  if(id==='cardFloat'){mcActivateNav(id);mcOpenCard();return;}
   var el=document.getElementById(id);
   if(!el)return;
-  var d=el.querySelector && el.querySelector('details');
-  if(d)d.open=true;
-  window.scrollTo({top:Math.max(0,el.getBoundingClientRect().top+window.scrollY-12),behavior:'smooth'});
+  // Reveal containing disclosures before moving the actual element into view.
+  for(var parent=el.parentElement;parent;parent=parent.parentElement){if(parent.tagName==='DETAILS')parent.open=true;}
+  var d=el.querySelector('details');if(d)d.open=true;
+  mcActivateNav(id);
+  el.scrollIntoView({behavior:'smooth',block:'start'});
 }
-function mcHome(){window.scrollTo({top:0,behavior:'smooth'});}
+function mcHome(){
+  var el=document.getElementById('mxHero')||document.getElementById('mcHomeDash')||document.body.firstElementChild;
+  mcActivateNav('home');
+  if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+}
 function mcOpenCard(){
   var o=document.getElementById('mcCardOverlay');
   if(o){o.style.display='block';document.body.style.overflow='hidden';window.scrollTo(0,0);}
 }
 function mcCloseCard(){
+  if(location.hash==='#mcCardOverlay')history.replaceState(null,'',location.pathname+location.search);
+  mcActivateNav('home');
   var o=document.getElementById('mcCardOverlay');
   if(o)o.style.display='none';
   document.body.style.overflow='';
@@ -3966,10 +3985,11 @@ function toggleCotacaoImport(){
 function abrirAreaCotacao(){
   var w=document.getElementById('cotacaoImportWrap');
   if(w) w.style.display='block';
-  var el=document.getElementById('cotacaoForm') || w;
+  var el=w || document.getElementById('cotacaoForm');
   if(el) setTimeout(function(){el.scrollIntoView({behavior:'smooth',block:'start'});},50);
   var box=document.getElementById('textoCotacaoRecebida');
-  if(box) setTimeout(function(){box.focus();},350);
+  if(w)w.classList.add('open');
+  if(box) setTimeout(function(){box.focus({preventScroll:true});},350);
 }
 </script>
 
@@ -4204,6 +4224,20 @@ function toggleCotacaoImport(){
 })();
 </script>
 
+
+<script id="michelon-import-file-fix">
+async function abrirArquivoSolicitacaoCliente(input){
+ const file=input.files&&input.files[0];if(!file)return;
+ if(!/\.txt$/i.test(file.name)){alert('Use um arquivo .txt ou cole a mensagem do WhatsApp no campo abaixo.');input.value='';return}
+ if(file.size>100000){alert('O arquivo de texto é muito grande. Cole somente a solicitação do cliente.');input.value='';return}
+ try{
+  const text=(await file.text()).trim();
+  if(!text){alert('Esse arquivo está vazio.');return}
+  const box=document.getElementById('textoCotacaoRecebida');box.value=text;box.dispatchEvent(new Event('input',{bubbles:true}));
+  document.getElementById('solicitacaoArquivoStatus').textContent='Texto carregado. Toque em “Importar solicitação” e confira os dados.';
+ }catch{alert('Não consegui abrir esse arquivo. Cole a mensagem do WhatsApp no campo abaixo.');}
+}
+</script>
 </body>
 </html>
 
@@ -4615,9 +4649,10 @@ document.addEventListener('DOMContentLoaded',function(){
   }
 
   function cotacaoV39(){
+    if(typeof mcActivateNav==='function')mcActivateNav('cotacao');
     const w=document.getElementById('cotacaoImportWrap');if(w)w.style.display='block';
-    const el=document.getElementById('cotacaoForm')||w;if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
-    setTimeout(()=>document.getElementById('textoCotacaoRecebida')?.focus(),250);
+    const el=w||document.getElementById('cotacaoForm');if(w)w.classList.add('open');if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+    setTimeout(()=>document.getElementById('textoCotacaoRecebida')?.focus({preventScroll:true}),250);
   }
 
   document.addEventListener('DOMContentLoaded',function(){
@@ -4757,3 +4792,29 @@ function limparCotacaoAgora(ev){
 
 
 
+
+<style id="michelon-direct-nav-fix">
+.mcNav a{display:block;text-align:center;text-decoration:none;line-height:1.25;touch-action:manipulation}
+#mxHero,#mxAgenda,#mxFinanceiro,#mxUber,#cotacaoImportWrap{scroll-margin-top:12px}
+#mcCardOverlay:target{display:block!important}
+#mcCardOverlay a.mcTopBtn{text-decoration:none;display:flex;align-items:center;justify-content:center}
+</style>
+<script id="michelon-direct-nav-links">
+(function(){
+ function bind(){
+  document.querySelectorAll('.mcNav a[data-mc-section]').forEach(function(link){
+   link.addEventListener('click',function(){
+    var id=link.getAttribute('href').slice(1),section=document.getElementById(id);
+    if(section){
+     for(var parent=section.parentElement;parent;parent=parent.parentElement){if(parent.tagName==='DETAILS')parent.open=true;}
+     var details=section.querySelector('details');if(details)details.open=true;
+     if(id==='cotacaoImportWrap'){section.classList.add('open');section.style.setProperty('display','block','important');}
+    }
+    document.querySelectorAll('.mcNav a').forEach(function(a){var active=a===link;a.classList.toggle('active',active);if(active)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
+    // Let the browser follow the native fragment link, including local-file viewers.
+   });
+  });
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind);else bind();
+})();
+</script>
