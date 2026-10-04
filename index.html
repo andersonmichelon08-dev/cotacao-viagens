@@ -4,6 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f766e">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="MICHELON">
 <title>Michelon Viagens Executivas • V57</title>
 <style>
 :root{--bg:#f8fafc;--card:#fff;--text:#0f172a;--muted:#64748b;--line:#e2e8f0;--primary:#0f766e;--primary2:#115e59;--ok:#166534;--warn:#92400e;--danger:#b91c1c}
@@ -1168,7 +1173,7 @@ async function compartilharCartao(){
     <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;">
       <h3 style="margin:0;font-size:17px;">📥 Solicitação recebida do cliente</h3>
     </div>
-    <p style="margin:6px 0 10px;color:#526174;font-size:13px;">Cole aqui a mensagem que o cliente enviou pelo WhatsApp. O sistema vai preencher a cotação para você.</p>
+    <p style="margin:6px 0 10px;color:#526174;font-size:13px;">Cole aqui a mensagem que o cliente enviou pelo WhatsApp. Toque em “Importar solicitação” para preencher a cotação. Ao anexar um arquivo .txt, o preenchimento é automático.</p>
     <label for="arquivoSolicitacaoCliente">Abrir solicitação em arquivo de texto (.txt)</label>
     <input id="arquivoSolicitacaoCliente" type="file" accept=".txt,text/plain" onchange="abrirArquivoSolicitacaoCliente(this)" style="margin-bottom:12px">
     <label for="textoCotacaoRecebida">Mensagem recebida pelo WhatsApp</label>
@@ -1205,6 +1210,8 @@ async function compartilharCartao(){
       <div id="viagemDestino" class="citywrap"><label>Destino</label><input id="destino" autocomplete="off" placeholder="Rua, cidade, aeroporto, hotel ou local..."><div id="listaDestino" class="citylist"></div><div class="cityhelp">Se o mapa não achar pelo nome, informe CEP + número.</div><div class="grid" style="margin-top:7px"><div><label>CEP do destino (opcional)</label><input id="cepDestino" inputmode="numeric" placeholder="00000-000"></div><div><label>Número</label><input id="numDestino" inputmode="numeric" placeholder="Ex.: 100"></div></div></div>
       <div><label>Data da viagem</label><input id="data" type="date"></div>
       <div><label>Horário de saída</label><input id="horaSaida" type="time"></div>
+      <div><label>Data do retorno</label><input id="dataRetorno" type="date" oninput="validarDatasSolicitacao()"></div>
+      <div class="full" id="avisoDatasSolicitacao" role="alert" hidden style="color:#9a3412;font-size:16px"></div>
       <div><label>Previsão de retorno</label><input id="horaRetorno" type="time"></div>
       <div><label>Tipo do serviço</label><select id="tipoServico"><option>Viagem</option><option>Transfer aeroporto</option><option>Executivo</option><option>Evento</option><option>Ida e volta</option><option>À disposição</option></select></div>
       <div class="full"><label>Observações / agendamento</label><input id="obsViagem" placeholder="Ex.: buscar no Terminal 2, 3 malas, cadeirinha..."></div>
@@ -1248,7 +1255,9 @@ async function compartilharCartao(){
       <div><label>KM total</label><input id="kmTotalInput" type="number" step="0.1"></div>
       <div><label>Tempo estimado</label><input id="tempo" value="-" readonly></div>
       </div>
-      <input id="pedagios" type="hidden" value="0">
+      <div class="full"><label for="pedagios">Total de pedágios — ida e retorno (R$)</label>
+      <input id="pedagios" type="number" min="0" step="0.01" inputmode="decimal" value="0" placeholder="Informe se a consulta não confirmar">
+      <div class="hint">Somado ao orçamento. Se a consulta falhar, confira e informe o total aqui.</div></div>
       <div><label>Veículo</label><select id="veiculo" onchange="aplicarVeiculo()"></select></div>
       <div><label>Combustível</label><select id="tipoComb" onchange="aplicarCombustivel()"><option>Gasolina</option><option>Etanol</option><option>Diesel</option></select></div>
       <div><label>Consumo do veículo (km/l)</label><input id="consumo" type="number" step="0.1" value="10"></div>
@@ -2179,6 +2188,17 @@ const PEDAGIOS_CATALOGO=[
  {id:'campo-limpo',nome:'Campo Limpo/Caieiras',rodovia:'SP-348',lat:-23.310,lon:-46.845,valor:14.50}
 ];
 
+// Cat. 1: automóvel, caminhonete e furgão, 2 eixos simples.
+// ANTT, Deliberação 127/2026, anexo: R$ 3,70 por passagem em Mairiporã.
+const FONTE_MAIRIPORA='https://anttlegis.antt.gov.br/action/ActionDatalegis.php?acao=abrirTextoAto&cod_menu=7795&cod_modulo=161&link=S&numeroAto=00000127&orgao=DG/ANTT/MT&seqAto=000&tipo=DLB&valorAno=2026';
+function pedagioSaoPauloAtibaia(origem,destino,roads){
+ const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
+ // Only city-level endpoints: street addresses and other return cities use route detection.
+ const cidade=(v,n)=>new RegExp('^'+n+'(?:\\s*[,/-]\\s*(?:sp|sao paulo|brasil).*)?$').test(norm(v));
+ const corredor=(cidade(origem,'sao paulo')&&cidade(destino,'atibaia'))||(cidade(destino,'sao paulo')&&cidade(origem,'atibaia'));
+ const fernao=(roads||[]).some(r=>/br[ -]?381|sp[ -]?0?10\b|fernao dias/.test(norm(r)));
+ return corredor&&fernao?3.70:null;
+}
 function textoRotaAtual(){
  const ids=['origem','destino','origemRetorno','destinoRetorno','enderecoOrigem','enderecoDestino'];
  return ids.map(id=>String($(id)?.value||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')).join(' | ');
@@ -2199,14 +2219,10 @@ function rotaViracoposValidada(){
 }
 function distKmPontoRota(p,coords){
  let best=Infinity;
- for(const [lon,lat] of (coords||[])){
-   const dy=(lat-p.lat)*110.574;
-   const dx=(lon-p.lon)*111.320*Math.cos(p.lat*Math.PI/180);
-   const d=Math.hypot(dx,dy);
-   if(d<best)best=d;
- }
+ for(let i=1;i<(coords||[]).length;i++)best=Math.min(best,distPointToSegmentKm([p.lon,p.lat],coords[i-1],coords[i]));
  return best;
 }
+
 function pedagiosCatalogoNaRota(coords){
  return PEDAGIOS_CATALOGO.filter(p=>distKmPontoRota(p,coords)<=2.2);
 }
@@ -2301,7 +2317,7 @@ async function detectarPedagiosTrecho(coords){
     node["highway"="toll_gantry"](${sul},${oeste},${norte},${leste});
     node["toll"="yes"](${sul},${oeste},${norte},${leste});
     way["highway"="toll_gantry"](${sul},${oeste},${norte},${leste});
-    way["toll"="yes"](${sul},${oeste},${norte},${leste});
+
   );
   out center tags;`;
 
@@ -2310,17 +2326,18 @@ async function detectarPedagiosTrecho(coords){
     'https://overpass.kumi.systems/api/interpreter'
   ];
 
-  let els=[];
+  let els=[],consultou=false;
   for(const base of servidores){
     try{
       const r=await fetchTimeout(base+'?data='+encodeURIComponent(q),9000);
       if(!r.ok)continue;
       const j=await r.json();
-      els=j.elements||[];
-      if(els.length)break;
+      els=j.elements||[];consultou=true;
+      break;
     }catch(e){}
   }
 
+  if(!consultou)throw new Error('Consulta de praças indisponível.');
   const unicos=[];
   for(const e of els){
     const lat=e.lat??e.center?.lat, lon=e.lon??e.center?.lon;
@@ -2333,27 +2350,21 @@ async function detectarPedagiosTrecho(coords){
   return unicos;
 }
 async function calcularPedagiosDinamicos(coordsIda,coordsVolta){
-  const grupos=[['Ida',coordsIda],['Retorno',coordsVolta]];
-  let total=0,detalhes=[],incompletos=0,encontrados=0;
-  for(const [rotulo,coords] of grupos){
-    if(!coords||!coords.length)continue;
-    const ps=await detectarPedagiosTrecho(coords);
-    encontrados+=ps.length;
-    for(const p0 of ps){
-      const p=await enriquecerPedagioGratis(p0);
-      const tarifa=await consultarTarifaPedagioAberto(p);
-      const nome=p.tags?.name||p.tags?.operator||p.tags?.ref||'Praça de pedágio';
-      if(tarifa){
-        total+=tarifa.valor;
-        detalhes.push(`${rotulo}: ${nome} ${brl(tarifa.valor)}`);
-      }else{
-        incompletos++;
-        detalhes.push(`${rotulo}: ${nome} (tarifa não confirmada)`);
-      }
-    }
-  }
-  return {total,detalhes,incompletos,encontrados};
+ const grupos=[['Ida',coordsIda],['Retorno',coordsVolta]].filter(([,coords])=>coords?.length);
+ const db=loadTollDB();
+ const resultados=await Promise.all(grupos.map(async([rotulo,coords])=>{
+   const ps=await detectarPedagiosTrecho(coords);
+   return Promise.all(ps.map(async p=>{
+     const nome=p.tags?.name||p.tags?.operator||p.tags?.ref||'Praça de pedágio';
+     let valor=Number(db[tollKey(p)])||parseCharge(p.tags?.['charge:motorcar']||p.tags?.['charge:car']||p.tags?.charge);
+     if(!valor){const enriquecido=await enriquecerPedagioGratis(p);const tarifa=await consultarTarifaPedagioAberto(enriquecido);valor=tarifa?.valor||0;}
+     return {valor,detalhe:`${rotulo}: ${nome} ${valor?brl(valor):'(tarifa não confirmada)'}`};
+   }));
+ }));
+ const itens=resultados.flat();
+ return {total:itens.reduce((s,p)=>s+p.valor,0),detalhes:itens.map(p=>p.detalhe),incompletos:itens.filter(p=>!p.valor).length,encontrados:itens.length};
 }
+
 function tollKey(e){
   const t=e.tags||{};
   const nome=(t.name||t.operator||t.ref||'').trim().toLowerCase();
@@ -2470,6 +2481,7 @@ async function buscarRotaViagem(){
     if(b.precisao && b.precisao!=='número') avisosPrecisao.push(`Destino localizado por ${b.precisao}`);
     const ida=await rotaOSRM(a,b);
 
+    let roadsVolta=[];
     let km=ida.km, sec=ida.sec, coords=[...ida.coords]; let coordsIda=[...ida.coords], coordsVolta=[]; window.__michelonCoords=coords; window.__michelonRoads=[...(ida.roads||[])];
     let detalhe=`Ida: ${ida.km.toFixed(1)} km`;
 
@@ -2478,7 +2490,7 @@ async function buscarRotaViagem(){
       if(c.precisao && c.precisao!=='número') avisosPrecisao.push(`Origem do retorno localizada por ${c.precisao}`);
       if(d.precisao && d.precisao!=='número') avisosPrecisao.push(`Destino do retorno localizado por ${d.precisao}`);
       const volta=await rotaOSRM(c,d);
-      coordsVolta=[...volta.coords];
+      coordsVolta=[...volta.coords];roadsVolta=volta.roads||[];
       km+=volta.km;
       sec+=volta.sec;
       coords=coords.concat(volta.coords); window.__michelonCoords=coords; window.__michelonRoads=[...new Set([...(window.__michelonRoads||[]),...(volta.roads||[])])];
@@ -2497,6 +2509,15 @@ async function buscarRotaViagem(){
       $('pedagios').value='';
       calcular();
 
+      const pedagioIda=pedagioSaoPauloAtibaia(origem,destino,ida.roads);
+      const pedagioVolta=idaVolta?pedagioSaoPauloAtibaia(origemRetorno,destinoRetorno,roadsVolta):0;
+      if(pedagioIda!==null&&pedagioVolta!==null){
+        const total=pedagioIda+pedagioVolta;
+        renderPedagios([]);
+        $('pedagios').value=total.toFixed(2);calcular();
+        showStatus(`${detalhe} • Total: ${km.toFixed(1)} km • Mairiporã / Fernão Dias: ida ${brl(pedagioIda)}${idaVolta?` • retorno ${brl(pedagioVolta)}`:''} • Pedágios ${brl(total)}. Estimativa para carro de passeio, tarifa ANTT 127/2026; confira reajustes antes da viagem.`,'ok');
+        return;
+      }
       // Base local responde imediatamente e não depende dos servidores públicos.
       const local=calcularCatalogoLocal(coordsIda,coordsVolta);
 
@@ -2532,7 +2553,7 @@ async function buscarRotaViagem(){
       }
 
       // Para outras rotas, complementa a base local com a consulta pública gratuita.
-      const dyn=await limitePromessaPedagio(calcularPedagiosDinamicos(coordsIda,coordsVolta),22000);
+      const dyn=await limitePromessaPedagio(calcularPedagiosDinamicos(coordsIda,coordsVolta),18000);
       if(dyn.encontrados>0 && dyn.incompletos===0){
         $('pedagios').value=dyn.total.toFixed(2);
         calcular();
@@ -2584,6 +2605,7 @@ async function buscarRotaViagem(){
       }
     }catch(e){
       renderPedagios([]);
+      $('pedagios').value='';calcular(false);
       const manual=parseFloat($('pedagios')?.value)||0;
       showStatus(`${detalhe} • Total: ${km.toFixed(1)} km. ⚠️ Pedágios automáticos indisponíveis no momento.${manual>0?` Valor manual mantido: ${brl(manual)}.`:' Informe o total de pedágios manualmente.'}`,'warn');
     }
@@ -2694,19 +2716,10 @@ async function buscarTudo(){
     calcular(false);
     if(typeof saveQuote === 'function') saveQuote();
 
-    const status = $('rotaStatus');
-    if(status){
-      status.className = 'status ok';
-      status.textContent = multi
-        ? '✅ Viagens calculadas. KM, pedágios confirmados e orçamento atualizado.'
-        : '✅ Rota, KM, pedágios e orçamento atualizados.';
-    }
+    // Keep the detailed route/toll result, including incomplete tariff warnings.
   }catch(e){
-    const status = $('rotaStatus');
-    if(status){
-      status.className = 'status warn';
-      status.textContent = '✅ Rota calculada — KM e orçamento atualizados.';
-    }
+    showStatus('A consulta não terminou. Confira os KM e informe os pedágios antes de enviar o orçamento.','warn');
+    if(!$('pedagios').value) $('pedagios').value='';
     calcular(false);
   }finally{
     if(principal){
@@ -2836,7 +2849,7 @@ function renderApps(){
 
 function getHist(){try{return JSON.parse(localStorage.getItem(HISTKEY))||[]}catch(e){return []}}
 function setHist(h){localStorage.setItem(HISTKEY,JSON.stringify(h));renderFinanceiro();renderAgenda()}
-function snapshot(status){calcular(false);return {id:Date.now(),numero:'MV-'+new Date().getFullYear()+'-'+String(getHist().length+1).padStart(4,'0'),criado:new Date().toISOString(),data:$('data').value||new Date().toISOString().slice(0,10),horaSaida:$('horaSaida').value,horaRetorno:$('horaRetorno').value,tipoServico:$('tipoServico').value,obs:$('obsViagem').value.trim(),cliente:$('cliente').value.trim(),fone:$('clienteFone').value.trim(),origem:$('origem').value.trim(),destino:$('destino').value.trim(),valor:window._calc.preco,custo:window._calc.custo,passageiros:Math.max(1,n('passageiros')),valorKm:Math.min(4,Math.max(0,n('valorKm'))),status,recebido:status==='pago'?window._calc.preco:0,sinalRecebido:0,forma:$('formaPg').value}}
+function snapshot(status){calcular(false);return {id:Date.now(),numero:'MV-'+new Date().getFullYear()+'-'+String(getHist().length+1).padStart(4,'0'),criado:new Date().toISOString(),data:$('data').value||new Date().toISOString().slice(0,10),horaSaida:$('horaSaida').value,horaRetorno:$('horaRetorno').value,dataRetorno:$('dataRetorno')?.value||$('data').value,tipoServico:$('tipoServico').value,obs:$('obsViagem').value.trim(),cliente:$('cliente').value.trim(),fone:$('clienteFone').value.trim(),origem:$('origem').value.trim(),destino:$('destino').value.trim(),valor:window._calc.preco,custo:window._calc.custo,passageiros:Math.max(1,n('passageiros')),valorKm:Math.min(4,Math.max(0,n('valorKm'))),status,recebido:status==='pago'?window._calc.preco:0,sinalRecebido:0,forma:$('formaPg').value}}
 function salvarOrcamento(){calcular(false);if(window._calc.preco<=0){alert('O valor da viagem está zerado. Informe o preço do combustível e os pedágios/custos antes de salvar.');return}const h=getHist();h.unshift(snapshot('orcamento'));setHist(h);alert('Orçamento salvo no histórico.')}
 function minutos(h){if(!h)return null;const p=h.split(':');return (+p[0])*60+(+p[1])}
 function temConflito(item,ignorarId=null){if(!item.data||!item.horaSaida)return false;const ini=minutos(item.horaSaida),fim=minutos(item.horaRetorno)||ini+120;return getHist().some(x=>x.id!==ignorarId&&x.status==='confirmada'&&x.data===item.data&&x.horaSaida&&Math.max(ini,minutos(x.horaSaida))<Math.min(fim,minutos(x.horaRetorno)||minutos(x.horaSaida)+120))}
@@ -3222,7 +3235,8 @@ function calcular(autosave=true){
   $('kmView').textContent=km.toFixed(1)+' km';
   $('litros').textContent=litros.toFixed(1)+' L';
   $('cComb').textContent=precoLitro>0?brl(comb):'Informe R$/L';
-  $('cPed').textContent=brl(pedagios);
+  const pedagioPendente=kmBase>0&&$('pedagios').value==='';
+  $('cPed').textContent=pedagioPendente?'Não confirmado':brl(pedagios);
   $('custoTotal').textContent=brl(custo);
   if($('valorKmView')) $('valorKmView').textContent=brl(valorKm)+'/km';
   $('precoFinal').textContent=brl(preco);
@@ -3231,6 +3245,7 @@ function calcular(autosave=true){
   const aviso=$('calcAviso');
   if(aviso){
     const faltas=[];
+    if(pedagioPendente)faltas.push('⚠️ Preço parcial: pedágios não confirmados. Informe o total de pedágios antes de enviar o orçamento.');
     if(km>0 && precoLitro<=0) faltas.push('⚠️ Informe o preço do combustível por litro em ⚙️ Veículos e combustíveis.');
     const tollInputs=[...document.querySelectorAll('.tollval')];
     if(tollInputs.some(x=>(parseFloat(x.value)||0)<=0)) faltas.push('⚠️ Há pedágio localizado sem preço conhecido. Preencha o valor da praça uma vez; o app salvará para as próximas rotas.');
@@ -3251,9 +3266,9 @@ function calcular(autosave=true){
   if(emp.pix){pg=`\n\n*RESERVA / PAGAMENTO*\nSinal (${n('sinalPct').toFixed(0)}%): *${brl(sinalArred)}*\nSaldo: ${brl(saldoArred)}\nPIX: ${emp.pix}${emp.fav?`\nFavorecido: ${emp.fav}`:''}${emp.banco?`\nBanco: ${emp.banco}`:''}\nApós o pagamento, envie o comprovante para confirmação.`}
   // Mensagem do WhatsApp sem emojis: evita caracteres "�" em alguns navegadores/apps e mantém a leitura profissional.
   const blocoIda=`*VIAGEM 1 — IDA*\n${data?`Data: ${data}\n`:''}${horaIda?`Horário de saída/busca: ${horaIda}\n`:''}Local de saída: ${origem||'-'}\nDestino: ${destino||'-'}\nKM da viagem 1: ${kmBase.toFixed(1)} km\nPedágios da viagem 1 (ida + retorno): ${brl(n('pedagios'))}`;
-  const blocoRetorno=temRetorno?`\n\n*VIAGEM 1 — RETORNO*\n${data?`Data: ${data}\n`:''}${horaVolta?`Horário de busca para retorno: ${horaVolta}\n`:''}Local de busca: ${origemRetorno||destino||'-'}\nDestino do retorno: ${destinoRetorno||origem||'-'}`:'';
+  const blocoRetorno=temRetorno?`\n\n*VIAGEM 1 — RETORNO*\n${dataBR($('dataRetorno')?.value||$('data').value)?`Data: ${dataBR($('dataRetorno')?.value||$('data').value)}\n`:''}${horaVolta?`Horário de busca para retorno: ${horaVolta}\n`:''}Local de busca: ${origemRetorno||destino||'-'}\nDestino do retorno: ${destinoRetorno||origem||'-'}`:'';
   const blocoTrecho2=(($('estruturaCotacao')?.value==='multi')&&(trecho2.origem||trecho2.destino))?`\n\n*VIAGEM 2 — IDA*\n${trecho2.data?`Data: ${dataBR(trecho2.data)}\n`:''}${trecho2.hora?`Horário da ida: ${trecho2.hora}\n`:''}Origem: ${trecho2.origem||'-'}\nDestino: ${trecho2.destino||'-'}\nKM da viagem 2: ${(Number(trecho2.km)||0).toFixed(1)} km\nPedágios da viagem 2 (ida + retorno): ${brl(Number(trecho2.pedagios)||0)}\n${trecho2.horaRetorno?`Horário do retorno: ${trecho2.horaRetorno}\n`:''}Retorno: ${trecho2.origemRetorno||trecho2.destino||'-'} → ${trecho2.destinoRetorno||trecho2.origem||'-'}`:'';
-  const msg=`*${(emp.nome||'MICHELON VIAGENS EXECUTIVAS').toUpperCase()}*\n_Conforto e segurança em cada destino._\n\n*ORÇAMENTO DE VIAGEM*\nNº: ${textoNumeroOrcamento()}\n\n${cliente?`Cliente: ${cliente}\n\n`:''}${blocoIda}${blocoRetorno}${blocoTrecho2}\n\nServiço: ${$('tipoServico').value}\nPassageiros: ${passageiros}${$('obsViagem').value.trim()?`\nObservações: ${$('obsViagem').value.trim()}`:''}\n\nDistância total: ${km.toFixed(1)} km\nTempo estimado: ${tempo||'-'}\nPedágios estimados: ${brl(pedagios)}\n\n*VALOR DA VIAGEM: ${brl(preco)}*\nValor por passageiro: ${brl(porPass)}${pg}\n\nOrçamento sujeito à disponibilidade na data solicitada.`;
+  const msg=`*${(emp.nome||'MICHELON VIAGENS EXECUTIVAS').toUpperCase()}*\n_Conforto e segurança em cada destino._\n\n*ORÇAMENTO DE VIAGEM*\nNº: ${textoNumeroOrcamento()}\n\n${cliente?`Cliente: ${cliente}\n\n`:''}${blocoIda}${blocoRetorno}${blocoTrecho2}\n\nServiço: ${$('tipoServico').value}\nPassageiros: ${passageiros}${$('obsViagem').value.trim()?`\nObservações: ${$('obsViagem').value.trim()}`:''}\n\nDistância total: ${km.toFixed(1)} km\nTempo estimado: ${tempo||'-'}\nPedágios estimados: ${pedagioPendente?'NÃO CONFIRMADOS':brl(pedagios)}\n\n*${pedagioPendente?'VALOR PARCIAL, SEM PEDÁGIOS':'VALOR DA VIAGEM'}: ${brl(preco)}*\nValor por passageiro: ${brl(porPass)}${pg}\n\nOrçamento sujeito à disponibilidade na data solicitada.`;
   $('mensagem').value=msg;
   (function(){
     let wn=String($('clienteFone')?.value||'').replace(/\\D/g,'');
@@ -3479,6 +3494,7 @@ function fecharMeuCartao(){const m=document.getElementById('modalMeuCartao');if(
 <script>
 function limparLinhaCotacao(s){
  return String(s||'')
+   .replace(/[*_`]/g,'')
    .replace(/^[^\p{L}\p{N}]+/gu,'')
    .replace(/\s+/g,' ')
    .trim();
@@ -3490,6 +3506,8 @@ function camposDaMensagem(txt){
  const linhas=String(txt||'').replace(/\r/g,'').split('\n').map(x=>x.trim()).filter(Boolean);
  const out={};
  const chaves=[
+  ['cliente',['cliente','nome do cliente']],
+  ['fone',['whatsapp','whatsapp do cliente','telefone','celular']],
   ['origemRetorno',['origem do retorno','saida do retorno']],
   ['destinoRetorno',['destino do retorno']],
   ['dataRetorno',['data do retorno']],
@@ -3566,96 +3584,69 @@ function importarBlocoMichelon(txt){
 }
 
 function importarCotacaoRecebida(){
- const box=document.getElementById('textoCotacaoRecebida');
- const txt=(box?.value||'').trim();
- if(!txt){alert('Cole primeiro a mensagem da cotação recebida pelo WhatsApp.');return;}
+ const txt=(document.getElementById('textoCotacaoRecebida')?.value||'').trim();
+ const status=document.getElementById('solicitacaoArquivoStatus');
+ const avisar=msg=>{if(status)status.textContent=msg;};
+ if(!txt){avisar('Cole a solicitação ou selecione um arquivo .txt.');return false;}
  const md=importarBlocoMichelon(txt);
- if(md){
-   const modo=(md.SERVICO||'').toLowerCase()==='urbano'?'urbano':'viagem';
-   const mc=document.getElementById('modoCotacao');
-   if(mc){mc.value=modo;alternarModoCotacao();}
-   if(modo==='urbano'){
-     setSeExiste('cidadeUrbana',md.CIDADE);
-     setSeExiste('enderecoOrigem',normalizarEnderecoMichelon(md.ORIGEM));
-     setSeExiste('enderecoDestino',normalizarEnderecoMichelon(md.DESTINO));
-     setSeExiste('enderecoParada',md.PARADA);
-   }else{
-     setSeExiste('origem',normalizarEnderecoMichelon(md.ORIGEM));
-     setSeExiste('destino',normalizarEnderecoMichelon(md.DESTINO));
-   }
-   setSeExiste('data',md.DATA);
-   setSeExiste('horaSaida',md.HORA);
-   setSeExiste('passageiros',md.PASSAGEIROS);
-   setSeExiste('origemRetorno',normalizarEnderecoMichelon(md.ORIGEM_RETORNO));
-   setSeExiste('destinoRetorno',normalizarEnderecoMichelon(md.DESTINO_RETORNO));
-   setSeExiste('dataRetorno',md.DATA_RETORNO);
-   setSeExiste('horaRetorno',md.HORA_RETORNO);
-   const iv=document.getElementById('idaVolta');
-   if(iv && (md.TRAJETO||'').toLowerCase().includes('volta')){
-     iv.value='sim';iv.dispatchEvent(new Event('change',{bubbles:true}));
-     if(typeof alternarCamposRetorno==='function')alternarCamposRetorno();
-     setSeExiste('origemRetorno',normalizarEnderecoMichelon(md.ORIGEM_RETORNO));
-     setSeExiste('destinoRetorno',normalizarEnderecoMichelon(md.DESTINO_RETORNO));
-   }
-   alert('Cotação MICHELON carregada automaticamente. Confira os dados e calcule a rota.');
-   return;
- }
-
-
- const c=camposDaMensagem(txt);
- const ehUrbano=/corrida dentro|urbano/i.test(c.servico||txt) &&
-                !/viagem entre cidades/i.test(c.servico||'');
- const modo=ehUrbano?'urbano':'viagem';
-
- if(document.getElementById('modoCotacao')){
-   document.getElementById('modoCotacao').value=modo;
-   alternarModoCotacao();
- }
-
- if(modo==='urbano'){
-   setSeExiste('cidadeUrbana',c.cidade);
-   setSeExiste('enderecoOrigem',normalizarEnderecoMichelon(c.origem));
-   setSeExiste('enderecoDestino',normalizarEnderecoMichelon(c.destino));
-   setSeExiste('enderecoParada',c.parada);
- }else{
-   setSeExiste('origem',c.origem);
-   setSeExiste('destino',c.destino);
- }
-
- setSeExiste('data',dataISO(c.data));
- setSeExiste('horaSaida',c.hora);
- setSeExiste('passageiros',c.passageiros);
-
- // Detect ida e volta from explicit fields or text.
+ const c=md?{
+   cliente:md.CLIENTE||md.NOME_CLIENTE,fone:md.WHATSAPP||md.TELEFONE||md.FONE,
+   servico:md.SERVICO,tipo:md.TRAJETO,origem:md.ORIGEM,destino:md.DESTINO,
+   data:md.DATA,hora:md.HORA,passageiros:md.PASSAGEIROS,cidade:md.CIDADE,parada:md.PARADA,
+   origemRetorno:md.ORIGEM_RETORNO,destinoRetorno:md.DESTINO_RETORNO,
+   dataRetorno:md.DATA_RETORNO,horaRetorno:md.HORA_RETORNO
+ }:camposDaMensagem(txt);
+ if(!c.origem&&!c.destino){avisar('Não encontrei origem ou destino. Confira se o arquivo contém uma solicitação de cotação.');return false;}
+ const modo=/corrida dentro|urbano/i.test(c.servico||'')?'urbano':'viagem';
  const temRetorno=!!(c.origemRetorno||c.destinoRetorno||c.dataRetorno||c.horaRetorno||/ida e volta|retorno/i.test(c.tipo||''));
- const tipoEl=document.getElementById('tipoServico')||document.getElementById('tipo')||document.getElementById('trajeto');
- if(tipoEl&&temRetorno){
-   const opt=[...tipoEl.options].find(o=>/ida e volta|viagem/i.test(o.textContent||'')&&/volta|retorno/i.test(o.textContent||''));
-   if(opt){tipoEl.value=opt.value;tipoEl.dispatchEvent(new Event('change',{bubbles:true}));}
- }
-
- // Existing MICHELON return field IDs.
- setSeExiste('origemRetorno',normalizarEnderecoMichelon(c.origemRetorno));
- setSeExiste('destinoRetorno',normalizarEnderecoMichelon(c.destinoRetorno));
- setSeExiste('dataRetorno',dataISO(c.dataRetorno));
- setSeExiste('horaRetorno',c.horaRetorno);
-
- // Some versions use these aliases.
- setSeExiste('retornoData',dataISO(c.dataRetorno));
- setSeExiste('retornoHora',c.horaRetorno);
-
- const faltam=[];
- if(!c.origem)faltam.push('origem');
- if(!c.destino)faltam.push('destino');
- if(!c.data)faltam.push('data');
- if(!c.hora)faltam.push('horário');
-
- if(faltam.length){
-   alert('Cotação lida, mas não encontrei: '+faltam.join(', ')+'. Confira a mensagem e complete esses campos.');
- }else{
-   alert(temRetorno?'Cotação de ida e volta importada. Confira os dados e calcule a rota.':'Cotação importada. Confira os dados e calcule a rota.');
- }
+ const valores={
+   cliente:c.cliente||'',clienteFone:(c.fone||'').replace(/\D/g,''),modoCotacao:modo,
+   estruturaCotacao:'unico',tipoServico:temRetorno?'Ida e volta':'Viagem',idaVolta:temRetorno?'sim':'nao',
+   origem:modo==='viagem'?normalizarEnderecoMichelon(c.origem):'',
+   destino:modo==='viagem'?normalizarEnderecoMichelon(c.destino):'',
+   enderecoOrigem:modo==='urbano'?normalizarEnderecoMichelon(c.origem):'',
+   enderecoDestino:modo==='urbano'?normalizarEnderecoMichelon(c.destino):'',
+   enderecoParada:c.parada||'',data:dataISO(c.data),horaSaida:c.hora||'',passageiros:c.passageiros||'1',
+   dataRetorno:temRetorno?dataISO(c.dataRetorno||c.data):'',horaRetorno:temRetorno?(c.horaRetorno||''):'',
+   origemRetorno:temRetorno?normalizarEnderecoMichelon(c.origemRetorno||c.destino):'',
+   destinoRetorno:temRetorno?normalizarEnderecoMichelon(c.destinoRetorno||c.origem):'',
+   kmTotalInput:'',pedagios:'0',tempo:'-',obsViagem:''
+ };
+ if(c.cidade)valores.cidadeUrbana=c.cidade;
+ // Apply all fields before triggering listeners, so autosave sees a complete request.
+ sessionStorage.removeItem('michelonCotacaoLimpaV1');
+ for(const [id,v] of Object.entries(valores)){const el=document.getElementById(id);if(el){el.value=v;delete el.dataset.manual;delete el.dataset.editado;}}
+ for(const id of ['cepOrigem','numOrigem','cepDestino','numDestino','cepOrigemRetorno','numOrigemRetorno','cepDestinoRetorno','numDestinoRetorno','dataTrecho2','horaTrecho2','origemTrecho2','destinoTrecho2','origemRetornoTrecho2','destinoRetornoTrecho2','horaRetornoTrecho2','kmTrecho2','pedagiosTrecho2']){const el=document.getElementById(id);if(el)el.value='';}
+ window.__trecho2={};window.__michelonCoords=[];window.__michelonRoads=[];
+ if(typeof urbanoResolvido!=='undefined')urbanoResolvido={origem:null,destino:null,parada:null};
+ if(typeof alternarModoCotacao==='function')alternarModoCotacao();
+ if(typeof alternarEstruturaCotacao==='function')alternarEstruturaCotacao();
+ if(typeof alternarCamposRetorno==='function')alternarCamposRetorno();
+ // Keep explicitly requested return locations after default return inversion.
+ for(const id of ['origemRetorno','destinoRetorno']){const el=document.getElementById(id);if(el){el.value=valores[id];el.dataset.manual='1';}}
+ const tolls=document.getElementById('tollList');if(tolls)tolls.innerHTML='';
+ if(typeof calcular==='function')calcular(false);
+ for(const id of Object.keys(valores)){const el=document.getElementById(id);if(el){el.dispatchEvent(new Event('input',{bubbles:true}));el.dispatchEvent(new Event('change',{bubbles:true}));}}
+ for(const id of ['origemRetorno','destinoRetorno']){const el=document.getElementById(id);if(el)el.value=valores[id];}
+ if(typeof calcular==='function')calcular(false);
+ document.getElementById('cliente')?.dispatchEvent(new Event('input',{bubbles:true}));
+ if(typeof saveQuote==='function')saveQuote();
+ const faltam=['origem','destino','data','hora'].filter(id=>!c[id]);
+ const aviso=validarDatasSolicitacao();
+ avisar('Solicitação importada. '+(faltam.length?'Complete: '+faltam.join(', ')+'. ':'')+(aviso||'Confira os dados e toque em “Calcular rota”.'));
+ document.getElementById('cotacaoForm')?.scrollIntoView({behavior:'smooth',block:'start'});
+ return true;
 }
+function validarDatasSolicitacao(){
+ const valor=id=>document.getElementById(id)?.value||'';
+ const ida=valor('data'),volta=valor('dataRetorno');
+ const invalida=valor('idaVolta')==='sim'&&ida&&volta&&
+   (volta<ida||(volta===ida&&valor('horaSaida')&&valor('horaRetorno')&&valor('horaRetorno')<valor('horaSaida')));
+ const msg=invalida?'Atenção: o retorno está antes da ida. Confirme e corrija a data ou o horário do retorno.':'';
+ const el=document.getElementById('avisoDatasSolicitacao');if(el){el.textContent=msg;el.hidden=!msg;}
+ return msg;
+}
+
 </script>
 
 <script>
@@ -4234,7 +4225,8 @@ async function abrirArquivoSolicitacaoCliente(input){
   const text=(await file.text()).trim();
   if(!text){alert('Esse arquivo está vazio.');return}
   const box=document.getElementById('textoCotacaoRecebida');box.value=text;box.dispatchEvent(new Event('input',{bubbles:true}));
-  document.getElementById('solicitacaoArquivoStatus').textContent='Texto carregado. Toque em “Importar solicitação” e confira os dados.';
+  importarCotacaoRecebida();
+  input.value='';
  }catch{alert('Não consegui abrir esse arquivo. Cole a mensagem do WhatsApp no campo abaixo.');}
 }
 </script>
@@ -4817,4 +4809,11 @@ function limparCotacaoAgora(ev){
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind);else bind();
 })();
+</script>
+
+<script id="michelon-import-date-feedback">
+document.addEventListener('DOMContentLoaded',function(){
+ ['data','horaSaida','dataRetorno','horaRetorno','idaVolta'].forEach(id=>document.getElementById(id)?.addEventListener('change',validarDatasSolicitacao));
+ validarDatasSolicitacao();
+});
 </script>
