@@ -4963,12 +4963,12 @@ function seqPersistir(){
     d.salvoEm=new Date().toISOString();localStorage.setItem(k,JSON.stringify(d));
   }catch(e){}
 }
-function seqInvalidar(s){seqConsulta++;delete s.sec;for(let i=1;i<s.pontos.length;i++){s.pontos[i].km='';s.pontos[i].ped='';}}
+function seqInvalidar(s){seqConsulta++;delete s.sec;for(let i=1;i<s.pontos.length;i++){s.pontos[i].km='';s.pontos[i].ped='';delete s.pontos[i].pedNota;}}
 function seqEditar(i,campo,valor){
   const s=seqLer();if(!s||!s.pontos[i])return;
   if(campo==='endereco'){s.pontos[i].endereco=valor;delete s.pontos[i].local;seqInvalidar(s);document.querySelectorAll('[data-seq-custo]').forEach(e=>e.value='');}
   else if(campo==='tipo'){s.pontos[i].tipo=valor==='motorista'?'motorista':'cliente';seqConsulta++;}
-  else if(campo==='km'||campo==='ped'){s.pontos[i][campo]=valor===''?'':Math.max(0,Number(valor)||0);seqConsulta++;}
+  else if(campo==='km'||campo==='ped'){s.pontos[i][campo]=valor===''?'':Math.max(0,Number(valor)||0);if(campo==='ped')delete s.pontos[i].pedNota;seqConsulta++;}
   seqGuardar(s,campo==='tipo');calcular(false);seqPersistir();
 }
 function seqAdicionar(onde='fim'){
@@ -5061,7 +5061,9 @@ function seqRender(){
    const label=document.createElement('label');label.textContent=texto;
    const number=document.createElement('input');number.type='number';number.min='0';number.step=campo==='km'?'0.1':'0.01';number.inputMode='decimal';number.value=p[campo];number.placeholder=campo==='km'?'Não calculado':'Não confirmado';number.setAttribute('data-seq-custo',campo);number.setAttribute('aria-label',texto+' do trecho '+(j+1));number.oninput=()=>seqEditar(j+1,campo,number.value);label.appendChild(number);grid.appendChild(label);
   }
-  row.appendChild(grid);details.appendChild(row);
+  row.appendChild(grid);
+  if(p.pedNota){const nota=document.createElement('div');nota.className='hint';nota.textContent=p.pedNota;row.appendChild(nota);}
+  details.appendChild(row);
  });
  box.appendChild(details);seqAjustarTela();
 }
@@ -5084,9 +5086,25 @@ function seqMapa(){
   if(p.length>2)q.set('waypoints',p.slice(1,-1).map(x=>x.endereco).join('|'));
   return 'https://www.google.com/maps/dir/?'+q;
 }
+// Estimativa para cidades inteiras e corredor usual AutoBAn, carro de passeio.
+// Tarifas oficiais vigentes desde 01/07/2026. Não se aplica a ruas ou desvios.
+const SEQ_FONTE_AUTOBAN='https://rodovias.motiva.com.br/autoban/noticias/2026/junho/novas-tarifas-de-pedagio-entram-em-vigor-no-dia-1--de-julho/';
+function seqPedagioLimeiraSaoPaulo(origem,destino,rota){
+  const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
+  const cidade=(v,n)=>new RegExp('^'+n+'(?:,\\s*(?:sp|sao paulo)(?:,.*)?)?$').test(norm(v));
+  const corredor=(cidade(origem,'limeira')&&cidade(destino,'sao paulo'))||(cidade(destino,'limeira')&&cidade(origem,'sao paulo'));
+  const roads=(rota.roads||[]).map(norm).join(' | ');
+  const autoban=/anhanguera|bandeirantes|sp[ -]?330\b|sp[ -]?348\b/.test(roads);
+  const desvio=/dom pedro|sp[ -]?0?65\b|rodoanel|sp[ -]?0?21\b|castello|castelo branco|raposo tavares/.test(roads);
+  if(!corredor||!autoban||desvio||!(rota.km>=130&&rota.km<=195))return null;
+  // Nova Odessa/Sumaré + Valinhos/Itupeva + Perus/Caieiras: uma praça por grupo.
+  return Number((12.80+14.30+14.50).toFixed(2));
+}
 async function seqPedagiosTrecho(origem,destino,rota){
   const conhecido=pedagioSaoPauloAtibaia(origem,destino,rota.roads||[]);
-  if(conhecido!==null)return conhecido;
+  if(conhecido!==null){rota.pedNota='Estimativa Mairiporã / Fernão Dias: R$ 3,70 por passagem (ANTT, maio/2026).';return conhecido;}
+  const autoban=seqPedagioLimeiraSaoPaulo(origem,destino,rota);
+  if(autoban!==null){rota.pedNota='Estimativa corredor usual AutoBAn: 12,80 + 14,30 + 14,50 = R$ 41,60 por sentido. Tarifas julho/2026, carro de passeio, sem descontos. Confira a rota no mapa.';return autoban;}
   try{
     const resultado=await limitePromessaPedagio(calcularPedagiosDinamicos(rota.coords,[]),18000);
     if(resultado.encontrados>0&&resultado.incompletos===0)return resultado.total;
@@ -5116,14 +5134,14 @@ async function seqBuscarRota(){
         const [origem,destino]=await Promise.all([ponto(a),ponto(p)]);
         const r=await limite(rotaOSRM(origem,destino));
         const ped=await seqPedagiosTrecho(a.endereco,p.endereco,r);
-        return {i:j+1,km:r.km,ped,sec:r.sec||0,coords:r.coords,roads:r.roads||[]};
+        return {i:j+1,km:r.km,ped,pedNota:r.pedNota||'',sec:r.sec||0,coords:r.coords,roads:r.roads||[]};
       }catch(e){return {i:j+1,erro:true}}
     }));
     if(versao!==seqConsulta)return;
     let falhas=0,pendentes=0,sec=0,coords=[],roads=[];
     for(const r of resultados){
       if(r.erro){falhas++;continue;}
-      s.pontos[r.i].km=Number(r.km.toFixed(1));s.pontos[r.i].ped=r.ped===null?'':Number(r.ped.toFixed(2));
+      s.pontos[r.i].km=Number(r.km.toFixed(1));s.pontos[r.i].ped=r.ped===null?'':Number(r.ped.toFixed(2));s.pontos[r.i].pedNota=r.pedNota||'';
       if(r.ped===null)pendentes++;sec+=r.sec;coords=coords.concat(r.coords);roads=roads.concat(r.roads);
     }
     s.sec=sec;window.__michelonCoords=coords;window.__michelonRoads=[...new Set(roads)];
