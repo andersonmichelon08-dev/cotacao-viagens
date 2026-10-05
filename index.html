@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="MICHELON">
-<title>Michelon Viagens Executivas • V57</title>
+<title>Michelon Viagens Executivas • V58 — sequência de endereços</title>
 <style>
 :root{--bg:#f8fafc;--card:#fff;--text:#0f172a;--muted:#64748b;--line:#e2e8f0;--primary:#0f766e;--primary2:#115e59;--ok:#166534;--warn:#92400e;--danger:#b91c1c}
 *{box-sizing:border-box}
@@ -1094,8 +1094,23 @@ body{background:var(--sig-bg)!important;color:var(--sig-text)!important;}
 }
 </style>
 
+<script id="michelon-startup-v58">
+window.operacaoTotais=function(){return {km:0,pedagios:0,pendente:false}};
+window.seqMensagemCliente=function(){return null};
+window.seqAtiva=function(){return false};
+</script>
 </head>
 <body>
+<noscript><div class="seq-aviso-previa">Este arquivo está em modo de visualização. Para importar, adicionar paradas e calcular, abra a versão publicada do sistema no Safari.</div></noscript>
+<nav class="mcBottom" aria-label="Navegação principal"><div class="mcNav">
+<a class="active" href="#mxHero" data-mc-section="home"><i>🏠</i>Início</a>
+<a href="#mxAgenda" data-mc-section="mxAgenda"><i>📅</i>Agenda</a>
+<a href="#mxFinanceiro" data-mc-section="mxFinanceiro"><i>💰</i>Financeiro</a>
+<a href="#mxUber" data-mc-section="mxUber"><i>🚕</i>Uber / Apps</a>
+<a href="#mcCardOverlay" data-mc-section="cardFloat"><i>📇</i>Cartão</a>
+<a href="#cotacaoImportWrap" data-mc-section="cotacao" aria-label="Cotação"><i>📥</i>Cotação</a>
+</div></nav>
+
 <div style="margin:10px 0;padding:10px 12px;border-radius:12px;background:#fff8df;border:1px solid #e4c35a;font-size:13px;">
   🧪 <strong>Modo de teste V13:</strong> esta versão usa armazenamento próprio da cotação e não deve alterar os dados do seu Financeiro.
 </div>
@@ -1177,15 +1192,15 @@ async function compartilharCartao(){
     <label for="arquivoSolicitacaoCliente">Abrir solicitação em arquivo de texto (.txt)</label>
     <input id="arquivoSolicitacaoCliente" type="file" accept=".txt,text/plain" onchange="abrirArquivoSolicitacaoCliente(this)" style="margin-bottom:12px">
     <label for="textoCotacaoRecebida">Mensagem recebida pelo WhatsApp</label>
+    <button type="button" id="colarSolicitacaoWhatsApp" class="secondary" style="margin:8px 0;min-height:48px" onclick="colarSolicitacaoWhatsApp()">📋 Colar do WhatsApp</button>
     <p id="solicitacaoArquivoStatus" role="status" style="font-size:14px"></p>
-    <textarea id="textoCotacaoRecebida" rows="8" placeholder="Cole aqui a solicitação recebida do cliente..."></textarea>
+    <textarea id="textoCotacaoRecebida" rows="8" spellcheck="false" autocorrect="off" autocapitalize="off" placeholder="Copie a mensagem no WhatsApp e toque em Colar do WhatsApp..."></textarea>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;">
       <button type="button" class="primary" onclick="importarCotacaoRecebida();">📥 Importar solicitação</button>
-      <button type="button" class="secondary" onclick="document.getElementById('textoCotacaoRecebida').value='';">🗑️ Limpar</button>
+      <button type="button" class="secondary" onclick="limparAnexoSolicitacaoCliente()">🗑️ Limpar anexo / mensagem</button>
     </div>
   </div>
   <div class="card" id="cotacaoForm">
-    <button type="button" class="primary" style="margin-bottom:14px" onclick="abrirAreaCotacao()">📥 Importar solicitação do cliente</button>
     <div class="grid">
       <div><label>Nº do orçamento</label><input id="numeroOrcamento" type="text" readonly></div><div><label>Cliente</label><input id="cliente" placeholder="Nome do cliente"></div><div><label>WhatsApp do cliente</label><input id="clienteFone" inputmode="tel" placeholder="(19) 99999-9999"></div>
       <div class="full"><label>Modo da cotação</label>
@@ -1206,8 +1221,16 @@ async function compartilharCartao(){
 <div id="statusEnderecos" class="hint" style="margin-top:8px">Digite os locais e toque em “Localizar endereços”.</div>
 <div class="hint">No modo urbano, informe endereços ou locais dentro da cidade. A distância é calculada pela rota real.</div>
 </div>
-<div id="viagemOrigem" class="citywrap"><label>Origem</label><input id="origem" autocomplete="off" placeholder="Rua, cidade, aeroporto, hotel ou local..."><div id="listaOrigem" class="citylist"></div><div class="cityhelp">Ex.: Rua + número, cidade, aeroporto, hotel ou empresa.</div><div class="grid" style="margin-top:7px"><div><label>CEP da origem (opcional)</label><input id="cepOrigem" inputmode="numeric" placeholder="00000-000"></div><div><label>Número</label><input id="numOrigem" inputmode="numeric" placeholder="Ex.: 366"></div></div></div>
-      <div id="viagemDestino" class="citywrap"><label>Destino</label><input id="destino" autocomplete="off" placeholder="Rua, cidade, aeroporto, hotel ou local..."><div id="listaDestino" class="citylist"></div><div class="cityhelp">Se o mapa não achar pelo nome, informe CEP + número.</div><div class="grid" style="margin-top:7px"><div><label>CEP do destino (opcional)</label><input id="cepDestino" inputmode="numeric" placeholder="00000-000"></div><div><label>Número</label><input id="numDestino" inputmode="numeric" placeholder="Ex.: 100"></div></div></div>
+
+<section class="full card" id="seqRoteiro" aria-label="Adicionar paradas">
+  <h2 class="seq-titulo">Adicionar paradas</h2>
+  <p class="seq-legenda">Os trechos “Só motorista” entram no preço e ficam ocultos do cliente.</p>
+  <input id="seqDados" type="hidden" value="">
+  <div id="seqLista"></div>
+  <button type="button" class="primary seq-ok" id="seqCalcular" onclick="buscarTudo()">Calcular valor</button>
+</section>
+<div id="viagemOrigem" class="citywrap seq-legado"><label>Origem</label><input id="origem" autocomplete="off" placeholder="Rua, cidade, aeroporto, hotel ou local..."><div id="listaOrigem" class="citylist"></div><div class="cityhelp">Ex.: Rua + número, cidade, aeroporto, hotel ou empresa.</div><div class="grid" style="margin-top:7px"><div><label>CEP da origem (opcional)</label><input id="cepOrigem" inputmode="numeric" placeholder="00000-000"></div><div><label>Número</label><input id="numOrigem" inputmode="numeric" placeholder="Ex.: 366"></div></div></div>
+      <div id="viagemDestino" class="citywrap seq-legado"><label>Destino</label><input id="destino" autocomplete="off" placeholder="Rua, cidade, aeroporto, hotel ou local..."><div id="listaDestino" class="citylist"></div><div class="cityhelp">Se o mapa não achar pelo nome, informe CEP + número.</div><div class="grid" style="margin-top:7px"><div><label>CEP do destino (opcional)</label><input id="cepDestino" inputmode="numeric" placeholder="00000-000"></div><div><label>Número</label><input id="numDestino" inputmode="numeric" placeholder="Ex.: 100"></div></div></div>
       <div><label>Data da viagem</label><input id="data" type="date"></div>
       <div><label>Horário de saída</label><input id="horaSaida" type="time"></div>
       <div><label>Data do retorno</label><input id="dataRetorno" type="date" oninput="validarDatasSolicitacao()"></div>
@@ -1250,12 +1273,13 @@ async function compartilharCartao(){
           </div>
         </div>
       </div>
+<div hidden id="seqMigracaoV58"><input id="opBase" value="Limeira, SP" placeholder="Cidade ou endereço da base"><input id="opPlanoSalvo" type="hidden" value=""><input id="opKm1" type="number" min="0" step="0.1" inputmode="decimal" placeholder="Não calculado"><input id="opPed1" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Não confirmado"><input id="opKm2" type="number" min="0" step="0.1" inputmode="decimal" placeholder="Não calculado"><input id="opPed2" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Não confirmado"><input id="opKm3" type="number" min="0" step="0.1" inputmode="decimal" placeholder="Não calculado"><input id="opPed3" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Não confirmado"><input id="opKm4" type="number" min="0" step="0.1" inputmode="decimal" placeholder="Não calculado"><input id="opPed4" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Não confirmado"><select id="opAtivo"><option value="sim" selected>Sim</option><option value="nao">Não</option></select></div>
       <div class="full"><div id="rotaStatus" class="status"></div></div>
       <div class="full"><div id="tollBox" class="tollbox"><div class="tollhead">🛣️ Pedágios encontrados na rota</div><div id="tollList"></div><div class="tollhint">Digite o valor de cada pedágio uma vez. O app salva no celular e reutiliza automaticamente quando encontrar a mesma praça em uma próxima cotação.</div></div></div>
-      <div><label>KM total</label><input id="kmTotalInput" type="number" step="0.1"></div>
+      <div class="seq-legado"><label>KM total</label><input id="kmTotalInput" type="number" step="0.1"></div>
       <div><label>Tempo estimado</label><input id="tempo" value="-" readonly></div>
       </div>
-      <div class="full"><label for="pedagios">Total de pedágios — ida e retorno (R$)</label>
+      <div class="full seq-legado"><label for="pedagios">Total de pedágios — ida e retorno (R$)</label>
       <input id="pedagios" type="number" min="0" step="0.01" inputmode="decimal" value="0" placeholder="Informe se a consulta não confirmar">
       <div class="hint">Somado ao orçamento. Se a consulta falhar, confira e informe o total aqui.</div></div>
       <div><label>Veículo</label><select id="veiculo" onchange="aplicarVeiculo()"></select></div>
@@ -1315,7 +1339,7 @@ async function compartilharCartao(){
 
   <div class="card">
     <div class="btns" style="margin-top:0">
-      <button class="primary full" onclick="buscarTudo()">📍 Buscar rota, calcular KM, pedágios e orçamento</button>
+      <button class="primary full seq-rota-legada" onclick="buscarTudo()">📍 Buscar rota, calcular KM, pedágios e orçamento</button>
       <button class="primary" type="button" onclick="recalcularOrcamento()">🔄 Recalcular rota e orçamento</button>
       <button class="secondary" onclick="copiar()">Copiar orçamento</button><button class="secondary" onclick="salvarOrcamento()">💾 Salvar orçamento</button><button class="secondary" onclick="salvarOrcamentoPendente()">📋 Salvar como pendente</button><button class="primary" onclick="registrarViagem()">✅ Confirmar viagem</button>
       <a id="whats" class="button ghost" href="#" target="_blank" rel="noopener noreferrer">📲 Enviar no WhatsApp</a>
@@ -3173,12 +3197,12 @@ async function recalcularOrcamento(){
     // secundária da mensagem/WhatsApp tenha algum problema.
     const kmBase=n('kmTotalInput');
     const t=window.__trecho2||{};
-    const km=kmBase+(Number(t.km)||0);
+    const km=kmBase+(Number(t.km)||0)+operacaoTotais().km;
     const consumo=n('consumo');
     const precoLitro=n('precoComb');
     const litros=consumo>0?km/consumo:0;
     const comb=(litros>0&&precoLitro>0)?litros*precoLitro:0;
-    const pedagios=n('pedagios')+(Number(t.pedagios)||0);
+    const pedagios=n('pedagios')+(Number(t.pedagios)||0)+operacaoTotais().pedagios;
     const custo=comb+pedagios;
     const margem=n('margem');
     const valorKm=Math.min(4,Math.max(0,n('valorKm')));
@@ -3213,10 +3237,10 @@ async function recalcularOrcamento(){
 }
 
 function calcular(autosave=true){
-  const kmBase=n('kmTotalInput'), trecho2=(window.__trecho2||{}), km=kmBase+(Number(trecho2.km)||0), consumo=n('consumo'), precoLitro=n('precoComb');
+  const kmBase=n('kmTotalInput'), trecho2=(window.__trecho2||{}), km=kmBase+(Number(trecho2.km)||0)+operacaoTotais().km, consumo=n('consumo'), precoLitro=n('precoComb');
   const litros=consumo>0?km/consumo:0;
   const comb=(litros>0&&precoLitro>0)?litros*precoLitro:0;
-  const pedagios=n('pedagios')+(Number(trecho2.pedagios)||0);
+  const pedagios=n('pedagios')+(Number(trecho2.pedagios)||0)+operacaoTotais().pedagios;
   const extras=0;
   const custo=comb+pedagios+extras;
   const margem=n('margem');
@@ -3235,7 +3259,8 @@ function calcular(autosave=true){
   $('kmView').textContent=km.toFixed(1)+' km';
   $('litros').textContent=litros.toFixed(1)+' L';
   $('cComb').textContent=precoLitro>0?brl(comb):'Informe R$/L';
-  const pedagioPendente=kmBase>0&&$('pedagios').value==='';
+  const op=operacaoTotais();
+  const pedagioPendente=(kmBase>0&&$('pedagios').value==='')||op.pendente;
   $('cPed').textContent=pedagioPendente?'Não confirmado':brl(pedagios);
   $('custoTotal').textContent=brl(custo);
   if($('valorKmView')) $('valorKmView').textContent=brl(valorKm)+'/km';
@@ -3245,6 +3270,7 @@ function calcular(autosave=true){
   const aviso=$('calcAviso');
   if(aviso){
     const faltas=[];
+    if(op.pendente)faltas.push('⚠️ Confira quilômetros e pedágios de todos os trechos da sequência. Digite 0 apenas quando não houver custo.');
     if(pedagioPendente)faltas.push('⚠️ Preço parcial: pedágios não confirmados. Informe o total de pedágios antes de enviar o orçamento.');
     if(km>0 && precoLitro<=0) faltas.push('⚠️ Informe o preço do combustível por litro em ⚙️ Veículos e combustíveis.');
     const tollInputs=[...document.querySelectorAll('.tollval')];
@@ -3265,10 +3291,10 @@ function calcular(autosave=true){
   const saldoArred=Math.round((preco-sinalArred)*100)/100;
   if(emp.pix){pg=`\n\n*RESERVA / PAGAMENTO*\nSinal (${n('sinalPct').toFixed(0)}%): *${brl(sinalArred)}*\nSaldo: ${brl(saldoArred)}\nPIX: ${emp.pix}${emp.fav?`\nFavorecido: ${emp.fav}`:''}${emp.banco?`\nBanco: ${emp.banco}`:''}\nApós o pagamento, envie o comprovante para confirmação.`}
   // Mensagem do WhatsApp sem emojis: evita caracteres "�" em alguns navegadores/apps e mantém a leitura profissional.
-  const blocoIda=`*VIAGEM 1 — IDA*\n${data?`Data: ${data}\n`:''}${horaIda?`Horário de saída/busca: ${horaIda}\n`:''}Local de saída: ${origem||'-'}\nDestino: ${destino||'-'}\nKM da viagem 1: ${kmBase.toFixed(1)} km\nPedágios da viagem 1 (ida + retorno): ${brl(n('pedagios'))}`;
-  const blocoRetorno=temRetorno?`\n\n*VIAGEM 1 — RETORNO*\n${dataBR($('dataRetorno')?.value||$('data').value)?`Data: ${dataBR($('dataRetorno')?.value||$('data').value)}\n`:''}${horaVolta?`Horário de busca para retorno: ${horaVolta}\n`:''}Local de busca: ${origemRetorno||destino||'-'}\nDestino do retorno: ${destinoRetorno||origem||'-'}`:'';
-  const blocoTrecho2=(($('estruturaCotacao')?.value==='multi')&&(trecho2.origem||trecho2.destino))?`\n\n*VIAGEM 2 — IDA*\n${trecho2.data?`Data: ${dataBR(trecho2.data)}\n`:''}${trecho2.hora?`Horário da ida: ${trecho2.hora}\n`:''}Origem: ${trecho2.origem||'-'}\nDestino: ${trecho2.destino||'-'}\nKM da viagem 2: ${(Number(trecho2.km)||0).toFixed(1)} km\nPedágios da viagem 2 (ida + retorno): ${brl(Number(trecho2.pedagios)||0)}\n${trecho2.horaRetorno?`Horário do retorno: ${trecho2.horaRetorno}\n`:''}Retorno: ${trecho2.origemRetorno||trecho2.destino||'-'} → ${trecho2.destinoRetorno||trecho2.origem||'-'}`:'';
-  const msg=`*${(emp.nome||'MICHELON VIAGENS EXECUTIVAS').toUpperCase()}*\n_Conforto e segurança em cada destino._\n\n*ORÇAMENTO DE VIAGEM*\nNº: ${textoNumeroOrcamento()}\n\n${cliente?`Cliente: ${cliente}\n\n`:''}${blocoIda}${blocoRetorno}${blocoTrecho2}\n\nServiço: ${$('tipoServico').value}\nPassageiros: ${passageiros}${$('obsViagem').value.trim()?`\nObservações: ${$('obsViagem').value.trim()}`:''}\n\nDistância total: ${km.toFixed(1)} km\nTempo estimado: ${tempo||'-'}\nPedágios estimados: ${pedagioPendente?'NÃO CONFIRMADOS':brl(pedagios)}\n\n*${pedagioPendente?'VALOR PARCIAL, SEM PEDÁGIOS':'VALOR DA VIAGEM'}: ${brl(preco)}*\nValor por passageiro: ${brl(porPass)}${pg}\n\nOrçamento sujeito à disponibilidade na data solicitada.`;
+  const blocoIda=seqMensagemCliente()??`*VIAGEM 1 — IDA*\n${data?`Data: ${data}\n`:''}${horaIda?`Horário de saída/busca: ${horaIda}\n`:''}Local de saída: ${origem||'-'}\nDestino: ${destino||'-'}`;
+  const blocoRetorno=(temRetorno&&!seqAtiva())?`\n\n*VIAGEM 1 — RETORNO*\n${dataBR($('dataRetorno')?.value||$('data').value)?`Data: ${dataBR($('dataRetorno')?.value||$('data').value)}\n`:''}${horaVolta?`Horário de busca para retorno: ${horaVolta}\n`:''}Local de busca: ${origemRetorno||destino||'-'}\nDestino do retorno: ${destinoRetorno||origem||'-'}`:'';
+  const blocoTrecho2=(($('estruturaCotacao')?.value==='multi')&&(trecho2.origem||trecho2.destino))?`\n\n*VIAGEM 2 — IDA*\n${trecho2.data?`Data: ${dataBR(trecho2.data)}\n`:''}${trecho2.hora?`Horário da ida: ${trecho2.hora}\n`:''}Origem: ${trecho2.origem||'-'}\nDestino: ${trecho2.destino||'-'}\n${trecho2.horaRetorno?`Horário do retorno: ${trecho2.horaRetorno}\n`:''}Retorno: ${trecho2.origemRetorno||trecho2.destino||'-'} → ${trecho2.destinoRetorno||trecho2.origem||'-'}`:'';
+  const msg=`*${(emp.nome||'MICHELON VIAGENS EXECUTIVAS').toUpperCase()}*\n_Conforto e segurança em cada destino._\n\n*ORÇAMENTO DE VIAGEM*\nNº: ${textoNumeroOrcamento()}\n\n${cliente?`Cliente: ${cliente}\n\n`:''}${blocoIda}${blocoRetorno}${blocoTrecho2}\n\nServiço: ${$('tipoServico').value}\nPassageiros: ${passageiros}${$('obsViagem').value.trim()?`\nObservações: ${$('obsViagem').value.trim()}`:''}\n\n*${pedagioPendente?'VALOR PARCIAL — CUSTOS A CONFERIR':'VALOR DA VIAGEM'}: ${brl(preco)}*\nValor por passageiro: ${brl(porPass)}${pg}\n\nOrçamento sujeito à disponibilidade na data solicitada.`;
   $('mensagem').value=msg;
   (function(){
     let wn=String($('clienteFone')?.value||'').replace(/\\D/g,'');
@@ -3610,7 +3636,7 @@ function importarCotacaoRecebida(){
    dataRetorno:temRetorno?dataISO(c.dataRetorno||c.data):'',horaRetorno:temRetorno?(c.horaRetorno||''):'',
    origemRetorno:temRetorno?normalizarEnderecoMichelon(c.origemRetorno||c.destino):'',
    destinoRetorno:temRetorno?normalizarEnderecoMichelon(c.destinoRetorno||c.origem):'',
-   kmTotalInput:'',pedagios:'0',tempo:'-',obsViagem:''
+   seqDados:'',opAtivo:'sim',opBase:'Limeira, SP',opKm1:'',opKm2:'',opKm3:'',opKm4:'',opPed1:'',opPed2:'',opPed3:'',opPed4:'',kmTotalInput:'',pedagios:'0',tempo:'-',obsViagem:''
  };
  if(c.cidade)valores.cidadeUrbana=c.cidade;
  // Apply all fields before triggering listeners, so autosave sees a complete request.
@@ -3887,14 +3913,7 @@ function mxIr(id){
   </div>
 </div>
 
-<nav class="mcBottom" aria-label="Navegação principal"><div class="mcNav">
-<a class="active" href="#mxHero" data-mc-section="home"><i>🏠</i>Início</a>
-<a href="#mxAgenda" data-mc-section="mxAgenda"><i>📅</i>Agenda</a>
-<a href="#mxFinanceiro" data-mc-section="mxFinanceiro"><i>💰</i>Financeiro</a>
-<a href="#mxUber" data-mc-section="mxUber"><i>🚕</i>Uber / Apps</a>
-<a href="#mcCardOverlay" data-mc-section="cardFloat"><i>📇</i>Cartão</a>
-<a href="#cotacaoImportWrap" data-mc-section="cotacao" aria-label="Cotação"><i>📥</i>Cotação</a>
-</div></nav>
+
 
 
 
@@ -4217,21 +4236,46 @@ function toggleCotacaoImport(){
 
 
 <script id="michelon-import-file-fix">
+let leituraSolicitacaoCliente=0;
+function limparAnexoSolicitacaoCliente(){
+ leituraSolicitacaoCliente++;
+ const input=document.getElementById('arquivoSolicitacaoCliente');
+ const texto=document.getElementById('textoCotacaoRecebida');
+ const status=document.getElementById('solicitacaoArquivoStatus');
+ if(input)input.value='';
+ if(texto){texto.value='';texto.dispatchEvent(new Event('input',{bubbles:true}));}
+ if(status)status.textContent='Anexo e mensagem removidos. Selecione o arquivo correto.';
+ try{saveQuote()}catch(e){}
+ try{
+   const chave='michelon_cotacao_atual_v39';
+   const d=JSON.parse(localStorage.getItem(chave)||'null');
+   if(d&&d.campos){d.campos.textoCotacaoRecebida='';d.campos.arquivoSolicitacaoCliente='';localStorage.setItem(chave,JSON.stringify(d));}
+ }catch(e){}
+}
 async function abrirArquivoSolicitacaoCliente(input){
+ const versao=++leituraSolicitacaoCliente;
  const file=input.files&&input.files[0];if(!file)return;
+ const status=document.getElementById('solicitacaoArquivoStatus');
  if(!/\.txt$/i.test(file.name)){alert('Use um arquivo .txt ou cole a mensagem do WhatsApp no campo abaixo.');input.value='';return}
  if(file.size>100000){alert('O arquivo de texto é muito grande. Cole somente a solicitação do cliente.');input.value='';return}
+ if(status)status.textContent='Lendo o anexo: '+file.name;
  try{
   const text=(await file.text()).trim();
-  if(!text){alert('Esse arquivo está vazio.');return}
+  // Clearing or choosing another file invalidates a read that was still in progress.
+  if(versao!==leituraSolicitacaoCliente)return;
+  if(!text){alert('Esse arquivo está vazio.');input.value='';if(status)status.textContent='Arquivo vazio. Selecione outra solicitação.';return}
   const box=document.getElementById('textoCotacaoRecebida');box.value=text;box.dispatchEvent(new Event('input',{bubbles:true}));
-  importarCotacaoRecebida();
+  const resultado=importarCotacaoRecebida();
+  if(resultado!==false&&status)status.textContent='Anexo importado: '+file.name+'. Para trocar, use Limpar anexo / mensagem.';
   input.value='';
- }catch{alert('Não consegui abrir esse arquivo. Cole a mensagem do WhatsApp no campo abaixo.');}
+ }catch{
+  if(versao!==leituraSolicitacaoCliente)return;
+  input.value='';if(status)status.textContent='Não foi possível ler o anexo. Selecione outro arquivo ou cole a mensagem.';
+  alert('Não consegui abrir esse arquivo. Cole a mensagem do WhatsApp no campo abaixo.');
+ }
 }
 </script>
-</body>
-</html>
+
 
 
 
@@ -4576,7 +4620,7 @@ document.addEventListener('DOMContentLoaded',function(){
 
   function openPendingV39(id){
     const a=parse(PEND,[])||[],o=a.find(x=>x.id===id);if(!o){alert('Orçamento não encontrado.');return}
-    const c=o.campos||{};Object.keys(c).forEach(k=>{const e=document.getElementById(k);if(e)e.value=c[k]??''});
+    const c=o.campos||{};if(!c.seqDados&&document.getElementById('seqDados'))document.getElementById('seqDados').value='';Object.keys(c).forEach(k=>{const e=document.getElementById(k);if(e)e.value=c[k]??''});
     const t=o.trecho2||(o.viagens&&o.viagens[1])||{};
     const has2=!!(o.multi||t.data||t.origem||t.destino);
     window.__trecho2={data:t.data||c.dataTrecho2||'',hora:t.hora||c.horaTrecho2||'',origem:t.origem||c.origemTrecho2||'',destino:t.destino||c.destinoTrecho2||'',origemRetorno:t.origemRetorno||c.origemRetornoTrecho2||t.destino||c.destinoTrecho2||'',destinoRetorno:t.destinoRetorno||c.destinoRetornoTrecho2||t.origem||c.origemTrecho2||'',horaRetorno:t.horaRetorno||c.horaRetornoTrecho2||'',km:num(t.km||c.kmTrecho2),pedagios:num(t.pedagios||c.pedagiosTrecho2),sec:num(t.sec)};
@@ -4723,6 +4767,7 @@ function limparCotacaoAgora(ev){
     });
   }
 
+  resetarDeslocamentosMotorista();
   // Remove a segunda viagem da memória em execução.
   window.__trecho2={};
 
@@ -4779,8 +4824,7 @@ function limparCotacaoAgora(ev){
   else instalarWhatsApp();
 })();
 </script>
-</body>
-</html>
+
 
 
 
@@ -4817,3 +4861,407 @@ document.addEventListener('DOMContentLoaded',function(){
  validarDatasSolicitacao();
 });
 </script>
+
+
+<style id="michelon-sequencia-v58">
+#seqRoteiro[hidden],.seq-legado[hidden],#retornoCampos[hidden]{display:none!important}
+.seq-row{padding:14px;margin:12px 0;background:#f8fafc;border:1px solid #dbe2ea;border-radius:14px}
+.seq-header{display:flex;align-items:center;gap:9px;margin-bottom:12px;font-size:17px}
+.seq-numero{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:#0f766e;color:#fff;flex-shrink:0}
+.seq-controles{display:flex;gap:5px;margin-left:auto}.seq-small{width:40px;height:40px;padding:4px;border:1px solid #cbd5e1;background:#fff;font-size:22px;color:#0f172a}.seq-small:disabled{opacity:.35}
+.seq-row select{margin:6px 0 10px;font-size:16px}.seq-custos{margin-top:12px}.seq-custos summary{font-size:14px;color:#334155}.seq-custos .grid{margin-top:10px}.seq-botoes{display:grid;gap:8px}.seq-sugestao{display:block;text-align:left;width:100%;justify-content:flex-start;border-radius:0;background:white;font-weight:400;font-size:15px}
+#seqRoteiro input,#seqRoteiro select{min-width:0}.seq-row .citylist{position:relative;top:auto}.seq-row .cityitem{white-space:normal}
+</style>
+<script id="michelon-sequencia-v58">
+let seqPronta=false,seqSuspensa=false,seqConsulta=0,seqUltimoJSON='';
+function seqEl(id){return document.getElementById(id)}
+function seqValor(id){return String(seqEl(id)?.value||'').trim()}
+function seqAtiva(){return seqPronta&&!seqSuspensa&&seqValor('modoCotacao')!=='urbano'}
+function seqLer(){try{const s=JSON.parse(seqValor('seqDados')||'null');return s&&s.v===1&&Array.isArray(s.pontos)?s:null}catch(e){return null}}
+function seqCriarPonto(endereco='',tipo='cliente',km='',ped=''){return {endereco:String(endereco),tipo:tipo==='motorista'?'motorista':'cliente',km:km===''?'':Math.max(0,Number(km)||0),ped:ped===''?'':Math.max(0,Number(ped)||0)}}
+function seqMigrar(incluirBase=false){
+  const origem=seqValor('origem'),destino=seqValor('destino');
+  const pontos=[seqCriarPonto(origem),seqCriarPonto(destino)];
+  if(seqValor('idaVolta')==='sim'&&origem&&destino){
+    const ro=seqValor('origemRetorno')||destino,rd=seqValor('destinoRetorno')||origem;
+    if(ro!==destino)pontos.push(seqCriarPonto(ro,'motorista'));
+    pontos.push(seqCriarPonto(rd));
+  }
+  const opBase=seqValor('opBase')||'Limeira, SP';
+  if(incluirBase&&origem&&destino&&seqValor('opAtivo')==='sim'){
+    pontos.unshift(seqCriarPonto(opBase));
+    pontos[1].tipo='motorista';pontos[1].km=seqValor('opKm1');pontos[1].ped=seqValor('opPed1');
+    pontos.push(seqCriarPonto(opBase,'motorista',seqValor('opKm2'),seqValor('opPed2')));
+  }
+  return {v:1,pontos};
+}
+function seqGuardar(s,desenhar=false){
+  seqEl('seqDados').value=JSON.stringify(s);seqUltimoJSON=seqEl('seqDados').value;
+  if(desenhar)seqRender();
+}
+function seqTotais(){
+  const s=seqLer();let clienteKm=0,motoristaKm=0,clientePed=0,motoristaPed=0,pendente=false,temCliente=false;
+  if(!s)return {clienteKm,motoristaKm,clientePed,motoristaPed,pendente:false,temCliente:false};
+  for(let i=1;i<s.pontos.length;i++){
+    const p=s.pontos[i],a=s.pontos[i-1];
+    if(p.tipo==='cliente')temCliente=true;
+    if(!a.endereco.trim()||!p.endereco.trim()||p.km===''||p.ped==='')pendente=true;
+    if(p.tipo==='motorista'){motoristaKm+=Number(p.km)||0;motoristaPed+=Number(p.ped)||0;}
+    else {clienteKm+=Number(p.km)||0;clientePed+=Number(p.ped)||0;}
+  }
+  return {clienteKm,motoristaKm,clientePed,motoristaPed,pendente:pendente||!temCliente,temCliente};
+}
+function operacaoTotais(){
+  if(!seqAtiva())return {km:0,pedagios:0,pendente:false};
+  const t=seqTotais();return {km:t.motoristaKm,pedagios:t.motoristaPed,pendente:t.pendente};
+}
+function seqSincronizar(){
+  if(!seqAtiva())return;
+  let s=seqLer();if(!s){s=seqMigrar(true);seqGuardar(s,true);}
+  if(seqUltimoJSON!==seqValor('seqDados')){seqUltimoJSON=seqValor('seqDados');seqRender();}
+  const cliente=[];
+  for(let i=1;i<s.pontos.length;i++)if(s.pontos[i].tipo==='cliente')cliente.push({a:s.pontos[i-1].endereco,b:s.pontos[i].endereco});
+  if(cliente.length){
+    seqEl('origem').value=cliente[0].a;
+    seqEl('destino').value=cliente[0].b;
+    seqEl('origemRetorno').value=cliente.length>1?cliente[cliente.length-1].a:'';
+    seqEl('destinoRetorno').value=cliente.length>1?cliente[cliente.length-1].b:'';
+  }else {for(const id of ['origem','destino','origemRetorno','destinoRetorno'])seqEl(id).value='';}
+  const t=seqTotais();seqEl('kmTotalInput').value=t.clienteKm.toFixed(1);
+  const pedPendente=s.pontos.some((p,i)=>i>0&&p.tipo==='cliente'&&p.ped==='');
+  seqEl('pedagios').value=pedPendente?'':t.clientePed.toFixed(2);
+  seqEl('tempo').value=s.sec?formatDuration(s.sec):'-';
+}
+function seqMensagemCliente(){
+  if(!seqAtiva())return null;
+  const s=seqLer();if(!s)return null;
+  const v=seqValor,linhas=[];
+  if(v('data'))linhas.push('Data da ida: '+dataBR(v('data')));
+  if(v('horaSaida'))linhas.push('Horário da ida: '+v('horaSaida'));
+  if(v('idaVolta')==='sim'&&v('dataRetorno'))linhas.push('Data do retorno: '+dataBR(v('dataRetorno')));
+  if(v('idaVolta')==='sim'&&v('horaRetorno'))linhas.push('Horário do retorno: '+v('horaRetorno'));
+  let n=0;
+  for(let i=1;i<s.pontos.length;i++){
+    const p=s.pontos[i];if(p.tipo==='motorista')continue;
+    linhas.push('Trecho '+(++n)+': '+(s.pontos[i-1].endereco||'A definir')+' → '+(p.endereco||'A definir'));
+  }
+  if(!n)linhas.push('Informe o trajeto do cliente.');
+  return '*TRAJETO DO CLIENTE*\n'+linhas.join('\n');
+}
+function seqPersistir(){
+  if(seqSuspensa)return;
+  try{sessionStorage.removeItem('michelonCotacaoLimpaV1')}catch(e){}
+  try{saveQuote()}catch(e){}
+  // The existing draft key is authoritative when reopening the app.
+  try{
+    const k='michelon_cotacao_atual_v39',d=JSON.parse(localStorage.getItem(k)||'{}');
+    d.campos=d.campos||{};
+    document.querySelectorAll('#cotacaoForm input,#cotacaoForm select,#cotacaoForm textarea').forEach(e=>{if(e.id)d.campos[e.id]=e.value});
+    d.salvoEm=new Date().toISOString();localStorage.setItem(k,JSON.stringify(d));
+  }catch(e){}
+}
+function seqInvalidar(s){seqConsulta++;delete s.sec;for(let i=1;i<s.pontos.length;i++){s.pontos[i].km='';s.pontos[i].ped='';}}
+function seqEditar(i,campo,valor){
+  const s=seqLer();if(!s||!s.pontos[i])return;
+  if(campo==='endereco'){s.pontos[i].endereco=valor;delete s.pontos[i].local;seqInvalidar(s);document.querySelectorAll('[data-seq-custo]').forEach(e=>e.value='');}
+  else if(campo==='tipo'){s.pontos[i].tipo=valor==='motorista'?'motorista':'cliente';seqConsulta++;}
+  else if(campo==='km'||campo==='ped'){s.pontos[i][campo]=valor===''?'':Math.max(0,Number(valor)||0);seqConsulta++;}
+  seqGuardar(s,campo==='tipo');calcular(false);seqPersistir();
+}
+function seqAdicionar(onde='fim'){
+  const s=seqLer()||seqMigrar();
+  if(onde==='inicio'){
+    s.pontos.unshift(seqCriarPonto());if(s.pontos[1])s.pontos[1].tipo='motorista';
+  }else s.pontos.push(seqCriarPonto('',onde==='base'?'motorista':'cliente'));
+  seqInvalidar(s);seqGuardar(s,true);calcular(false);seqPersistir();
+}
+function seqRemover(i){
+  const s=seqLer();if(!s||s.pontos.length<=2)return;
+  s.pontos.splice(i,1);seqInvalidar(s);seqGuardar(s,true);calcular(false);seqPersistir();
+}
+function seqMover(i,delta){
+  const s=seqLer(),j=i+delta;if(!s||j<0||j>=s.pontos.length)return;
+  [s.pontos[i],s.pontos[j]]=[s.pontos[j],s.pontos[i]];
+  seqInvalidar(s);seqGuardar(s,true);calcular(false);seqPersistir();
+}
+function seqMoverPara(i,j){
+ const s=seqLer();if(!s||i===j||j<0||j>=s.pontos.length)return;
+ const ponto=s.pontos.splice(i,1)[0];s.pontos.splice(j,0,ponto);
+ seqInvalidar(s);seqGuardar(s,true);calcular(false);seqPersistir();
+}
+function seqDimensionarEndereco(input){input.style.height="auto";input.style.height=Math.max(30,input.scrollHeight)+"px";}
+function seqSugestoes(i,input,suggestions){
+ let timer;
+ input.oninput=()=>{
+  seqDimensionarEndereco(input);seqEditar(i,'endereco',input.value);clearTimeout(timer);suggestions.style.display='none';const query=input.value;
+  timer=setTimeout(async()=>{
+   if(query.trim().length<4)return;
+   const results=await sugestoesEndereco(query);
+   if(input.value!==query||!input.isConnected)return;
+   suggestions.replaceChildren();
+   for(const found of results.slice(0,6)){
+    const choice=document.createElement('button');choice.type='button';choice.className='cityitem seq-sugestao';choice.textContent=found.display_name||found.name||query;
+    choice.onclick=()=>{
+     const s=seqLer();if(!s?.pontos[i])return;
+     s.pontos[i].endereco=choice.textContent;s.pontos[i].local={lat:Number(found.lat),lon:Number(found.lon)};
+     seqInvalidar(s);seqGuardar(s,true);calcular(false);seqPersistir();
+    };
+    suggestions.appendChild(choice);
+   }
+   suggestions.style.display=results.length?'block':'none';
+  },450);
+ };
+}
+function seqRender(){
+ const box=seqEl('seqLista'),s=seqLer();if(!box||!s)return;box.replaceChildren();
+ const panel=document.createElement('div');panel.className='seq-addresses';
+ s.pontos.forEach((p,i)=>{
+  const row=document.createElement('div');row.className='seq-linha';row.dataset.indice=i;
+  const badge=document.createElement('span');badge.className=i===0?'seq-marco seq-origem':'seq-marco';badge.textContent=i===0?'':String(i);row.appendChild(badge);
+  const center=document.createElement('div');center.className='seq-endereco';
+  const input=document.createElement('textarea');input.rows=1;input.value=p.endereco;input.placeholder=i===0?'Endereço de saída':i===s.pontos.length-1?'Destino final':'Endereço da parada';input.autocomplete='off';input.setAttribute('aria-label','Endereço '+(i+1));input.setAttribute('data-seq-endereco',String(i));center.appendChild(input);requestAnimationFrame(()=>seqDimensionarEndereco(input));
+  if(i>0){
+   const label=document.createElement('label');label.className='seq-interno';
+   const check=document.createElement('input');check.type='checkbox';check.checked=p.tipo==='motorista';check.setAttribute('aria-label','Trecho até o endereço '+(i+1)+' só do motorista');check.onchange=()=>seqEditar(i,'tipo',check.checked?'motorista':'cliente');
+   const text=document.createElement('span');text.textContent='Só motorista';label.appendChild(check);label.appendChild(text);center.appendChild(label);
+  }
+  const suggestions=document.createElement('div');suggestions.className='citylist';center.appendChild(suggestions);seqSugestoes(i,input,suggestions);row.appendChild(center);
+  const handle=document.createElement('button');handle.type='button';handle.className='seq-arrastar';handle.textContent='☰';handle.setAttribute('aria-label','Reordenar endereço '+(i+1));handle.title='Arraste para mudar a ordem';
+  const menu=document.createElement('div');menu.className='seq-ordem-menu';menu.hidden=true;
+  for(const [texto,delta,disabled] of [['Subir',-1,i===0],['Descer',1,i===s.pontos.length-1]]){
+   const b=document.createElement('button');b.type='button';b.textContent=texto;b.disabled=disabled;b.onclick=()=>seqMover(i,delta);menu.appendChild(b);
+  }
+  let arrastando=false,startY=0;
+  handle.onclick=()=>{if(arrastando){arrastando=false;return;}menu.hidden=!menu.hidden;};
+  handle.onkeydown=e=>{if(e.key==='ArrowUp'||e.key==='ArrowDown'){e.preventDefault();seqMover(i,e.key==='ArrowUp'?-1:1);}};
+  handle.onpointerdown=e=>{startY=e.clientY;arrastando=false;handle.setPointerCapture?.(e.pointerId);};
+  handle.onpointermove=e=>{if(handle.hasPointerCapture?.(e.pointerId)&&Math.abs(e.clientY-startY)>8){arrastando=true;row.classList.add('seq-dragging');}};
+  handle.onpointerup=e=>{
+   row.classList.remove('seq-dragging');
+   if(!arrastando)return;
+   const destino=document.elementFromPoint?.(e.clientX,e.clientY)?.closest('.seq-linha');
+   if(destino)seqMoverPara(i,Number(destino.dataset.indice));
+  };
+  handle.onpointercancel=()=>{row.classList.remove('seq-dragging');arrastando=false;};
+  row.appendChild(handle);row.appendChild(menu);
+  if(i>0){const remove=document.createElement('button');remove.type='button';remove.className='seq-excluir';remove.textContent='×';remove.disabled=s.pontos.length<=2;remove.setAttribute('aria-label','Remover endereço '+(i+1));remove.onclick=()=>seqRemover(i);row.appendChild(remove);}
+  panel.appendChild(row);
+ });
+ const add=document.createElement('button');add.type='button';add.className='seq-add-line';add.textContent='+ Adicionar uma parada';add.onclick=()=>seqAdicionar('fim');panel.appendChild(add);box.appendChild(panel);
+ const details=document.createElement('details');details.className='seq-custos-unicos';
+ const summary=document.createElement('summary');summary.textContent='Conferir quilômetros e pedágios';details.appendChild(summary);
+ s.pontos.slice(1).forEach((p,j)=>{
+  const row=document.createElement('div');row.className='seq-custo-linha';
+  const title=document.createElement('strong');title.textContent='Trecho '+(j+1)+(p.tipo==='motorista'?' • Só motorista':'');row.appendChild(title);
+  const grid=document.createElement('div');grid.className='grid';
+  for(const [campo,texto] of [['km','Quilômetros'],['ped','Pedágios (R$)']]){
+   const label=document.createElement('label');label.textContent=texto;
+   const number=document.createElement('input');number.type='number';number.min='0';number.step=campo==='km'?'0.1':'0.01';number.inputMode='decimal';number.value=p[campo];number.placeholder=campo==='km'?'Não calculado':'Não confirmado';number.setAttribute('data-seq-custo',campo);number.setAttribute('aria-label',texto+' do trecho '+(j+1));number.oninput=()=>seqEditar(j+1,campo,number.value);label.appendChild(number);grid.appendChild(label);
+  }
+  row.appendChild(grid);details.appendChild(row);
+ });
+ box.appendChild(details);seqAjustarTela();
+}
+
+function seqAjustarTela(){
+  const ativa=seqAtiva();seqEl('seqRoteiro').hidden=!ativa;
+  document.querySelectorAll('.seq-legado,.seq-rota-legada').forEach(e=>e.hidden=ativa);
+  const ret=seqEl('retornoCampos');if(ret)ret.hidden=ativa;
+  // A second trip on another date stays available; driver addresses belong in this sequence.
+  const sel=seqEl('idaVolta');if(sel?.parentElement)sel.parentElement.style.display='';
+}
+function resetarDeslocamentosMotorista(){
+  seqConsulta++;
+  if(seqEl('seqDados'))seqEl('seqDados').value='';
+  seqUltimoJSON='';
+}
+function seqMapa(){
+  const s=seqLer(),p=s?.pontos.filter(x=>x.endereco.trim());if(!p||p.length<2)return '#';
+  const q=new URLSearchParams({api:'1',origin:p[0].endereco,destination:p[p.length-1].endereco,travelmode:'driving'});
+  if(p.length>2)q.set('waypoints',p.slice(1,-1).map(x=>x.endereco).join('|'));
+  return 'https://www.google.com/maps/dir/?'+q;
+}
+async function seqBuscarRota(){
+  const s=seqLer();if(!s||s.pontos.length<2||s.pontos.some(p=>!p.endereco.trim())){showStatus('Preencha todos os endereços da sequência.','warn');return;}
+  if(!s.pontos.slice(1).some(p=>p.tipo==='cliente')){showStatus('Marque pelo menos um trecho Com cliente.','warn');return;}
+  const button=seqEl('seqCalcular');if(button)button.disabled=true;
+  seqInvalidar(s);seqGuardar(s,true);calcular(false);seqPersistir();
+  const versao=seqConsulta;
+  showStatus('Calculando todos os trechos da sequência...','warn');
+  try{
+    const limite=(promise)=>new Promise((resolve,reject)=>{const t=setTimeout(()=>reject(new Error('Tempo de consulta excedido')),15000);Promise.resolve(promise).then(x=>{clearTimeout(t);resolve(x)},e=>{clearTimeout(t);reject(e)})});
+    const cache=new Map();
+    const ponto=async p=>{
+      if(p.local&&Number.isFinite(p.local.lat)&&Number.isFinite(p.local.lon))return p.local;
+      if(!cache.has(p.endereco))cache.set(p.endereco,limite(geocode(p.endereco)));
+      return cache.get(p.endereco);
+    };
+    const resultados=await Promise.all(s.pontos.slice(1).map(async(p,j)=>{
+      const a=s.pontos[j];
+      try{
+        if(a.endereco.trim().toLowerCase()===p.endereco.trim().toLowerCase())return {i:j+1,km:0,ped:0,sec:0,coords:[],roads:[]};
+        const [origem,destino]=await Promise.all([ponto(a),ponto(p)]);
+        const r=await limite(rotaOSRM(origem,destino));
+        const cat=calcularCatalogoLocal(r.coords,[]);
+        return {i:j+1,km:r.km,ped:cat.ida.length?cat.total:null,sec:r.sec||0,coords:r.coords,roads:r.roads||[]};
+      }catch(e){return {i:j+1,erro:true}}
+    }));
+    if(versao!==seqConsulta)return;
+    let falhas=0,pendentes=0,sec=0,coords=[],roads=[];
+    for(const r of resultados){
+      if(r.erro){falhas++;continue;}
+      s.pontos[r.i].km=Number(r.km.toFixed(1));s.pontos[r.i].ped=r.ped===null?'':Number(r.ped.toFixed(2));
+      if(r.ped===null)pendentes++;sec+=r.sec;coords=coords.concat(r.coords);roads=roads.concat(r.roads);
+    }
+    s.sec=sec;window.__michelonCoords=coords;window.__michelonRoads=[...new Set(roads)];
+    seqGuardar(s,true);calcular(false);seqPersistir();
+    const mensagem=falhas?'Alguns trechos não puderam ser consultados. Abra Conferir km e pedágios e complete os valores faltantes.':pendentes?'Todos os quilômetros calculados. Há pedágios não confirmados; confira os campos de cada trecho.':'Sequência calculada. Valores de pedágio do catálogo são estimativas; confira antes de enviar.';
+    showStatus(mensagem,falhas||pendentes?'warn':'ok');
+  }finally{if(button)button.disabled=false;}
+}
+(function(){
+  const originalCalcular=window.calcular;
+  window.calcular=function(){seqSincronizar();seqAjustarTela();return originalCalcular.apply(this,arguments)};
+  const originalMapa=window.mapsLink;
+  window.mapsLink=function(){return seqAtiva()?seqMapa():originalMapa.apply(this,arguments)};
+  const originalBuscar=window.buscarTudo;
+  window.buscarTudo=async function(){
+    if(!seqAtiva())return originalBuscar.apply(this,arguments);
+    await seqBuscarRota();
+    if(seqValor('estruturaCotacao')==='multi')await buscarTrecho2();
+    calcular(false);seqPersistir();
+  };
+  const originalRecalcular=window.recalcularOrcamento;
+  window.recalcularOrcamento=async function(){
+    if(!seqAtiva())return originalRecalcular.apply(this,arguments);
+    calcular(false);seqPersistir();showStatus(seqTotais().pendente?'Preencha ou calcule os trechos pendentes antes de enviar.':'Orçamento recalculado com todos os trechos.','warn');
+  };
+  const originalImportar=window.importarCotacaoRecebida;
+  window.importarCotacaoRecebida=function(){
+    seqSuspensa=true;let r;
+    try{r=originalImportar.apply(this,arguments);}finally{seqSuspensa=false;}
+    if(r!==false){seqConsulta++;seqGuardar(seqMigrar(),true);calcular(false);seqPersistir();}return r;
+  };
+  const originalLimpar=window.limparCotacaoAgora;
+  window.limparCotacaoAgora=function(){
+    const r=originalLimpar.apply(this,arguments);
+    if(seqValor('seqDados')===''){seqGuardar(seqMigrar(),true);}
+    return r;
+  };
+  document.addEventListener('DOMContentLoaded',function(){
+    seqPronta=true;
+    if(!seqLer())seqGuardar(seqMigrar(true),false);
+    seqUltimoJSON=seqValor('seqDados');seqRender();calcular(false);
+    seqEl('modoCotacao')?.addEventListener('change',()=>{seqAjustarTela();calcular(false)});
+    // Keep the existing return date/time controls. The actual return address is a point in the sequence.
+    seqEl('idaVolta')?.addEventListener('change',function(){
+      if(!seqAtiva())return;
+      if(this.value==='sim'){
+        const s=seqLer(),legs=s.pontos.slice(1).map((p,j)=>({p,a:s.pontos[j]})).filter(x=>x.p.tipo==='cliente');
+        if(legs.length===1){
+          const lastIndex=s.pontos.indexOf(legs[0].p);
+          s.pontos.splice(lastIndex+1,0,seqCriarPonto(legs[0].a.endereco));
+          seqInvalidar(s);seqGuardar(s,true);calcular(false);seqPersistir();
+        }
+      }
+    });
+    // Intercept before the existing WhatsApp listener prepares its link.
+    seqEl('whats')?.addEventListener('click',e=>{
+      if(seqAtiva()&&seqTotais().pendente){e.preventDefault();e.stopImmediatePropagation();alert('Confira os quilômetros e pedágios de todos os trechos antes de enviar o orçamento.');}
+    },true);
+    window.addEventListener('beforeunload',()=>{if(sessionStorage.getItem('michelonCotacaoLimpaV1')!=='1')seqPersistir()});
+  });
+})();
+
+</script>
+
+<style id="michelon-colar-rapido-v58">
+#textoCotacaoRecebida{font-size:17px;line-height:1.45;touch-action:auto;-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
+#colarSolicitacaoWhatsApp{touch-action:manipulation}
+</style>
+<script id="michelon-colar-rapido-v58">
+async function colarSolicitacaoWhatsApp(){
+ const box=document.getElementById('textoCotacaoRecebida');
+ const status=document.getElementById('solicitacaoArquivoStatus');
+ const button=document.getElementById('colarSolicitacaoWhatsApp');
+ if(!box)return;
+ const leitura=leituraSolicitacaoCliente;
+ if(button)button.disabled=true;
+ try{
+   if(!navigator.clipboard||typeof navigator.clipboard.readText!=='function')throw new Error('Colagem direta indisponível');
+   // Call directly from the tap so browsers can grant clipboard access.
+   const texto=await navigator.clipboard.readText();
+   if(leitura!==leituraSolicitacaoCliente)return;
+   if(!texto.trim()){
+     if(status)status.textContent='Copie primeiro a solicitação no WhatsApp e toque novamente em Colar do WhatsApp.';
+     return;
+   }
+   box.value=texto;
+   box.dispatchEvent(new Event('input',{bubbles:true}));
+   if(status)status.textContent='Mensagem colada. Toque em Importar solicitação para preencher a cotação.';
+   try{saveQuote()}catch(e){}
+   try{
+     const k='michelon_cotacao_atual_v39',d=JSON.parse(localStorage.getItem(k)||'null');
+     if(d&&d.campos){d.campos.textoCotacaoRecebida=texto;localStorage.setItem(k,JSON.stringify(d));}
+   }catch(e){}
+ }catch(e){
+   if(leitura!==leituraSolicitacaoCliente)return;
+   box.focus({preventScroll:true});
+   if(status)status.textContent='O navegador não liberou a colagem direta. Toque e segure no campo abaixo e escolha Colar, ou anexe a solicitação em .txt.';
+ }finally{if(button)button.disabled=false;}
+}
+</script>
+
+<style id="michelon-mobile-menu-v58">
+body{padding-bottom:12px!important;min-height:100vh;min-height:100dvh}
+.mcBottom{position:sticky!important;top:0!important;bottom:auto!important;left:0!important;right:0!important;width:100%!important;transform:none!important;background:#fff!important}
+.mcNav{display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr))!important;width:100%!important;max-width:700px!important;gap:2px!important}
+.mcNav :is(a,button){font-size:11px!important;line-height:1.25!important;min-height:55px;display:flex!important;flex-direction:column;align-items:center;justify-content:center;padding:6px 1px!important;white-space:nowrap}
+.mcNav i{font-size:22px!important;line-height:25px!important}
+body.michelon-interativo{padding-bottom:calc(90px + env(safe-area-inset-bottom))!important}
+body.michelon-interativo .mcBottom{position:fixed!important;top:auto!important;bottom:0!important}
+@media print{.mcBottom{display:none!important}body{padding-bottom:0!important}}
+</style>
+<script id="michelon-mobile-menu-v58">
+(function(){
+ function iniciarMenu(){document.body.classList.add('michelon-interativo');}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',iniciarMenu);else iniciarMenu();
+})();
+</script>
+
+<style id="michelon-mobile-page-flow-v58">
+html{height:auto!important;min-height:0!important;max-height:none!important;overflow-y:auto!important;background:#f5f7fa!important}
+body{height:auto!important;min-height:0!important;max-height:none!important;overflow-y:visible!important;background:#f5f7fa!important}
+body>.wrap{height:auto!important;max-height:none!important;overflow:visible!important;transform:none!important;contain:none!important}
+body:not(.michelon-interativo) .mcBottom{position:relative!important;top:auto!important;bottom:auto!important}
+#mxHero,#mxAgenda,#mxFinanceiro,#mxUber,#cotacaoImportWrap,#cotacaoForm{max-height:none!important}
+</style>
+
+<style id="michelon-fixed-footer-final-v58">
+body,body.michelon-interativo{padding-bottom:calc(94px + env(safe-area-inset-bottom))!important}
+body .mcBottom,body:not(.michelon-interativo) .mcBottom,body.michelon-interativo .mcBottom{position:fixed!important;top:auto!important;bottom:0!important;left:0!important;right:0!important;z-index:9990!important}
+@media print{body .mcBottom{display:none!important}body{padding-bottom:0!important}}
+</style>
+<style id="michelon-lista-compacta-v58">
+.seq-titulo{font-size:24px;text-align:center;margin:0 0 12px}.seq-legenda{font-size:14px;color:#64748b;margin:0 0 16px;line-height:1.45}
+.seq-addresses{background:#f3f4f6;border-radius:20px;padding:8px 12px;overflow:visible}
+.seq-linha{position:relative;display:grid;grid-template-columns:26px minmax(0,1fr) 36px 30px;gap:5px;align-items:center;padding:10px 0;min-height:65px}
+.seq-marco{position:relative;display:flex;align-items:center;justify-content:center;width:21px;height:21px;color:white;background:#111;font-weight:bold;font-size:13px;z-index:1}
+.seq-origem{border:6px solid #111;border-radius:50%;background:#fff}
+.seq-linha:not(:last-of-type)::before{content:"";position:absolute;left:10px;top:42px;bottom:-20px;width:2px;background:#111}
+.seq-endereco{position:relative;padding:0 3px 8px;border-bottom:1px solid #d1d5db;min-width:0}
+.seq-endereco>textarea{font-family:inherit!important;min-height:30px!important;resize:none!important;overflow:hidden!important;line-height:1.35!important;padding:8px 0!important;border:none!important;background:transparent!important;box-shadow:none!important;border-radius:0!important;font-size:17px!important;font-weight:700;min-width:0}
+.seq-interno{display:flex!important;align-items:center;gap:5px;font-size:12px!important;font-weight:400!important;margin:0!important;color:#475569}
+.seq-interno input{width:17px!important;height:17px;min-width:17px!important;margin:0;padding:0!important;accent-color:#0f766e}
+.seq-arrastar,.seq-excluir{background:transparent!important;border:0!important;width:100%;padding:8px 0!important;color:#111!important;font-size:24px!important;box-shadow:none!important}
+.seq-arrastar{touch-action:none;cursor:grab}.seq-excluir:disabled{opacity:.25}.seq-dragging{background:#e5f5f2}
+.seq-ordem-menu{position:absolute;right:28px;top:50px;z-index:30;background:#fff;padding:5px;border:1px solid #ddd;border-radius:10px;box-shadow:0 5px 14px #0002;display:flex;gap:5px}.seq-ordem-menu[hidden]{display:none}
+.seq-ordem-menu button{background:#f1f5f9;font-size:13px;width:70px;padding:10px}
+.seq-add-line{display:block;background:transparent!important;color:#64748b!important;text-align:left!important;justify-content:flex-start!important;padding:15px 0!important;font-size:17px!important;font-weight:600!important}
+.seq-ok{margin-top:18px;background:#111!important;font-size:19px;min-height:55px;border-radius:15px}
+.seq-custos-unicos{margin-top:14px;font-size:14px;color:#475569}.seq-custo-linha{padding:14px 0;border-bottom:1px solid #e2e8f0}.seq-custo-linha strong{display:block;margin-bottom:8px;font-size:14px}.seq-custo-linha .grid{grid-template-columns:1fr 1fr}
+.seq-endereco .citylist{position:absolute;top:100%;left:-20px;right:-50px;z-index:10000}.seq-aviso-previa{margin:12px;padding:14px;border:1px solid #f59e0b;border-radius:12px;background:#fffbeb;color:#78350f;font-size:16px;line-height:1.4}
+.seq-rota-legada[hidden]{display:none!important}
+</style>
+</body>
+</html>
