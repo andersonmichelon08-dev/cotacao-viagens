@@ -5310,5 +5310,101 @@ body .mcBottom,body:not(.michelon-interativo) .mcBottom,body.michelon-interativo
 .seq-endereco .citylist{position:absolute;top:100%;left:-20px;right:-50px;z-index:10000}.seq-aviso-previa{margin:12px;padding:14px;border:1px solid #f59e0b;border-radius:12px;background:#fffbeb;color:#78350f;font-size:16px;line-height:1.4}
 .seq-rota-legada[hidden]{display:none!important}
 </style>
+<!-- MICHELON integration bridge: original V58 retained -->
+<script>
+/* Additive bridge for MICHELON V58. Original storage, calculations and screens stay intact. */
+(() => {
+  const FINANCE='https://meu-financeiro-michelon.galvanicagama-financ.chatgpt.site';
+  const KEY='michelon_meu_financeiro_integracao_v1';
+  const ALLOWED=new Set(['https://michelon-controle-viagem.galvanicagama-financ.chatgpt.site','https://andersonmichelon08-dev.github.io']);
+  let saved;try{saved=JSON.parse(localStorage.getItem(KEY))||{}}catch{saved={}}
+  let state={token:saved.token||'',ack:saved.ack||{}},sending=false,again=false,verifyAll=true,forceAfter=false,nonce='',popup=null,timer;
+  const panel=document.createElement('section');panel.className='card';panel.id='michelon-finance-integration';
+  panel.innerHTML='<h2>Meu Financeiro</h2><p id="mfStatus" role="status"></p><div class="btns"><button type="button" id="mfConnect">Conectar Meu Financeiro</button><button type="button" class="secondary" id="mfPaste">Colar código de conexão</button><button type="button" class="secondary" id="mfRetry">Enviar agora</button></div><p style="font-size:13px;color:#64748b">Recebimentos → Receita · combustível, pedágio, estacionamento e outras despesas → Despesa. A data original é mantida.</p>';
+  const anchor=document.getElementById('mcHomeDash');if(anchor)anchor.after(panel);else(document.querySelector('.wrap')||document.body).prepend(panel);
+  const message=panel.querySelector('#mfStatus');
+  const tell=text=>{message.textContent=text};
+  const persist=()=>localStorage.setItem(KEY,JSON.stringify(state));
+  const records=()=>[...(typeof getApps==='function'?getApps():[]).map(record=>({kind:'apps',record})),...(typeof getHist==='function'?getHist():[]).map(record=>({kind:'trip',record}))];
+  // Only fields relevant to the financial entry affect synchronization.
+  function normalize(item){const r=item.record;return {kind:item.kind,record:item.kind==='apps'?{id:r.id,data:r.data,app:r.app,receita:r.receita,bruto:r.bruto,gorjeta:r.gorjeta,bonus:r.bonus,comb:r.comb,ped:r.ped,est:r.est,outras:r.outras,obs:r.obs}:{id:r.id,data:r.data,numero:r.numero,cliente:r.cliente,recebido:r.recebido,valor:r.valor,status:r.status,forma:r.forma,obs:r.obs}}}
+  function pending(all=false){return records().map(normalize).filter(item=>all||state.ack[item.kind+':'+item.record.id]!==JSON.stringify(item));}
+  function refreshConnection(){
+    try{const stored=JSON.parse(localStorage.getItem(KEY));if(stored&&typeof stored.token==='string'){
+      if(stored.token!==state.token)verifyAll=true;
+      state={token:stored.token,ack:stored.ack||{}};
+    }}catch{}
+  }
+  async function send(force=false){
+    refreshConnection();
+    if(!state.token){tell('A conexão não está salva neste aparelho. Use Colar código de conexão com o código já gerado.');return}
+    if(force)verifyAll=true;
+    if(sending){again=true;if(force)forceAfter=true;tell('O envio está em andamento. Vou conferir novamente ao terminar.');return}sending=true;
+    try{
+      if(!navigator.onLine){tell('Sem internet. Os lançamentos continuam salvos e serão enviados quando a conexão voltar.');return}
+      const all=pending(true);
+      if(!all.length){tell('Não há registros do MICHELON salvos neste aparelho. Use Enviar agora no celular ou PC onde fez os lançamentos.');return}
+      // Local acknowledgements are a cache, not proof that the server has the
+      // entry. Reconcile all saved records on opening and on manual requests.
+      // The existing server updates stable IDs and makes these retries safe.
+      const queue=verifyAll?all:pending();
+      let confirmed=0,failed=0,firstError='';
+      if(queue.length)tell('Conferindo e enviando '+queue.length+' registro(s)…');
+      for(const item of queue){
+        const token=state.token,controller=new AbortController();
+        const timeout=setTimeout(()=>controller.abort(),20000);
+        try{
+          const response=await fetch(FINANCE+'/api/michelon/import',{method:'POST',credentials:'omit',signal:controller.signal,headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify(item)});
+          let result;try{result=await response.json()}catch{throw new Error('O servidor não confirmou o envio. Tentarei novamente.')}
+          if(!response.ok||result.ok!==true)throw new Error(result.error||'Envio pendente. Tentarei novamente.');
+          refreshConnection();
+          if(token!==state.token){again=true;return}
+          state.ack[item.kind+':'+item.record.id]=JSON.stringify(item);persist();confirmed++;
+        }catch(error){
+          failed++;
+          if(!firstError)firstError=error.name==='AbortError'?'O envio demorou e será tentado novamente.':(error.message||'Envio pendente.');
+        }finally{clearTimeout(timeout)}
+      }
+      if(failed){verifyAll=true;tell(confirmed+' registro(s) confirmado(s); '+failed+' pendente(s). '+firstError);return}
+      verifyAll=false;
+      if(pending().length){again=true;tell('Há novos lançamentos para enviar…')}
+      else tell('✓ Registros confirmados no Meu Financeiro. Reenviar não cria cópias.');
+    }catch(error){tell(error.message||'Envio pendente. Os registros continuam salvos no MICHELON.');}
+    finally{sending=false;if(forceAfter){verifyAll=true;forceAfter=false}if(again){again=false;schedule()}}
+  }
+  const schedule=()=>{clearTimeout(timer);timer=setTimeout(send,700)};
+  function accept(token){if(!/^[a-f0-9]{64}$/.test(token)){tell('Código inválido. Copie o código completo da página de conexão.');return}state={token,ack:{}};persist();schedule();}
+  panel.querySelector('#mfConnect').onclick=()=>{
+    if(!ALLOWED.has(location.origin)){tell('Abra a versão publicada para conectar. Arquivos locais não têm uma origem segura para sincronizar.');return}
+    nonce=crypto.randomUUID();popup=window.open(FINANCE+'/integracao-michelon.html?origin='+encodeURIComponent(location.origin)+'&nonce='+encodeURIComponent(nonce),'_blank');
+    tell('Na página aberta, entre na mesma conta do Meu Financeiro, escolha o banco e confirme. Depois volte aqui.');
+  };
+  window.addEventListener('message',event=>{if(event.origin!==FINANCE||event.source!==popup||event.data?.type!=='michelon-finance-connected'||event.data.nonce!==nonce)return;accept(event.data.token)});
+  panel.querySelector('#mfPaste').onclick=()=>{
+    let form=panel.querySelector('#mfCodeForm');
+    if(!form){
+      form=document.createElement('div');form.id='mfCodeForm';form.style.marginTop='12px';
+      form.innerHTML='<label for="mfCodeInput">Cole seu código de conexão</label><textarea id="mfCodeInput" rows="3" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Toque aqui e cole o código já gerado"></textarea><div class="btns"><button type="button" id="mfCodeConfirm">Confirmar código</button><button type="button" class="secondary" id="mfCodeCancel">Cancelar</button></div><p id="mfCodeError" role="alert" style="color:#b91c1c" hidden></p>';
+      panel.querySelector('#mfPaste').parentElement.after(form);
+      form.querySelector('#mfCodeConfirm').onclick=()=>{
+        const input=form.querySelector('#mfCodeInput'),code=input.value.trim(),error=form.querySelector('#mfCodeError');
+        if(!/^[a-f0-9]{64}$/.test(code)){error.textContent='Cole o código completo gerado na página de conexão.';error.hidden=false;input.focus();return}
+        if(code===state.token)schedule();else accept(code);
+        error.hidden=true;input.value='';form.hidden=true;tell('Código confirmado. Enviando os lançamentos…');
+      };
+      form.querySelector('#mfCodeCancel').onclick=()=>{form.hidden=true;panel.querySelector('#mfPaste').focus()};
+    }
+    form.hidden=false;form.querySelector('#mfCodeError').hidden=true;form.querySelector('#mfCodeInput').focus();
+  };
+  panel.querySelector('#mfRetry').onclick=()=>send(true);
+  // Wrappers preserve original arguments, results and rendering. No calculation changes.
+  for(const name of ['setApps','setHist']){const original=window[name];if(typeof original==='function')window[name]=function(){const result=original.apply(this,arguments);schedule();return result}}
+  window.addEventListener('online',schedule);window.addEventListener('storage',schedule);
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)schedule()});
+  setInterval(()=>{refreshConnection();if(state.token&&(verifyAll||pending().length))schedule()},15000);
+  schedule();
+})();
+
+</script>
 </body>
 </html>
