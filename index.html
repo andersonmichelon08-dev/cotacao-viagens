@@ -3460,7 +3460,7 @@ function resumoFinanceiroAtividades(){
 
 </script>
 <footer style="text-align:center;color:#64748b;font-size:13px;padding:22px 10px 34px">
-<strong>MICHELON Viagens Executivas</strong> • Versão 57 • Atualizado em 17/09/2026 • Financeiro organizado
+<strong>MICHELON Viagens Executivas</strong> • Versão 58 • Atualizado em 05/10/2026 • Financeiro organizado
 </footer>
 
 <script>
@@ -3688,6 +3688,7 @@ document.addEventListener('DOMContentLoaded',function(){
 </script>
 
 
+<script id="michelon-legacy-message-functions">
 function gerarMensagemClienteMichelon(){
   const v=id=>String(document.getElementById(id)?.value||'').trim();
   const urbano=v('modoCotacao')==='urbano';
@@ -3746,6 +3747,8 @@ function atualizarMensagemClienteMichelon(){
   if(box) box.value=gerarMensagemClienteMichelon();
 }
 
+
+</script>
 
 <script>
 const CHAVE_PENDENTES='michelon_orcamentos_pendentes_v1';
