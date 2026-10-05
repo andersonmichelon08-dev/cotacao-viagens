@@ -2215,10 +2215,15 @@ const PEDAGIOS_CATALOGO=[
 // Cat. 1: automóvel, caminhonete e furgão, 2 eixos simples.
 // ANTT, Deliberação 127/2026, anexo: R$ 3,70 por passagem em Mairiporã.
 const FONTE_MAIRIPORA='https://anttlegis.antt.gov.br/action/ActionDatalegis.php?acao=abrirTextoAto&cod_menu=7795&cod_modulo=161&link=S&numeroAto=00000127&orgao=DG/ANTT/MT&seqAto=000&tipo=DLB&valorAno=2026';
+function cidadeAdministrativaPedagio(valor,nome){
+ const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
+ const partes=norm(valor).split(/\s*[,/]\s*|\s+-\s+|\s*-\s*(?=sp\b)/);
+ return partes[0]===nome && partes.slice(1).every(p=>/^(?:sp|sao paulo|brasil|brazil)$/.test(p)||/^regiao\s+/.test(p));
+}
 function pedagioSaoPauloAtibaia(origem,destino,roads){
  const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
  // Only city-level endpoints: street addresses and other return cities use route detection.
- const cidade=(v,n)=>new RegExp('^'+n+'(?:\\s*[,/-]\\s*(?:sp|sao paulo|brasil).*)?$').test(norm(v));
+ const cidade=cidadeAdministrativaPedagio;
  const corredor=(cidade(origem,'sao paulo')&&cidade(destino,'atibaia'))||(cidade(destino,'sao paulo')&&cidade(origem,'atibaia'));
  const fernao=(roads||[]).some(r=>/br[ -]?381|sp[ -]?0?10\b|fernao dias/.test(norm(r)));
  return corredor&&fernao?3.70:null;
@@ -5100,11 +5105,12 @@ function seqMapa(){
 const SEQ_FONTE_AUTOBAN='https://rodovias.motiva.com.br/autoban/noticias/2026/junho/novas-tarifas-de-pedagio-entram-em-vigor-no-dia-1--de-julho/';
 function seqPedagioLimeiraSaoPaulo(origem,destino,rota){
   const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
-  const cidade=(v,n)=>new RegExp('^'+n+'(?:,\\s*(?:sp|sao paulo)(?:,.*)?)?$').test(norm(v));
+  const cidade=cidadeAdministrativaPedagio;
   const corredor=(cidade(origem,'limeira')&&cidade(destino,'sao paulo'))||(cidade(destino,'limeira')&&cidade(origem,'sao paulo'));
   const roads=(rota.roads||[]).map(norm).join(' | ');
   const autoban=/anhanguera|bandeirantes|sp[ -]?330\b|sp[ -]?348\b/.test(roads);
-  const desvio=/dom pedro|sp[ -]?0?65\b|rodoanel|sp[ -]?0?21\b|castello|castelo branco|raposo tavares/.test(roads);
+  // A avenida urbana Presidente Castelo Branco não é a rodovia SP-280.
+  const desvio=(rota.roads||[]).map(norm).some(r=>/\bsp[ -]?(?:0?65|0?21|280|270)\b|\brodoanel\b|\brodovia\s+(?:(?:presidente|professor)\s+)?(?:dom pedro|castell?o branco|raposo tavares)\b/.test(r));
   if(!corredor||!autoban||desvio||!(rota.km>=130&&rota.km<=195))return null;
   // Nova Odessa/Sumaré + Valinhos/Itupeva + Perus/Caieiras: uma praça por grupo.
   return Number((12.80+14.30+14.50).toFixed(2));
