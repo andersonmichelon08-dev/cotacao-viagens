@@ -2304,24 +2304,33 @@ async function consultarTarifaPedagioAberto(ped){
       const arr=Array.isArray(j)?j:(j.data||j.dados||j.results||j.resultados||j.items||j.tarifas||[]);
       if(!Array.isArray(arr)||!arr.length)continue;
       const norm=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-      const nome=norm(t.name||t.operator||'');
-      let best=null,bestScore=-1;
+      const limparNome=v=>norm(v).replace(/\b(praca|de|do|da|pedagio|pedagios|toll|booth|norte|sul)\b/g,' ').replace(/\s+/g,' ').trim();
+      const nome=limparNome(t.name||'');
+      let best=null,bestScore=-1,ambiguo=false;
       for(const x of arr){
         const pr=norm(x.praca||x.praça||x.nome_praca||x.nome||'');
         const con=norm(x.concessionaria||x.operadora||'');
         const rod=norm(x.rodovia||x.via||'');
         let score=0;
-        if(nome&&pr&& (pr.includes(nome)||nome.includes(pr)))score+=6;
+        const nomePraca=limparNome(pr);
+        const nomeConfere=nome.length>=4&&nomePraca.length>=4&&(nomePraca.includes(nome)||nome.includes(nomePraca));
+        if(nomeConfere)score+=6;
         if(t.operator&&con.includes(norm(t.operator)))score+=4;
         if(t.ref&&rod.includes(norm(t.ref)))score+=4;
         const cid=norm(t['addr:city']||'');
         const rawTxt=norm([x.praca,x.praça,x.nome_praca,x.nome,x.concessionaria,x.rodovia,x.via,x.municipio,x.cidade].filter(Boolean).join(' '));
-        if(cid&&rawTxt.includes(cid))score+=4;
+        const cidadeConfere=cid.length>=4&&rawTxt.includes(cid);
+        if(cidadeConfere)score+=4;
+        // Concessionária ou código da rodovia isolados não identificam a praça.
+        if(!nomeConfere&&!cidadeConfere)continue;
         const raw=x.valor??x.tarifa??x.valor_tarifa??x.preco;
         const val=parseFloat(String(raw??'').replace(',','.'));
-        if(Number.isFinite(val)&&val>0&&score>bestScore){bestScore=score;best={valor:val,dado:x,score};}
+        if(Number.isFinite(val)&&val>0){
+          if(score>bestScore){bestScore=score;best={valor:val,dado:x,score};ambiguo=false;}
+          else if(score===bestScore&&best&&Math.abs(val-best.valor)>0.005)ambiguo=true;
+        }
       }
-      if(best&&bestScore>=2)return best;
+      if(best&&!ambiguo&&bestScore>=4)return best;
     }catch(e){}
   }
   return null;
@@ -5107,8 +5116,9 @@ async function seqPedagiosTrecho(origem,destino,rota){
   if(autoban!==null){rota.pedNota='Estimativa corredor usual AutoBAn: 12,80 + 14,30 + 14,50 = R$ 41,60 por sentido. Tarifas julho/2026, carro de passeio, sem descontos. Confira a rota no mapa.';return autoban;}
   try{
     const resultado=await limitePromessaPedagio(calcularPedagiosDinamicos(rota.coords,[]),18000);
-    if(resultado.encontrados>0&&resultado.incompletos===0)return resultado.total;
-  }catch(e){}
+    if(resultado.encontrados>0&&resultado.incompletos===0){rota.pedNota='Praças consultadas: '+resultado.detalhes.join(' • ');return resultado.total;}
+    rota.pedNota='Pedágios pendentes: '+(resultado.detalhes.join(' • ')||'nenhuma praça confirmada.')+' Rodovias da rota: '+(rota.roads||[]).join(', ');
+  }catch(e){rota.pedNota='Consulta indisponível. Rodovias da rota: '+(rota.roads||[]).join(', ')+'. Confira as praças e informe o total deste trecho.';}
   // O catálogo pode conter apenas parte das praças. Não apresentar subtotal como total.
   return null;
 }
