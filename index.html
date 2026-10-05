@@ -5084,6 +5084,16 @@ function seqMapa(){
   if(p.length>2)q.set('waypoints',p.slice(1,-1).map(x=>x.endereco).join('|'));
   return 'https://www.google.com/maps/dir/?'+q;
 }
+async function seqPedagiosTrecho(origem,destino,rota){
+  const conhecido=pedagioSaoPauloAtibaia(origem,destino,rota.roads||[]);
+  if(conhecido!==null)return conhecido;
+  try{
+    const resultado=await limitePromessaPedagio(calcularPedagiosDinamicos(rota.coords,[]),18000);
+    if(resultado.encontrados>0&&resultado.incompletos===0)return resultado.total;
+  }catch(e){}
+  // O catálogo pode conter apenas parte das praças. Não apresentar subtotal como total.
+  return null;
+}
 async function seqBuscarRota(){
   const s=seqLer();if(!s||s.pontos.length<2||s.pontos.some(p=>!p.endereco.trim())){showStatus('Preencha todos os endereços da sequência.','warn');return;}
   if(!s.pontos.slice(1).some(p=>p.tipo==='cliente')){showStatus('Marque pelo menos um trecho Com cliente.','warn');return;}
@@ -5105,8 +5115,8 @@ async function seqBuscarRota(){
         if(a.endereco.trim().toLowerCase()===p.endereco.trim().toLowerCase())return {i:j+1,km:0,ped:0,sec:0,coords:[],roads:[]};
         const [origem,destino]=await Promise.all([ponto(a),ponto(p)]);
         const r=await limite(rotaOSRM(origem,destino));
-        const cat=calcularCatalogoLocal(r.coords,[]);
-        return {i:j+1,km:r.km,ped:cat.ida.length?cat.total:null,sec:r.sec||0,coords:r.coords,roads:r.roads||[]};
+        const ped=await seqPedagiosTrecho(a.endereco,p.endereco,r);
+        return {i:j+1,km:r.km,ped,sec:r.sec||0,coords:r.coords,roads:r.roads||[]};
       }catch(e){return {i:j+1,erro:true}}
     }));
     if(versao!==seqConsulta)return;
@@ -5118,7 +5128,7 @@ async function seqBuscarRota(){
     }
     s.sec=sec;window.__michelonCoords=coords;window.__michelonRoads=[...new Set(roads)];
     seqGuardar(s,true);calcular(false);seqPersistir();
-    const mensagem=falhas?'Alguns trechos não puderam ser consultados. Abra Conferir km e pedágios e complete os valores faltantes.':pendentes?'Todos os quilômetros calculados. Há pedágios não confirmados; confira os campos de cada trecho.':'Sequência calculada. Valores de pedágio do catálogo são estimativas; confira antes de enviar.';
+    const mensagem=falhas?'Alguns trechos não puderam ser consultados. Abra Conferir km e pedágios e complete os valores faltantes.':pendentes?'Todos os quilômetros calculados. Há pedágios não confirmados; confira os campos de cada trecho.':'Sequência calculada. Pedágios estimados por trecho; confira tarifas antes de enviar.';
     showStatus(mensagem,falhas||pendentes?'warn':'ok');
   }finally{if(button)button.disabled=false;}
 }
