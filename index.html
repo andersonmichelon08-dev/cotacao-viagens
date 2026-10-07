@@ -5314,7 +5314,9 @@ body .mcBottom,body:not(.michelon-interativo) .mcBottom,body.michelon-interativo
 <script>
 /* Additive bridge for MICHELON V58. Original storage, calculations and screens stay intact. */
 (() => {
-  const FINANCE='https://meu-financeiro-michelon.galvanicagama-financ.chatgpt.site';
+  const FINANCE='https://andersonmichelon08-dev.github.io/meu-financeiro';
+  const IMPORT_URL='https://tabdtuujeuwplckpzjvm.supabase.co/rest/v1/rpc/mf_michelon_import';
+  const PUBLIC_KEY='sb_publishable_1MhIIpF8npEuPrVFagdi-g_cWvBeTnR';
   const KEY='michelon_meu_financeiro_integracao_v1';
   const ALLOWED=new Set(['https://michelon-controle-viagem.galvanicagama-financ.chatgpt.site','https://andersonmichelon08-dev.github.io']);
   let saved;try{saved=JSON.parse(localStorage.getItem(KEY))||{}}catch{saved={}}
@@ -5354,7 +5356,7 @@ body .mcBottom,body:not(.michelon-interativo) .mcBottom,body.michelon-interativo
         const token=state.token,controller=new AbortController();
         const timeout=setTimeout(()=>controller.abort(),20000);
         try{
-          const response=await fetch(FINANCE+'/api/michelon/import',{method:'POST',credentials:'omit',signal:controller.signal,headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify(item)});
+          const response=await fetch(IMPORT_URL,{method:'POST',credentials:'omit',signal:controller.signal,headers:{'Content-Type':'application/json','apikey':PUBLIC_KEY},body:JSON.stringify({p_token:token,p_input:item})});
           let result;try{result=await response.json()}catch{throw new Error('O servidor não confirmou o envio. Tentarei novamente.')}
           if(!response.ok||result.ok!==true)throw new Error(result.error||'Envio pendente. Tentarei novamente.');
           refreshConnection();
@@ -5376,8 +5378,10 @@ body .mcBottom,body:not(.michelon-interativo) .mcBottom,body.michelon-interativo
   function accept(token){if(!/^[a-f0-9]{64}$/.test(token)){tell('Código inválido. Copie o código completo da página de conexão.');return}state={token,ack:{}};persist();schedule();}
   panel.querySelector('#mfConnect').onclick=()=>{
     if(!ALLOWED.has(location.origin)){tell('Abra a versão publicada para conectar. Arquivos locais não têm uma origem segura para sincronizar.');return}
-    nonce=crypto.randomUUID();popup=window.open(FINANCE+'/integracao-michelon.html?origin='+encodeURIComponent(location.origin)+'&nonce='+encodeURIComponent(nonce),'_blank');
-    tell('Na página aberta, entre na mesma conta do Meu Financeiro, escolha o banco e confirme. Depois volte aqui.');
+    refreshConnection();
+    if(state.token){send(true);return}
+    panel.querySelector('#mfPaste').click();
+    tell('Cole o código da conexão existente. Nenhuma nova conexão será criada.');
   };
   window.addEventListener('message',event=>{if(event.origin!==FINANCE||event.source!==popup||event.data?.type!=='michelon-finance-connected'||event.data.nonce!==nonce)return;accept(event.data.token)});
   panel.querySelector('#mfPaste').onclick=()=>{
