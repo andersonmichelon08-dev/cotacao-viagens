@@ -1106,7 +1106,7 @@ window.seqAtiva=function(){return false};
 <a class="active" href="#mxHero" data-mc-section="home"><i>🏠</i>Início</a>
 <a href="#mxAgenda" data-mc-section="mxAgenda"><i>📅</i>Agenda</a>
 <a href="#mxFinanceiro" data-mc-section="mxFinanceiro"><i>💰</i>Financeiro</a>
-<a href="#mxUber" data-mc-section="mxUber"><i>🚕</i>Uber / Apps</a>
+<a href="#mxUber" data-mc-section="mxUber"><i>🚕</i>Uber</a>
 <a href="#mcCardOverlay" data-mc-section="cardFloat"><i>📇</i>Cartão</a>
 <a href="#cotacaoImportWrap" data-mc-section="cotacao" aria-label="Cotação"><i>📥</i>Cotação</a>
 </div></nav>
@@ -1397,10 +1397,10 @@ async function compartilharCartao(){
 
   <div class="card" id="mxUber"><div class="card">
     <details>
-      <summary>🚕 Ganhos por App / Uber</summary>
+      <summary>🚕 Ganhos Uber</summary>
       <div class="grid" style="margin-top:12px">
         <div><label>Data</label><input id="appData" type="date"></div>
-        <div><label>Aplicativo</label><select id="appNome"><option>Uber</option><option>99</option><option>inDrive</option><option>Outro</option></select></div>
+        <div><label>Aplicativo</label><select id="appNome"><option value="Uber">Uber</option></select></div>
         <div><label>Horas trabalhadas</label>
 <div class="grid" style="margin-bottom:12px">
  <div><label>Horas</label><input id="appHoras" type="number" min="0" step="1" inputmode="numeric" oninput="calcAppForm()" onchange="calcAppForm()"></div>
@@ -1428,15 +1428,15 @@ async function compartilharCartao(){
         <div class="appKpi"><small>Líquido / hora</small><b id="appHoraPrev">R$ 0,00</b></div>
         <div class="appKpi"><small>Líquido / km</small><b id="appKmValPrev">R$ 0,00</b></div>
       </div>
-      <div class="btns"><button class="primary" onclick="salvarGanhoApp()">💾 Salvar dia de trabalho</button><button class="secondary" onclick="limparGanhoApp()">Limpar</button></div>
+      <div class="btns"><button id="btnSalvarGanhoApp" class="primary" onclick="salvarGanhoApp()">💾 Salvar dia de trabalho</button><button class="secondary" onclick="limparGanhoApp()">Limpar</button></div>
       <div class="appDash" style="margin-top:14px">
-        <div class="appKpi"><small>Apps • Hoje</small><b id="appHoje">R$ 0,00</b></div>
-        <div class="appKpi"><small>Apps • Semana</small><b id="appSemana">R$ 0,00</b></div>
-        <div class="appKpi"><small>Apps • Mês</small><b id="appMes">R$ 0,00</b></div>
-        <div class="appKpi"><small>Apps • Ano</small><b id="appAno">R$ 0,00</b></div>
+        <div class="appKpi"><small>Uber • Hoje</small><b id="appHoje">R$ 0,00</b></div>
+        <div class="appKpi"><small>Uber • Semana</small><b id="appSemana">R$ 0,00</b></div>
+        <div class="appKpi"><small>Uber • Mês</small><b id="appMes">R$ 0,00</b></div>
+        <div class="appKpi"><small>Uber • Ano</small><b id="appAno">R$ 0,00</b></div>
       </div>
       <div id="appHistorico" style="margin-top:10px"></div>
-      <p class="note">Os ganhos por aplicativo ficam separados das viagens executivas, mas entram no resultado total do negócio.</p>
+      <p class="note">Os ganhos Uber ficam separados das viagens executivas, mas entram no resultado total do negócio.</p>
     </details>
   </div>
 
@@ -2816,14 +2816,19 @@ function calcAppForm(){
   $('appKmValPrev').textContent=brl(km>0?liquido/km:0);
   return {km,receita,despesas,liquido};
 }
+// Edições históricas ficam pendentes de conciliação, sem reenvio automático.
+const APP_EDIT_HOLD_KEY='michelon_apps_edicoes_pendentes_v1';
+function getAppEditHolds(){try{return JSON.parse(localStorage.getItem(APP_EDIT_HOLD_KEY))||{}}catch(e){return {}}}
+function markAppEditHold(id){const h=getAppEditHolds();h['apps:'+id]=new Date().toISOString();localStorage.setItem(APP_EDIT_HOLD_KEY,JSON.stringify(h));}
+let editandoGanhoAppId=null;
 function salvarGanhoApp(){
   if(!$('appData').value){alert('Informe a data do trabalho.');return}
   const c=calcAppForm();
   const a=getApps();
-  a.unshift({
-    id:Date.now(),
+  const novoRegistro={
+    id:editandoGanhoAppId===null?Date.now():editandoGanhoAppId,
     data:$('appData').value,
-    app:$('appNome').value,
+    app:'Uber',
     horas:horasAppDecimal(),
     corridas:n('appCorridas'),
     kmIni:n('appKmIni'),
@@ -2840,14 +2845,39 @@ function salvarGanhoApp(){
     despesas:c.despesas,
     liq:c.liquido,
     obs:$('appObs').value.trim()
-  });
+  };
+  if(editandoGanhoAppId!==null){
+    const idx=a.findIndex(x=>String(x.id)===String(editandoGanhoAppId));
+    if(idx<0){alert('Registro original não encontrado. Nenhum lançamento foi alterado.');return}
+    a[idx]={...a[idx],...novoRegistro};
+    markAppEditHold(editandoGanhoAppId);
+  }else a.unshift(novoRegistro);
   setApps(a);
-  alert('Dia de trabalho salvo com sucesso.');
+  const foiEdicao=editandoGanhoAppId!==null;
+  limparGanhoApp();
+  alert(foiEdicao?'Dia corrigido no Minhas Viagens. ATENÇÃO: esta alteração NÃO será reenviada ao Meu Financeiro até a conciliação segura.':'Dia de trabalho salvo com sucesso.');
 }
 function limparGanhoApp(){
+  editandoGanhoAppId=null;
+  const botao=document.getElementById('btnSalvarGanhoApp');
+  if(botao)botao.textContent='💾 Salvar dia de trabalho';
   ['appHoras','appMinutos','appCorridas','appKmIni','appKmFim','appBruto','appGorjeta','appBonus','appComb','appPed','appEst','appOutras'].forEach(id=>$(id).value='');
   $('appObs').value='';
   $('appData').value=new Date().toISOString().slice(0,10);
+  calcAppForm();
+}
+function editarGanhoApp(id){
+  const x=getApps().find(v=>String(v.id)===String(id));
+  if(!x){alert('Lançamento não encontrado.');return}
+  editandoGanhoAppId=x.id;
+  const values={appData:x.data,appHoras:Math.floor(Number(x.horas)||0),appMinutos:Math.round(((Number(x.horas)||0)%1)*60),appCorridas:x.corridas,appKmIni:x.kmIni,appKmFim:x.kmFim,appBruto:x.bruto,appGorjeta:x.gorjeta,appBonus:x.bonus,appComb:x.comb,appPed:x.ped,appEst:x.est,appOutras:x.outras,appObs:x.obs};
+  for(const [id,value] of Object.entries(values)){const el=document.getElementById(id);if(el)el.value=value??''}
+  document.getElementById('appNome').value='Uber';
+  const botao=document.getElementById('btnSalvarGanhoApp');
+  if(botao)botao.textContent='💾 Salvar alterações deste dia';
+  const sec=document.getElementById('mxUber');
+  const details=sec?.querySelector('details');if(details)details.open=true;
+  sec?.scrollIntoView({behavior:'smooth',block:'start'});
   calcAppForm();
 }
 function excluirApp(id){
@@ -2881,7 +2911,8 @@ function renderApps(){
         Receita: <b>${brl(x.receita||0)}</b> • Despesas: ${brl(x.despesas||0)} • Líquido: <b>${brl(x.liq||0)}</b>
         ${x.obs?` • <small>${x.obs}</small>`:''}
       </div>
-      <div class="btns" style="margin-top:8px"><button class="mini danger" onclick="excluirApp(${x.id})">🗑️ Excluir lançamento</button></div>
+      ${getAppEditHolds()['apps:'+x.id]?'<div class="alerta" style="display:block">⚠️ Correção local pendente de conciliação no Meu Financeiro. Não registre a mesma despesa novamente.</div>':''}
+      <div class="btns" style="margin-top:8px"><button class="mini secondary" onclick="editarGanhoApp(${x.id})">✏️ Editar lançamento</button><button class="mini danger" onclick="excluirApp(${x.id})">🗑️ Excluir lançamento</button></div>
     </div>`).join(''):'<div class="note">Nenhum ganho de aplicativo lançado ainda.</div>';
 }
 
@@ -5322,7 +5353,7 @@ body .mcBottom,body:not(.michelon-interativo) .mcBottom,body.michelon-interativo
   let saved;try{saved=JSON.parse(localStorage.getItem(KEY))||{}}catch{saved={}}
   let state={token:saved.token||'',ack:saved.ack||{}},sending=false,again=false,verifyAll=true,forceAfter=false,nonce='',popup=null,timer;
   const panel=document.createElement('section');panel.className='card';panel.id='michelon-finance-integration';
-  panel.innerHTML='<h2>Meu Financeiro</h2><p id="mfStatus" role="status"></p><div class="btns"><button type="button" id="mfConnect">Conectar Meu Financeiro</button><button type="button" class="secondary" id="mfPaste">Colar código de conexão</button><button type="button" class="secondary" id="mfRetry">Enviar agora</button></div><p style="font-size:13px;color:#64748b">Recebimentos → Receita · combustível, pedágio, estacionamento e outras despesas → Despesa. A data original é mantida.</p>';
+  panel.innerHTML='<h2>Meu Financeiro</h2><p id="mfStatus" role="status"></p><div class="btns"><button type="button" id="mfConnect">Conectar Meu Financeiro</button><button type="button" class="secondary" id="mfPaste">Colar código de conexão</button><button type="button" class="secondary" id="mfRetry">Enviar agora</button></div><p style="font-size:13px;color:#64748b">Ganhos Uber → Uber Conta (confirmado na função do servidor). Correções de dias antigos ficam somente no Minhas Viagens até conciliação; não são reenviadas automaticamente.</p>';
   const anchor=document.getElementById('mcHomeDash');if(anchor)anchor.after(panel);else(document.querySelector('.wrap')||document.body).prepend(panel);
   const message=panel.querySelector('#mfStatus');
   const tell=text=>{message.textContent=text};
@@ -5330,7 +5361,9 @@ body .mcBottom,body:not(.michelon-interativo) .mcBottom,body.michelon-interativo
   const records=()=>[...(typeof getApps==='function'?getApps():[]).map(record=>({kind:'apps',record})),...(typeof getHist==='function'?getHist():[]).map(record=>({kind:'trip',record}))];
   // Only fields relevant to the financial entry affect synchronization.
   function normalize(item){const r=item.record;return {kind:item.kind,record:item.kind==='apps'?{id:r.id,data:r.data,app:r.app,receita:r.receita,bruto:r.bruto,gorjeta:r.gorjeta,bonus:r.bonus,comb:r.comb,ped:r.ped,est:r.est,outras:r.outras,obs:r.obs}:{id:r.id,data:r.data,numero:r.numero,cliente:r.cliente,recebido:r.recebido,valor:r.valor,status:r.status,forma:r.forma,obs:r.obs}}}
-  function pending(all=false){return records().map(normalize).filter(item=>all||state.ack[item.kind+':'+item.record.id]!==JSON.stringify(item));}
+  function held(item){try{const h=JSON.parse(localStorage.getItem('michelon_apps_edicoes_pendentes_v1'))||{};return Boolean(h[item.kind+':'+item.record.id])}catch{return false}}
+  function pending(all=false){return records().map(normalize).filter(item=>!held(item)&&(all||state.ack[item.kind+':'+item.record.id]!==JSON.stringify(item)));}
+  function holdCount(){try{return Object.keys(JSON.parse(localStorage.getItem('michelon_apps_edicoes_pendentes_v1'))||{}).length}catch{return 0}}
   function refreshConnection(){
     try{const stored=JSON.parse(localStorage.getItem(KEY));if(stored&&typeof stored.token==='string'){
       if(stored.token!==state.token)verifyAll=true;
@@ -5345,7 +5378,7 @@ body .mcBottom,body:not(.michelon-interativo) .mcBottom,body.michelon-interativo
     try{
       if(!navigator.onLine){tell('Sem internet. Os lançamentos continuam salvos e serão enviados quando a conexão voltar.');return}
       const all=pending(true);
-      if(!all.length){tell('Não há registros do MICHELON salvos neste aparelho. Use Enviar agora no celular ou PC onde fez os lançamentos.');return}
+      if(!all.length){tell(holdCount()?'⚠️ Há '+holdCount()+' edição(ões) aguardando conciliação. Não foram reenviadas ao Meu Financeiro.':'Não há registros disponíveis para envio neste aparelho.');return}
       // Local acknowledgements are a cache, not proof that the server has the
       // entry. Reconcile all saved records on opening and on manual requests.
       // The existing server updates stable IDs and makes these retries safe.
@@ -5353,6 +5386,9 @@ body .mcBottom,body:not(.michelon-interativo) .mcBottom,body.michelon-interativo
       let confirmed=0,failed=0,firstError='';
       if(queue.length)tell('Conferindo e enviando '+queue.length+' registro(s)…');
       for(const item of queue){
+        // Uma edição pode ocorrer enquanto a fila está em andamento.
+        // Verificar novamente antes de cada envio impede reenvio da edição retida.
+        if(held(item))continue;
         const token=state.token,controller=new AbortController();
         const timeout=setTimeout(()=>controller.abort(),20000);
         try{
@@ -5361,7 +5397,7 @@ body .mcBottom,body:not(.michelon-interativo) .mcBottom,body.michelon-interativo
           if(!response.ok||result.ok!==true)throw new Error(result.error||'Envio pendente. Tentarei novamente.');
           refreshConnection();
           if(token!==state.token){again=true;return}
-          state.ack[item.kind+':'+item.record.id]=JSON.stringify(item);persist();confirmed++;
+          if(!held(item)){state.ack[item.kind+':'+item.record.id]=JSON.stringify(item);persist();confirmed++;}
         }catch(error){
           failed++;
           if(!firstError)firstError=error.name==='AbortError'?'O envio demorou e será tentado novamente.':(error.message||'Envio pendente.');
@@ -5370,7 +5406,7 @@ body .mcBottom,body:not(.michelon-interativo) .mcBottom,body.michelon-interativo
       if(failed){verifyAll=true;tell(confirmed+' registro(s) confirmado(s); '+failed+' pendente(s). '+firstError);return}
       verifyAll=false;
       if(pending().length){again=true;tell('Há novos lançamentos para enviar…')}
-      else tell('✓ Registros confirmados no Meu Financeiro. Reenviar não cria cópias.');
+      else tell(holdCount()?'✓ Outros registros enviados. ⚠️ '+holdCount()+' edição(ões) histórica(s) retida(s) neste aparelho, aguardando conciliação no Meu Financeiro.':'✓ Registros confirmados no Meu Financeiro.');
     }catch(error){tell(error.message||'Envio pendente. Os registros continuam salvos no MICHELON.');}
     finally{sending=false;if(forceAfter){verifyAll=true;forceAfter=false}if(again){again=false;schedule()}}
   }
