@@ -5454,7 +5454,7 @@ body .mcBottom,body:not(.michelon-interativo) .mcBottom,body.michelon-interativo
 #mxCloud .cloudActions button{min-height:45px}#mxCloudStatus{white-space:pre-line;font-size:13px;color:#334155;margin:8px 0}
 @media(max-width:540px){#mxCloud .cloudActions{grid-template-columns:1fr}}
 </style>
-<script id="michelon-cloud-v3">
+<script id="michelon-cloud-v4">
 (()=>{'use strict';
 const SUPABASE_URL='https://tabdtuujeuwplckpzjvm.supabase.co';
 const KEY='sb_publishable_1MhIIpF8npEuPrVFagdi-g_cWvBeTnR';
@@ -5525,6 +5525,13 @@ async function check(){if(busy||!uid)return;busy=true;try{
  else{revision=null;enabled=false}
  if(revision===remote.revision&&enabled){status('✓ Sincronização ativa. Dados conferidos.');return}
  if(revision===remote.revision&&dirty){status('⚠️ Existem alterações locais ainda não enviadas. Confira antes de sincronizar.');return}
+ // A verified local snapshot with no pending changes can safely receive a newer revision.
+ // Previously this branch disabled sync and required a manual download on every new device session.
+ if(enabled&&revision!==null&&remote.revision>revision){
+   busy=false;
+   await autoReceive(remote);
+   return;
+ }
  enabled=false;status('☁️ Há dados na nuvem (revisão '+remote.revision+'). Use “Trazer dados da nuvem” neste aparelho. Se este for o celular principal e a nuvem já tiver dados, não envie por cima.');
  }catch(e){status('⚠️ Não foi possível conferir a nuvem. '+(e.message||''))}finally{busy=false}}
 async function autoReceive(remote){
@@ -5540,7 +5547,7 @@ async function autoReceive(remote){
  try{
    // Recoverable local snapshot, isolated from the keys synced to the cloud.
    const snapshot=JSON.stringify({savedAt:new Date().toISOString(),revision,uid,data:data()});
-   try{localStorage.setItem('michelon_cloud_recovery_v2',snapshot)}catch(e){
+   try{localStorage.setItem('michelon_cloud_recovery_v4',snapshot)}catch(e){
      enabled=false;status('⚠️ Espaço insuficiente para cópia de segurança. Atualização automática suspensa; use o backup manual.');return;
    }
    restore(remote.data);
