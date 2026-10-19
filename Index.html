@@ -1,0 +1,575 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Michelon Viagens Executivas</title>
+<style>
+:root{font-family:system-ui,Arial,sans-serif;color:#19383c;background:#edf4f3}*{box-sizing:border-box}body{margin:0}button,input,select{font:inherit}button{cursor:pointer}header{height:58px;background:#087f78;color:white;display:flex;align-items:center;justify-content:space-between;padding:0 22px}header strong{font-size:20px}.shell{height:calc(100dvh - 58px);display:grid;grid-template-columns:185px 1fr}.nav{background:#fff;border-right:1px solid #d7e5e2;padding:12px;display:flex;flex-direction:column;gap:7px}.nav button{background:transparent;border:0;border-radius:12px;padding:12px;text-align:left;color:#28474a;font-weight:700}.nav button.active{background:#ddf3ee;color:#076a62}.main{min-height:0;padding:16px;overflow:hidden}.page{height:100%;display:none;min-height:0}.page.active{display:flex;flex-direction:column;gap:12px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-shrink:0}.top h2{margin:0;font-size:23px}.muted{color:#698080;font-size:13px}.cols{display:grid;grid-template-columns:minmax(300px,1fr) minmax(280px,1fr);gap:14px;min-height:0;flex:1}.card{background:#fff;border:1px solid #d8e8e4;border-radius:16px;padding:18px;min-height:0;box-shadow:0 3px 12px #114d4310}.stack{display:flex;flex-direction:column;gap:12px}.field{display:flex;flex-direction:column;gap:5px}.field label{font-size:13px;font-weight:700}input,select{width:100%;padding:10px 11px;border:1px solid #c9dcd8;border-radius:9px;background:white;color:#183b3c;min-height:41px}.primary{background:#087f78;color:white;border:0;border-radius:10px;padding:12px;font-weight:800}.secondary{background:#e9f5f2;border:1px solid #b8ddd5;color:#087268;border-radius:9px;padding:9px 12px;font-weight:700}.danger{color:#a23c36}.result{background:#eff8f5;border-radius:12px;padding:15px;min-height:140px}.result h3{margin:0 0 12px}.metric{font-size:28px;font-weight:800;color:#087f78}.mini{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px solid #d9eae5}.scroll{overflow:auto;min-height:0;flex:1}.table{width:100%;border-collapse:collapse;font-size:13px}.table th,.table td{text-align:left;padding:9px;border-bottom:1px solid #e0ebe8}.table th{position:sticky;top:0;background:#fff}.actions{display:flex;gap:8px;flex-wrap:wrap}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.stat{font-size:25px;font-weight:800;color:#087f78}.notice{background:#fff8e7;padding:10px;border-radius:9px;color:#715620;font-size:13px}.hidden{display:none!important}@media(max-width:800px){header{height:52px}.shell{height:calc(100dvh - 52px);display:flex;flex-direction:column}.nav{order:2;flex-direction:row;overflow:auto;padding:5px;border-top:1px solid #ddd;flex-shrink:0}.nav button{white-space:nowrap;padding:9px}.main{flex:1;padding:9px}.cols{grid-template-columns:1fr;overflow:auto}.page.active{overflow:auto}.card{padding:12px}.grid3{grid-template-columns:1fr 1fr}.top h2{font-size:19px}}
+</style><style>
+.smart-wrap{position:relative}.smart-list{position:absolute;top:100%;left:0;right:0;z-index:30;background:#fff;border:1px solid #9acdc4;border-radius:10px;box-shadow:0 10px 25px #173e3b30;max-height:205px;overflow:auto}.smart-choice{display:block;width:100%;border:0;border-bottom:1px solid #e5eeeb;background:#fff;text-align:left;padding:10px 12px;color:#19383c}.smart-choice:hover,.smart-choice:focus{background:#e7f5f1}.smart-small{display:block;font-size:11px;color:#68827f;margin-top:3px}.smart-hint{font-size:12px;color:#607b76}
+</style><style>
+.wa-modal{position:fixed;inset:0;z-index:100;background:#143b3a88;display:none;align-items:center;justify-content:center;padding:12px}.wa-modal.open{display:flex}.wa-panel{background:white;border-radius:16px;padding:20px;width:min(590px,96vw);max-height:90dvh;overflow:auto;box-shadow:0 18px 60px #0003}.wa-panel textarea{width:100%;min-height:145px;resize:vertical;border:1px solid #b6d5ce;border-radius:9px;padding:12px;font:inherit}.wa-panel .actions{justify-content:flex-end;margin-top:12px}.wa-panel h3{margin:0 0 8px}.wa-preview{font-size:13px;background:#eef7f4;border-radius:10px;padding:12px;margin-top:10px;white-space:pre-wrap}.wa-button{background:#e6f5ee;color:#0b6b4e;border:1px solid #a7d9c4;border-radius:10px;padding:10px;font-weight:750}
+</style><style>
+/* Resultado com rolagem interna, ações sempre visíveis */
+#cotacao .cols>.card:last-child{display:flex;flex-direction:column;overflow:hidden;gap:9px}
+#cotacao #resultado{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain}
+#cotacao .cols>.card:last-child>button{flex-shrink:0}
+#cotacao .cols>.card:last-child>.muted{flex-shrink:0;font-size:11px}
+#cotacao #resultado .mini{align-items:flex-start}
+#cotacao #resultado .mini strong{max-width:54%;text-align:right;overflow-wrap:anywhere}
+@media(max-width:800px){#cotacao .cols>.card:last-child{min-height:430px}}
+</style><style>
+header{background:linear-gradient(110deg,#006a66,#078a80);height:72px}header strong{font-size:23px}.main{background:#eef7f6}.card{border-radius:20px;box-shadow:0 5px 20px #114d430b}.grid3 .card{min-height:110px}.grid3 .stat{font-size:34px}.page#inicio .actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.page#inicio .actions button{min-height:65px;text-align:left;font-size:16px;padding:15px}.page#inicio .top h2{font-size:28px}.page#inicio .card h3{font-size:22px}.page#inicio .muted{font-size:14px}
+@media(max-width:800px){header{height:70px;padding:0 15px}.shell{height:calc(100dvh - 70px)}.nav{gap:3px;justify-content:flex-start;overflow-x:auto;min-height:65px}.nav button{font-size:12px;padding:10px 9px}.main{padding:12px}.page#inicio .top{align-items:flex-start}.page#inicio .top h2{font-size:23px}.page#inicio .top .muted{font-size:11px}.grid3{grid-template-columns:1fr 1fr}.grid3 .card:last-child{grid-column:1/-1}.grid3 .card{min-height:100px}.page#inicio .actions button{font-size:14px;min-height:66px}.page#inicio .card{padding:17px}}
+</style></head><body><header><strong>🚐 Michelon</strong><span style="font-size:12px">VIAGENS EXECUTIVAS · COTAÇÃO · FINANCEIRO</span></header>
+<div class="shell"><nav class="nav" id="nav"><button data-page="inicio" class="active">⌂ Início</button><button data-page="cotacao">🚐 Cotação</button><button data-page="viagens">🧳 Viagens</button><button data-page="agenda">▦ Agenda</button><button data-page="financeiro">💰 Financeiro</button><button data-page="uber">🚕 Uber</button><button data-page="rotas">🛣 Rotas</button><button data-page="config">⚙ Ajustes</button></nav>
+<main class="main">
+<section class="page active" id="inicio"><div class="top"><h2>Bem-vindo à Michelon</h2><span class="muted">Uma tela de cada vez</span></div><div class="grid3"><div class="card"><div class="muted">Viagens salvas</div><div class="stat" id="statTrips">0</div></div><div class="card"><div class="muted">Rotas cadastradas</div><div class="stat" id="statRoutes">0</div></div><div class="card"><div class="muted">Saldo financeiro</div><div class="stat" id="statBalance">R$ 0</div></div></div><div class="card stack"><h3 style="margin:0">O que deseja fazer?</h3><div class="actions"><button class="primary" data-go="cotacao">Nova cotação</button><button class="secondary" data-go="agenda">Abrir agenda</button><button class="secondary" data-go="financeiro">Meu Financeiro</button><button class="secondary" data-go="uber">🚕 Minhas corridas Uber</button><button class="secondary" data-go="viagens">Minhas viagens</button><button class="secondary" data-go="rotas">Rotas e trajetos</button></div><p class="muted">Seus registros são armazenados neste navegador. Faça backups regularmente em Ajustes.</p></div></section>
+<section class="page" id="cotacao"><div class="top"><h2>Nova cotação</h2><span class="muted">Origem livre • cálculo pela tabela</span></div><div class="cols"><div class="card stack"><div class="field"><label>Origem</label><input id="origem" value="Limeira, SP" list="sugestoes" placeholder="Digite a origem"></div><div class="field"><label>Destino</label><input id="destino" list="sugestoes" placeholder="Ex.: GRU, Campinas, Viracopos"></div><datalist id="sugestoes"></datalist><div class="field"><label>Viagem</label><select id="tipo"><option value="ida">Somente ida (retorno vazio)</option><option value="volta">Ida e volta com passageiro</option><option value="buscar">Buscar passageiro (ida vazia)</option></select></div><div class="actions"><button class="wa-button" id="waAbrir" type="button">📲 Importar WhatsApp</button><button class="primary" id="calcular" style="flex:1">Calcular orçamento</button></div><div class="muted">A busca aceita apelidos cadastrados, como GRU, Cumbica e Viracopos.</div></div><div class="card stack"><h3 style="margin:0">Resultado</h3><div id="resultado" class="result"><span class="muted">Preencha origem e destino e clique em calcular.</span></div><button class="secondary" id="salvarViagem" disabled>Salvar cotação na agenda</button><button class="wa-button" id="waEnviar" type="button" disabled>📲 Enviar proposta pelo WhatsApp</button><div class="muted">Sem distância conferida, não será exibido um preço inventado.</div></div></div></section>
+<section class="page" id="viagens"><div class="top"><h2>Minhas viagens</h2><button class="secondary" data-go="cotacao">+ Nova cotação</button></div><div class="card scroll"><table class="table"><thead><tr><th>Data</th><th>Percurso</th><th>Valor</th><th>Ação</th></tr></thead><tbody id="listaViagens"></tbody></table></div></section>
+<section class="page" id="agenda"><div class="top"><h2>Agenda</h2><button class="secondary" data-go="cotacao">+ Nova cotação</button></div><div class="card scroll"><table class="table"><thead><tr><th>Data</th><th>Origem</th><th>Destino</th><th>Situação</th></tr></thead><tbody id="listaAgenda"></tbody></table></div></section>
+<section class="page" id="financeiro"><div class="top"><h2>Meu Financeiro</h2><span class="muted">Lançamentos e conferência das corridas Uber</span></div><div class="cols"><div class="card stack"><h3 style="margin:0">Novo lançamento</h3><div class="field"><label>Descrição</label><input id="finDesc" placeholder="Ex.: Combustível"></div><div class="field"><label>Valor (R$)</label><input id="finValor" type="number" min="0.01" step="0.01"></div><div class="field"><label>Tipo</label><select id="finTipo"><option value="saida">Despesa</option><option value="entrada">Receita</option></select></div><button class="primary" id="finSalvar">Salvar lançamento</button><div class="result"><div class="muted">Saldo registrado</div><div class="metric" id="finSaldo">R$ 0</div></div><div class="result"><h3>Corridas Uber para conferência</h3><div class="muted">Aprovar lança a receita e os custos no saldo registrado; não movimenta contas bancárias reais.</div><div id="uberPendentes" class="stack"></div></div></div><div class="card scroll"><table class="table"><thead><tr><th>Descrição</th><th>Valor</th><th></th></tr></thead><tbody id="finLista"></tbody></table></div></div></section>
+<section class="page" id="uber"><div class="top"><h2>Minhas corridas Uber</h2><span class="muted">Controle de faturamento e despesas</span></div><div class="cols"><div class="card stack"><div class="field"><label>Data do trabalho</label><input id="uberData" type="date"></div><div class="field"><label>Faturamento bruto Uber (R$)</label><input id="uberBruto" type="number" min="0" step=".01" placeholder="0,00"></div><div class="field"><label>Combustível (R$)</label><input id="uberCombustivel" type="number" min="0" step=".01" value="0"></div><div class="field"><label>Outros custos do trabalho (R$)</label><input id="uberCusto" type="number" min="0" step=".01" value="0"></div><div class="field"><label>Observações</label><input id="uberObs" placeholder="Ex.: quantidade de corridas, pedágios"></div><button class="primary" id="uberSalvar">Registrar dia</button><div class="notice">Os valores aparecem para conferência no Meu Financeiro. Só alteram o saldo após sua aprovação.</div><div class="result"><h3>Resumo Uber</h3><div class="mini"><span>Faturamento total</span><strong id="uberTotalBruto">R$ 0,00</strong></div><div class="mini"><span>Custos variáveis</span><strong id="uberTotalCustos">R$ 0,00</strong></div><div class="mini"><span>Resultado antes das contas fixas</span><strong id="uberTotalLiquido">R$ 0,00</strong></div></div></div><div class="card scroll"><h3>Histórico de dias</h3><table class="table"><thead><tr><th>Dia</th><th>Bruto</th><th>Custos</th><th>Resultado</th><th>Ação</th></tr></thead><tbody id="uberLista"></tbody></table></div></div></section>
+<section class="page" id="rotas"><div class="top"><h2>Tabela de rotas</h2><span class="muted">Configuração interna</span></div><div class="cols"><div class="card stack scroll"><h3 style="margin:0">Cadastrar ou atualizar</h3><div class="field"><label>Origem</label><input id="rOrigem" value="Limeira, SP"></div><div class="field"><label>Destino</label><input id="rDestino" placeholder="Ex.: Aeroporto de Guarulhos"></div><div class="field"><label>Apelidos separados por vírgula</label><input id="rAliases" placeholder="GRU, Cumbica, Guarulhos"></div><div class="field"><label>Rodovia principal</label><input id="rRodovia" placeholder="SP-348 Bandeirantes"></div><div class="grid3"><div class="field"><label>Km ida</label><input id="rIda" type="number" min=".1" step=".1"></div><div class="field"><label>Km volta</label><input id="rVolta" type="number" min=".1" step=".1"></div><div class="field"><label>Pedágios</label><select id="rPedStatus"><option value="pendente">Não verificados</option><option value="nenhum">Sem pedágios</option><option value="valor">Com pedágios</option></select></div></div><div class="grid3"><div class="field"><label>Pedágio ida R$</label><input id="rPedIda" type="number" min="0" step=".01"></div><div class="field"><label>Pedágio volta R$</label><input id="rPedVolta" type="number" min="0" step=".01"></div></div><button class="primary" id="rSalvar">Salvar rota</button><span id="rMsg" class="muted"></span></div><div class="card scroll"><table class="table"><thead><tr><th>Origem → destino</th><th>Km</th><th>Ação</th></tr></thead><tbody id="rLista"></tbody></table></div></div></section>
+<section class="page" id="config"><div class="top"><h2>Ajustes e backup</h2></div><div class="cols"><div class="card stack"><h3 style="margin:0">Valores de cálculo</h3><div class="field"><label>Passageiro ida (R$/km)</label><input id="cfgIda" type="number" min="0" step=".01"></div><div class="field"><label>Retorno vazio (R$/km)</label><input id="cfgVazio" type="number" min="0" step=".01"></div><div class="field"><label>Ida e volta com passageiro (R$/km)</label><input id="cfgVolta" type="number" min="0" step=".01"></div><div class="field"><label>Margem (%)</label><input id="cfgMargem" type="number" min="0" step="1"></div><button class="primary" id="cfgSalvar">Salvar ajustes</button><div class="notice" style="background:#e9f5f2;color:#19383c"><strong>Base offline de pedágios georreferenciados</strong><p>Importe um JSON de praças com latitude, longitude, tarifa, sentido e fonte verificada. Os dados ficam neste navegador, sem API paga.</p><input id="pedImport" type="file" accept=".json,application/json"><div id="pedImportStatus" class="muted">Nenhuma base georreferenciada importada. Também é possível importar JSON oficial da ANTT para localização (sem tarifa).</div><button class="secondary" id="pedExportModelo" type="button">Baixar modelo JSON</button></div></div><div class="card stack"><h3 style="margin:0">Segurança dos dados</h3><p class="muted">Faça backup antes de limpar o navegador ou mudar de computador.</p><button class="secondary" id="exportar">Exportar backup JSON</button><div class="field"><label>Restaurar backup Michelon</label><input id="importar" type="file" accept=".json,application/json"></div><div class="notice">Os dados ficam armazenados neste navegador. Para transferir entre dispositivos, exporte e restaure um backup JSON.</div></div></div></section>
+</main></div>
+<div class="wa-modal" id="waModal" role="dialog" aria-modal="true" aria-labelledby="waTitulo"><div class="wa-panel"><h3 id="waTitulo">📲 Importar solicitação do WhatsApp</h3><p class="muted">Copie a mensagem do cliente e cole abaixo. Confira os campos antes de calcular.</p><textarea id="waTexto" placeholder="Ex.: Olá, preciso de uma viagem. Origem: Limeira, SP. Destino: Aeroporto de Viracopos. Data: 25/10/2026. Horário: 08:00. Passageiros: 2."></textarea><div class="wa-preview" id="waPrevia">Nenhuma mensagem analisada.</div><div class="actions"><button class="secondary" id="waFechar" type="button">Cancelar</button><button class="secondary" id="waAnalisar" type="button">Identificar dados</button><button class="primary" id="waAplicar" type="button" disabled>Usar na cotação</button></div></div></div>
+<script>
+(()=>{'use strict';const KEY='michelon_base_nova_v1',LEGACY='michelon_tabela_rotas_v1';const $=id=>document.getElementById(id),money=n=>Number(n).toLocaleString('pt-BR',{style:'currency',currency:'BRL'}),norm=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,' ').replace(/\s+/g,' ').trim(),num=id=>Number($(id).value);
+const defaults={routes:[],trips:[],finance:[],uber:[],cfg:{ida:2.1,vazio:1.5,volta:3,margem:10}};
+let db;try{db=JSON.parse(localStorage.getItem(KEY))||structuredClone(defaults)}catch{db=structuredClone(defaults)};for(const k of Object.keys(defaults))if(!(k in db))db[k]=structuredClone(defaults[k]);
+if(!db.routes.length){try{const legacy=JSON.parse(localStorage.getItem(LEGACY)||'[]');if(Array.isArray(legacy)){db.routes=legacy.filter(r=>Number(r.ida)>0&&Number(r.volta)>0).map(r=>({id:crypto.randomUUID(),origem:'Limeira, SP',destino:r.nome,aliases:'',rodovia:r.rodovia||'',ida:Number(r.ida),volta:Number(r.volta),pedStatus:r.tipoIda==='nenhum'&&r.tipoVolta==='nenhum'?'nenhum':r.tipoIda==='valor'&&r.tipoVolta==='valor'?'valor':'pendente',pedIda:Number(r.pedIda)||0,pedVolta:Number(r.pedVolta)||0}))}}catch{}}
+const save=()=>localStorage.setItem(KEY,JSON.stringify(db));save();let quote=null;
+function go(page){document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===page));document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===page));if(page==='inicio')stats();if(page==='rotas')renderRoutes();if(page==='financeiro')renderFin();if(page==='viagens'||page==='agenda')renderTrips();if(page==='uber')renderUber();document.activeElement.blur()}
+document.querySelectorAll('[data-page]').forEach(b=>b.onclick=()=>go(b.dataset.page));document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go));
+function matches(query,name,aliases=''){const q=norm(query);return q&&[name,...String(aliases).split(',')].some(x=>{const v=norm(x);return v&&(q===v||q.length>=3&&v.includes(q)||v.length>=3&&q.includes(v))})}
+function suggest(){const dl=$('sugestoes');dl.replaceChildren();for(const r of db.routes){for(const v of [r.origem,r.destino,...String(r.aliases||'').split(',')])if(v.trim()){const opt=document.createElement('option');opt.value=v.trim();dl.append(opt)}}}suggest();
+function calculate(){const origin=$('origem').value.trim(),dest=$('destino').value.trim(),out=$('resultado');quote=null;$('salvarViagem').disabled=true;if(!origin||!dest){out.textContent='Preencha origem e destino.';return}const direct=db.routes.find(r=>matches(origin,r.origem)&&matches(dest,r.destino,r.aliases));const reverse=db.routes.find(r=>matches(dest,r.origem)&&matches(origin,r.destino,r.aliases));const r=direct||reverse;if(!r){out.textContent='Rota não cadastrada para este percurso. Abra Rotas e registre as distâncias conferidas; não vou inventar quilômetros ou pedágios.';return}const ida=direct?r.ida:r.volta,volta=direct?r.volta:r.ida,tipo=$('tipo').value,c=db.cfg,base=tipo==='ida'?ida*c.ida+volta*c.vazio:tipo==='buscar'?ida*c.vazio+volta*c.ida:(ida+volta)*c.volta;let toll=null;if(r.pedStatus==='nenhum')toll=0;if(r.pedStatus==='valor')toll=2*(Number(direct?r.pedIda:r.pedVolta)||0);const total=(base+(toll||0))*(1+c.margem/100);quote={origin,dest,tipo,km:ida+volta,total,toll,road:r.rodovia};out.replaceChildren();const title=document.createElement('h3');title.textContent='Resumo da viagem';out.append(title);const rows=[['Percurso',`${ida.toFixed(1)} km ida + ${volta.toFixed(1)} km retorno`],['Rodovia',r.rodovia||'Não informada']];if(toll>0)rows.push(['Pedágios',money(toll)]);if(toll===null)rows.push(['Pedágios','Não verificados — preço parcial']);rows.push([toll===null?'Valor parcial':'Valor estimado',money(total)]);for(const [a,b] of rows){const div=document.createElement('div');div.className='mini';const left=document.createElement('span'),right=document.createElement('strong');left.textContent=a;right.textContent=b;div.append(left,right);out.append(div)}$('salvarViagem').disabled=false}
+$('calcular').onclick=calculate;
+$('salvarViagem').onclick=()=>{if(!quote)return;db.trips.unshift({...quote,id:crypto.randomUUID(),date:new Date().toLocaleDateString('pt-BR'),status:'Cotação'});save();alert('Cotação salva em Minhas viagens e Agenda.');go('viagens')};
+function row(tbody,values,button){const tr=document.createElement('tr');values.forEach(v=>{const td=document.createElement('td');td.textContent=String(v);tr.append(td)});if(button){const td=document.createElement('td');td.append(button);tr.append(td)}tbody.append(tr)}
+function btn(label,fn){const b=document.createElement('button');b.className='secondary';b.textContent=label;b.onclick=fn;return b}
+function renderTrips(){for(const id of ['listaViagens','listaAgenda'])$(id).replaceChildren();db.trips.forEach(t=>{row($('listaViagens'),[t.date,t.origin+' → '+t.dest,money(t.total)],btn('Excluir',()=>{if(confirm('Excluir cotação?')){db.trips=db.trips.filter(x=>x.id!==t.id);save();renderTrips()}}));row($('listaAgenda'),[t.date,t.origin,t.dest,t.status||'Cotação'])})}
+function renderRoutes(){$('rLista').replaceChildren();db.routes.forEach(r=>row($('rLista'),[r.origem+' → '+r.destino,`${r.ida} / ${r.volta}`],btn('Editar',()=>{for(const [id,key] of [['rOrigem','origem'],['rDestino','destino'],['rAliases','aliases'],['rRodovia','rodovia'],['rIda','ida'],['rVolta','volta'],['rPedStatus','pedStatus'],['rPedIda','pedIda'],['rPedVolta','pedVolta']])$(id).value=r[key]??'';$('rSalvar').dataset.edit=r.id})));$('statRoutes').textContent=db.routes.length;suggest()}
+$('rSalvar').onclick=()=>{const origem=$('rOrigem').value.trim(),destino=$('rDestino').value.trim(),ida=num('rIda'),volta=num('rVolta'),pedStatus=$('rPedStatus').value,pedIda=num('rPedIda'),pedVolta=num('rPedVolta');if(!origem||!destino||!(ida>0&&volta>0)){alert('Informe origem, destino e as duas distâncias conferidas.');return}if(pedStatus==='valor'&&(!(pedIda>=0&&pedVolta>=0)||!$('rPedIda').value||!$('rPedVolta').value)){alert('Informe os valores de pedágio de ambos os sentidos.');return}const id=$('rSalvar').dataset.edit||crypto.randomUUID(),r={id,origem,destino,aliases:$('rAliases').value,rodovia:$('rRodovia').value,ida,volta,pedStatus,pedIda:pedStatus==='valor'?pedIda:0,pedVolta:pedStatus==='valor'?pedVolta:0};db.routes=db.routes.filter(x=>x.id!==id);db.routes.push(r);delete $('rSalvar').dataset.edit;save();renderRoutes();$('rMsg').textContent='Rota salva. Ela já aparece na busca da cotação.'};
+function renderFin(){$('finLista').replaceChildren();let saldo=0;db.finance.forEach(f=>{saldo+=f.tipo==='entrada'?f.valor:-f.valor;row($('finLista'),[f.desc,(f.tipo==='entrada'?'+ ':'− ')+money(f.valor)],btn('Excluir',()=>{db.finance=db.finance.filter(x=>x.id!==f.id);save();renderFin()}))});$('finSaldo').textContent=money(saldo);$('statBalance').textContent=money(saldo);renderUberPending()}
+$('finSalvar').onclick=()=>{const desc=$('finDesc').value.trim(),valor=num('finValor');if(!desc||!(valor>0)){alert('Preencha descrição e valor positivo.');return}db.finance.unshift({id:crypto.randomUUID(),desc,valor,tipo:$('finTipo').value});save();$('finDesc').value='';$('finValor').value='';renderFin()};
+const uberDate=$('uberData');if(uberDate)uberDate.value=new Date().toLocaleDateString('en-CA');
+$('uberSalvar').onclick=()=>{const bruto=num('uberBruto'),combustivel=num('uberCombustivel'),outros=num('uberCusto');if(!uberDate.value||!$('uberBruto').value||![bruto,combustivel,outros].every(v=>Number.isFinite(v)&&v>=0)){alert('Informe a data e valores válidos.');return}db.uber.unshift({id:crypto.randomUUID(),date:uberDate.value.split('-').reverse().join('/'),bruto,combustivel,outros,custo:combustivel+outros,obs:$('uberObs').value.trim(),aprovado:false});save();$('uberBruto').value='';$('uberCombustivel').value='0';$('uberCusto').value='0';$('uberObs').value='';renderUber();renderFin();alert('Dia registrado. Confira no Meu Financeiro antes de aprovar.');};
+function renderUber(){$('uberLista').replaceChildren();let bruto=0,custos=0;db.uber.forEach(u=>{if(!u.id)u.id=crypto.randomUUID();const b=Number(u.bruto)||0,c=Number(u.custo)||0;bruto+=b;custos+=c;row($('uberLista'),[u.date,money(b),money(c),money(b-c)],btn('Excluir',()=>{if(u.aprovado){alert('Este dia já foi aprovado no Financeiro. Exclua ou corrija os lançamentos financeiros antes de ajustar o histórico.');return}if(confirm('Excluir este registro Uber?')){db.uber=db.uber.filter(x=>x.id!==u.id);save();renderUber();renderFin()}}))});$('uberTotalBruto').textContent=money(bruto);$('uberTotalCustos').textContent=money(custos);$('uberTotalLiquido').textContent=money(bruto-custos)}
+function renderUberPending(){const el=$('uberPendentes');el.replaceChildren();const pending=db.uber.filter(u=>!u.aprovado);if(!pending.length){el.textContent='Nenhum registro pendente.';return}pending.forEach(u=>{if(!u.id)u.id=crypto.randomUUID();const c=Number(u.custo)||0;const box=document.createElement('div');box.className='notice';const line=document.createElement('div');line.textContent=`${u.date}: receita ${money(u.bruto)} · custos ${money(c)} · resultado ${money(Number(u.bruto)-c)}`;const approve=btn('Aprovar lançamentos',()=>{if(!confirm('Confirmar receita e despesas Uber no saldo registrado?'))return;const tag=u.id;db.finance.unshift({id:crypto.randomUUID(),desc:'Uber - faturamento '+u.date,valor:Number(u.bruto)||0,tipo:'entrada',uberId:tag});if(c>0)db.finance.unshift({id:crypto.randomUUID(),desc:'Uber - custos '+u.date,valor:c,tipo:'saida',uberId:tag});u.aprovado=true;save();renderFin();renderUber()});box.append(line,approve);el.append(box)})}
+for(const [id,key] of [['cfgIda','ida'],['cfgVazio','vazio'],['cfgVolta','volta'],['cfgMargem','margem']])$(id).value=db.cfg[key];
+$('cfgSalvar').onclick=()=>{for(const [id,key] of [['cfgIda','ida'],['cfgVazio','vazio'],['cfgVolta','volta'],['cfgMargem','margem']]){const v=num(id);if(!(v>=0)){alert('Valor inválido.');return}db.cfg[key]=v}save();alert('Ajustes salvos.')};
+function download(name,obj){const blob=new Blob([JSON.stringify(obj,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),2000)}
+$('exportar').onclick=()=>download('Michelon_nova_base_backup.json',{formato:'michelon-base-v1',data:db});
+$('importar').onchange=async e=>{try{const obj=JSON.parse(await e.target.files[0].text());if(obj.formato==='michelon-tabela-rotas-v1'&&Array.isArray(obj.rotas)){const rs=obj.rotas.filter(r=>Number(r.ida)>0&&Number(r.volta)>0).map(r=>({id:crypto.randomUUID(),origem:'Limeira, SP',destino:r.nome,aliases:'',rodovia:r.rodovia||'',ida:Number(r.ida),volta:Number(r.volta),pedStatus:r.tipoIda==='nenhum'&&r.tipoVolta==='nenhum'?'nenhum':r.tipoIda==='valor'&&r.tipoVolta==='valor'?'valor':'pendente',pedIda:Number(r.pedIda)||0,pedVolta:Number(r.pedVolta)||0}));db.routes.push(...rs);save();renderRoutes();alert(rs.length+' rotas importadas.')}else if(obj.formato==='michelon-base-v1'&&obj.data&&Array.isArray(obj.data.routes)&&Array.isArray(obj.data.trips)&&Array.isArray(obj.data.finance)){if(confirm('Substituir dados desta nova base pelo backup?')){db=obj.data;save();location.reload()}}else throw Error('Arquivo incompatível')}catch(err){alert('Não foi possível importar: '+err.message)}finally{e.target.value=''}};
+function stats(){$('statTrips').textContent=db.trips.length;$('statRoutes').textContent=db.routes.length;renderFin()}stats();renderTrips();renderRoutes();renderUber();
+})();
+</script><script>
+/* Busca de locais separada do cálculo: sugestões não são quilômetros nem pedágios. */
+(()=>{'use strict';
+const favorites=[
+ {name:'Aeroporto Internacional de Viracopos (VCP)',detail:'Campinas, São Paulo',terms:'viracopos vcp aeroporto campinas'},
+ {name:'Aeroporto Internacional de Guarulhos (GRU)',detail:'Guarulhos, São Paulo',terms:'gru cumbica aeroporto guarulhos sao paulo'},
+ {name:'Aeroporto de Congonhas (CGH)',detail:'São Paulo, SP',terms:'congonhas cgh aeroporto sao paulo'},
+ {name:'Campinas, SP',detail:'Cidade',terms:'campinas'},
+ {name:'Americana, SP',detail:'Cidade',terms:'americana'},
+ {name:'Piracicaba, SP',detail:'Cidade',terms:'piracicaba'},
+ {name:'Limeira, SP',detail:'Cidade',terms:'limeira'},
+ {name:'São Paulo, SP',detail:'Cidade',terms:'sao paulo capital'},
+ {name:'Guarulhos, SP',detail:'Cidade',terms:'guarulhos cidade'}];
+const clean=t=>String(t||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
+for(const id of ['origem','destino']){
+ const input=document.getElementById(id);if(!input)continue;
+ const parent=input.parentElement;parent.classList.add('smart-wrap');
+  const searchBtn=document.createElement('button');searchBtn.type='button';searchBtn.className='secondary';searchBtn.textContent='🔎 Buscar endereço';searchBtn.style.cssText='align-self:flex-start;padding:5px 9px;font-size:12px;margin-top:3px';parent.append(searchBtn);
+ const list=document.createElement('div');list.className='smart-list';list.hidden=true;parent.append(list);
+ const hint=document.createElement('div');hint.className='smart-hint';hint.textContent='Digite uma cidade, rua ou aeroporto';parent.append(hint);
+ let timer=0,controller=null,seq=0;
+ const show=(items,notice)=>{list.replaceChildren();if(!items.length){list.hidden=true;hint.textContent=notice||'Nenhuma sugestão encontrada';return}for(const item of items.slice(0,7)){
+ const b=document.createElement('button');b.type='button';b.className='smart-choice';b.textContent=item.name;
+ const small=document.createElement('span');small.className='smart-small';small.textContent=item.detail||'';b.append(small);
+ b.addEventListener('mousedown',e=>e.preventDefault());b.addEventListener('click',()=>{input.value=item.name;list.hidden=true;hint.textContent='Local selecionado. O cálculo depende de uma rota disponível.';input.dispatchEvent(new Event('change',{bubbles:true}))});list.append(b)}list.hidden=false;hint.textContent=notice||'Selecione uma sugestão'};
+ input.addEventListener('input',()=>{clearTimeout(timer);if(controller)controller.abort();const q=clean(input.value);const thisSeq=++seq;if(q.length<2){list.hidden=true;hint.textContent='Digite ao menos 2 letras';return}
+ const local=favorites.filter(x=>clean(x.name+' '+x.terms).includes(q));show(local,'Buscando mais locais…');
+ if(q.length<3)return;
+ timer=setTimeout(async()=>{controller=new AbortController();try{
+ const url='https://photon.komoot.io/api/?limit=6&lang=pt&q='+encodeURIComponent(input.value+', Brasil');
+ const response=await fetch(url,{signal:controller.signal});if(!response.ok)throw Error('Serviço indisponível');
+ const data=await response.json();if(thisSeq!==seq)return;
+ const remote=(data.features||[]).filter(f=>f.properties?.countrycode==='BR').map(f=>{const p=f.properties||{};return {name:[p.name,p.city&&p.city!==p.name?p.city:null,p.state].filter(Boolean).join(', '),detail:[p.street,p.housenumber,p.country].filter(Boolean).join(' ')}}).filter(x=>x.name);
+ const all=[...local];for(const r of remote)if(!all.some(x=>clean(x.name)===clean(r.name)))all.push(r);
+ show(all,all.length?'Escolha o local correto':'Sem sugestões. Confira a internet ou digite o endereço completo.');
+ }catch(err){if(err.name==='AbortError')return;if(thisSeq===seq)show(local,'Busca online indisponível; sugestões conhecidas continuam disponíveis.')}},400)
+ });
+ searchBtn.addEventListener('click',async()=>{
+   clearTimeout(timer);if(controller)controller.abort();++seq;
+   const q=input.value.trim();
+   if(q.length<3){hint.textContent='Digite pelo menos 3 letras para pesquisar.';return}
+   searchBtn.disabled=true;searchBtn.textContent='Pesquisando…';
+   hint.textContent='Consultando endereço. Aguarde…';
+   const local=favorites.filter(x=>clean(x.name+' '+x.terms).includes(clean(q)));
+   try{
+     const ac=new AbortController(),timeout=setTimeout(()=>ac.abort(),12000);
+     let data;
+     try{
+       const r=await fetch('https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=5&countrycodes=br&q='+encodeURIComponent(q),{signal:ac.signal});
+       if(!r.ok)throw Error('HTTP '+r.status);
+       data=await r.json();
+     }finally{clearTimeout(timeout)}
+     const remote=data.map(x=>({name:x.display_name,detail:x.type||'Endereço encontrado'}));
+     show([...local,...remote],remote.length?'Selecione um endereço na lista.':'Nenhum endereço online; confira as opções locais.');
+   }catch(e){
+     show(local,local.length?'Serviço online indisponível. Escolha uma das cidades conhecidas.':'Falha na consulta: '+(e.name==='AbortError'?'tempo esgotado':e.message)+'. Verifique a conexão ou tente novamente.');
+   }finally{searchBtn.disabled=false;searchBtn.textContent='🔎 Buscar endereço'}
+ });
+ input.addEventListener('keydown',e=>{if(e.key==='Escape')list.hidden=true});
+ input.addEventListener('blur',()=>setTimeout(()=>list.hidden=true,180));
+ input.addEventListener('focus',()=>{if(input.value.trim().length>=2)input.dispatchEvent(new Event('input'))});
+ }
+})();
+</script><script>
+/* Consulta rodoviária independente: preserva o cálculo cadastrado e a interface aprovada. */
+(()=>{
+ const $=id=>document.getElementById(id);
+ const money=n=>Number(n).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+ const normalize=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,' ').replace(/\s+/g,' ').trim();
+ const aliases={'gru':'Aeroporto Internacional de Guarulhos, Guarulhos, SP','cumbica':'Aeroporto Internacional de Guarulhos, Guarulhos, SP','aeroporto de guarulhos':'Aeroporto Internacional de Guarulhos, Guarulhos, SP','viracopos':'Aeroporto Internacional de Viracopos, Campinas, SP','vcp':'Aeroporto Internacional de Viracopos, Campinas, SP','congonhas':'Aeroporto de Congonhas, São Paulo, SP'};
+ let busy=false;
+ async function json(url,ms=14000){const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),ms);try{const r=await fetch(url,{signal:controller.signal});if(!r.ok)throw Error('Serviço indisponível ('+r.status+')');return await r.json()}finally{clearTimeout(timer)}}
+ async function locate(place){
+    let q=aliases[normalize(place.trim())]||place.trim();
+    try{
+      const url='https://photon.komoot.io/api/?limit=8&q='+encodeURIComponent(q.includes('Brasil')?q:q+', Brasil');
+      const data=await json(url,8000);
+      const features=(data.features||[]).filter(f=>f.geometry?.coordinates?.length===2&&(!f.properties?.countrycode||f.properties.countrycode==='BR'));
+      if(features.length){const f=features[0],p=f.properties||{};return {lon:f.geometry.coordinates[0],lat:f.geometry.coordinates[1],name:[p.name,p.city,p.state].filter(Boolean).join(', ')}}
+    }catch(e){}
+    // Nominatim is used only when the user explicitly clicks Calcular, not for autocomplete.
+    const url='https://nominatim.openstreetmap.org/search?format=jsonv2&limit=5&countrycodes=br&q='+encodeURIComponent(q);
+    const items=await json(url,14000);
+    if(!items.length)throw Error('Não foi possível localizar: '+place+'. Inclua cidade e estado');
+    return {lon:Number(items[0].lon),lat:Number(items[0].lat),name:items[0].display_name};
+  }
+ function row(parent,label,value){const div=document.createElement('div');div.className='mini';const a=document.createElement('span'),b=document.createElement('strong');a.textContent=label;b.textContent=value;div.append(a,b);parent.append(div)}
+  // Nunca exibir preço de uma viagem depois que origem/destino/tipo mudar.
+  for(const id of ['origem','destino','tipo']){
+    $(id).addEventListener('input',()=>{
+      $('resultado').textContent='Percurso alterado. Clique em Calcular orçamento para consultar a nova rota.';
+      $('salvarViagem').disabled=true;
+      $('waEnviar').disabled=true;$('waEnviar').dataset.manualQuote='';
+    });
+    $(id).addEventListener('change',()=>{
+      $('resultado').textContent='Percurso alterado. Clique em Calcular orçamento para consultar a nova rota.';
+      $('salvarViagem').disabled=true;
+      $('waEnviar').disabled=true;$('waEnviar').dataset.manualQuote='';
+    });
+  }
+ const original=$('calcular').onclick;
+ $('calcular').onclick=async function(){if(busy)return;const origin=$('origem').value.trim(),destination=$('destino').value.trim();if(!origin||!destination){original();return}
+ // A tabela local tem prioridade e conserva as tarifas de pedágio verificadas.
+ original();const result=$('resultado');if(!result.textContent.includes('Rota não cadastrada'))return;
+ busy=true;const button=$('calcular');button.disabled=true;button.textContent='Consultando estrada…';$('salvarViagem').disabled=true;
+ result.textContent='Localizando os endereços e consultando a distância rodoviária…';
+ try{
+ const [from,to]=await Promise.all([locate(origin),locate(destination)]);
+ const osrm='https://router.project-osrm.org/route/v1/driving/'+from.lon+','+from.lat+';'+to.lon+','+to.lat+'?overview=full&geometries=geojson&alternatives=true&steps=true';
+ const data=await json(osrm,18000);if(data.code!=='Ok'||!data.routes?.length)throw Error('Não foi encontrada uma rota rodoviária');
+ const fastest=[...data.routes].sort((a,b)=>a.duration-b.duration)[0];const ida=fastest.distance/1000;
+ const roads=r=>(r.legs||[]).flatMap(l=>(l.steps||[]).map(x=>String(x.name||'')+' '+String(x.ref||''))).filter(Boolean);
+ // Verifica a cidade/identidade do destino, não o estado 'São Paulo' presente no endereço.
+ const metroCities=new Set(['sao paulo','guarulhos','osasco','barueri','santo andre','sao bernardo do campo','diadema','taboao da serra']);
+ const airportMetro=/\b(gru|cumbica|congonhas|cgh|aeroporto internacional de guarulhos|aeroporto de guarulhos)\b/;
+ const cityFromGeocode=normalize((to.name||'').split(',').slice(-2,-1)[0]||'');
+ const firstDestination=normalize(destination.split(',')[0]);
+ const preferred=metroCities.has(firstDestination)||metroCities.has(cityFromGeocode)||airportMetro.test(firstDestination);
+ const bandeirantes=roads(fastest).some(x=>/bandeirantes|sp[ -]?348/i.test(x));
+ // O retorno é consultado separadamente, pois sentido e quilometragem podem diferir.
+ const reverse='https://router.project-osrm.org/route/v1/driving/'+to.lon+','+to.lat+';'+from.lon+','+from.lat+'?overview=full&geometries=geojson&alternatives=true&steps=true';
+ const back=await json(reverse,18000);if(back.code!=='Ok'||!back.routes?.length)throw Error('Não foi possível calcular o retorno');
+ const returnRoute=[...back.routes].sort((a,b)=>a.duration-b.duration)[0];const volta=returnRoute.distance/1000;
+ const bandeirantesRetorno=roads(returnRoute).some(x=>/bandeirantes|sp[ -]?348/i.test(x));
+ let cfg={ida:2.1,vazio:1.5,volta:3,margem:10};try{cfg={...cfg,...JSON.parse(localStorage.getItem('michelon_base_nova_v1')||'{}').cfg}}catch{}
+ const tipo=$('tipo').value;const base=tipo==='ida'?ida*cfg.ida+volta*cfg.vazio:tipo==='buscar'?ida*cfg.vazio+volta*cfg.ida:(ida+volta)*cfg.volta;const partial=base*(1+cfg.margem/100);
+ result.replaceChildren();const title=document.createElement('h3');title.textContent='Distância rodoviária calculada';result.append(title);
+ row(result,'Ida',ida.toFixed(1)+' km');row(result,'Retorno',volta.toFixed(1)+' km');row(result,'Total', (ida+volta).toFixed(1)+' km');
+ row(result,'Valor da viagem sem pedágios',money(partial));
+ // Conferência assistida, sem tarifas inventadas e sem API paga.
+ const tollBox=document.createElement('div');tollBox.className='notice';tollBox.style.cssText='margin-top:10px;background:#e9f5f2;color:#19383c';
+ const tollTitle=document.createElement('strong');tollTitle.textContent='Pedágios da ida';tollBox.append(tollTitle);
+ const tollHelp=document.createElement('p');tollHelp.style.margin='6px 0';tollHelp.textContent='Digite o total da ida. A Michelon calcula o mesmo valor na volta automaticamente.';tollBox.append(tollHelp);
+ const tollInputs=document.createElement('div');tollInputs.style.cssText='display:grid;grid-template-columns:1fr;gap:8px';
+ const tollLabel=document.createElement('label');tollLabel.style.cssText='font-size:13px;font-weight:700';tollLabel.textContent='Total dos pedágios da IDA (R$)';
+ const tollOut=document.createElement('input');tollOut.type='number';tollOut.min='0';tollOut.step='0.01';tollOut.placeholder='Ex.: 45.00';tollLabel.append(tollOut);tollInputs.append(tollLabel);tollBox.append(tollInputs);
+ // Tabela compacta de referência para consulta e cópia, sem afirmar que a praça está na rota.
+ const consulta=document.createElement('details');consulta.style.cssText='margin:10px 0;border:1px solid #c7ddd7;border-radius:9px;padding:9px;background:white';
+ const tituloConsulta=document.createElement('summary');tituloConsulta.textContent='Consultar tabela de praças e copiar valores';tituloConsulta.style.cssText='cursor:pointer;font-weight:700;font-size:13px';consulta.append(tituloConsulta);
+ const notaConsulta=document.createElement('p');notaConsulta.style.cssText='font-size:11px;margin:8px 0';notaConsulta.textContent='Referência de tarifas AutoBAn 2026. Confira quais praças estão no seu caminho. A seleção não é automática.';consulta.append(notaConsulta);
+ const pracaDados=[['Limeira B','SP-348',9.70],['Sumaré','SP-348',12.80],['Itupeva','SP-348',14.30],['Campo Limpo/Caieiras','SP-348',14.50],['Limeira A','SP-330',9.70],['Nova Odessa','SP-330',12.80],['Valinhos','SP-330',14.30],['Perus','SP-330',14.50]];
+ const pracaMarcadas=new Set();const consultaRows=document.createElement('div');consulta.append(consultaRows);
+ const consultaTotal=document.createElement('strong');consultaTotal.style.cssText='display:block;margin:9px 0';consulta.append(consultaTotal);
+ const updateConsulta=()=>{const v=[...pracaMarcadas].reduce((acc,i)=>acc+pracaDados[i][2],0);consultaTotal.textContent='Total selecionado da ida: '+money(v);return v};
+ pracaDados.forEach((p,i)=>{const label=document.createElement('label');label.style.cssText='display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid #edf3f0;font-size:12px';const cb=document.createElement('input');cb.type='checkbox';cb.style.cssText='width:16px;min-height:16px;flex-shrink:0';cb.onchange=()=>{if(cb.checked)pracaMarcadas.add(i);else pracaMarcadas.delete(i);updateConsulta()};const txt=document.createElement('span');txt.textContent=p[0]+' · '+p[1]+' · '+money(p[2]);label.append(cb,txt);consultaRows.append(label)});updateConsulta();
+ const copiarTabela=document.createElement('button');copiarTabela.type='button';copiarTabela.className='secondary';copiarTabela.textContent='Copiar tabela';copiarTabela.style.marginRight='6px';copiarTabela.onclick=async()=>{const txt=pracaDados.map(p=>p[0]+' | '+p[1]+' | '+money(p[2])).join('\n');try{await navigator.clipboard.writeText(txt);copiarTabela.textContent='Tabela copiada'}catch{const t=document.createElement('textarea');t.value=txt;consulta.append(t);t.select();document.execCommand('copy');t.remove();copiarTabela.textContent='Tabela copiada'}};consulta.append(copiarTabela);
+ const usarTotal=document.createElement('button');usarTotal.type='button';usarTotal.className='secondary';usarTotal.textContent='Usar soma selecionada';usarTotal.onclick=()=>{if(!pracaMarcadas.size)return alert('Selecione as praças da ida.');tollOut.value=updateConsulta().toFixed(2);tollOut.dispatchEvent(new Event('input',{bubbles:true}));consulta.open=false};consulta.append(usarTotal);tollBox.append(consulta);
+ const checkLabel=document.createElement('label');checkLabel.style.cssText='display:flex;align-items:center;gap:7px;margin:8px 0;font-size:12px';const check=document.createElement('input');check.type='checkbox';check.style.cssText='width:16px;min-height:16px';checkLabel.append(check,document.createTextNode('Confirmei o valor total de pedágios da ida'));tollBox.append(checkLabel);
+ const apply=document.createElement('button');apply.type='button';apply.className='primary';apply.textContent='Aplicar pedágios (ida × 2)';tollBox.append(apply);
+ const totalInfo=document.createElement('div');totalInfo.style.marginTop='8px';tollBox.append(totalInfo);
+ tollOut.addEventListener('input',()=>{check.checked=false;$('salvarViagem').disabled=true;$('waEnviar').dataset.manualQuote='';});
+ apply.onclick=()=>{const raw=tollOut.value.trim(),a=Number(raw);if(!raw||!Number.isFinite(a)||a<0||!check.checked){totalInfo.textContent='Informe o valor da ida e marque a confirmação.';return}const toll=a*2;const final=(base+toll)*(1+cfg.margem/100);totalInfo.replaceChildren();row(totalInfo,'Pedágios ida',money(a));row(totalInfo,'Pedágios volta (mesmo valor)',money(a));row(totalInfo,'Total pedágios (ida × 2)',money(toll));row(totalInfo,'Orçamento final',money(final));const disclaimer=document.createElement('small');disclaimer.textContent='Pedágios informados manualmente por você, não identificados automaticamente.';totalInfo.append(disclaimer);
+ const manual={origin,dest:destination,tipo,km:ida+volta,total:final,toll,road:roads(fastest).slice(0,5).join(', '),manual:true};
+ $('waEnviar').dataset.manualQuote=JSON.stringify(manual);$('waEnviar').disabled=false;$('salvarViagem').disabled=false;
+ $('salvarViagem').onclick=()=>{const key='michelon_base_nova_v1';let db;try{db=JSON.parse(localStorage.getItem(key)||'{}')}catch{db={}};if(!Array.isArray(db.trips))db.trips=[];db.trips.unshift({...manual,id:crypto.randomUUID(),date:new Date().toLocaleDateString('pt-BR'),status:'Cotação'});localStorage.setItem(key,JSON.stringify(db));alert('Cotação com pedágios salva na agenda.');document.querySelector('[data-page="viagens"]').click()};
+ };
+ result.append(tollBox);
+ // Catálogo local gratuito recuperado do teste V96. Tarifa publicada não comprova travessia.
+ const tollCatalog=[{"rodovia":"SP-348 Bandeirantes","praca":"Sumaré","km":"115,5","valor":12.8,"sentido":"Verificar passagem e pista","fonte":"https://rodovias.motiva.com.br/autoban/noticias/2026/junho/novas-tarifas-de-pedagio-entram-em-vigor-no-dia-1--de-julho/","status":"Tarifa publicada; travessia não verificada"},{"rodovia":"SP-348 Bandeirantes","praca":"Itupeva","km":"77,43","valor":14.3,"sentido":"Verificar passagem e pista","fonte":"https://rodovias.motiva.com.br/autoban/noticias/2026/junho/novas-tarifas-de-pedagio-entram-em-vigor-no-dia-1--de-julho/","status":"Tarifa publicada; travessia não verificada"},{"rodovia":"SP-348 Bandeirantes","praca":"Campo Limpo/Caieiras","km":"39,047 / 36,2","valor":14.5,"sentido":"Verificar passagem e pista","fonte":"https://rodovias.motiva.com.br/autoban/noticias/2026/junho/novas-tarifas-de-pedagio-entram-em-vigor-no-dia-1--de-julho/","status":"Tarifa publicada; travessia não verificada"},{"rodovia":"SP-348 Bandeirantes","praca":"Limeira B","km":"159,55","valor":9.7,"sentido":"Verificar passagem e pista","fonte":"https://rodovias.motiva.com.br/autoban/noticias/2026/junho/novas-tarifas-de-pedagio-entram-em-vigor-no-dia-1--de-julho/","status":"Tarifa publicada; travessia não verificada"},{"rodovia":"SP-330 Anhanguera","praca":"Nova Odessa","km":"118","valor":12.8,"sentido":"Verificar passagem e pista","fonte":"https://rodovias.motiva.com.br/autoban/noticias/2026/junho/novas-tarifas-de-pedagio-entram-em-vigor-no-dia-1--de-julho/","status":"Tarifa publicada; travessia não verificada"},{"rodovia":"SP-330 Anhanguera","praca":"Valinhos","km":"82 / 81","valor":14.3,"sentido":"Verificar passagem e pista","fonte":"https://rodovias.motiva.com.br/autoban/noticias/2026/junho/novas-tarifas-de-pedagio-entram-em-vigor-no-dia-1--de-julho/","status":"Tarifa publicada; travessia não verificada"},{"rodovia":"SP-330 Anhanguera","praca":"Perus","km":"26,495","valor":14.5,"sentido":"Verificar passagem e pista","fonte":"https://rodovias.motiva.com.br/autoban/noticias/2026/junho/novas-tarifas-de-pedagio-entram-em-vigor-no-dia-1--de-julho/","status":"Tarifa publicada; travessia não verificada"},{"rodovia":"SP-330 Anhanguera","praca":"Limeira A","km":"152","valor":9.7,"sentido":"Verificar passagem e pista","fonte":"https://rodovias.motiva.com.br/autoban/noticias/2026/junho/novas-tarifas-de-pedagio-entram-em-vigor-no-dia-1--de-julho/","status":"Tarifa publicada; travessia não verificada"},{"rodovia":"SP-065 Dom Pedro I","praca":"Igaratá","km":"26,5","valor":14.0,"sentido":"Norte/Sul","fonte":"https://ebs.publicnow.com/view/33D03A296F569BA676E4E3F5356D246266CC27F3","status":"Tarifa publicada; travessia não verificada"},{"rodovia":"SP-065 Dom Pedro I","praca":"Atibaia","km":"79,9","valor":11.1,"sentido":"Norte/Sul","fonte":"https://ebs.publicnow.com/view/33D03A296F569BA676E4E3F5356D246266CC27F3","status":"Tarifa publicada; travessia não verificada"},{"rodovia":"SP-065 Dom Pedro I","praca":"Itatiba","km":"110,1","valor":16.1,"sentido":"Norte/Sul","fonte":"https://ebs.publicnow.com/view/33D03A296F569BA676E4E3F5356D246266CC27F3","status":"Tarifa publicada; travessia não verificada"},{"rodovia":"SP-332 Zeferino Vaz","praca":"Paulínia A","km":"135,5","valor":12.6,"sentido":"Norte/Sul","fonte":"https://ebs.publicnow.com/view/33D03A296F569BA676E4E3F5356D246266CC27F3","status":"Tarifa publicada; travessia não verificada"},{"rodovia":"SP-332 Zeferino Vaz","praca":"Paulínia B","km":"132,5","valor":17.5,"sentido":"Norte","fonte":"https://ebs.publicnow.com/view/33D03A296F569BA676E4E3F5356D246266CC27F3","status":"Tarifa publicada; travessia não verificada"},{"rodovia":"SP-332 Zeferino Vaz","praca":"Engenheiro Coelho","km":"159,7","valor":9.6,"sentido":"Norte/Sul","fonte":"https://ebs.publicnow.com/view/33D03A296F569BA676E4E3F5356D246266CC27F3","status":"Tarifa publicada; travessia não verificada"},{"rodovia":"SP-360 Constâncio Cintra","praca":"Jundiaí","km":"77,1","valor":6.4,"sentido":"Norte/Sul","fonte":"https://ebs.publicnow.com/view/33D03A296F569BA676E4E3F5356D246266CC27F3","status":"Tarifa publicada; travessia não verificada"},{"rodovia":"SP-063 Romildo Prado","praca":"Louveira","km":"10,4","valor":4.1,"sentido":"Leste/Oeste","fonte":"https://ebs.publicnow.com/view/33D03A296F569BA676E4E3F5356D246266CC27F3","status":"Tarifa publicada; travessia não verificada"},{"rodovia":"SP-070 Ayrton Senna / Carvalho Pinto","praca":"Cadastro pendente","km":"—","valor":null,"sentido":"A verificar","fonte":"https://www.artesp.sp.gov.br/artesp/setor-regulado/rodovia/pedagios","status":"Sem tarifa cadastrada — não assumir R$ 0"},{"rodovia":"SP-019 Hélio Smidt (Guarulhos)","praca":"Cadastro pendente","km":"—","valor":null,"sentido":"A verificar","fonte":"https://www.artesp.sp.gov.br/artesp/setor-regulado/rodovia/pedagios","status":"Sem tarifa cadastrada — não assumir R$ 0"},{"rodovia":"SP-021 Rodoanel Mário Covas","praca":"Cadastro pendente","km":"—","valor":null,"sentido":"A verificar","fonte":"https://www.artesp.sp.gov.br/artesp/setor-regulado/rodovia/pedagios","status":"Sem tarifa cadastrada — não assumir R$ 0"},{"rodovia":"SP-280 Castello Branco","praca":"Cadastro pendente","km":"—","valor":null,"sentido":"A verificar","fonte":"https://www.artesp.sp.gov.br/artesp/setor-regulado/rodovia/pedagios","status":"Sem tarifa cadastrada — não assumir R$ 0"},{"rodovia":"SP-270 Raposo Tavares","praca":"Cadastro pendente","km":"—","valor":null,"sentido":"A verificar","fonte":"https://www.artesp.sp.gov.br/artesp/setor-regulado/rodovia/pedagios","status":"Sem tarifa cadastrada — não assumir R$ 0"},{"rodovia":"SP-310 Washington Luís","praca":"Cadastro pendente","km":"—","valor":null,"sentido":"A verificar","fonte":"https://www.artesp.sp.gov.br/artesp/setor-regulado/rodovia/pedagios","status":"Sem tarifa cadastrada — não assumir R$ 0"},{"rodovia":"SP-225 Eng. Paulo Nilo Romano","praca":"Cadastro pendente","km":"—","valor":null,"sentido":"A verificar","fonte":"https://www.artesp.sp.gov.br/artesp/setor-regulado/rodovia/pedagios","status":"Sem tarifa cadastrada — não assumir R$ 0"},{"rodovia":"SP-340 Adhemar Pereira de Barros","praca":"Cadastro pendente","km":"—","valor":null,"sentido":"A verificar","fonte":"https://www.artesp.sp.gov.br/artesp/setor-regulado/rodovia/pedagios","status":"Sem tarifa cadastrada — não assumir R$ 0"},{"rodovia":"SP-147 Limeira–Piracicaba","praca":"Cadastro pendente","km":"—","valor":null,"sentido":"A verificar","fonte":"https://www.artesp.sp.gov.br/artesp/setor-regulado/rodovia/pedagios","status":"Sem tarifa cadastrada — não assumir R$ 0"},{"rodovia":"SP-304 Luiz de Queiroz","praca":"Cadastro pendente","km":"—","valor":null,"sentido":"A verificar","fonte":"https://www.artesp.sp.gov.br/artesp/setor-regulado/rodovia/pedagios","status":"Sem tarifa cadastrada — não assumir R$ 0"},{"rodovia":"SP-127 Fausto Santomauro","praca":"Cadastro pendente","km":"—","valor":null,"sentido":"A verificar","fonte":"https://www.artesp.sp.gov.br/artesp/setor-regulado/rodovia/pedagios","status":"Sem tarifa cadastrada — não assumir R$ 0"},{"rodovia":"SP-150 Anchieta","praca":"Cadastro pendente","km":"—","valor":null,"sentido":"A verificar","fonte":"https://www.artesp.sp.gov.br/artesp/setor-regulado/rodovia/pedagios","status":"Sem tarifa cadastrada — não assumir R$ 0"},{"rodovia":"SP-160 Imigrantes","praca":"Cadastro pendente","km":"—","valor":null,"sentido":"A verificar","fonte":"https://www.artesp.sp.gov.br/artesp/setor-regulado/rodovia/pedagios","status":"Sem tarifa cadastrada — não assumir R$ 0"},{"rodovia":"SP-099 Tamoios","praca":"Cadastro pendente","km":"—","valor":null,"sentido":"A verificar","fonte":"https://www.artesp.sp.gov.br/artesp/setor-regulado/rodovia/pedagios","status":"Sem tarifa cadastrada — não assumir R$ 0"},{"rodovia":"BR-116 Presidente Dutra","praca":"Cadastro pendente","km":"—","valor":null,"sentido":"A verificar","fonte":"https://www.artesp.sp.gov.br/artesp/setor-regulado/rodovia/pedagios","status":"Sem tarifa cadastrada — não assumir R$ 0"},{"rodovia":"BR-381 Fernão Dias","praca":"Cadastro pendente","km":"—","valor":null,"sentido":"A verificar","fonte":"https://www.artesp.sp.gov.br/artesp/setor-regulado/rodovia/pedagios","status":"Sem tarifa cadastrada — não assumir R$ 0"}];
+ const corridorCodes=[['SP-348',/bandeirantes|sp[ -]?348/i],['SP-330',/anhanguera|sp[ -]?330/i],['SP-065',/dom pedro|sp[ -]?065/i],['SP-070',/ayrton senna|carvalho pinto|sp[ -]?070/i]];
+ const roadCodes=route=>{const names=roads(route).join(' ');return corridorCodes.filter(([code,rx])=>rx.test(names)).map(([code])=>code)};
+ const idaCodes=roadCodes(fastest),voltaCodes=roadCodes(returnRoute);
+
+  // Motor offline: somente praças georreferenciadas com tarifa e sentido verificados.
+  // Coordenada próxima à linha é um candidato, não uma travessia comprovada.
+  const verifiedTolls=(()=>{
+    try{const x=JSON.parse(localStorage.getItem('michelon_pedagios_geo_v1')||'[]');return Array.isArray(x)?x:[]}
+    catch{return []}
+  })();
+  function nearestOnPath(lat,lon,coords){
+    if(!Array.isArray(coords)||coords.length<2)return Infinity;
+    const r=Math.PI/180,cos=Math.cos(lat*r),km=111.32;
+    let nearest=Infinity;
+    for(let i=1;i<coords.length;i++){
+      const a=coords[i-1],b=coords[i],ax=(a[0]-lon)*km*cos,ay=(a[1]-lat)*km;
+      const dx=(b[0]-a[0])*km*cos,dy=(b[1]-a[1])*km;
+      const t=Math.max(0,Math.min(1,-(ax*dx+ay*dy)/(dx*dx+dy*dy||1)));
+      nearest=Math.min(nearest,Math.hypot(ax+t*dx,ay+t*dy));
+    }
+    return nearest;
+  }
+  function scanTolls(route,direction){
+    return verifiedTolls.filter(p=>p.verificado===true&&
+      Number.isFinite(Number(p.latitude))&&Number.isFinite(Number(p.longitude))&&
+      Number.isFinite(Number(p.tarifa))&&Number(p.tarifa)>=0&&
+      (p.sentido===direction||p.sentido==='ambos')&&
+      nearestOnPath(Number(p.latitude),Number(p.longitude),route.geometry?.coordinates)<0.12
+    ).map(p=>({...p,distanciaKm:nearestOnPath(Number(p.latitude),Number(p.longitude),route.geometry?.coordinates)}));
+  }
+  const nearIda=scanTolls(fastest,'ida'),nearVolta=scanTolls(returnRoute,'volta');
+
+  // Base de referência RotaFrete (MIT): coordenadas indicativas; tarifas substituídas
+  // pelas referências AutoBAn 2026 já presentes neste arquivo. Nunca são cobradas sem validação.
+  const rotaFreteRefs=[
+    ['Sumaré','SP-348',-22.8211,-47.2514],
+    ['Itupeva','SP-348',-23.1601,-47.0543],
+    ['Campo Limpo/Caieiras','SP-348',-23.3592,-46.7794],
+    ['Limeira B','SP-348',-22.6105,-47.4112],
+    ['Nova Odessa','SP-330',-22.7812,-47.2912],
+    ['Valinhos','SP-330',-22.9912,-47.0812],
+    ['Perus','SP-330',-23.4112,-46.7712],
+    ['Limeira A','SP-330',-22.5812,-47.4312]
+  ];
+  const candidatesFor=(route)=>rotaFreteRefs.map(([name,road,lat,lon])=>{
+    const ref=tollCatalog.find(p=>p.praca===name&&p.rodovia.includes(road));
+    return {name,road,lat,lon,tarifa:ref?.valor??null,dist:nearestOnPath(lat,lon,route.geometry?.coordinates)};
+  }).filter(p=>p.dist<0.5).sort((a,b)=>a.dist-b.dist);
+  const refIda=candidatesFor(fastest),refVolta=candidatesFor(returnRoute);
+
+
+ const localBox=document.createElement('div');localBox.className='notice';localBox.style.cssText='margin-top:10px;background:#e8f3f0;color:#19383c';
+ const localHead=document.createElement('strong');localHead.textContent='🛣️ Tarifas de referência e auditoria por sentido';localBox.append(localHead);
+ const localMsg=document.createElement('p');localMsg.style.margin='6px 0';localMsg.textContent='Tarifas AutoBAn de automóveis publicadas para julho/2026. Inclui cruzamento automático com coordenadas de referência RotaFrete. Candidatos NÃO são cobranças confirmadas.';localBox.append(localMsg);
+ const showDirection=(label,codes)=>{
+  const head=document.createElement('div');head.style.cssText='font-weight:700;margin:9px 0 4px';head.textContent=label+' — '+(codes.join(', ')||'rodovia não identificada');localBox.append(head);
+  const matches=tollCatalog.filter(p=>codes.some(code=>p.rodovia.includes(code)));
+  if(!matches.length){const note=document.createElement('div');note.style.fontSize='12px';note.textContent='Sem praças cadastradas para as rodovias identificadas; não significa pedágio zero.';localBox.append(note);return}
+  for(const p of matches){const line=document.createElement('div');line.style.cssText='padding:5px 0;border-top:1px solid #c9dfd9;font-size:12px';line.textContent=p.rodovia+' · '+p.praca+' · km '+p.km+' · '+(p.valor===null?'tarifa pendente':'referência '+money(p.valor))+' · passagem NÃO confirmada';localBox.append(line)}
+ };
+ showDirection('IDA',idaCodes);showDirection('VOLTA',voltaCodes);
+ const warning=document.createElement('div');warning.style.cssText='margin-top:8px;font-size:12px;font-weight:700';warning.textContent='⚠️ Pedágio automático: PENDENTE. O cadastro tem rodovia e km, mas não coordenadas e sentido de cada praça. Não somamos valores por suposição.';localBox.append(warning);
+  const geoHead=document.createElement('div');geoHead.style.cssText='font-weight:700;margin:12px 0 4px';geoHead.textContent='📍 Cruzamento geográfico offline';localBox.append(geoHead);
+  const geoText=document.createElement('div');geoText.style.fontSize='12px';
+  geoText.textContent=verifiedTolls.length
+    ? 'Base: '+verifiedTolls.length+' registros. Próximas do traçado: ida '+nearIda.length+', volta '+nearVolta.length+'. Proximidade de 120 m NÃO comprova travessia, acesso ou sentido.'
+    : 'Ainda não existe base de coordenadas verificadas importada. Em Ajustes, use o importador de praças georreferenciadas.';
+  localBox.append(geoText);
+  for(const [direction,items] of [['IDA',nearIda],['VOLTA',nearVolta]]){
+    for(const p of items){
+      const d=document.createElement('div');d.style.cssText='font-size:12px;padding:4px 0;border-top:1px solid #c9dfd9';
+      d.textContent=direction+' · '+p.praca+' · '+money(p.tarifa)+' · '+Math.round(p.distanciaKm*1000)+' m do traçado · passagem NÃO confirmada';
+      localBox.append(d);
+    }
+  }
+  const rfTitle=document.createElement('strong');rfTitle.textContent='Base RotaFrete: 8 coordenadas indicativas AutoBAn';rfTitle.style.cssText='display:block;margin-top:12px';localBox.append(rfTitle);
+  for(const [label,items] of [['IDA',refIda],['VOLTA',refVolta]]){
+    const header=document.createElement('div');header.style.cssText='font-weight:700;margin-top:6px;font-size:12px';header.textContent=label+' — '+items.length+' candidatos a até 500 m';localBox.append(header);
+    for(const item of items){const d=document.createElement('div');d.style.cssText='font-size:12px;padding:4px 0;border-top:1px solid #c9dfd9';d.textContent=item.name+' · '+item.road+' · '+Math.round(item.dist*1000)+' m · tarifa de referência '+(item.tarifa===null?'pendente':money(item.tarifa))+' · NÃO confirmado';localBox.append(d)}
+  }
+  const rfNote=document.createElement('div');rfNote.style.cssText='font-size:12px;margin-top:7px';rfNote.textContent='Fonte das coordenadas: RotaFrete (licença MIT). Coordenadas não auditadas individualmente; proximidade não significa travessia. Nenhum valor foi adicionado ao orçamento.';localBox.append(rfNote);
+  const official=document.createElement('a');official.href='https://rodovias.motiva.com.br/autoban/noticias/2026/junho/novas-tarifas-de-pedagio-entram-em-vigor-no-dia-1--de-julho/';official.target='_blank';official.rel='noopener noreferrer';official.textContent='Conferir tarifas AutoBAn publicadas em 30/06/2026 ↗';official.style.cssText='display:block;font-size:12px;margin-top:9px;color:#076d66';localBox.append(official);
+  const scope=document.createElement('div');scope.style.cssText='font-size:12px;margin-top:6px;font-weight:700';scope.textContent='Cobertura incompleta: 32 registros NÃO equivalem a 32 praças com tarifa e coordenadas válidas. Não interpretar ausência como pedágio zero.';localBox.append(scope);
+  // Somatório de candidatos geográficos: cálculo automático, mas NÃO preço final.
+  // A base pode conter praças de acessos laterais; nunca declarar travessia só por distância.
+  const candidatesIda=nearIda.reduce((sum,p)=>sum+Number(p.tarifa),0);
+  const candidatesTotal=2*candidatesIda;
+  const autoBox=document.createElement('div');autoBox.className='notice';autoBox.style.cssText='margin-top:10px;background:#fff5e1;color:#644b20';
+  const autoTitle=document.createElement('strong');autoTitle.textContent='Cálculo geográfico automático — auditoria';autoBox.append(autoTitle);
+  const autoInfo=document.createElement('p');autoInfo.style.margin='7px 0';
+  autoInfo.textContent=verifiedTolls.length
+   ? 'Candidatas na ida: '+nearIda.length+'. Ida '+money(candidatesIda)+' × 2 (volta pelo mesmo caminho): '+money(candidatesTotal)+'. Total simulado com margem: '+money((base+candidatesTotal)*(1+cfg.margem/100))+'. NÃO é preço final: pode incluir praça próxima que não foi atravessada ou deixar de fora praça sem cadastro.'
+   : 'Nenhuma praça georreferenciada verificada na base. Não é possível calcular os pedágios automaticamente.';
+  autoBox.append(autoInfo);
+  const autoWarning=document.createElement('strong');autoWarning.textContent='Orçamento final bloqueado até validar travessia e cobertura da base.';autoBox.append(autoWarning);
+  /* Painel técnico oculto na cotação simplificada. */
+
+  // Cadastro federal (ANTT): candidatos geográficos, sem tarifação presumida.
+  try{
+    const ant=JSON.parse(localStorage.getItem('michelon_antt_localizacoes_v1')||'[]');
+    if(ant.length){
+      const title=document.createElement('div');title.style.cssText='font-weight:700;margin-top:12px';
+      title.textContent='ANTT — praças próximas ao percurso (sem tarifa)';localBox.append(title);
+      let found=0;
+      for(const p of ant){
+        if(String(p.situacao).toLowerCase().includes('inativ'))continue;
+        const d1=nearestOnPath(Number(p.latitude),Number(p.longitude),fastest.geometry?.coordinates);
+        const d2=nearestOnPath(Number(p.latitude),Number(p.longitude),returnRoute.geometry?.coordinates);
+        if(Math.min(d1,d2)>0.15)continue;
+        found++;
+        const line=document.createElement('div');line.style.cssText='font-size:12px;padding:4px 0;border-top:1px solid #c9dfd9';
+        line.textContent=p.praca+' · '+p.rodovia+' · '+(d1<=0.15?'próxima à ida ':'')+(d2<=0.15?'próxima à volta ':'')+'· passagem/tarifa não confirmadas';
+        localBox.append(line);
+      }
+      if(!found){const msg=document.createElement('div');msg.style.fontSize='12px';msg.textContent='Nenhuma praça da base ANTT importada ficou a 150 m do traçado. Isso não confirma ausência de pedágios.';localBox.append(msg)}
+    }
+  }catch(e){/* Base opcional: não interromper a cotação */}
+  /* Painel técnico oculto na cotação simplificada. */
+  // ANTT: localização oficial separada das tarifas. Só informa candidatas.
+  const anttBox=document.createElement('div');anttBox.className='notice';
+  anttBox.style.cssText='margin-top:8px;background:#edf6f4;color:#19383c';
+  const anttHead=document.createElement('strong');anttHead.textContent='Praças ANTT próximas ao percurso';anttBox.append(anttHead);
+  let anttRows=[];try{anttRows=JSON.parse(localStorage.getItem('michelon_antt_localizacoes_v1')||'[]')}catch{}
+  if(!Array.isArray(anttRows))anttRows=[];
+  if(!anttRows.length){const n=document.createElement('p');n.textContent='Base ANTT ainda não disponível. Não é possível concluir o pedágio.';anttBox.append(n)}
+  else{
+    const candidates=anttRows.map(p=>{
+      const lat=Number(p.latitude),lon=Number(p.longitude);
+      if(!Number.isFinite(lat)||!Number.isFinite(lon))return null;
+      return {...p,di:nearestOnPath(lat,lon,fastest.geometry?.coordinates),dv:nearestOnPath(lat,lon,returnRoute.geometry?.coordinates)};
+    }).filter(p=>p&&Math.min(p.di,p.dv)<0.15).sort((a,b)=>Math.min(a.di,a.dv)-Math.min(b.di,b.dv));
+    const n=document.createElement('p');n.style.fontSize='12px';n.textContent=candidates.length+' praças ANTT candidatas próximas da rota. Não somadas: sentido e cobrança não confirmados.';anttBox.append(n);
+    for(const p of candidates.slice(0,25)){
+      const d=document.createElement('div');d.style.cssText='font-size:12px;padding:4px 0;border-top:1px solid #c9dfd9';
+      d.textContent=p.praca+' · '+(p.rodovia||'rodovia não informada')+' · ida '+Math.round(p.di*1000)+'m / volta '+Math.round(p.dv*1000)+'m';anttBox.append(d);
+    }
+  }
+  /* Painel técnico oculto na cotação simplificada. */
+
+ // Consulta experimental: OSM informa localizações de praças, NÃO tarifas nem passagem confirmada.
+ const osmBox=document.createElement('div');osmBox.className='notice';
+ osmBox.style.cssText='margin-top:9px;background:#f2f8f6;color:#19383c';
+ const osmButton=document.createElement('button');osmButton.type='button';osmButton.className='secondary';
+ osmButton.textContent='🔎 Reconsultar praças da rota (gratuito)';
+ const osmStatus=document.createElement('div');osmStatus.style.cssText='font-size:12px;margin-top:7px';
+ osmStatus.textContent='Consulta automática gratuita. Proximidade não comprova cobrança.';
+ osmBox.append(osmButton,osmStatus);result.append(osmBox);
+ osmButton.onclick=async()=>{
+   const paths=[fastest.geometry?.coordinates,returnRoute.geometry?.coordinates].filter(x=>Array.isArray(x)&&x.length>1);
+   if(!paths.length){osmStatus.textContent='Traçado indisponível para pesquisar praças.';return}
+   osmButton.disabled=true;osmStatus.textContent='Consultando localização das praças no OpenStreetMap…';
+   try{
+     const all=paths.flat(), lats=all.map(x=>x[1]),lons=all.map(x=>x[0]);
+     const south=Math.max(-90,Math.min(...lats)-0.015),north=Math.min(90,Math.max(...lats)+0.015);
+     const west=Math.max(-180,Math.min(...lons)-0.015),east=Math.min(180,Math.max(...lons)+0.015);
+     const query='[out:json][timeout:20];(node["barrier"="toll_booth"]('+south+','+west+','+north+','+east+');way["barrier"="toll_booth"]('+south+','+west+','+north+','+east+'););out center;';
+     let osm=null,lastError=null;
+     for(const host of ['https://overpass.private.coffee/api/interpreter','https://overpass.kumi.systems/api/interpreter','https://overpass-api.de/api/interpreter']){
+       try{osm=await json(host+'?data='+encodeURIComponent(query),13000);break}catch(err){lastError=err}
+     }
+     if(!osm)throw lastError||Error('Serviços indisponíveis');
+     const rad=x=>x*Math.PI/180;
+     function pointSegmentKm(lat,lon,a,b){
+       const cos=Math.cos(rad(lat)),ax=(a[0]-lon)*111.32*cos,ay=(a[1]-lat)*111.32;
+       const bx=(b[0]-lon)*111.32*cos,by=(b[1]-lat)*111.32;
+       const dx=bx-ax,dy=by-ay,t=Math.max(0,Math.min(1,-(ax*dx+ay*dy)/(dx*dx+dy*dy||1)));
+       return Math.hypot(ax+t*dx,ay+t*dy);
+     }
+     function nearestKm(lat,lon,path){let best=Infinity;for(let i=1;i<path.length;i++)best=Math.min(best,pointSegmentKm(lat,lon,path[i-1],path[i]));return best}
+     const candidates=(osm.elements||[]).map(el=>{
+       const lat=el.lat??el.center?.lat,lon=el.lon??el.center?.lon;
+       if(!Number.isFinite(lat)||!Number.isFinite(lon))return null;
+       const idaDist=nearestKm(lat,lon,paths[0]),voltaDist=nearestKm(lat,lon,paths[1]||paths[0]);
+       return {name:el.tags?.name||'Praça sem nome no mapa',road:el.tags?.ref||el.tags?.operator||'',idaDist,voltaDist};
+     }).filter(x=>x&&Math.min(x.idaDist,x.voltaDist)<0.45).sort((a,b)=>Math.min(a.idaDist,a.voltaDist)-Math.min(b.idaDist,b.voltaDist));
+     osmStatus.replaceChildren();
+     if(!candidates.length){osmStatus.textContent='Nenhuma praça mapeada próxima ao traçado nesta consulta. Isso NÃO significa que a rota seja sem pedágios.';return}
+     const lead=document.createElement('strong');lead.textContent=candidates.length+' praça(s) candidata(s) perto do traçado — NÃO confirmadas';osmStatus.append(lead);
+     const tariffs=[['sumare',12.8],['itupeva',14.3],['campo limpo',14.5],['caieiras',14.5],['nova odessa',12.8],['valinhos',14.3],['perus',14.5],['limeira',9.7]];
+     const cleanName=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+     const known=candidates.map(x=>({...x,tarifa:tariffs.find(([n])=>cleanName(x.name).includes(n))?.[1]??null}));
+     const tally=direction=>known.filter(x=>x[direction+'Dist']<0.12&&x.tarifa!==null).reduce((v,x)=>v+x.tarifa,0);
+     const idaS=tally('ida'),voltaS=tally('volta');
+     const subtotal=document.createElement('div');subtotal.className='notice';subtotal.style.margin='9px 0';
+     subtotal.textContent='SIMULAÇÃO por proximidade: ida '+money(idaS)+' / volta '+money(voltaS)+' / soma '+money(idaS+voltaS)+'. INCOMPLETA: travessia, sentido e cobertura não confirmados. NÃO usar como preço final.';
+     osmStatus.append(subtotal);
+
+     candidates.slice(0,15).forEach(x=>{const d=document.createElement('div');d.style.cssText='padding:5px 0;border-bottom:1px solid #d9eae5';d.textContent=x.name+(x.road?' · '+x.road:'')+' · ida '+x.idaDist.toFixed(2)+' km / volta '+x.voltaDist.toFixed(2)+' km do traçado';osmStatus.append(d)});
+     const note=document.createElement('div');note.style.marginTop='7px';note.textContent='Não preencher valores automaticamente: é necessário conferir sentido, praça efetivamente atravessada e tarifa oficial.';osmStatus.append(note);
+   }catch(e){osmStatus.textContent='Consulta gratuita indisponível neste momento ('+(e.name==='AbortError'?'tempo esgotado':e.message)+'). Nenhuma tarifa foi presumida.'}
+   finally{osmButton.disabled=false}
+ };
+ osmButton.click(); // Busca automaticamente após calcular a rota
+ row(result,'Local de origem identificado',from.name||'Não identificado');row(result,'Local de destino identificado',to.name||'Não identificado');
+ if(preferred){row(result,'Bandeirantes na ida',bandeirantes?'Detectada nas instruções':'NÃO confirmada');row(result,'Bandeirantes no retorno',bandeirantesRetorno?'Detectada nas instruções':'NÃO confirmada')}
+ const link=document.createElement('a');link.target='_blank';link.rel='noopener noreferrer';link.href='https://www.google.com/maps/dir/?api=1&origin='+encodeURIComponent(origin)+'&destination='+encodeURIComponent(destination)+'&travelmode=driving';link.textContent='Conferir percurso no Google Maps ↗';link.style.cssText='display:inline-block;margin-top:12px;color:#076d66;font-weight:700';result.append(link);
+ const warn=document.createElement('div');warn.className='notice';warn.style.marginTop='10px';warn.textContent='CÁLCULO PROVISÓRIO: distância estimada sem trânsito em tempo real; ' +(preferred&&!bandeirantes?'Bandeirantes NÃO confirmada na ida; ':'')+(preferred&&!bandeirantesRetorno?'Bandeirantes NÃO confirmada no retorno; ':'')+'pedágios não verificados. Não envie este valor como preço final.';result.append(warn);
+ }catch(e){result.textContent='Não foi possível calcular automaticamente: '+(e.name==='AbortError'?'tempo de resposta excedido':e.message)+'. Confira o endereço ou tente novamente. Nenhum preço foi inventado.'}
+ finally{busy=false;button.disabled=false;button.textContent='Calcular orçamento'}
+ };
+})();
+</script><script>
+(()=>{'use strict';
+const $=id=>document.getElementById(id);
+const modal=$('waModal');let extracted={};
+const clean=s=>String(s||'').replace(/^[\s:–\-]+|[\s.;]+$/g,'').trim();
+const pick=(txt,labels)=>{const re=new RegExp('(?:^|\\n)\\s*(?:'+labels+')\\s*[:\\-]\\s*([^\\n]+)','im');const m=txt.match(re);return m?clean(m[1]):''};
+function parseMessage(txt){
+ const lines=txt.replace(/\r/g,'').replace(/(?:\s+)(?=(?:Origem|Destino|Sa[ií]da|Chegada|Data|Hor[aá]rio|Passageiros|Pessoas|Embarque|Desembarque)\s*[:\-])/gi,'\n');
+ let origin=pick(lines,'origem|sa[ií]da|embarque|local de embarque|de onde');
+ let dest=pick(lines,'destino|chegada|desembarque|local de desembarque|para onde');
+ if(!origin||!dest){
+  const m=lines.match(/\b(?:de|saindo de)\s+([^,\n.;]+?)\s+(?:para|até|ate)\s+([^,\n.;]+)/i);
+  if(m){origin=origin||clean(m[1]);dest=dest||clean(m[2])}
+ }
+ const date=pick(lines,'data|dia da viagem|dia'),time=pick(lines,'hor[aá]rio|hora'),people=pick(lines,'passageiros|pessoas|quantidade de passageiros');
+ const round=/ida\s+e\s+volta|bate\s+e\s+volta/i.test(txt);
+ return {origin,dest,date,time,people,round};
+}
+function preview(){const x=extracted;const rows=[['Origem',x.origin],['Destino',x.dest],['Data',x.date],['Horário',x.time],['Passageiros',x.people],['Viagem',x.round?'Ida e volta':'Somente ida (confirme)']];$('waPrevia').textContent=rows.map(([k,v])=>k+': '+(v||'não identificado')).join('\n');$('waAplicar').disabled=!(x.origin||x.dest)}
+$('waAbrir').onclick=()=>{modal.classList.add('open');$('waTexto').focus()};
+$('waFechar').onclick=()=>modal.classList.remove('open');
+modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('open')});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')modal.classList.remove('open')});
+$('waAnalisar').onclick=()=>{extracted=parseMessage($('waTexto').value);preview()};
+$('waAplicar').onclick=()=>{
+ if(extracted.origin)$('origem').value=extracted.origin;
+ if(extracted.dest)$('destino').value=extracted.dest;
+ if(extracted.round)$('tipo').value='volta';
+ // Never overwrite saved quote; only fill editable form.
+ $('waEnviar').dataset.info=JSON.stringify({date:extracted.date,time:extracted.time,people:extracted.people});
+ $('resultado').textContent='Solicitação importada. Confira origem, destino e tipo de viagem, depois clique em Calcular orçamento.';
+ $('salvarViagem').disabled=true;
+ $('waEnviar').dataset.manualQuote='';$('waEnviar').disabled=false; // Permite enviar solicitação, nunca um preço não confirmado.
+ modal.classList.remove('open');
+};
+$('waEnviar').onclick=()=>{
+ const origem=$('origem').value.trim(),destino=$('destino').value.trim();
+ if(!origem||!destino){alert('Preencha origem e destino.');return}
+ let info={};try{info=JSON.parse($('waEnviar').dataset.info||'{}')}catch{}
+ const out=$('resultado').innerText||'';
+ const verified=out.includes('Valor estimado')&&!out.includes('Não verificados')&&!out.includes('PENDENTE')&&!out.includes('passagem NÃO confirmada');
+ let manual=null;try{manual=JSON.parse($('waEnviar').dataset.manualQuote||'null')}catch{}
+ const price=manual?('Distância total: '+manual.km.toFixed(1)+' km\nPedágios ida e volta: '+Number(manual.toll).toLocaleString('pt-BR',{style:'currency',currency:'BRL'})+' (informados manualmente)\nValor final: '+Number(manual.total).toLocaleString('pt-BR',{style:'currency',currency:'BRL'})):verified?out:'Orçamento em elaboração. Pedágios e preço final ainda não confirmados.';
+ const msg=['*Michelon Viagens Executivas*','Proposta de viagem','Origem: '+origem,'Destino: '+destino,'Tipo: '+$('tipo').selectedOptions[0].textContent,info.date?'Data: '+info.date:'',info.time?'Horário: '+info.time:'',info.people?'Passageiros: '+info.people:'',price,'Confirme a disponibilidade antes de fechar.'].filter(Boolean).join('\n');
+ window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank','noopener');
+};
+})();
+</script>
+<script>
+(()=>{'use strict';
+const input=document.getElementById('pedImport'),status=document.getElementById('pedImportStatus');
+const KEY='michelon_pedagios_geo_v1';
+function refresh(){try{const x=JSON.parse(localStorage.getItem(KEY)||'[]');status.textContent=x.length+' registro(s) georreferenciado(s) armazenado(s).'}catch{status.textContent='Base inválida.'}}
+refresh();
+input.addEventListener('change',async()=>{
+ try{
+  const x=JSON.parse(await input.files[0].text());
+  if(!Array.isArray(x)||!x.every(p=>p&&typeof p.praca==='string'&&p.praca.trim()&&
+    Number.isFinite(Number(p.latitude))&&Math.abs(Number(p.latitude))<=90&&
+    Number.isFinite(Number(p.longitude))&&Math.abs(Number(p.longitude))<=180&&
+    Number.isFinite(Number(p.tarifa))&&Number(p.tarifa)>=0&&
+    ['ida','volta','ambos'].includes(p.sentido)&&typeof p.fonte==='string'&&p.fonte.trim()&&p.verificado===true))
+   throw Error('JSON precisa conter lista com praça, latitude, longitude, tarifa, sentido, fonte e verificado=true.');
+  localStorage.setItem(KEY,JSON.stringify(x));refresh();
+  alert('Base importada. Recalcule a rota para identificar praças próximas. A proximidade ainda não confirma cobrança.');
+ }catch(e){alert('Importação não realizada: '+e.message)}finally{input.value=''}
+});
+document.getElementById('pedExportModelo').onclick=()=>{
+ const modelo=[{praca:'EXEMPLO — NÃO UTILIZAR COMO PRAÇA REAL',latitude:-22.5,longitude:-47.3,tarifa:0,sentido:'ambos',fonte:'Substituir por fonte oficial',verificado:false}];
+ const a=document.createElement('a'),u=URL.createObjectURL(new Blob([JSON.stringify(modelo,null,2)],{type:'application/json'}));
+ a.href=u;a.download='Michelon_modelo_pedagios.json';a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);
+};
+})();
+</script>
+<script>
+/* Importação de coordenadas ANTT: separada da base de tarifas, sem somas especulativas. */
+(()=>{'use strict';
+const holder=document.getElementById('pedImport')?.parentElement;
+if(!holder)return;
+const label=document.createElement('label');label.style.cssText='display:block;font-size:12px;font-weight:700;margin-top:12px';label.textContent='Importar localização de praças ANTT (JSON)';
+const input=document.createElement('input');input.type='file';input.accept='.json,application/json';
+const status=document.createElement('div');status.className='muted';status.style.marginTop='6px';
+const KEY='michelon_antt_localizacoes_v1';
+function refresh(){try{status.textContent=JSON.parse(localStorage.getItem(KEY)||'[]').length+' praças ANTT localizadas (sem tarifas associadas).'}catch{status.textContent='Sem base ANTT válida.'}}
+refresh();holder.append(label,input,status);
+const clean=x=>String(x??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');
+function pick(o,...names){for(const [k,v] of Object.entries(o)){if(names.includes(clean(k)))return v}return undefined}
+function decimal(v){if(typeof v==='number')return v;return Number(String(v??'').replace(',','.'))}
+input.addEventListener('change',async()=>{try{
+ const raw=JSON.parse(await input.files[0].text());
+ const arr=Array.isArray(raw)?raw:Array.isArray(raw.resultado)?raw.resultado:Array.isArray(raw.results)?raw.results:Array.isArray(raw.data)?raw.data:Array.isArray(raw.features)?raw.features:null;
+ if(!arr)throw Error('O arquivo deve conter uma lista JSON de praças.');
+ const rows=arr.map((original)=>{const o=original.properties||original;
+  const latitude=decimal(pick(o,'latitude','lat'));
+  const longitude=decimal(pick(o,'longitude','lon','lng'));
+  const praca=pick(o,'pracadepedagio','praca','nome');
+  const rodovia=pick(o,'rodovia','br');
+  const sentido=pick(o,'sentido','direcao');
+  const situacao=pick(o,'situacao','status');
+  if(!Number.isFinite(latitude)||Math.abs(latitude)>90||!Number.isFinite(longitude)||Math.abs(longitude)>180||!praca)return null;
+  return {praca:String(praca),rodovia:String(rodovia||''),sentido:String(sentido||''),situacao:String(situacao||''),latitude,longitude,fonte:'ANTT — dados importados pelo usuário',tarifa:null};
+ }).filter(Boolean);
+ if(!rows.length)throw Error('Não foram encontradas praças com coordenadas válidas.');
+ localStorage.setItem(KEY,JSON.stringify(rows));refresh();alert(rows.length+' localizações importadas. Sem tarifa, não serão cobradas automaticamente.');
+ }catch(e){alert('Importação ANTT não realizada: '+e.message)}finally{input.value=''}});
+})();
+</script>
+<script>
+/* Consulta pública automática ANTT: dados de localização, não tarifas. */
+(()=>{'use strict';
+const KEY='michelon_antt_localizacoes_v1';
+const URL='https://dados.antt.gov.br/dataset/a7e1e12d-f8e8-40cd-bc1f-57973a4a4a6d/resource/d400debd-8058-4971-9625-8b614b08cf9c/download/dados-dos-pracas-de-pedagio6_2026.json';
+const holder=document.getElementById('pedImport')?.parentElement;
+if(!holder)return;
+const button=document.createElement('button');button.className='secondary';button.type='button';button.textContent='Atualizar localizações ANTT automaticamente';
+const state=document.createElement('div');state.className='muted';state.style.margin='7px 0';
+holder.append(button,state);
+const clean=x=>String(x??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');
+const pick=(o,...names)=>Object.entries(o).find(([k])=>names.includes(clean(k)))?.[1];
+const dec=x=>typeof x==='number'?x:Number(String(x??'').replace(',','.'));
+function extract(data){
+ const rows=Array.isArray(data)?data:Array.isArray(data.resultado)?data.resultado:Array.isArray(data.results)?data.results:Array.isArray(data.data)?data.data:Array.isArray(data.features)?data.features:null;
+ if(!rows)throw Error('Formato de dados inesperado');
+ return rows.map(r=>{
+  const o=r.properties||r,latitude=dec(pick(o,'latitude','lat')),longitude=dec(pick(o,'longitude','lon','lng'));
+  const praca=pick(o,'pracadepedagio','praca','nome');
+  if(!praca||!Number.isFinite(latitude)||!Number.isFinite(longitude)||Math.abs(latitude)>90||Math.abs(longitude)>180)return null;
+  return {praca:String(praca),rodovia:String(pick(o,'rodovia','br')||''),sentido:String(pick(o,'sentido','direcao')||''),situacao:String(pick(o,'situacao','status')||''),latitude,longitude,fonte:URL,tarifa:null};
+ }).filter(Boolean);
+}
+async function update(){
+ button.disabled=true;state.textContent='Consultando base pública ANTT…';
+ const ctrl=new AbortController(),timeout=setTimeout(()=>ctrl.abort(),16000);
+ try{
+  const response=await fetch(URL,{signal:ctrl.signal,cache:'no-store'});
+  if(!response.ok)throw Error('HTTP '+response.status);
+  const rows=extract(await response.json());if(!rows.length)throw Error('Nenhuma localização válida');
+  localStorage.setItem(KEY,JSON.stringify(rows));localStorage.setItem(KEY+'_data',new Date().toISOString());
+  state.textContent=rows.length+' praças carregadas da ANTT. Tarifas continuam pendentes.';
+  return true;
+ }catch(e){state.textContent='Consulta online indisponível ('+(e.name==='AbortError'?'tempo esgotado':e.message)+'). Dados anteriores preservados.';return false}
+ finally{clearTimeout(timeout);button.disabled=false}
+}
+button.onclick=update;
+let once=null;
+document.getElementById('calcular')?.addEventListener('click',()=>{
+ try{const last=localStorage.getItem(KEY+'_data');if(last&&Date.now()-Date.parse(last)<7*86400000)return;}catch{}
+ if(!once)once=update().finally(()=>{once=null});
+},true);
+try{const a=JSON.parse(localStorage.getItem(KEY)||'[]');state.textContent=a.length+' praças ANTT em cache. Atualização tentada automaticamente no cálculo.'}catch{state.textContent='Sem base ANTT. A atualização será tentada no cálculo.'}
+})();
+</script></body></html>
