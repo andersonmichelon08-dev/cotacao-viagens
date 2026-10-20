@@ -727,4 +727,32 @@ document.getElementById('arquivoViagensAntigas').onchange=async e=>{confirmar.di
 confirmar.onclick=()=>{if(!recuperadas.length)return;const db=atual();if(!Array.isArray(db.trips)){status.textContent='Base atual incompatível. Nada foi alterado.';return}if(!window.confirm('Adicionar '+recuperadas.length+' viagens do backup, mantendo as atuais?'))return;baixar('Michelon_SEGURANCA_AUTOMATICA.json',{formato:'michelon-base-v1',data:db});const ids=new Set(db.trips.map(t=>String(t.id)));let n=0;for(const t of recuperadas){if(ids.has(String(t.id)))continue;db.trips.push(t);ids.add(String(t.id));n++}try{localStorage.setItem(KEY,JSON.stringify(db));status.textContent=n+' viagens adicionadas com sucesso. Recarregando…';location.reload()}catch(err){status.textContent='Falha ao salvar: '+err.message}};
 })();
 </script>
+<script id="michelon-recuperacao-valores-20261020">
+(()=>{'use strict';
+const REGISTROS=[{"date": "2026-10-01", "bruto": 300.46, "comb": 0, "outras": 0}, {"date": "2026-10-02", "bruto": 165.71, "comb": 0, "outras": 0}, {"date": "2026-10-05", "bruto": 165.98, "comb": 0, "outras": 0}, {"date": "2026-10-06", "bruto": 333.9, "comb": 65.56, "outras": 0}, {"date": "2026-10-07", "bruto": 50.57, "comb": 0, "outras": 0}, {"date": "2026-10-08", "bruto": 463.38, "comb": 119.16, "outras": 0}, {"date": "2026-10-09", "bruto": 415.84, "comb": 0, "outras": 0}, {"date": "2026-10-13", "bruto": 499.51, "comb": 85.23, "outras": 94.14}, {"date": "2026-10-14", "bruto": 210.45, "comb": 0, "outras": 0}, {"date": "2026-10-15", "bruto": 306.16, "comb": 87, "outras": 106.89}, {"date": "2026-10-16", "bruto": 307.95, "comb": 67.31, "outras": 78.39}];
+const KEY='michelon_base_nova_v1';
+const section=document.getElementById('viagens');if(!section)return;
+const box=document.createElement('div');box.className='card';box.style.cssText='border:2px solid #91bce5;margin:10px 0;padding:15px';
+box.innerHTML='<h3 style="margin:0 0 8px">📊 Recuperar valores da Uber (1º a 16/10)</h3><p>11 dias de faturamento identificados no backup financeiro. Recupera apenas valores, sem inventar percursos. Nenhum dado do Meu Financeiro será alterado.</p><div id="resumoValoresRecuperacao"></div><button type="button" class="primary" id="recuperarValoresUber" style="margin-top:12px;width:100%">Recuperar valores no Uber e Minhas Viagens</button><p id="statusValoresUber" style="font-size:13px"></p>';
+section.insertBefore(box,section.querySelector('.card'));
+const money=n=>Number(n).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const total=k=>REGISTROS.reduce((s,r)=>s+r[k],0);
+document.getElementById('resumoValoresRecuperacao').textContent='Faturamento: '+money(total('bruto'))+' · Custos identificados: '+money(total('comb')+total('outras'))+' · 11 dias.';
+function download(obj){const a=document.createElement('a'),url=URL.createObjectURL(new Blob([JSON.stringify(obj,null,2)],{type:'application/json'}));a.href=url;a.download='Michelon_Seguranca_Antes_Recuperar_Valores.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),10000)}
+const status=document.getElementById('statusValoresUber');
+document.getElementById('recuperarValoresUber').onclick=()=>{
+ let db;try{db=JSON.parse(localStorage.getItem(KEY)||'{}')}catch{status.textContent='Erro ao ler dados atuais. Nada foi alterado.';return}
+ if(!db||typeof db!=='object'||!Array.isArray(db.trips)||!Array.isArray(db.uber)){status.textContent='Base atual incompatível. Nada foi alterado.';return}
+ const novosUber=REGISTROS.filter(r=>!db.uber.some(u=>u.recoveryId==='michelon-20261020-'+r.date || (u.date===r.date.split('-').reverse().join('/') && Math.abs(Number(u.bruto)-r.bruto)<0.005 && Math.abs(Number(u.custo)-(r.comb+r.outras))<0.005)));
+ const novasViagens=REGISTROS.filter(r=>!db.trips.some(t=>t.recoveryId==='michelon-20261020-'+r.date));
+ if(!novosUber.length&&!novasViagens.length){status.textContent='Esses valores já foram recuperados. Nada foi duplicado.';return}
+ if(!confirm('Adicionar '+novosUber.length+' dias no Uber e '+novasViagens.length+' resumos em Minhas Viagens? Os dados atuais serão mantidos.'))return;
+ try{download({formato:'michelon-base-v1',data:db})}catch{status.textContent='Não foi possível baixar a segurança. Nada foi alterado.';return}
+ const novo=JSON.parse(JSON.stringify(db));
+ for(const r of novosUber){novo.uber.push({date:r.date.split('-').reverse().join('/'),bruto:r.bruto,custo:Math.round((r.comb+r.outras)*100)/100,recoveryId:'michelon-20261020-'+r.date,combustivel:r.comb,outrasDespesas:r.outras,origemDados:'Backup financeiro de 16/10 — valores recuperados'})}
+ for(const r of novasViagens){novo.trips.push({id:'resumo-uber-'+r.date,recoveryId:'michelon-20261020-'+r.date,date:r.date.split('-').reverse().join('/'),origin:'Uber — resumo diário',dest:'Somente valores',total:r.bruto,status:'Histórico recuperado (não é cotação)',tipo:'resumo',km:0,custo:r.comb+r.outras})}
+ try{localStorage.setItem(KEY,JSON.stringify(novo));status.textContent='Recuperação concluída. Atualizando…';location.reload()}catch(e){status.textContent='Falha ao salvar. Confira espaço do navegador. Nenhum registro foi confirmado.'}
+};
+})();
+</script>
 </body></html>
