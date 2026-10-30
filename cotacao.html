@@ -57,7 +57,7 @@ textarea{min-height:85px;resize:vertical}.grid{display:grid;grid-template-column
 </div>
 <label>Parada opcional</label><input id="parada" placeholder="Outro local no trajeto">
 <label>Observações</label><textarea id="obs" placeholder="Ex.: malas, aeroporto, cadeirinha, horário especial..."></textarea>
-<div class="hint" style="margin-top:12px">Agenda protegida · V3.5 · bloqueio por data</div><div id="avPublicStatus" class="hint" role="status" aria-live="polite" style="margin:14px 0">Escolha data e horário para consultar a disponibilidade.</div><button class="btn" onclick="enviar()">📲 Enviar solicitação pelo WhatsApp</button>
+<div class="hint" style="margin-top:12px">Agenda protegida · V3.6 · bloqueio por data</div><div id="avPublicStatus" class="hint" role="status" aria-live="polite" style="margin:14px 0">Escolha data e horário para consultar a disponibilidade.</div><button class="btn" onclick="enviar()">📲 Enviar solicitação pelo WhatsApp</button>
 <div class="note">A solicitação não confirma automaticamente o preço nem a reserva.</div>
 </section></main>
 <script>
@@ -286,7 +286,7 @@ const $=id=>document.getElementById(id);let sequence=0;
 async function slots(from,to){const abort=new AbortController(),timer=setTimeout(()=>abort.abort(),12000);try{const url=PROJECT+'/rest/v1/michelon_busy_slots?select=start_at,end_at&start_at=lt.'+encodeURIComponent(to)+'&end_at=gt.'+encodeURIComponent(from)+'&order=start_at.asc&limit=500';const r=await fetch(url,{headers:{apikey:KEY},signal:abort.signal,cache:'no-store'});if(!r.ok)throw Error('Agenda indisponível');const a=await r.json();if(!Array.isArray(a))throw Error('Resposta inválida');return a}finally{clearTimeout(timer)}}
 const instant=(d,h)=>/^\d{4}-\d{2}-\d{2}$/.test(d)&&/^\d{2}:\d{2}$/.test(h)?d+'T'+h+':00-03:00':null;
 // Datas ocupadas são bloqueadas por inteiro no fuso de São Paulo.
-const preserved=[{start_at:'2026-12-03T00:00:00-03:00',end_at:'2026-12-04T00:00:00-03:00'}];
+
 const overlaps=(a,from,to)=>a.some(x=>Date.parse(x.start_at)<Date.parse(to)&&Date.parse(x.end_at)>Date.parse(from));
 function dayEnd(day){return new Date(Date.parse(day+'T00:00:00-03:00')+86400000).toISOString()}
 async function check(strict){
@@ -301,9 +301,6 @@ async function check(strict){
   if(ret&&Date.parse(ret)<=Date.parse(start))throw Error('O retorno precisa ser posterior ao embarque de ida.');
   // Inclui todos os dias entre a ida e o retorno, mesmo os intermediários.
   const from=day+'T00:00:00-03:00',to=dayEnd(ret?$('dataRetorno').value:day);
-  if(overlaps(preserved,from,to)){
-   msg.textContent='Data indisponível: já existe uma reserva na agenda. Escolha outra data para a ida e o retorno.';return false;
-  }
   const busy=await slots(from,to);
   if(token!==sequence)return false;
   if(busy.length>=500)throw Error('Consulta incompleta');
