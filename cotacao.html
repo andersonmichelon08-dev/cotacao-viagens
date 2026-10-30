@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#090909"><title>Solicitar Cotação | MICHELON V3.4</title>
+<meta name="theme-color" content="#090909"><title>Solicitar Cotação | MICHELON V3.5</title>
 <style>
 *{box-sizing:border-box}body{margin:0;background:#080808;color:#f7f1df;font-family:Arial,sans-serif}
 .wrap{max-width:560px;margin:auto;min-height:100vh;padding:28px 18px;background:radial-gradient(circle at top,#282014,#0b0b0b 38%,#050505)}
@@ -57,7 +57,7 @@ textarea{min-height:85px;resize:vertical}.grid{display:grid;grid-template-column
 </div>
 <label>Parada opcional</label><input id="parada" placeholder="Outro local no trajeto">
 <label>Observações</label><textarea id="obs" placeholder="Ex.: malas, aeroporto, cadeirinha, horário especial..."></textarea>
-<div class="hint" style="margin-top:12px">Agenda protegida · versão 30/10/2026</div><div id="avPublicStatus" class="hint" role="status" aria-live="polite" style="margin:14px 0">Escolha data e horário para consultar a disponibilidade.</div><button class="btn" onclick="enviar()">📲 Enviar solicitação pelo WhatsApp</button>
+<div class="hint" style="margin-top:12px">Agenda protegida · V3.5 · bloqueio por data</div><div id="avPublicStatus" class="hint" role="status" aria-live="polite" style="margin:14px 0">Escolha data e horário para consultar a disponibilidade.</div><button class="btn" onclick="enviar()">📲 Enviar solicitação pelo WhatsApp</button>
 <div class="note">A solicitação não confirma automaticamente o preço nem a reserva.</div>
 </section></main>
 <script>
@@ -285,10 +285,39 @@ const PROJECT='https://tabdtuujeuwplckpzjvm.supabase.co',KEY='sb_publishable_1Mh
 const $=id=>document.getElementById(id);let sequence=0;
 async function slots(from,to){const abort=new AbortController(),timer=setTimeout(()=>abort.abort(),12000);try{const url=PROJECT+'/rest/v1/michelon_busy_slots?select=start_at,end_at&start_at=lt.'+encodeURIComponent(to)+'&end_at=gt.'+encodeURIComponent(from)+'&order=start_at.asc&limit=500';const r=await fetch(url,{headers:{apikey:KEY},signal:abort.signal,cache:'no-store'});if(!r.ok)throw Error('Agenda indisponível');const a=await r.json();if(!Array.isArray(a))throw Error('Resposta inválida');return a}finally{clearTimeout(timer)}}
 const instant=(d,h)=>/^\d{4}-\d{2}-\d{2}$/.test(d)&&/^\d{2}:\d{2}$/.test(h)?d+'T'+h+':00-03:00':null;
-const format=t=>new Intl.DateTimeFormat('pt-BR',{dateStyle:'short',timeStyle:'short',timeZone:'America/Sao_Paulo'}).format(new Date(t));
-const preserved=[{start_at:'2026-12-03T08:00:00-03:00',end_at:'2026-12-03T22:00:00-03:00'}];
-const clash=(a,t)=>a.some(x=>Date.parse(x.start_at)<=Date.parse(t)&&Date.parse(t)<Date.parse(x.end_at));
-async function check(strict){const token=++sequence,msg=$('avPublicStatus'),day=$('data').value,time=$('hora').value;const start=instant(day,time);if(!start){msg.textContent='Escolha data e horário para consultar a disponibilidade.';return false}msg.textContent='Consultando disponibilidade…';try{const isReturn=$('tipo').value==='Ida e volta',ret=isReturn?instant($('dataRetorno').value,$('horaRetorno').value):null;if(isReturn&&!ret&&strict)throw Error('Informe a data e o horário do retorno.');if(ret&&Date.parse(ret)<=Date.parse(start))throw Error('O retorno precisa ser posterior ao embarque de ida.');const times=[start,...ret?[ret]:[]];if(times.some(t=>clash(preserved,t))){msg.textContent='Este horário está indisponível. Já existe uma reserva confirmada. Escolha outra data ou horário.';return false}const results=await Promise.all(times.map(t=>slots(t,new Date(Date.parse(t)+1000).toISOString())));if(token!==sequence)return false;for(let i=0;i<times.length;i++){if(clash(results[i],times[i])){msg.textContent=(i?'O horário do retorno':'O horário de embarque')+' está indisponível. Escolha outra data ou horário.';return false}}msg.textContent='Horário de embarque livre para solicitar cotação. A duração e os deslocamentos serão conferidos antes de confirmar a reserva.';return true}catch(e){if(token===sequence)msg.textContent=e.message==='O retorno precisa ser posterior ao embarque de ida.'?e.message:e.message==='Informe a data e o horário do retorno.'?e.message:'Não foi possível consultar a agenda. Confira sua conexão e tente novamente.';return false}}
+// Datas ocupadas são bloqueadas por inteiro no fuso de São Paulo.
+const preserved=[{start_at:'2026-12-03T00:00:00-03:00',end_at:'2026-12-04T00:00:00-03:00'}];
+const overlaps=(a,from,to)=>a.some(x=>Date.parse(x.start_at)<Date.parse(to)&&Date.parse(x.end_at)>Date.parse(from));
+function dayEnd(day){return new Date(Date.parse(day+'T00:00:00-03:00')+86400000).toISOString()}
+async function check(strict){
+ const token=++sequence,msg=$('avPublicStatus'),day=$('data').value,time=$('hora').value;
+ const start=instant(day,time);
+ if(!start){msg.textContent='Escolha data e horário para consultar a disponibilidade.';return false}
+ msg.textContent='Consultando disponibilidade…';
+ try{
+  const isReturn=$('tipo').value==='Ida e volta';
+  const ret=isReturn?instant($('dataRetorno').value,$('horaRetorno').value):null;
+  if(isReturn&&!ret&&strict)throw Error('Informe a data e o horário do retorno.');
+  if(ret&&Date.parse(ret)<=Date.parse(start))throw Error('O retorno precisa ser posterior ao embarque de ida.');
+  // Inclui todos os dias entre a ida e o retorno, mesmo os intermediários.
+  const from=day+'T00:00:00-03:00',to=dayEnd(ret?$('dataRetorno').value:day);
+  if(overlaps(preserved,from,to)){
+   msg.textContent='Data indisponível: já existe uma reserva na agenda. Escolha outra data para a ida e o retorno.';return false;
+  }
+  const busy=await slots(from,to);
+  if(token!==sequence)return false;
+  if(busy.length>=500)throw Error('Consulta incompleta');
+  if(busy.some(x=>!Number.isFinite(Date.parse(x.start_at))||!Number.isFinite(Date.parse(x.end_at))||Date.parse(x.end_at)<=Date.parse(x.start_at)))throw Error('Agenda inválida');
+  if(overlaps(busy,from,to)){
+   msg.textContent='Data indisponível: já existe uma reserva no período escolhido. Escolha outras datas.';return false;
+  }
+  msg.textContent=isReturn&&!ret?'Informe também a data e o horário do retorno.':'Datas livres para solicitar cotação. A solicitação não confirma a reserva.';
+  return !isReturn||Boolean(ret);
+ }catch(e){
+  if(token===sequence)msg.textContent=['O retorno precisa ser posterior ao embarque de ida.','Informe a data e o horário do retorno.'].includes(e.message)?e.message:'Não foi possível consultar a agenda. Confira sua conexão e tente novamente.';
+  return false;
+ }
+}
 window.michelonCheckRequest=()=>check(true);
 // One controlled path for the visible send button, including inline-handler failures.
 const send=document.querySelector('button[onclick="enviar()"]');
