@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#090909"><title>Solicitar Cotação | MICHELON</title>
+<meta name="theme-color" content="#090909"><title>Solicitar Cotação | MICHELON V3.4</title>
 <style>
 *{box-sizing:border-box}body{margin:0;background:#080808;color:#f7f1df;font-family:Arial,sans-serif}
 .wrap{max-width:560px;margin:auto;min-height:100vh;padding:28px 18px;background:radial-gradient(circle at top,#282014,#0b0b0b 38%,#050505)}
@@ -13,20 +13,9 @@ input,select,textarea{width:100%;padding:14px;border-radius:12px;border:1px soli
 textarea{min-height:85px;resize:vertical}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .btn{width:100%;border:0;border-radius:14px;padding:16px;margin-top:20px;font-size:17px;font-weight:800;background:linear-gradient(135deg,#b17c26,#efd07a,#a87321);color:#090909}
 .note{text-align:center;font-size:12px;color:#9f9479;margin-top:16px}@media(max-width:430px){.grid{grid-template-columns:1fr}}
-
-.gpsbutton{display:block;width:100%;margin:4px 0 10px;padding:12px;border-radius:12px;border:1px solid #b98a35;background:#282014;color:#f7e3b2;font-size:15px;font-weight:bold;cursor:pointer}.gpsbutton:disabled{opacity:.65;cursor:wait}.autowrap{position:relative}.autosuggest{display:none;position:absolute;z-index:30;left:0;right:0;top:100%;background:#1c1914;border:1px solid #b98a35;border-radius:12px;max-height:245px;overflow-y:auto;box-shadow:0 12px 25px #000a}.autosuggest button{display:block;width:100%;text-align:left;border:0;border-bottom:1px solid #574629;padding:13px 12px;background:transparent;color:#f7f1df;font:inherit;cursor:pointer}.autosuggest button:focus,.autosuggest button:hover{background:#3b301d}.searchnote{font-size:12px;color:#c9b992;margin-top:5px;min-height:16px}
-#publicCalendar{border:1px solid #66512b;border-radius:14px;padding:10px;margin-top:16px}
-#publicCalendar header{display:flex;align-items:center;justify-content:space-between;gap:6px}
-#publicCalendar button{border:0;border-radius:6px;min-height:36px;min-width:0;padding:2px;font:inherit;font-weight:bold;background:#302617;color:#f7f1df;cursor:pointer}
-#publicCalendar header button{padding:0 12px}
-#publicCalendar button:disabled{opacity:.45;cursor:default}
-#publicCalendar .calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;text-align:center;margin-top:6px}
-#publicCalendar .free{background:#175336;color:#e2ffed}
-#publicCalendar .busy{background:#8c292c;color:#fff1f1}
-#calendarMonth{text-transform:capitalize}
 </style></head><body><main class="wrap"><section class="card">
 <div class="logo">MICHELON</div><div class="sub">VIAGENS EXECUTIVAS</div>
-<h2>🚐 Solicitar cotação</h2><div class="hint">Preencha os dados da viagem. Ao final, você confere os dados e envia a solicitação pelo WhatsApp para a Michelon. O orçamento será confirmado pela equipe.</div>
+<h2>🚐 Solicitar cotação</h2><div class="hint">Preencha os dados da viagem. Ao final, sua solicitação será enviada pelo WhatsApp para a MICHELON.</div>
 <label>Seu nome *</label><input id="nome" placeholder="Nome do cliente">
 <label>Seu WhatsApp</label><input id="fone" inputmode="tel" placeholder="(19) 99999-9999">
 <label>Tipo de serviço</label>
@@ -35,9 +24,8 @@ textarea{min-height:85px;resize:vertical}.grid{display:grid;grid-template-column
 <option value="urbano">📍 Corrida dentro da cidade</option>
 </select>
 <label>Tipo de trajeto</label><select id="tipo" onchange="mudarTrajeto()"><option>Ida</option><option>Ida e volta</option></select>
-<label id="lblOrigem">Cidade de origem *</label><button type="button" id="btnGpsOrigem" class="gpsbutton" onclick="localizarOrigemGPS()">📍 Usar minha localização atual</button><div id="gpsStatus" class="searchnote" role="status" aria-live="polite">A localização pode ser preenchida automaticamente com sua autorização.</div><div class="autowrap"><input id="origem" placeholder="Ex.: Limeira, SP"><div class="autosuggest" id="sug_origem" role="listbox"></div></div><div class="searchnote" id="note_origem" aria-live="polite"></div>
-<label for="aeroportoRapido">Destino rápido (opcional)</label><select id="aeroportoRapido" onchange="selecionarAeroporto()"><option value="">Outro destino — digitar abaixo</option><option value="Aeroporto Internacional de Guarulhos (GRU), Guarulhos, SP">Aeroporto de Guarulhos (GRU)</option><option value="Aeroporto Internacional de Viracopos (VCP), Campinas, SP">Viracopos (VCP)</option><option value="Aeroporto de Congonhas (CGH), São Paulo, SP">Congonhas (CGH)</option></select>
-<label id="lblDestino">Cidade de destino *</label><div class="autowrap"><input id="destino" placeholder="Ex.: Campinas, SP"><div class="autosuggest" id="sug_destino" role="listbox"></div></div><div class="searchnote" id="note_destino" aria-live="polite"></div><div id="cepBox" style="display:none">
+<label id="lblOrigem">Cidade de origem *</label><input id="origem" placeholder="Ex.: Limeira, SP">
+<label id="lblDestino">Cidade de destino *</label><input id="destino" placeholder="Ex.: Campinas, SP"><div id="cepBox" style="display:none">
 <div class="grid">
 <div><label>CEP de saída (opcional)</label><input id="cepOrigem" inputmode="numeric" maxlength="9" placeholder="13480-000"></div>
 <div><label>Número de saída</label><input id="numOrigem" inputmode="numeric" placeholder="Ex.: 366"></div>
@@ -52,13 +40,6 @@ textarea{min-height:85px;resize:vertical}.grid{display:grid;grid-template-column
 <button type="button" class="btn" style="margin-top:12px;padding:13px" onclick="localizarEnderecos()">🔎 Localizar endereços</button>
 <div id="statusEndereco" class="hint" style="margin:10px 0 0"></div>
 </div>
-<section id="publicCalendar" aria-label="Calendário de disponibilidade">
-<header><button id="calendarPrev" type="button" aria-label="Mês anterior">‹</button><strong id="calendarMonth" aria-live="polite"></strong><button id="calendarNext" type="button" aria-label="Próximo mês">›</button></header>
-<p class="hint" style="margin:8px 0">🟢 Disponível · 🔴 Com reserva (consulte o horário)</p>
-<div class="calendar-grid" aria-hidden="true"><span>D</span><span>S</span><span>T</span><span>Q</span><span>Q</span><span>S</span><span>S</span></div>
-<div id="calendarDays" class="calendar-grid"></div>
-<p id="calendarStatus" class="hint" role="status" style="margin:8px 0 0"></p>
-</section>
 <div class="grid"><div><label>Data *</label><input id="data" type="date"></div><div><label>Horário *</label><input id="hora" type="time"></div></div>
 <div class="grid"><div><label>Passageiros</label><input id="passageiros" type="number" min="1" value="1"></div><div id="retornoResumo" style="display:none"></div></div>
 <div id="camposRetorno" style="display:none;border-top:1px solid #66512b;margin-top:18px;padding-top:6px">
@@ -73,12 +54,11 @@ textarea{min-height:85px;resize:vertical}.grid{display:grid;grid-template-column
 </div>
 <label>Parada opcional</label><input id="parada" placeholder="Outro local no trajeto">
 <label>Observações</label><textarea id="obs" placeholder="Ex.: malas, aeroporto, cadeirinha, horário especial..."></textarea>
-<div class="hint" style="margin-top:12px">Agenda protegida · bloqueio por horário</div><div id="avPublicStatus" class="hint" role="status" aria-live="polite" style="margin:14px 0">Escolha data e horário para consultar a disponibilidade.</div><button class="btn" onclick="enviar()">📲 Enviar solicitação pelo WhatsApp</button>
-<div class="note">A solicitação não confirma automaticamente o preço nem a reserva.</div>
+<button class="btn" onclick="enviar()">📲 Enviar solicitação pelo WhatsApp</button>
+<div class="note">Nenhum custo interno ou parâmetro de cálculo é exibido ao cliente.</div>
 </section></main>
 <script>
 const $=id=>document.getElementById(id);
-function selecionarAeroporto(){const v=$('aeroportoRapido').value;if(v)aplicarLocal('destino',v);}
 function mudarServico(){
  const urbano=$('servico').value==='urbano';
  $('lblOrigem').textContent=urbano?'Endereço completo de saída *':'Cidade de origem *';
@@ -156,8 +136,7 @@ function mudarTrajeto(){
   }
  });
 });
-async function enviar(){
- if(window.michelonSending)return;
+function enviar(){
  const nome=$('nome').value.trim(),origem=$('origem').value.trim(),destino=$('destino').value.trim(),data=$('data').value,hora=$('hora').value;
  if(!nome||!origem||!destino||!data||!hora){alert('Preencha nome, origem, destino, data e horário.');return}
  if($('servico').value==='urbano'&&!enderecosConfirmados){alert('Primeiro toque em “Localizar endereços” para conferir saída e destino.');return}
@@ -166,10 +145,6 @@ async function enviar(){
    alert('Preencha origem, destino, data e horário do retorno.');return
   }
  }
- const agendaSnapshot=['data','hora','dataRetorno','horaRetorno','tipo'].map(id=>$(id).value).join('|');
- window.michelonSending=true;let livre=false;try{livre=typeof window.michelonCheckRequest==='function'&&await window.michelonCheckRequest()}catch(e){document.getElementById('avPublicStatus').textContent='Não foi possível consultar a agenda. Tente novamente.'}finally{window.michelonSending=false}
- if(agendaSnapshot!==['data','hora','dataRetorno','horaRetorno','tipo'].map(id=>$(id).value).join('|')){alert('Data ou horário alterado durante a consulta. Confira e tente novamente.');return}
- if(!livre){alert(document.getElementById('avPublicStatus').textContent);return}
  const dataBR=data.split('-').reverse().join('/');
  const linhas=['🚐 *SOLICITAÇÃO DE COTAÇÃO - MICHELON*','',
  '👤 Cliente: '+nome,
@@ -193,184 +168,5 @@ async function enviar(){
  '','Gostaria de receber uma cotação.'].filter(Boolean);
  location.href='https://wa.me/5519992462362?text='+encodeURIComponent(linhas.join('\n'));
 }
-
-// Sugestões de locais: aeroportos locais + busca aberta do OpenStreetMap.
-const pontosRapidos=[
- {nome:'Aeroporto Internacional de Viracopos (VCP), Campinas, SP',termos:'viracopos vcp aeroporto campinas'},
- {nome:'Aeroporto Internacional de Guarulhos (GRU), Guarulhos, SP',termos:'guarulhos gru cumbica aeroporto'},
- {nome:'Aeroporto de Congonhas (CGH), São Paulo, SP',termos:'congonhas cgh aeroporto sao paulo'},
- {nome:'Limeira, São Paulo, Brasil',termos:'limeira sp'},
- {nome:'Campinas, São Paulo, Brasil',termos:'campinas sp'},
- {nome:'São Paulo, São Paulo, Brasil',termos:'sao paulo sp'},
- {nome:'Guarulhos, São Paulo, Brasil',termos:'guarulhos sp'}
-];
-function semAcento(v){return (v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim()}
-const buscas={};
-function aplicarLocal(id,valor){
- $(id).value=valor; $('sug_'+id).style.display='none'; $('note_'+id).textContent='✓ Local selecionado';
- if($('tipo').value==='Ida e volta'){
-  if(id==='origem')$('destinoRetorno').value=valor;
-  else $('origemRetorno').value=valor;
- }
- if(id==='destino'&&$('aeroportoRapido')){
-  const sel=$('aeroportoRapido');sel.value=Array.from(sel.options).some(o=>o.value===valor)?valor:'';
- }
-}
-function mostrarLocais(id,items){
- const box=$('sug_'+id);box.replaceChildren();
- for(const item of items.slice(0,7)){
-  const b=document.createElement('button');b.type='button';b.setAttribute('role','option');b.textContent=item;
-  b.addEventListener('pointerdown',e=>e.preventDefault());
-  b.addEventListener('click',()=>aplicarLocal(id,item));box.appendChild(b);
- }
- box.style.display=items.length?'block':'none';
-}
-async function sugerirLocais(id){
- const q=$(id).value.trim(),note=$('note_'+id),token=(buscas[id]?.token||0)+1;
- buscas[id]={...buscas[id],token};
- if(q.length<3){mostrarLocais(id,[]);note.textContent='Digite pelo menos 3 letras';return}
- const nq=semAcento(q);
- const locais=pontosRapidos.filter(p=>semAcento(p.nome).includes(nq)||semAcento(p.termos).includes(nq)).map(p=>p.nome);
- mostrarLocais(id,locais);note.textContent='Buscando endereços...';
- if(buscas[id].timer)clearTimeout(buscas[id].timer);
- buscas[id].timer=setTimeout(async()=>{
-  try{
-   const controller=new AbortController();
-   const timeout=setTimeout(()=>controller.abort(),6500);
-   let res;
-   try{res=await fetch('https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=6&countrycodes=br&q='+encodeURIComponent(q),{headers:{'Accept-Language':'pt-BR,pt;q=0.9'},signal:controller.signal})}
-   finally{clearTimeout(timeout)}
-   if(!res.ok)throw new Error('Serviço de mapas indisponível');
-   const data=await res.json();if(buscas[id].token!==token)return;
-   const encontrados=data.map(p=>p.display_name).filter(Boolean);
-   const unicos=[...new Set([...locais,...encontrados])];mostrarLocais(id,unicos);
-   note.textContent=unicos.length?'Selecione uma sugestão ou continue digitando.':'Nenhum resultado. Você pode digitar o endereço manualmente.';
-  }catch(e){if(buscas[id].token===token)note.textContent='Busca online indisponível. Você pode digitar o endereço manualmente.'}
- },600);
-}
-['origem','destino'].forEach(id=>{
- const el=$(id);el.setAttribute('autocomplete','off');
- el.addEventListener('input',()=>sugerirLocais(id));
- el.addEventListener('focus',()=>{if(el.value.trim().length>=3)sugerirLocais(id)});
- el.addEventListener('keydown',e=>{if(e.key==='Escape')$('sug_'+id).style.display='none'});
- el.addEventListener('blur',()=>setTimeout(()=>$('sug_'+id).style.display='none',180));
-});
-
 mudarTrajeto();
-
-// GPS público: exige HTTPS (ou localhost) e consentimento do visitante.
-let gpsEmAndamento=false;
-async function localizarOrigemGPS(){
- if(gpsEmAndamento)return;
- const st=$('gpsStatus'),btn=$('btnGpsOrigem');
- if(!navigator.geolocation){st.textContent='Este navegador não oferece localização. Digite a origem manualmente.';return;}
- if(!window.isSecureContext){st.textContent='O GPS exige página HTTPS. Abra o site publicado ou digite a origem.';return;}
- gpsEmAndamento=true;btn.disabled=true;st.textContent='📍 Aguardando autorização do GPS...';
- try{
-  const pos=await new Promise((resolve,reject)=>navigator.geolocation.getCurrentPosition(resolve,reject,{enableHighAccuracy:true,timeout:15000,maximumAge:60000}));
-  const {latitude,longitude,accuracy}=pos.coords;
-  st.textContent='📍 Localização encontrada. Buscando endereço...';
-  let endereco='';
-  try{
-   const ctrl=new AbortController();const tm=setTimeout(()=>ctrl.abort(),12000);
-   try{
-    const u='https://nominatim.openstreetmap.org/reverse?format=jsonv2&addressdetails=1&zoom=18&lat='+encodeURIComponent(latitude)+'&lon='+encodeURIComponent(longitude);
-    const r=await fetch(u,{signal:ctrl.signal,headers:{'Accept-Language':'pt-BR,pt;q=0.9'}});
-    if(!r.ok)throw new Error('Serviço de endereço indisponível');
-    const data=await r.json();
-    const a=data.address||{};
-    endereco=[a.road||a.pedestrian||a.residential||a.neighbourhood,a.house_number,a.suburb||a.neighbourhood,a.city||a.town||a.village||a.municipality,a.state].filter(Boolean).join(', ') || data.display_name || '';
-   }finally{clearTimeout(tm)}
-  }catch(e){ /* Conserva coordenadas GPS se não conseguir o endereço. */ }
-  const valor=endereco || latitude.toFixed(6)+', '+longitude.toFixed(6);
-  aplicarLocal('origem',valor);
-  st.textContent=endereco?'✅ Origem localizada. Confira o endereço e ajuste o número, se necessário. (Precisão aproximada: '+Math.round(accuracy)+' m)':'⚠️ GPS encontrado, mas não foi possível obter o endereço. Confira a origem antes de enviar.';
- }catch(e){
-  const msg=e&&e.code===1?'Permissão de localização negada. Você pode digitar a origem.':e&&e.code===3?'O GPS demorou demais. Tente novamente ou digite a origem.':'Não foi possível obter sua localização. Digite a origem.';
-  st.textContent='⚠️ '+msg;
- }finally{gpsEmAndamento=false;btn.disabled=false}
-}
-// Faz uma tentativa automática, mas permite sempre usar o formulário manualmente.
-window.addEventListener('load',()=>{
- if(window.isSecureContext && navigator.geolocation){
-  setTimeout(()=>{if(!$('origem').value.trim() && !gpsEmAndamento)localizarOrigemGPS()},700);
- }
-});
-</script><script>(()=>{'use strict';
-const PROJECT='https://tabdtuujeuwplckpzjvm.supabase.co',KEY='sb_publishable_1MhIIpF8npEuPrVFagdi-g_cWvBeTnR';
-const $=id=>document.getElementById(id);let sequence=0;
-async function slots(from,to){const abort=new AbortController(),timer=setTimeout(()=>abort.abort(),12000);try{const url=PROJECT+'/rest/v1/michelon_busy_slots?select=start_at,end_at&start_at=lt.'+encodeURIComponent(to)+'&end_at=gt.'+encodeURIComponent(from)+'&order=start_at.asc&limit=500';const r=await fetch(url,{headers:{apikey:KEY},signal:abort.signal,cache:'no-store'});if(!r.ok)throw Error('Agenda indisponível');const a=await r.json();if(!Array.isArray(a))throw Error('Resposta inválida');return a}finally{clearTimeout(timer)}}
-const instant=(d,h)=>/^\d{4}-\d{2}-\d{2}$/.test(d)&&/^\d{2}:\d{2}$/.test(h)?d+'T'+h+':00-03:00':null;
-function validateSlots(busy){
- if(busy.length>=500)throw Error('Consulta incompleta');
- if(busy.some(x=>!Number.isFinite(Date.parse(x.start_at))||!Number.isFinite(Date.parse(x.end_at))||Date.parse(x.end_at)<=Date.parse(x.start_at)))throw Error('Agenda inválida');
-}
-
-const overlaps=(a,from,to)=>a.some(x=>Date.parse(x.start_at)<Date.parse(to)&&Date.parse(x.end_at)>Date.parse(from));
-function dayEnd(day){return new Date(Date.parse(day+'T00:00:00-03:00')+86400000).toISOString()}
-async function check(strict){
- const token=++sequence,msg=$('avPublicStatus'),day=$('data').value,time=$('hora').value;
- const start=instant(day,time);
- if(!start){msg.textContent='Escolha data e horário para consultar a disponibilidade.';return false}
- msg.textContent='Consultando disponibilidade…';
- try{
-  const isReturn=$('tipo').value==='Ida e volta';
-  const ret=isReturn?instant($('dataRetorno').value,$('horaRetorno').value):null;
-  if(isReturn&&!ret&&strict)throw Error('Informe a data e o horário do retorno.');
-  if(ret&&Date.parse(ret)<=Date.parse(start))throw Error('O retorno precisa ser posterior ao embarque de ida.');
-  const from=start,to=new Date(Date.parse(ret||start)+1).toISOString();
-  const busy=await slots(from,to);
-  if(token!==sequence)return false;
-  validateSlots(busy);
-  if(overlaps(busy,from,to)){
-   msg.textContent='Horário indisponível. Escolha outro horário ou data.';return false;
-  }
-  msg.textContent=isReturn&&!ret?'Informe também a data e o horário do retorno.':'Horário livre para solicitar cotação. A solicitação não confirma a reserva.';
-  return !isReturn||Boolean(ret);
- }catch(e){
-  if(token===sequence)msg.textContent=['O retorno precisa ser posterior ao embarque de ida.','Informe a data e o horário do retorno.'].includes(e.message)?e.message:'Não foi possível consultar a agenda. Confira sua conexão e tente novamente.';
-  return false;
- }
-}
-const today=new Intl.DateTimeFormat('sv-SE',{timeZone:'America/Sao_Paulo',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
-const month=new Date(today.slice(0,7)+'-01T00:00:00Z');
-const grid=$('calendarDays'),previous=$('calendarPrev'),next=$('calendarNext');
-let calendarRequest=0;
-async function renderCalendar(){
- const request=++calendarRequest,first=month.toISOString().slice(0,10);
- const following=new Date(month);following.setUTCMonth(following.getUTCMonth()+1);
- const after=following.toISOString().slice(0,10);
- $('calendarMonth').textContent=month.toLocaleDateString('pt-BR',{month:'long',year:'numeric',timeZone:'UTC'});
- previous.disabled=first.slice(0,7)<=today.slice(0,7);
- grid.replaceChildren();
- const status=$('calendarStatus');status.textContent='Consultando a agenda…';
- try{
-  const busy=await slots(instant(first,'00:00'),instant(after,'00:00'));
-  if(request!==calendarRequest)return;
-  validateSlots(busy);
-  status.textContent='Toque em uma data para preencher o embarque.';
-  for(let i=0;i<month.getUTCDay();i++)grid.append(document.createElement('span'));
-  for(let date=new Date(month);date<following;date.setUTCDate(date.getUTCDate()+1)){
-   const day=date.toISOString().slice(0,10),button=document.createElement('button');
-   const occupied=overlaps(busy,instant(day,'00:00'),dayEnd(day));
-   button.type='button';button.textContent=date.getUTCDate();button.disabled=day<today;
-   button.className=day<today?'past':occupied?'busy':'free';
-   button.setAttribute('aria-label',date.toLocaleDateString('pt-BR',{timeZone:'UTC'})+' · '+(day<today?'data passada':occupied?'com reserva':'disponível'));
-   button.onclick=()=>{$('data').value=day;$('data').dispatchEvent(new Event('change',{bubbles:true}));$('hora').focus()};
-   grid.append(button);
-  }
- }catch{
-  if(request===calendarRequest)status.textContent='Agenda indisponível. Atualize a página para tentar novamente.';
- }
-}
-previous.onclick=()=>{month.setUTCMonth(month.getUTCMonth()-1);renderCalendar()};
-next.onclick=()=>{month.setUTCMonth(month.getUTCMonth()+1);renderCalendar()};
-renderCalendar();
-
-window.michelonCheckRequest=()=>check(true);
-// One controlled path for the visible send button, including inline-handler failures.
-const send=document.querySelector('button[onclick="enviar()"]');
-send.removeAttribute('onclick');send.addEventListener('click',()=>enviar());
-for(const id of ['data','hora','dataRetorno','horaRetorno','tipo'])$(id).addEventListener('change',()=>check(false));
-})();
 </script></body></html>
